@@ -1,0 +1,44 @@
+import org.doomedsociety.gradlecpp.GradleCppUtils
+import org.apache.commons.io.FilenameUtils
+
+void _copyFileToDir(String from, String to) {
+	def dst = new File(project.file(to), FilenameUtils.getName(from))
+	GradleCppUtils.copyFile(project.file(from), dst, false)
+}
+
+void _copyFile(String from, String to) {
+	GradleCppUtils.copyFile(project.file(from), project.file(to), false)
+}
+
+task publishPrepareFiles << {
+	def pubRootDir = project.file('publish/publishRoot')
+	if (pubRootDir.exists()) {
+		if (!pubRootDir.deleteDir()) {
+			throw new RuntimeException("Failed to delete ${pubRootDir}")
+		}
+	}
+
+	pubRootDir.mkdirs()
+
+	project.file('publish/publishRoot/reapi/addons/amxmodx/modules').mkdirs()
+	//project.file('publish/publishRoot/reapi/addons/amxmodx/scripting/include').mkdirs()
+
+	_copyFileToDir('publish/reapi_amxx.dll', 'publish/publishRoot/reapi/addons/amxmodx/modules/')
+	_copyFile('publish/libreapi_amxx_i386.so', 'publish/publishRoot/reapi/addons/amxmodx/modules/reapi_amxx_i386.so')
+
+	copy {
+		from 'reapi/extra'
+		into 'publish/publishRoot/reapi/addons'
+	}
+}
+
+task publishPackage(type: Zip, dependsOn: 'publishPrepareFiles') {
+	baseName = "reapi_${project.version}"
+	destinationDir file('publish')
+	from 'publish/publishRoot/reapi'
+}
+
+task doPackage {
+	dependsOn 'publishPackage'
+
+}

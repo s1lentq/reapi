@@ -1,0 +1,398 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\cssdk\common\beamdef.h" />
+    <ClInclude Include="..\include\cssdk\common\cl_entity.h" />
+    <ClInclude Include="..\include\cssdk\common\com_model.h" />
+    <ClInclude Include="..\include\cssdk\common\const.h" />
+    <ClInclude Include="..\include\cssdk\common\con_nprint.h" />
+    <ClInclude Include="..\include\cssdk\common\crc.h" />
+    <ClInclude Include="..\include\cssdk\common\cvardef.h" />
+    <ClInclude Include="..\include\cssdk\common\demo_api.h" />
+    <ClInclude Include="..\include\cssdk\common\director_cmds.h" />
+    <ClInclude Include="..\include\cssdk\common\dlight.h" />
+    <ClInclude Include="..\include\cssdk\common\dll_state.h" />
+    <ClInclude Include="..\include\cssdk\common\entity_state.h" />
+    <ClInclude Include="..\include\cssdk\common\entity_types.h" />
+    <ClInclude Include="..\include\cssdk\common\enums.h" />
+    <ClInclude Include="..\include\cssdk\common\event_api.h" />
+    <ClInclude Include="..\include\cssdk\common\event_args.h" />
+    <ClInclude Include="..\include\cssdk\common\event_flags.h" />
+    <ClInclude Include="..\include\cssdk\common\hltv.h" />
+    <ClInclude Include="..\include\cssdk\common\IGameServerData.h" />
+    <ClInclude Include="..\include\cssdk\common\in_buttons.h" />
+    <ClInclude Include="..\include\cssdk\common\ivoicetweak.h" />
+    <ClInclude Include="..\include\cssdk\common\kbutton.h" />
+    <ClInclude Include="..\include\cssdk\common\mathlib.h" />
+    <ClInclude Include="..\include\cssdk\common\netadr.h" />
+    <ClInclude Include="..\include\cssdk\common\net_api.h" />
+    <ClInclude Include="..\include\cssdk\common\nowin.h" />
+    <ClInclude Include="..\include\cssdk\common\parsemsg.h" />
+    <ClInclude Include="..\include\cssdk\common\particledef.h" />
+    <ClInclude Include="..\include\cssdk\common\pmtrace.h" />
+    <ClInclude Include="..\include\cssdk\common\port.h" />
+    <ClInclude Include="..\include\cssdk\common\qfont.h" />
+    <ClInclude Include="..\include\cssdk\common\qlimits.h" />
+    <ClInclude Include="..\include\cssdk\common\quakedef.h" />
+    <ClInclude Include="..\include\cssdk\common\ref_params.h" />
+    <ClInclude Include="..\include\cssdk\common\r_efx.h" />
+    <ClInclude Include="..\include\cssdk\common\r_studioint.h" />
+    <ClInclude Include="..\include\cssdk\common\screenfade.h" />
+    <ClInclude Include="..\include\cssdk\common\Sequence.h" />
+    <ClInclude Include="..\include\cssdk\common\SteamCommon.h" />
+    <ClInclude Include="..\include\cssdk\common\studio_event.h" />
+    <ClInclude Include="..\include\cssdk\common\triangleapi.h" />
+    <ClInclude Include="..\include\cssdk\common\usercmd.h" />
+    <ClInclude Include="..\include\cssdk\common\vmodes.h" />
+    <ClInclude Include="..\include\cssdk\common\weaponinfo.h" />
+    <ClInclude Include="..\include\cssdk\common\winsani_in.h" />
+    <ClInclude Include="..\include\cssdk\common\winsani_out.h" />
+    <ClInclude Include="..\include\cssdk\dlls\activity.h" />
+    <ClInclude Include="..\include\cssdk\dlls\activitymap.h" />
+    <ClInclude Include="..\include\cssdk\dlls\airtank.h" />
+    <ClInclude Include="..\include\cssdk\dlls\ammo.h" />
+    <ClInclude Include="..\include\cssdk\dlls\basemonster.h" />
+    <ClInclude Include="..\include\cssdk\dlls\bmodels.h" />
+    <ClInclude Include="..\include\cssdk\dlls\bot\cs_bot.h" />
+    <ClInclude Include="..\include\cssdk\dlls\bot\cs_bot_chatter.h" />
+    <ClInclude Include="..\include\cssdk\dlls\bot\cs_bot_manager.h" />
+    <ClInclude Include="..\include\cssdk\dlls\bot\cs_gamestate.h" />
+    <ClInclude Include="..\include\cssdk\dlls\buttons.h" />
+    <ClInclude Include="..\include\cssdk\dlls\cbase.h" />
+    <ClInclude Include="..\include\cssdk\dlls\cdll_dll.h" />
+    <ClInclude Include="..\include\cssdk\dlls\client.h" />
+    <ClInclude Include="..\include\cssdk\dlls\csbot_dll.h" />
+    <ClInclude Include="..\include\cssdk\dlls\decals.h" />
+    <ClInclude Include="..\include\cssdk\dlls\doors.h" />
+    <ClInclude Include="..\include\cssdk\dlls\effects.h" />
+    <ClInclude Include="..\include\cssdk\dlls\enginecallback.h" />
+    <ClInclude Include="..\include\cssdk\dlls\explode.h" />
+    <ClInclude Include="..\include\cssdk\dlls\extdef.h" />
+    <ClInclude Include="..\include\cssdk\dlls\extdll.h" />
+    <ClInclude Include="..\include\cssdk\dlls\func_break.h" />
+    <ClInclude Include="..\include\cssdk\dlls\func_tank.h" />
+    <ClInclude Include="..\include\cssdk\dlls\gamerules.h" />
+    <ClInclude Include="..\include\cssdk\dlls\healthkit.h" />
+    <ClInclude Include="..\include\cssdk\dlls\hintmessage.h" />
+    <ClInclude Include="..\include\cssdk\dlls\hookchains.h" />
+    <ClInclude Include="..\include\cssdk\dlls\hostage\hostage.h" />
+    <ClInclude Include="..\include\cssdk\dlls\hostage\hostage_improv.h" />
+    <ClInclude Include="..\include\cssdk\dlls\hostage\hostage_localnav.h" />
+    <ClInclude Include="..\include\cssdk\dlls\hostage\hostage_states.h" />
+    <ClInclude Include="..\include\cssdk\dlls\h_battery.h" />
+    <ClInclude Include="..\include\cssdk\dlls\h_cycler.h" />
+    <ClInclude Include="..\include\cssdk\dlls\items.h" />
+    <ClInclude Include="..\include\cssdk\dlls\lights.h" />
+    <ClInclude Include="..\include\cssdk\dlls\maprules.h" />
+    <ClInclude Include="..\include\cssdk\dlls\monsterevent.h" />
+    <ClInclude Include="..\include\cssdk\dlls\monsters.h" />
+    <ClInclude Include="..\include\cssdk\dlls\mortar.h" />
+    <ClInclude Include="..\include\cssdk\dlls\observer.h" />
+    <ClInclude Include="..\include\cssdk\dlls\osconfig.h" />
+    <ClInclude Include="..\include\cssdk\dlls\pathcorner.h" />
+    <ClInclude Include="..\include\cssdk\dlls\platform.h" />
+    <ClInclude Include="..\include\cssdk\dlls\plats.h" />
+    <ClInclude Include="..\include\cssdk\dlls\player.h" />
+    <ClInclude Include="..\include\cssdk\dlls\regamedll_api.h" />
+    <ClInclude Include="..\include\cssdk\dlls\regamedll_const.h" />
+    <ClInclude Include="..\include\cssdk\dlls\regamedll_interfaces.h" />
+    <ClInclude Include="..\include\cssdk\dlls\revert_saved.h" />
+    <ClInclude Include="..\include\cssdk\dlls\skill.h" />
+    <ClInclude Include="..\include\cssdk\dlls\sound.h" />
+    <ClInclude Include="..\include\cssdk\dlls\spectator.h" />
+    <ClInclude Include="..\include\cssdk\dlls\subs.h" />
+    <ClInclude Include="..\include\cssdk\dlls\training_gamerules.h" />
+    <ClInclude Include="..\include\cssdk\dlls\trains.h" />
+    <ClInclude Include="..\include\cssdk\dlls\triggers.h" />
+    <ClInclude Include="..\include\cssdk\dlls\unisignals.h" />
+    <ClInclude Include="..\include\cssdk\dlls\util.h" />
+    <ClInclude Include="..\include\cssdk\dlls\vector.h" />
+    <ClInclude Include="..\include\cssdk\dlls\vehicle.h" />
+    <ClInclude Include="..\include\cssdk\dlls\weapons.h" />
+    <ClInclude Include="..\include\cssdk\dlls\weapontype.h" />
+    <ClInclude Include="..\include\cssdk\dlls\wpn_shared.h" />
+    <ClInclude Include="..\include\cssdk\engine\archtypes.h" />
+    <ClInclude Include="..\include\cssdk\engine\bspfile.h" />
+    <ClInclude Include="..\include\cssdk\engine\cmd_rehlds.h" />
+    <ClInclude Include="..\include\cssdk\engine\common_rehlds.h" />
+    <ClInclude Include="..\include\cssdk\engine\crc32c.h" />
+    <ClInclude Include="..\include\cssdk\engine\custom.h" />
+    <ClInclude Include="..\include\cssdk\engine\customentity.h" />
+    <ClInclude Include="..\include\cssdk\engine\d_local.h" />
+    <ClInclude Include="..\include\cssdk\engine\edict.h" />
+    <ClInclude Include="..\include\cssdk\engine\eiface.h" />
+    <ClInclude Include="..\include\cssdk\engine\FlightRecorder.h" />
+    <ClInclude Include="..\include\cssdk\engine\hookchains.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\include\cssdk\engine\keydefs.h" />
+    <ClInclude Include="..\include\cssdk\engine\maintypes.h" />
+    <ClInclude Include="..\include\cssdk\engine\model.h" />
+    <ClInclude Include="..\include\cssdk\engine\modelgen.h" />
+    <ClInclude Include="..\include\cssdk\engine\osconfig.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\include\cssdk\engine\progdefs.h" />
+    <ClInclude Include="..\include\cssdk\engine\progs.h" />
+    <ClInclude Include="..\include\cssdk\engine\rehlds_api.h" />
+    <ClInclude Include="..\include\cssdk\engine\rehlds_interfaces.h" />
+    <ClInclude Include="..\include\cssdk\engine\Sequence.h" />
+    <ClInclude Include="..\include\cssdk\engine\shake.h" />
+    <ClInclude Include="..\include\cssdk\engine\spritegn.h" />
+    <ClInclude Include="..\include\cssdk\engine\static_map.h" />
+    <ClInclude Include="..\include\cssdk\engine\studio.h" />
+    <ClInclude Include="..\include\cssdk\engine\sys_shared.h" />
+    <ClInclude Include="..\include\cssdk\engine\userid_rehlds.h" />
+    <ClInclude Include="..\include\cssdk\game_shared\bitvec.h" />
+    <ClInclude Include="..\include\cssdk\game_shared\bot\bot.h" />
+    <ClInclude Include="..\include\cssdk\game_shared\bot\bot_constants.h" />
+    <ClInclude Include="..\include\cssdk\game_shared\bot\bot_manager.h" />
+    <ClInclude Include="..\include\cssdk\game_shared\bot\bot_profile.h" />
+    <ClInclude Include="..\include\cssdk\game_shared\bot\bot_util.h" />
+    <ClInclude Include="..\include\cssdk\game_shared\bot\improv.h" />
+    <ClInclude Include="..\include\cssdk\game_shared\bot\nav.h" />
+    <ClInclude Include="..\include\cssdk\game_shared\bot\nav_area.h" />
+    <ClInclude Include="..\include\cssdk\game_shared\bot\nav_node.h" />
+    <ClInclude Include="..\include\cssdk\game_shared\bot\nav_path.h" />
+    <ClInclude Include="..\include\cssdk\game_shared\bot\simple_state_machine.h" />
+    <ClInclude Include="..\include\cssdk\game_shared\GameEvent.h" />
+    <ClInclude Include="..\include\cssdk\game_shared\perf_counter.h" />
+    <ClInclude Include="..\include\cssdk\game_shared\shared_util.h" />
+    <ClInclude Include="..\include\cssdk\game_shared\simple_checksum.h" />
+    <ClInclude Include="..\include\cssdk\game_shared\steam_util.h" />
+    <ClInclude Include="..\include\cssdk\game_shared\voice_common.h" />
+    <ClInclude Include="..\include\cssdk\game_shared\voice_gamemgr.h" />
+    <ClInclude Include="..\include\cssdk\pm_shared\pm_defs.h" />
+    <ClInclude Include="..\include\cssdk\pm_shared\pm_info.h" />
+    <ClInclude Include="..\include\cssdk\pm_shared\pm_materials.h" />
+    <ClInclude Include="..\include\cssdk\pm_shared\pm_movevars.h" />
+    <ClInclude Include="..\include\cssdk\pm_shared\pm_shared.h" />
+    <ClInclude Include="..\include\cssdk\public\FileSystem.h" />
+    <ClInclude Include="..\include\cssdk\public\interface.h" />
+    <ClInclude Include="..\include\cssdk\public\utlmemory.h" />
+    <ClInclude Include="..\include\cssdk\public\utlvector.h" />
+    <ClInclude Include="..\include\metamod\dllapi.h" />
+    <ClInclude Include="..\include\metamod\enginecallbacks.h" />
+    <ClInclude Include="..\include\metamod\engine_api.h" />
+    <ClInclude Include="..\include\metamod\h_export.h" />
+    <ClInclude Include="..\include\metamod\log_meta.h" />
+    <ClInclude Include="..\include\metamod\meta_api.h" />
+    <ClInclude Include="..\include\metamod\mhook.h" />
+    <ClInclude Include="..\include\metamod\mreg.h" />
+    <ClInclude Include="..\include\metamod\mutil.h" />
+    <ClInclude Include="..\include\metamod\osdep.h" />
+    <ClInclude Include="..\include\metamod\plinfo.h" />
+    <ClInclude Include="..\include\metamod\sdk_util.h" />
+    <ClInclude Include="..\include\metamod\types_meta.h" />
+    <ClInclude Include="..\src\amxxmodule.h" />
+    <ClInclude Include="..\src\api_config.h" />
+    <ClInclude Include="..\src\hook_manager.h" />
+    <ClInclude Include="..\src\hook_callback.h" />
+    <ClInclude Include="..\src\hook_list.h" />
+    <ClInclude Include="..\src\member_list.h" />
+    <ClInclude Include="..\src\mod_regamedll_api.h" />
+    <ClInclude Include="..\src\mod_rehlds_api.h" />
+    <ClInclude Include="..\src\natives.h" />
+    <ClInclude Include="..\src\precompiled.h" />
+    <ClInclude Include="..\src\reapi_utils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\include\cssdk\common\parsemsg.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\include\cssdk\engine\crc32c.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\include\cssdk\engine\sys_shared.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\include\cssdk\public\interface.cpp" />
+    <ClCompile Include="..\src\amxxmodule.cpp" />
+    <ClCompile Include="..\src\api_config.cpp" />
+    <ClCompile Include="..\src\dllapi.cpp" />
+    <ClCompile Include="..\src\engine_api.cpp" />
+    <ClCompile Include="..\src\hook_manager.cpp" />
+    <ClCompile Include="..\src\hook_callback.cpp" />
+    <ClCompile Include="..\src\hook_list.cpp" />
+    <ClCompile Include="..\src\h_export.cpp" />
+    <ClCompile Include="..\src\member_list.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\src\mod_regamedll_api.cpp" />
+    <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\meta_api.cpp" />
+    <ClCompile Include="..\src\mod_rehlds_api.cpp" />
+    <ClCompile Include="..\src\natives.cpp" />
+    <ClCompile Include="..\src\natives_member.cpp" />
+    <ClCompile Include="..\src\precompiled.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\src\sdk_util.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="reapi.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\extra\amxmodx\scripting\include\reapi.inc" />
+    <None Include="..\extra\amxmodx\scripting\include\reapi_const.inc" />
+    <None Include="..\extra\amxmodx\scripting\include\reapi_engine.inc" />
+    <None Include="..\extra\amxmodx\scripting\include\reapi_gamedll.inc" />
+    <None Include="..\extra\amxmodx\scripting\include\reapi_gamedll_const.inc" />
+    <None Include="..\extra\amxmodx\scripting\reapi_test.sma" />
+    <None Include="..\src\reapi_const.inc" />
+    <None Include="reapi.def" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{74E2532F-BE55-4B2B-8C34-C9A4B5EC11AC}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>reapi</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <TargetExt>.dll</TargetExt>
+    <TargetName>$(ProjectName)_amxx</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <TargetName>$(ProjectName)_amxx</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir)\..\src;$(ProjectDir)\..\version;$(ProjectDir)\..\include;$(ProjectDir)\..\include\metamod;$(ProjectDir)\..\include\cssdk\common;$(ProjectDir)\..\include\cssdk\dlls;$(ProjectDir)\..\include\cssdk\engine;$(ProjectDir)\..\include\cssdk\game_shared;$(ProjectDir)\..\include\cssdk\pm_shared;$(ProjectDir)\..\include\cssdk\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <ModuleDefinitionFile>reapi.def</ModuleDefinitionFile>
+    </Link>
+    <PostBuildEvent>
+      <Command>IF EXIST "$(ProjectDir)PostBuild.bat" (CALL "$(ProjectDir)PostBuild.bat" "$(TargetDir)" "$(TargetName)" "$(TargetExt)" "$(ProjectDir)")</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Automatic deployment script</Message>
+    </PostBuildEvent>
+    <CustomBuildStep>
+      <Command>echo Empty Action</Command>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Message>Force build to run Pre-Build event</Message>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Outputs>subversion.always.run</Outputs>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Inputs>subversion.always.run</Inputs>
+    </CustomBuildStep>
+    <PreBuildEvent>
+      <Command>IF EXIST "$(ProjectDir)PreBuild.bat" (CALL "$(ProjectDir)PreBuild.bat" "$(ProjectDir)..\version\" "$(ProjectDir)..\")</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Setup version from Git revision</Message>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>
+      </SDLCheck>
+      <AdditionalIncludeDirectories>$(ProjectDir)\..\src;$(ProjectDir)\..\version;$(ProjectDir)\..\include;$(ProjectDir)\..\include\metamod;$(ProjectDir)\..\include\cssdk\common;$(ProjectDir)\..\include\cssdk\dlls;$(ProjectDir)\..\include\cssdk\engine;$(ProjectDir)\..\include\cssdk\game_shared;$(ProjectDir)\..\include\cssdk\pm_shared;$(ProjectDir)\..\include\cssdk\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <ModuleDefinitionFile>reapi.def</ModuleDefinitionFile>
+    </Link>
+    <CustomBuildStep>
+      <Command>echo Empty Action</Command>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Message>Force build to run Pre-Build event</Message>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Outputs>subversion.always.run</Outputs>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Inputs>subversion.always.run</Inputs>
+    </CustomBuildStep>
+    <PostBuildEvent>
+      <Command>IF EXIST "$(ProjectDir)PostBuild.bat" (CALL "$(ProjectDir)PostBuild.bat" "$(TargetDir)" "$(TargetName)" "$(TargetExt)" "$(ProjectDir)")</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Automatic deployment script</Message>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>IF EXIST "$(ProjectDir)PreBuild.bat" (CALL "$(ProjectDir)PreBuild.bat" "$(ProjectDir)..\version\" "$(ProjectDir)..\")</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Setup version from Git revision</Message>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
