@@ -124,6 +124,7 @@
 	#endif
 
 	typedef unsigned char byte;
+	typedef unsigned char BYTE;
 	typedef unsigned short uchar16;
 	typedef wchar_t uchar32;
 #endif // _WIN32
