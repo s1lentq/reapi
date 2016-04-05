@@ -36,3 +36,13 @@
 #include "hook_callback.h"
 #include "member_list.h"
 #include "natives.h"
+
+#undef DLLEXPORT
+#ifdef _WIN32
+#define DLLEXPORT __declspec(dllexport)
+#define NOINLINE __declspec(noinline)
+#else
+#define DLLEXPORT __attribute__((visibility("default")))
+#define NOINLINE __attribute__((noinline))
+#define WINAPI		/* */
+#endif

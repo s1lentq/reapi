@@ -23,12 +23,13 @@ extern CHook *g_currentHookChain;
 template <typename ...t_args>
 inline bool callVoidForward_Pre(int func, t_args... args)
 {
+	auto hook = hooklist[func];
 	register int ret = RH_UNSET;
-	for (auto it = hooklist[func]->pre.begin(), end = hooklist[func]->pre.end(); it != end; ++it)
+	for (auto it = hook->pre.begin(), end = hook->pre.end(); it != end; ++it)
 	{
 		if ((*it)->GetState() == FSTATE_OK)
 		{
-			ret = g_amxxapi.ExecuteForward((*it)->m_forward, args...);
+			ret = g_amxxapi.ExecuteForward((*it)->GetForwardID(), args...);
 		}
 	}
 
@@ -39,12 +40,13 @@ inline bool callVoidForward_Pre(int func, t_args... args)
 template <typename ...t_args>
 inline void callVoidForward_Post(int func, t_args... args)
 {
-	for (auto it = hooklist[func]->post.begin(), end = hooklist[func]->post.end(); it != end; ++it)
+	auto hook = hooklist[func];
+	for (auto it = hook->post.begin(), end = hook->post.end(); it != end; ++it)
 	{
 		if ((*it)->GetState() == FSTATE_OK)
 		{
 			g_currentHookChain = (*it);
-			g_amxxapi.ExecuteForward((*it)->m_forward, args...);
+			g_amxxapi.ExecuteForward((*it)->GetForwardID(), args...);
 		}
 	}
 }
@@ -52,12 +54,13 @@ inline void callVoidForward_Post(int func, t_args... args)
 template <typename t_chain, typename ...t_args>
 inline void callVoidForward(t_chain chain, int func, t_args... args)
 {
+	auto hook = hooklist[func];
 	register int ret = RH_UNSET;
-	for (auto it = hooklist[func]->pre.begin(), end = hooklist[func]->pre.end(); it != end; ++it)
+	for (auto it = hook->pre.begin(), end = hook->pre.end(); it != end; ++it)
 	{
 		if ((*it)->GetState() == FSTATE_OK)
 		{
-			ret = g_amxxapi.ExecuteForward((*it)->m_forward, args...);
+			ret = g_amxxapi.ExecuteForward((*it)->GetForwardID(), args...);
 		}
 	}
 
@@ -68,12 +71,12 @@ inline void callVoidForward(t_chain chain, int func, t_args... args)
 	}
 
 	// Post
-	for (auto it = hooklist[func]->post.begin(), end = hooklist[func]->post.end(); it != end; ++it)
+	for (auto it = hook->post.begin(), end = hook->post.end(); it != end; ++it)
 	{
 		if ((*it)->GetState() == FSTATE_OK)
 		{
 			g_currentHookChain = (*it);
-			g_amxxapi.ExecuteForward((*it)->m_forward, args...);
+			g_amxxapi.ExecuteForward((*it)->GetForwardID(), args...);
 		}
 	}
 }
@@ -81,12 +84,13 @@ inline void callVoidForward(t_chain chain, int func, t_args... args)
 template <typename ...t_args>
 inline bool callForward_Pre(int func, t_args... args)
 {
+	auto hook = hooklist[func];
 	register int ret = RH_UNSET;
-	for (auto it = hooklist[func]->pre.begin(), end = hooklist[func]->pre.end(); it != end; ++it)
+	for (auto it = hook->pre.begin(), end = hook->pre.end(); it != end; ++it)
 	{
 		if ((*it)->GetState() == FSTATE_OK)
 		{
-			ret = g_amxxapi.ExecuteForward((*it)->m_forward, args...);
+			ret = g_amxxapi.ExecuteForward((*it)->GetForwardID(), args...);
 		}
 	}
 
@@ -97,13 +101,14 @@ inline bool callForward_Pre(int func, t_args... args)
 template <typename ...t_args>
 inline bool callForward_Post(int func, t_args... args)
 {
+	auto hook = hooklist[func];
 	register int ret = RH_UNSET;
-	for (auto it = hooklist[func]->post.begin(), end = hooklist[func]->post.end(); it != end; ++it)
+	for (auto it = hook->post.begin(), end = hook->post.end(); it != end; ++it)
 	{
 		if ((*it)->GetState() == FSTATE_OK)
 		{
 			g_currentHookChain = (*it);
-			ret = g_amxxapi.ExecuteForward((*it)->m_forward, args...);
+			ret = g_amxxapi.ExecuteForward((*it)->GetForwardID(), args...);
 		}
 	}
 
@@ -118,6 +123,9 @@ void SV_ActivateServer(IRehldsHook_SV_ActivateServer *chain, int runPhysics);
 void Cvar_DirectSet(IRehldsHook_Cvar_DirectSet *chain, cvar_t *var, const char *value);
 
 // regamedll functions
+int GetForceCamera(IReGameHook_GetForceCamera *chain, CBasePlayer *pObserver);
+
+// regamedll functions - player
 void CBasePlayer_Spawn(IReGameHook_CBasePlayer_Spawn *chain, CBasePlayer *pthis);
 void CBasePlayer_Precache(IReGameHook_CBasePlayer_Precache *chain, CBasePlayer *pthis);
 int CBasePlayer_ObjectCaps(IReGameHook_CBasePlayer_ObjectCaps *chain, CBasePlayer *pthis);
@@ -140,6 +148,4 @@ void CBasePlayer_UpdateClientData(IReGameHook_CBasePlayer_UpdateClientData *chai
 void CBasePlayer_ImpulseCommands(IReGameHook_CBasePlayer_ImpulseCommands *chain, CBasePlayer *pthis);
 void CBasePlayer_RoundRespawn(IReGameHook_CBasePlayer_RoundRespawn *chain, CBasePlayer *pthis);
 void CBasePlayer_Blind(IReGameHook_CBasePlayer_Blind *chain, CBasePlayer *pthis, float flUntilTime, float flHoldTime, float flFadeTime, int iAlpha);
-
 CBaseEntity *CBasePlayer_Observer_IsValidTarget(IReGameHook_CBasePlayer_Observer_IsValidTarget *chain, CBasePlayer *pthis, int iPlayerIndex, bool bSameTeam);
-int GetForceCamera(IReGameHook_GetForceCamera *chain, CBasePlayer *pObserver);
