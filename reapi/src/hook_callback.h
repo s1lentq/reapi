@@ -1,119 +1,176 @@
 #pragma once
 
-enum
+// hookchain return type
+enum HookChainState
 {
-	RH_UNSET = 0,
-	RH_IGNORED,		// plugin didn't take any action
-	RH_HANDLED,		// plugin did something, but real function should still be called
-	RH_OVERRIDE,		// call real function, but use my return value
-	RH_SUPERCEDE		// skip real function; use my return value
+	HC_CONTINUE = 0,
+	HC_OVERRIDE,
+	HC_SUPERCEDE,
+	HC_BREAK
 };
 
-// for hookchain return
-enum HookChainReturn
+// api types
+enum AType : uint8
 {
-	RHV_STRING = 0,
-	RHV_FLOAT,
-	RHV_INTEGER,
-	RHV_CLASSPTR
+	ATYPE_INTEGER = 0,
+	ATYPE_FLOAT,
+	ATYPE_STRING,
+	ATYPE_CLASSPTR
 };
 
-extern CHook *g_currentHookChain;
-
-template <typename ...t_args>
-inline bool callVoidForward_Pre(int func, t_args... args)
+struct retval_t
 {
-	auto hook = hooklist[func];
-	register int ret = RH_UNSET;
-	for (auto it = hook->pre.begin(), end = hook->pre.end(); it != end; ++it)
-	{
-		if ((*it)->GetState() == FSTATE_OK)
-		{
-			ret = g_amxxapi.ExecuteForward((*it)->GetForwardID(), args...);
-		}
-	}
+	bool set;
+	AType type;
 
-	// no supercede, continue to call original func
-	return (ret < RH_SUPERCEDE);
+	union
+	{
+		char*			_string;
+		float			_float;
+		int				_interger;
+		CBaseEntity*	_classptr;
+	};
+};
+
+inline AType getApiType(int)			{ return ATYPE_INTEGER; }
+inline AType getApiType(unsigned)		{ return ATYPE_INTEGER; }
+inline AType getApiType(cvar_s *)		{ return ATYPE_INTEGER; }
+inline AType getApiType(float)			{ return ATYPE_FLOAT; }
+inline AType getApiType(const char *)	{ return ATYPE_STRING; }
+inline AType getApiType(CBaseEntity *)	{ return ATYPE_CLASSPTR; }
+
+template<size_t current>
+void setupArgTypes(AType args_type[])
+{
+
 }
 
-template <typename ...t_args>
-inline void callVoidForward_Post(int func, t_args... args)
+#define MAX_ARGS 10u
+
+template<size_t current, typename T, typename ...t_args>
+void setupArgTypes(AType args_type[MAX_ARGS], T arg, t_args... args)
 {
-	auto hook = hooklist[func];
-	for (auto it = hook->post.begin(), end = hook->post.end(); it != end; ++it)
-	{
-		if ((*it)->GetState() == FSTATE_OK)
-		{
-			g_currentHookChain = (*it);
-			g_amxxapi.ExecuteForward((*it)->GetForwardID(), args...);
-		}
-	}
+	args_type[current] = getApiType(arg);
+	if (sizeof...(args) && current + 1 < MAX_ARGS)
+		setupArgTypes<current + 1>(args_type, args...);
 }
 
-template <typename t_chain, typename ...t_args>
-inline void callVoidForward(t_chain chain, int func, t_args... args)
+struct hookctx_t
 {
-	auto hook = hooklist[func];
-	register int ret = RH_UNSET;
-	for (auto it = hook->pre.begin(), end = hook->pre.end(); it != end; ++it)
+	template<typename ...t_args>
+	hookctx_t(size_t count, size_t ptr, t_args... args)
 	{
-		if ((*it)->GetState() == FSTATE_OK)
+		args_count = min(count, MAX_ARGS);
+		args_ptr = ptr;
+		setupArgTypes<0>(this->args_type, args...);
+	}
+
+	retval_t retVal;
+	size_t args_count;
+	size_t args_ptr;
+	AType args_type[MAX_ARGS];
+};
+
+extern hookctx_t* g_hookCtx;
+
+template <typename original_t, typename ...f_args>
+void callVoidForward(int func, original_t original, f_args... args)
+{
+	hookctx_t hookCtx(sizeof...(args), size_t(&original) + sizeof(original), args...);
+	hookCtx.retVal.set = false;
+	g_hookCtx = &hookCtx;
+
+	int hc_state = HC_CONTINUE;
+	auto hook = g_hookManager.getHook(func);
+
+	for (auto& fwd : hook->pre)
+	{
+		if (fwd->GetState() == FSTATE_ENABLED)
 		{
-			ret = g_amxxapi.ExecuteForward((*it)->GetForwardID(), args...);
+			auto ret = g_amxxapi.ExecuteForward(fwd->m_forward, args...);
+
+			if (ret == HC_BREAK) {
+				g_hookCtx = nullptr;
+				return;
+			}
+
+			if (ret > hc_state)
+				hc_state = ret;
 		}
 	}
 
-	// no supercede, continue to call original func
-	if (ret < RH_SUPERCEDE)
-	{
-		chain->callNext(args...);
-	}
+	if (hc_state != HC_SUPERCEDE)
+		original(args...);
 
-	// Post
-	for (auto it = hook->post.begin(), end = hook->post.end(); it != end; ++it)
+	for (auto& fwd : hook->post)
 	{
-		if ((*it)->GetState() == FSTATE_OK)
+		if (fwd->GetState() == FSTATE_ENABLED)
 		{
-			g_currentHookChain = (*it);
-			g_amxxapi.ExecuteForward((*it)->GetForwardID(), args...);
+			auto ret = g_amxxapi.ExecuteForward(fwd->m_forward, args...);
+
+			if (ret == HC_BREAK)
+				break;
 		}
 	}
+
+	g_hookCtx = nullptr;
 }
 
-template <typename ...t_args>
-inline bool callForward_Pre(int func, t_args... args)
+template <typename R, typename original_t, typename ...f_args>
+R callForward(int func, original_t original, f_args... args)
 {
-	auto hook = hooklist[func];
-	register int ret = RH_UNSET;
-	for (auto it = hook->pre.begin(), end = hook->pre.end(); it != end; ++it)
+	hookctx_t hookCtx(sizeof...(args), size_t(&original) + sizeof(original), args...);
+	hookCtx.retVal.set = false;
+	hookCtx.retVal.type = getApiType(R());
+	g_hookCtx = &hookCtx;
+
+	int hc_state = HC_CONTINUE;
+	auto hook = g_hookManager.getHook(func);
+
+	for (auto& fwd : hook->pre)
 	{
-		if ((*it)->GetState() == FSTATE_OK)
+		if (fwd->GetState() == FSTATE_ENABLED)
 		{
-			ret = g_amxxapi.ExecuteForward((*it)->GetForwardID(), args...);
+			auto ret = g_amxxapi.ExecuteForward(fwd->m_forward, args...);
+
+			if (ret == HC_CONTINUE)
+				continue;
+
+			if (!hookCtx.retVal.set)
+			{
+				g_amxxapi.LogError(fwd->GetAmx(), AMX_ERR_CALLBACK, "%s", "can't suppress original function call without new return value set");
+				continue;
+			}
+
+			if (ret == HC_BREAK) {
+				g_hookCtx = nullptr;
+				return (R)hookCtx.retVal._interger;
+			}
+
+			if (ret > hc_state)
+				hc_state = ret;
 		}
 	}
 
-	// no supercede, continue to call original func
-	return (ret < RH_SUPERCEDE);
-}
-
-template <typename ...t_args>
-inline bool callForward_Post(int func, t_args... args)
-{
-	auto hook = hooklist[func];
-	register int ret = RH_UNSET;
-	for (auto it = hook->post.begin(), end = hook->post.end(); it != end; ++it)
+	if (hc_state != HC_SUPERCEDE)
 	{
-		if ((*it)->GetState() == FSTATE_OK)
-		{
-			g_currentHookChain = (*it);
-			ret = g_amxxapi.ExecuteForward((*it)->GetForwardID(), args...);
+		auto retVal = original(args...);
+
+		if (hc_state != HC_OVERRIDE)
+			hookCtx.retVal._interger = *(int *)&retVal;
+	}
+
+	for (auto& fwd : hook->post) {
+		if (fwd->GetState() == FSTATE_ENABLED) {
+			auto ret = g_amxxapi.ExecuteForward(fwd->m_forward, args...);
+
+			if (ret == HC_BREAK)
+				break;
 		}
 	}
 
-	// no override
-	return (ret < RH_OVERRIDE);
+	g_hookCtx = nullptr;
+	return (R)hookCtx.retVal._interger;
 }
 
 // rehlds functions
@@ -130,7 +187,7 @@ void CBasePlayer_Spawn(IReGameHook_CBasePlayer_Spawn *chain, CBasePlayer *pthis)
 void CBasePlayer_Precache(IReGameHook_CBasePlayer_Precache *chain, CBasePlayer *pthis);
 int CBasePlayer_ObjectCaps(IReGameHook_CBasePlayer_ObjectCaps *chain, CBasePlayer *pthis);
 int CBasePlayer_Classify(IReGameHook_CBasePlayer_Classify *chain, CBasePlayer *pthis);
-void CBasePlayer_TraceAttack(IReGameHook_CBasePlayer_TraceAttack *chain, CBasePlayer *pthis, entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType);
+void CBasePlayer_TraceAttack(IReGameHook_CBasePlayer_TraceAttack *chain, CBasePlayer *pthis, entvars_t *pevAttacker, float flDamage, Vector& vecDir, TraceResult *ptr, int bitsDamageType);
 int CBasePlayer_TakeDamage(IReGameHook_CBasePlayer_TakeDamage *chain, CBasePlayer *pthis, entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType);
 int CBasePlayer_TakeHealth(IReGameHook_CBasePlayer_TakeHealth *chain, CBasePlayer *pthis, float flHealth, int bitsDamageType);
 void CBasePlayer_Killed(IReGameHook_CBasePlayer_Killed *chain, CBasePlayer *pthis, entvars_t *pevAttacker, int iGib);

@@ -7,7 +7,7 @@
  * @param function	The function to hook.
  * @param callback	The forward to call.
  * @param post		Whether or not to forward this in post.
- * @return 		Returns a handle to the hook. Use EnableHookChain/DisableHookChain to toggle the forward on or off.
+ * @return 			Returns a handle to the hook. Use EnableHookChain/DisableHookChain to toggle the forward on or off.
  *
  * native RegisterHookChain(any:function_id, const callback[], post = 0);
  */
@@ -18,16 +18,17 @@ static cell AMX_NATIVE_CALL RegisterHookChain(AMX *amx, cell *params)
 
 	int func = params[arg_func];
 	int post = params[arg_post];
+	auto hook = g_hookManager.getHook(func);
 
-	if (hooklist[func] == nullptr)
+	if (hook == nullptr)
 	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "Function (%d) doesn't match hook definition.", func);
+		MF_LogError(amx, AMX_ERR_NATIVE, "RegisterHookChain: function with id (%d) doesn't exist in current API version.", func);
 		return 0;
 	}
 
-	if (!hooklist[func]->availableFunc())
+	if (!hook->checkRequirements())
 	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "Function (%s) is not available, required %s", hooklist[func]->func_name, hooklist[func]->depend_name);
+		MF_LogError(amx, AMX_ERR_NATIVE, "RegisterHookChain: function (%s) is not available, %s required", hook->func_name, hook->depend_name);
 		return 0;
 	}
 
@@ -35,26 +36,26 @@ static cell AMX_NATIVE_CALL RegisterHookChain(AMX *amx, cell *params)
 	const char *funcname = g_amxxapi.GetAmxString(amx, params[arg_handler], 0, &len);
 	if (g_amxxapi.amx_FindPublic(amx, funcname, &funcid) != AMX_ERR_NONE)
 	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "Public function \"%s\" not found.", funcname);
+		MF_LogError(amx, AMX_ERR_NATIVE, "RegisterHookChain: public function \"%s\" not found.", funcname);
 		return 0;
 	}
 
-	int fwid = hooklist[func]->registerForward(amx, funcname);
+	int fwid = hook->registerForward(amx, funcname);
 	if (fwid == -1)
 	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "Public function \"%s\" not found.", funcname);
+		MF_LogError(amx, AMX_ERR_NATIVE, "RegisterHookChain: register forward failed.");
 		return 0;
 	}
 
-	return (cell)g_hookManager.addHandler(func, fwid, post != 0);
+	return g_hookManager.addHandler(amx, func, fwid, post != 0);
 }
 
 /*
- * Starts a hook back up.
+ * Disable hook by handle.
  * Use the return value from RegisterHookChain as the parameter here!
  *
  * @param fwd		The hook to re-enable.
- * @return		Returns if the function is successful executed true otherwise false
+ * @return			Returns if the function is successful executed true otherwise false
  *
  * native bool:EnableHookChain(any:fwd);
  */
@@ -63,20 +64,20 @@ static cell AMX_NATIVE_CALL EnableHookChain(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_handle_hook };
 
-	CHook *hook = reinterpret_cast<CHook *>(params[arg_handle_hook]);
+	auto hook = g_hookManager.getAmxxHook(params[arg_handle_hook]);
 
 	if (hook == nullptr)
 	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "Invalid HookChain handle.");
+		MF_LogError(amx, AMX_ERR_NATIVE, "EnableHookChain: invalid HookChain handle.");
 		return 0;
 	}
 
-	hook->m_state = FSTATE_OK;
+	hook->m_state = FSTATE_ENABLED;
 	return 1;
 }
 
 /*
- * Stops a hook from triggering.
+ * Enable hook by handle.
  * Use the return value from RegisterHookChain as the parameter here!
  *
  * @param fwd		The hook to stop.
@@ -88,15 +89,15 @@ static cell AMX_NATIVE_CALL DisableHookChain(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_handle_hook };
 
-	CHook *hook = reinterpret_cast<CHook *>(params[arg_handle_hook]);
+	auto hook = g_hookManager.getAmxxHook(params[arg_handle_hook]);
 
 	if (hook == nullptr)
 	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "Invalid HookChain handle.");
+		MF_LogError(amx, AMX_ERR_NATIVE, "DisableHookChain: invalid HookChain handle.");
 		return 0;
 	}
 
-	hook->m_state = FSTATE_STOP;
+	hook->m_state = FSTATE_STOPPED;
 	return 1;
 }
 
@@ -104,47 +105,162 @@ static cell AMX_NATIVE_CALL DisableHookChain(AMX *amx, cell *params)
  * Sets the return value of a hookchain.
  * This needs to be used in conjunction with RH_OVERRIDE or RH_SUPERCEDE.
  *
- * @param type		To specify the type RHV_*, look at the enum HookChainReturn
+ * @param type		To specify the type RHV_*, look at the enum AType
  * @param value		The value to set the return to.
  *
- * native SetHookChainReturn(HookChainReturn:type, any:...);
+ * native SetHookChainReturn(AType:type, any:...);
  */
 
 static cell AMX_NATIVE_CALL SetHookChainReturn(AMX *amx, cell *params)
 {
-	if (!g_currentHookChain)
+	if (!g_hookCtx)
 	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "Trying get return value without active hook.");
+		MF_LogError(amx, AMX_ERR_NATIVE, "Trying to set return value without active hook.");
 		return 0;
 	}
 
 	enum args_e { arg_count, arg_type, arg_value };
+	auto& retVal = g_hookCtx->retVal;
 
-	switch (params[arg_type])
+	if (params[arg_type] != retVal.type)
 	{
-	case RHV_STRING:
-	{
-		if (g_currentHookChain->m_data.m_string != NULL) {
-			delete [] g_currentHookChain->m_data.m_string;
-		}
+		MF_LogError(amx, AMX_ERR_NATIVE, "Trying to set incompatible return type.");
+		return 0;
+	}
 
-		int len;
-		char *dest = g_amxxapi.GetAmxString(amx, params[arg_value], 0, &len);
-		g_currentHookChain->m_data.m_string = new char [len + 1];
-		strcpy(g_currentHookChain->m_data.m_string, dest);
+	cell* srcAddr = getAmxAddr(amx, params[arg_value]);
+
+	switch (retVal.type)
+	{
+	case ATYPE_INTEGER:
+	case ATYPE_FLOAT:
+		retVal._interger = *srcAddr;
+		break;
+	
+	case ATYPE_STRING:
+	{
+		if (retVal._string != nullptr)
+			delete[] retVal._string;
+
+		size_t len;
+		const char *dest = getAmxString(srcAddr, &len);
+		retVal._string = strcpy(new char[len + 1], dest);
 		break;
 	}
-	case RHV_FLOAT:
-		g_currentHookChain->m_data.m_float = *(float *)g_amxxapi.GetAmxAddr(amx, params[arg_value]);
-		break;
-	case RHV_INTEGER:
-		g_currentHookChain->m_data.m_interger = *g_amxxapi.GetAmxAddr(amx, params[arg_value]);
-		break;
-	case RHV_CLASSPTR:
-		g_currentHookChain->m_data.m_classptr = CBaseEntity::Instance(INDEXENT(*g_amxxapi.GetAmxAddr(amx, params[arg_value])));
+	case ATYPE_CLASSPTR:
+		retVal._classptr = CBaseEntity::Instance(INDEXENT(*srcAddr));
 		break;
 	default:
 		return 0;
+	}
+
+	retVal.set = true;
+	return 1;
+}
+
+/*
+* Get the return value of a hookchain.
+* This needs to be used in conjunction with RH_OVERRIDE or RH_SUPERCEDE.
+*
+* @param value		The value to set the return to.
+* @param [maxlen]	Max length of string (optional)
+* @return			Returns if the function is successful executed true otherwise false
+*
+* native GetHookChainReturn(AType:type, any:...);
+*/
+
+static cell AMX_NATIVE_CALL GetHookChainReturn(AMX *amx, cell *params)
+{
+	if (!g_hookCtx)
+	{
+		MF_LogError(amx, AMX_ERR_NATIVE, "Trying to get return value without active hook.");
+		return 0;
+	}
+
+	enum args_e { arg_count, arg_value, arg_maxlen };
+
+	auto& retVal = g_hookCtx->retVal;
+	cell* dstAddr = getAmxAddr(amx, params[arg_value]);
+
+	switch (retVal.type)
+	{
+	case ATYPE_INTEGER:
+	case ATYPE_FLOAT:
+		*dstAddr = retVal._interger;
+		break;
+	case ATYPE_STRING:
+	{
+		if (params[arg_count] != 2)
+			return 0;
+
+		setAmxString(dstAddr, retVal._string, params[arg_maxlen]);
+		break;
+	}
+	case ATYPE_CLASSPTR:
+		*dstAddr = retVal._classptr->entindex();
+		break;
+	default:
+		return 0;
+	}
+
+	return 1;
+}
+
+/*
+* Set hookchain argument.
+* This needs to be used in conjunction with RH_OVERRIDE or RH_SUPERCEDE.
+*
+* @param number		Number of argument
+* @param value		New value
+* @param [maxlen]	Max length of string (optional)
+* @return			Returns if the function is successful executed true otherwise false
+*
+* native SetHookChainArg(number, AType:type, any:...);
+*/
+
+static cell AMX_NATIVE_CALL SetHookChainArg(AMX *amx, cell *params)
+{
+	if (!g_hookCtx)
+	{
+		MF_LogError(amx, AMX_ERR_NATIVE, "Trying to get return value without active hook.");
+		return 0;
+	}
+
+	enum args_e { arg_count, arg_number, arg_type, arg_value };
+
+	size_t number = params[arg_number] - 1;
+
+	if (number >= g_hookCtx->args_count)
+	{
+		MF_LogError(amx, AMX_ERR_NATIVE, "SetHookChainArg: can't set argument %i of hookchain with %i args.", params[arg_number], g_hookCtx->args_count);
+		return 0;
+	}
+
+	AType type = g_hookCtx->args_type[number];
+
+	if (params[arg_type] != type)
+	{
+		MF_LogError(amx, AMX_ERR_NATIVE, "SetHookChainArg: invalid argument type provided.");
+		return 0;
+	}
+
+	static char temp_strings[MAX_ARGS][1024];
+
+	cell* srcAddr = getAmxAddr(amx, params[arg_value]);
+	size_t destAddr = g_hookCtx->args_ptr + number * sizeof(int);
+
+	switch (type)
+	{
+	case ATYPE_INTEGER:
+	case ATYPE_FLOAT:
+		*(cell *)destAddr = *srcAddr;
+		break;
+	case ATYPE_STRING:
+		*(char **)destAddr = getAmxStringTemp(srcAddr, temp_strings[number], 1023, nullptr);
+		break;
+	case ATYPE_CLASSPTR:
+		*(CBaseEntity **)destAddr = CBaseEntity::Instance(INDEXENT(*srcAddr));
+		break;
 	}
 
 	return 1;
@@ -158,6 +274,9 @@ AMX_NATIVE_INFO Func_Natives[] =
 	{ "DisableHookChain", DisableHookChain },
 	
 	{ "SetHookChainReturn", SetHookChainReturn },
+	{ "GetHookChainReturn", GetHookChainReturn },
+
+	{ "SetHookChainArg", SetHookChainArg },
 
 	{ nullptr, nullptr }
 };

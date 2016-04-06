@@ -1,6 +1,6 @@
 #pragma once
 
-#define BEGIN_MEMBER_REGION(x)			(MAX_RANGE_REGION * memberlist_t::members_tables_e::ht_##x)
+#define BEGIN_MEMBER_REGION(x)			(MAX_REGION_RANGE * memberlist_t::members_tables_e::ht_##x)
 
 enum enum_membertypes
 {

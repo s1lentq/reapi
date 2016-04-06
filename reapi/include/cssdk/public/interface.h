@@ -52,7 +52,7 @@ typedef IBaseInterface* (*CreateInterfaceFn)(const char *pName, int *pReturnCode
 typedef IBaseInterface* (*InstantiateInterfaceFn)();
 
 
-// Used internally to register classes.
+// Used internally to classes.
 class InterfaceReg
 {
 public:

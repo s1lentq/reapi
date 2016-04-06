@@ -10,6 +10,7 @@
 #include <vector>				// std::vector
 
 #include <extdll.h>
+#include "reapi_utils.h"
 #include <cbase.h>
 
 #include "osdep.h"			// win32 vsnprintf, etc

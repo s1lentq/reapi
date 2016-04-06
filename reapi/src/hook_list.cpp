@@ -41,14 +41,12 @@ hook_t hooklist_player[] = {
 	DLL(CBasePlayer_Observer_IsValidTarget),
 };
 
-hooklist_t hooklist;
-
 hook_t *hooklist_t::operator[](size_t hook) const
 {
 	#define CASE(h)	case ht_##h: if (index < arraysize(hooklist_##h)) return &hooklist_##h[index]; else break;
 
-	const auto table = hooks_tables_e(hook / MAX_RANGE_REGION);
-	const auto index = hook & (MAX_RANGE_REGION - 1);
+	const auto table = hooks_tables_e(hook / MAX_REGION_RANGE);
+	const auto index = hook & (MAX_REGION_RANGE - 1);
 
 	switch (table) {
 		CASE(engine)

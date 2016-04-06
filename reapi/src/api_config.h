@@ -5,6 +5,7 @@
 
 class CAPI_Config {
 public:
+	CAPI_Config();
 	bool Init();
 
 	bool hasReHLDS() const { return m_api_rehlds; }

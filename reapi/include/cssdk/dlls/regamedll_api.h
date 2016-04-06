@@ -51,8 +51,8 @@ typedef IHookChain<int> IReGameHook_CBasePlayer_Classify;
 typedef IHookChainRegistryClass<int, class CBasePlayer> IReGameHookRegistry_CBasePlayer_Classify;
 
 // CBasePlayer::TraceAttack hook
-typedef IVoidHookChain<struct entvars_s *, float, Vector, struct TraceResult *, int> IReGameHook_CBasePlayer_TraceAttack;
-typedef IVoidHookChainRegistryClass<class CBasePlayer, struct entvars_s *, float, Vector, struct TraceResult *, int> IReGameHookRegistry_CBasePlayer_TraceAttack;
+typedef IVoidHookChain<struct entvars_s *, float, Vector&, struct TraceResult *, int> IReGameHook_CBasePlayer_TraceAttack;
+typedef IVoidHookChainRegistryClass<class CBasePlayer, struct entvars_s *, float, Vector&, struct TraceResult *, int> IReGameHookRegistry_CBasePlayer_TraceAttack;
 
 // CBasePlayer::TakeDamage hook
 typedef IHookChain<int, struct entvars_s *, struct entvars_s *, float, int> IReGameHook_CBasePlayer_TakeDamage;

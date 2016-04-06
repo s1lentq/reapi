@@ -7,17 +7,18 @@ static cell AMX_NATIVE_CALL set_member(AMX *amx, cell *params)
 	member_t *member = memberlist[params[arg_member]];
 
 	if (member == nullptr) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "Member (%d) is unknown", params[arg_member]);
+		MF_LogError(amx, AMX_ERR_NATIVE, "set_member: unknown member id %i", params[arg_member]);
 		return 0;
 	}
 
 	edict_t *pEdict = INDEXENT(params[arg_index]);
 	if (pEdict == nullptr || pEdict->pvPrivateData == nullptr) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "set_member: invalid or uninitialized entity", params[arg_member]);
 		return 0;
 	}
 	
-	size_t value = *g_amxxapi.GetAmxAddr(amx, params[arg_value]);
-	size_t element = *g_amxxapi.GetAmxAddr(amx, params[arg_elem]);
+	size_t value = *getAmxAddr(amx, params[arg_value]);
+	size_t element = *getAmxAddr(amx, params[arg_elem]);
 
 	switch (member->type)
 	{
@@ -122,6 +123,12 @@ static cell AMX_NATIVE_CALL set_member(AMX *amx, cell *params)
 		signal.Signal(value);
 		return 1;
 	}
+	case MEMBER_DOUBLE:
+	{
+		// native set_member(_index, any:_member, any:_value, _elem);
+		set_member<double>(pEdict, member->offset, *(float *)&value, element);
+		return 1;
+	}
 	case MEBMER_REBUYSTRUCT:
 		return -1;
 	}
@@ -172,7 +179,7 @@ static cell AMX_NATIVE_CALL get_member(AMX *amx, cell *params)
 		// native any:get_member(_index, any:_member, element);
 		edict_t *pEntity = get_member<edict_t *>(pEdict, member->offset, element);
 		if (pEntity != nullptr) {
-			return ENTINDEX(pEntity);
+			return indexOfEdict(pEntity);
 		}
 
 		return 0;

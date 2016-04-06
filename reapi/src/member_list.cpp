@@ -318,8 +318,8 @@ member_t *memberlist_t::operator[](size_t members) const
 {	
 	#define CASE(h)	case ht_##h: if (index < arraysize(memberlist_##h)) return &memberlist_##h[index]; else break;
 
-	const auto table = members_tables_e(members / MAX_RANGE_REGION);
-	const auto index = members & (MAX_RANGE_REGION - 1);
+	const auto table = members_tables_e(members / MAX_REGION_RANGE);
+	const auto index = members & (MAX_REGION_RANGE - 1);
 
 	switch (table) {
 		CASE(gamerules)
