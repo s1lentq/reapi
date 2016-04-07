@@ -47,7 +47,7 @@ void setupArgTypes(AType args_type[])
 
 #define MAX_ARGS 10u
 
-template<size_t current, typename T, typename ...t_args>
+template<size_t current = 0, typename T, typename ...t_args>
 void setupArgTypes(AType args_type[MAX_ARGS], T arg, t_args... args)
 {
 	args_type[current] = getApiType(arg);
@@ -62,7 +62,7 @@ struct hookctx_t
 	{
 		args_count = min(count, MAX_ARGS);
 		args_ptr = ptr;
-		setupArgTypes<0>(this->args_type, args...);
+		setupArgTypes(args_type, args...);
 	}
 
 	retval_t retVal;

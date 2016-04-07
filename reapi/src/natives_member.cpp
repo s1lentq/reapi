@@ -17,8 +17,8 @@ static cell AMX_NATIVE_CALL set_member(AMX *amx, cell *params)
 		return 0;
 	}
 	
-	size_t value = *getAmxAddr(amx, params[arg_value]);
-	size_t element = *getAmxAddr(amx, params[arg_elem]);
+	cell* value = getAmxAddr(amx, params[arg_value]);
+	size_t element = (params[arg_count] == 4) ? *getAmxAddr(amx, params[arg_elem]) : 0;
 
 	switch (member->type)
 	{
@@ -28,7 +28,7 @@ static cell AMX_NATIVE_CALL set_member(AMX *amx, cell *params)
 	{
 		// native set_member(_index, any:_member, _value, _elem);
 		CBaseEntity *pEntity = nullptr;
-		edict_t *pEdictValue = INDEXENT(value);
+		edict_t *pEdictValue = INDEXENT(*value);
 
 		if (pEdictValue != nullptr) {
 			pEntity = CBaseEntity::Instance(pEdictValue);
@@ -39,8 +39,8 @@ static cell AMX_NATIVE_CALL set_member(AMX *amx, cell *params)
 	case MEMBER_EHANDLE:
 	{
 		// native set_member(_index, any:_member, _value, _elem);
-		EHANDLE ehandle = get_member<EHANDLE>(pEdict, member->offset, element);
-		edict_t *pEdictValue = INDEXENT(value);
+		EHANDLE& ehandle = get_member<EHANDLE>(pEdict, member->offset, element);
+		edict_t *pEdictValue = INDEXENT(*value);
 		ehandle.Set(pEdictValue);
 		return 1;
 	}
@@ -49,37 +49,33 @@ static cell AMX_NATIVE_CALL set_member(AMX *amx, cell *params)
 	case MEMBER_EDICT:
 	{
 		// native set_member(_index, any:_member, _value, _elem);
-		edict_t *pEdictValue = INDEXENT(value);
+		edict_t *pEdictValue = INDEXENT(*value);
 		set_member<edict_t *>(pEdict, member->offset, pEdictValue, element);
 		return 1;
 	}
 	case MEMBER_VECTOR:
 	{
 		// native set_member(_index, any:_member, Float:_value[3], _elem);
-		cell *pSource = g_amxxapi.GetAmxAddr(amx, params[arg_value]);
-		Vector vecDest;
-		vecDest.x = *(vec_t *)&pSource[0];
-		vecDest.y = *(vec_t *)&pSource[1];
-		vecDest.z = *(vec_t *)&pSource[2];
-
-		set_member<Vector>(pEdict, member->offset, vecDest, element);
+		Vector *pSource = (Vector *)getAmxAddr(amx, params[arg_value]);
+		set_member<Vector>(pEdict, member->offset, *pSource, element);
 		return 1;
 	}
 	case MEMBER_CHAR_ARRAY:
 	{
 		// native set_member(_index, any:_member, const source[]);
-		int len;
-		char *source = g_amxxapi.GetAmxString(amx, params[arg_value], 0, &len);
+		size_t len;
+		char *source = getAmxString(value, &len);
 		char *dest = get_member_direct<char *>(pEdict, member->offset);
-		strcpy(dest, source);
+		strncpy(dest, source, member->max_size - 1);
+		dest[member->max_size - 1] = '\0';
 		return 1;
 	}
 	case MEMBER_CHAR_POINTER:
 	{
 		// native set_member(_index, any:_member, const source[]);
-		int len;
-		char *source = g_amxxapi.GetAmxString(amx, params[arg_value], 0, &len);
-		char *dest = get_member<char *>(pEdict, member->offset);
+		size_t len;
+		char *source = getAmxString(value, &len);
+		char *&dest = get_member<char *>(pEdict, member->offset);
 
 		if (dest != nullptr) {
 			delete [] dest;
@@ -95,38 +91,38 @@ static cell AMX_NATIVE_CALL set_member(AMX *amx, cell *params)
 	case MEMBER_INTEGER:
 	{
 		// native set_member(_index, any:_member, any:_value, _elem);
-		set_member<int>(pEdict, member->offset, value, element);
+		set_member<int>(pEdict, member->offset, *value, element);
 		return 1;
 	}
 	case MEMBER_SHORT:
 	{
 		// native set_member(_index, any:_member, _value, _elem);
-		set_member<short>(pEdict, member->offset, value, element);
+		set_member<short>(pEdict, member->offset, *value, element);
 		return 1;
 	}
 	case MEMBER_BYTE:
 	{
 		// native set_member(_index, any:_member, _value, _elem);
-		set_member<byte>(pEdict, member->offset, value, element);
+		set_member<byte>(pEdict, member->offset, *value, element);
 		return 1;
 	}
 	case MEMBER_BOOL:
 	{
 		// native set_member(_index, any:_member, bool:_value, _elem);
-		set_member<bool>(pEdict, member->offset, value != 0, element);
+		set_member<bool>(pEdict, member->offset, *value != 0, element);
 		return 1;
 	}
 	case MEMBER_SIGNALS:
 	{
 		// native set_member(_index, any:_member, _value);
-		CUnifiedSignals signal = get_member<CUnifiedSignals>(pEdict, member->offset, element);
-		signal.Signal(value);
+		CUnifiedSignals& signal = get_member<CUnifiedSignals>(pEdict, member->offset, element);
+		signal.Signal(*value);
 		return 1;
 	}
 	case MEMBER_DOUBLE:
 	{
 		// native set_member(_index, any:_member, any:_value, _elem);
-		set_member<double>(pEdict, member->offset, *(float *)&value, element);
+		set_member<double>(pEdict, member->offset, *(float *)value, element);
 		return 1;
 	}
 	case MEBMER_REBUYSTRUCT:
@@ -234,10 +230,14 @@ static cell AMX_NATIVE_CALL get_member(AMX *amx, cell *params)
 		CUnifiedSignals signal = get_member<CUnifiedSignals>(pEdict, member->offset);
 		cell *pSignal = g_amxxapi.GetAmxAddr(amx, params[3]);
 		cell *pState = g_amxxapi.GetAmxAddr(amx, params[4]);
-		
+
 		*pSignal = signal.GetSignal();
 		*pState = signal.GetState();
 
+		return 1;
+	}
+	case MEMBER_DOUBLE:
+	{
 		return 1;
 	}
 	case MEBMER_REBUYSTRUCT:
