@@ -494,7 +494,7 @@ extern amxxapi_t g_amxxapi;
 
 void MF_Log(const char *fmt, ...);
 void MF_LogError(AMX *amx, int err, const char *fmt, ...);
-char* getAmxStringTemp(cell* src, char* dest, size_t max, size_t* len);
+char* getAmxStringTemp(cell* src, char* dest, size_t max, size_t* len = nullptr);
 void setAmxString(cell* dest, const char* string, size_t max);
 
 inline cell* getAmxAddr(AMX *amx, cell amx_addr)
@@ -504,9 +504,14 @@ inline cell* getAmxAddr(AMX *amx, cell amx_addr)
 
 struct getAmxString
 {
-	getAmxString(cell* src, size_t* len)
+	getAmxString(cell* src, size_t* len = nullptr)
 	{
 		getAmxStringTemp(src, temp, sizeof temp - 1, len);
+	}
+
+	getAmxString(AMX* amx, cell addr, size_t* len = nullptr)
+	{
+		getAmxString(getAmxAddr(amx, addr), len);
 	}
 
 	operator char *()

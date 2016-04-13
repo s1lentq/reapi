@@ -39,18 +39,17 @@ inline AType getApiType(float)			{ return ATYPE_FLOAT; }
 inline AType getApiType(const char *)	{ return ATYPE_STRING; }
 inline AType getApiType(CBaseEntity *)	{ return ATYPE_CLASSPTR; }
 
+#define MAX_ARGS 12u
+
 template<size_t current>
-void setupArgTypes(AType args_type[])
+void setupArgTypes(AType args_type[MAX_ARGS])
 {
-
 }
-
-#define MAX_ARGS 10u
 
 template<size_t current = 0, typename T, typename ...t_args>
 void setupArgTypes(AType args_type[MAX_ARGS], T arg, t_args... args)
 {
-	args_type[current] = getApiType(arg);
+	args_type[current] = getApiType(T());
 	if (sizeof...(args) && current + 1 < MAX_ARGS)
 		setupArgTypes<current + 1>(args_type, args...);
 }
@@ -58,11 +57,17 @@ void setupArgTypes(AType args_type[MAX_ARGS], T arg, t_args... args)
 struct hookctx_t
 {
 	template<typename ...t_args>
-	hookctx_t(size_t count, size_t ptr, t_args... args)
+	hookctx_t(size_t arg_count, t_args... args) : args_ptr()
 	{
-		args_count = min(count, MAX_ARGS);
-		args_ptr = ptr;
+		args_count = min(arg_count, MAX_ARGS);
 		setupArgTypes(args_type, args...);
+	}
+
+	void reset(size_t arg_ptr, AType ret_type = ATYPE_INTEGER)
+	{
+		retVal.set = false;
+		retVal.type = ret_type;
+		args_ptr = arg_ptr;
 	}
 
 	retval_t retVal;
@@ -73,15 +78,26 @@ struct hookctx_t
 
 extern hookctx_t* g_hookCtx;
 
-template <typename original_t, typename ...f_args>
-void callVoidForward(int func, original_t original, f_args... args)
-{
-	hookctx_t hookCtx(sizeof...(args), size_t(&original) + sizeof(original), args...);
-	hookCtx.retVal.set = false;
-	g_hookCtx = &hookCtx;
+#pragma optimize("ts", on)
 
+template <typename original_t, typename ...f_args>
+void callVoidForward(size_t func, original_t original, f_args... args)
+{
+#ifndef _WIN32
+	static
+#endif
+	hookctx_t hookCtx(sizeof...(args), args...);
+
+	g_hookCtx = &hookCtx;
+	_callVoidForward(g_hookManager.getHook(func), original, args...);
+	g_hookCtx = nullptr;
+}
+
+template <typename original_t, typename ...f_args>
+NOINLINE void DLLEXPORT _callVoidForward(const hook_t* hook, original_t original, volatile f_args... args)
+{
+	g_hookCtx->reset(size_t(&original) + sizeof(original));
 	int hc_state = HC_CONTINUE;
-	auto hook = g_hookManager.getHook(func);
 
 	for (auto& fwd : hook->pre)
 	{
@@ -90,7 +106,6 @@ void callVoidForward(int func, original_t original, f_args... args)
 			auto ret = g_amxxapi.ExecuteForward(fwd->m_forward, args...);
 
 			if (ret == HC_BREAK) {
-				g_hookCtx = nullptr;
 				return;
 			}
 
@@ -112,20 +127,29 @@ void callVoidForward(int func, original_t original, f_args... args)
 				break;
 		}
 	}
-
-	g_hookCtx = nullptr;
 }
 
 template <typename R, typename original_t, typename ...f_args>
-R callForward(int func, original_t original, f_args... args)
+R callForward(size_t func, original_t original, f_args... args)
 {
-	hookctx_t hookCtx(sizeof...(args), size_t(&original) + sizeof(original), args...);
-	hookCtx.retVal.set = false;
-	hookCtx.retVal.type = getApiType(R());
-	g_hookCtx = &hookCtx;
+#ifndef _WIN32
+	static
+#endif
+	hookctx_t hookCtx(sizeof...(args), args...);
 
+	g_hookCtx = &hookCtx;
+	auto ret = _callForward<R>(g_hookManager.getHook(func), original, args...);
+	g_hookCtx = nullptr;
+
+	return ret;
+}
+
+template <typename R, typename original_t, typename ...f_args>
+NOINLINE R DLLEXPORT _callForward(const hook_t* hook, original_t original, volatile f_args... args)
+{
+	auto& hookCtx = *g_hookCtx;
+	hookCtx.reset(size_t(&original) + sizeof(original), getApiType(R()));
 	int hc_state = HC_CONTINUE;
-	auto hook = g_hookManager.getHook(func);
 
 	for (auto& fwd : hook->pre)
 	{
@@ -136,15 +160,13 @@ R callForward(int func, original_t original, f_args... args)
 			if (ret == HC_CONTINUE)
 				continue;
 
-			if (!hookCtx.retVal.set)
-			{
+			if (!hookCtx.retVal.set) {
 				g_amxxapi.LogError(fwd->GetAmx(), AMX_ERR_CALLBACK, "%s", "can't suppress original function call without new return value set");
 				continue;
 			}
 
 			if (ret == HC_BREAK) {
-				g_hookCtx = nullptr;
-				return (R)hookCtx.retVal._interger;
+				return *(R *)&hookCtx.retVal._interger;
 			}
 
 			if (ret > hc_state)
@@ -169,9 +191,10 @@ R callForward(int func, original_t original, f_args... args)
 		}
 	}
 
-	g_hookCtx = nullptr;
-	return (R)hookCtx.retVal._interger;
+	return *(R *)&hookCtx.retVal._interger;
 }
+
+#pragma optimize("", on)
 
 // rehlds functions
 void SV_StartSound(IRehldsHook_SV_StartSound *chain, int recipients, edict_t *entity, int channel, const char *sample, int volume, float attenuation, int fFlags, int pitch);

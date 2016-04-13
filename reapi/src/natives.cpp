@@ -32,8 +32,8 @@ static cell AMX_NATIVE_CALL RegisterHookChain(AMX *amx, cell *params)
 		return 0;
 	}
 
-	int funcid, len;
-	const char *funcname = g_amxxapi.GetAmxString(amx, params[arg_handler], 0, &len);
+	int funcid;
+	const char *funcname = getAmxString(amx, params[arg_handler]);
 	if (g_amxxapi.amx_FindPublic(amx, funcname, &funcid) != AMX_ERR_NONE)
 	{
 		MF_LogError(amx, AMX_ERR_NATIVE, "RegisterHookChain: public function \"%s\" not found.", funcname);
@@ -69,11 +69,11 @@ static cell AMX_NATIVE_CALL EnableHookChain(AMX *amx, cell *params)
 	if (hook == nullptr)
 	{
 		MF_LogError(amx, AMX_ERR_NATIVE, "EnableHookChain: invalid HookChain handle.");
-		return 0;
+		return FALSE;
 	}
 
 	hook->m_state = FSTATE_ENABLED;
-	return 1;
+	return TRUE;
 }
 
 /*
@@ -94,11 +94,11 @@ static cell AMX_NATIVE_CALL DisableHookChain(AMX *amx, cell *params)
 	if (hook == nullptr)
 	{
 		MF_LogError(amx, AMX_ERR_NATIVE, "DisableHookChain: invalid HookChain handle.");
-		return 0;
+		return FALSE;
 	}
 
 	hook->m_state = FSTATE_STOPPED;
-	return 1;
+	return TRUE;
 }
 
 /*
@@ -116,7 +116,7 @@ static cell AMX_NATIVE_CALL SetHookChainReturn(AMX *amx, cell *params)
 	if (!g_hookCtx)
 	{
 		MF_LogError(amx, AMX_ERR_NATIVE, "Trying to set return value without active hook.");
-		return 0;
+		return FALSE;
 	}
 
 	enum args_e { arg_count, arg_type, arg_value };
@@ -125,7 +125,7 @@ static cell AMX_NATIVE_CALL SetHookChainReturn(AMX *amx, cell *params)
 	if (params[arg_type] != retVal.type)
 	{
 		MF_LogError(amx, AMX_ERR_NATIVE, "Trying to set incompatible return type.");
-		return 0;
+		return FALSE;
 	}
 
 	cell* srcAddr = getAmxAddr(amx, params[arg_value]);
@@ -151,11 +151,11 @@ static cell AMX_NATIVE_CALL SetHookChainReturn(AMX *amx, cell *params)
 		retVal._classptr = CBaseEntity::Instance(INDEXENT(*srcAddr));
 		break;
 	default:
-		return 0;
+		return FALSE;
 	}
 
 	retVal.set = true;
-	return 1;
+	return TRUE;
 }
 
 /*
@@ -174,7 +174,7 @@ static cell AMX_NATIVE_CALL GetHookChainReturn(AMX *amx, cell *params)
 	if (!g_hookCtx)
 	{
 		MF_LogError(amx, AMX_ERR_NATIVE, "Trying to get return value without active hook.");
-		return 0;
+		return FALSE;
 	}
 
 	enum args_e { arg_count, arg_value, arg_maxlen };
@@ -191,7 +191,7 @@ static cell AMX_NATIVE_CALL GetHookChainReturn(AMX *amx, cell *params)
 	case ATYPE_STRING:
 	{
 		if (params[arg_count] != 2)
-			return 0;
+			return FALSE;
 
 		setAmxString(dstAddr, retVal._string, params[arg_maxlen]);
 		break;
@@ -200,10 +200,10 @@ static cell AMX_NATIVE_CALL GetHookChainReturn(AMX *amx, cell *params)
 		*dstAddr = retVal._classptr->entindex();
 		break;
 	default:
-		return 0;
+		return FALSE;
 	}
 
-	return 1;
+	return TRUE;
 }
 
 /*
@@ -223,17 +223,16 @@ static cell AMX_NATIVE_CALL SetHookChainArg(AMX *amx, cell *params)
 	if (!g_hookCtx)
 	{
 		MF_LogError(amx, AMX_ERR_NATIVE, "Trying to get return value without active hook.");
-		return 0;
+		return FALSE;
 	}
 
 	enum args_e { arg_count, arg_number, arg_type, arg_value };
-
 	size_t number = params[arg_number] - 1;
 
 	if (number >= g_hookCtx->args_count)
 	{
 		MF_LogError(amx, AMX_ERR_NATIVE, "SetHookChainArg: can't set argument %i of hookchain with %i args.", params[arg_number], g_hookCtx->args_count);
-		return 0;
+		return FALSE;
 	}
 
 	AType type = g_hookCtx->args_type[number];
@@ -241,7 +240,7 @@ static cell AMX_NATIVE_CALL SetHookChainArg(AMX *amx, cell *params)
 	if (params[arg_type] != type)
 	{
 		MF_LogError(amx, AMX_ERR_NATIVE, "SetHookChainArg: invalid argument type provided.");
-		return 0;
+		return FALSE;
 	}
 
 	static char temp_strings[MAX_ARGS][1024];
@@ -256,14 +255,14 @@ static cell AMX_NATIVE_CALL SetHookChainArg(AMX *amx, cell *params)
 		*(cell *)destAddr = *srcAddr;
 		break;
 	case ATYPE_STRING:
-		*(char **)destAddr = getAmxStringTemp(srcAddr, temp_strings[number], 1023, nullptr);
+		*(char **)destAddr = getAmxStringTemp(srcAddr, temp_strings[number], 1023);
 		break;
 	case ATYPE_CLASSPTR:
 		*(CBaseEntity **)destAddr = CBaseEntity::Instance(INDEXENT(*srcAddr));
 		break;
 	}
 
-	return 1;
+	return TRUE;
 }
 
 AMX_NATIVE_INFO Func_Natives[] =

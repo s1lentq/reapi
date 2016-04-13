@@ -101,9 +101,42 @@ struct hook_t
 	regchain_t unregisterHookchain;		// unregister re* API hook
 };
 
+extern hook_t hooklist_engine[];
+extern hook_t hooklist_gamedll[];
+extern hook_t hooklist_player[];
+extern const size_t hooklist_engine_size;
+extern const size_t hooklist_gamedll_size;
+extern const size_t hooklist_player_size;
+
 struct hooklist_t
 {
-	hook_t *operator[](size_t hook) const;
+	hook_t *operator[](size_t hook) const
+	{
+#define CASE(h)	case ht_##h: if (index < hooklist_##h##_size) return &hooklist_##h[index]; else break;
+
+		const auto table = hooks_tables_e(hook / MAX_REGION_RANGE);
+		const auto index = hook & (MAX_REGION_RANGE - 1);
+
+		switch (table) {
+			CASE(engine)
+			CASE(gamedll)
+			CASE(player)
+		}
+
+		return nullptr;
+		/*const auto table = hooks_tables_e(hook / MAX_REGION_RANGE);
+		const auto index = hook & (MAX_REGION_RANGE - 1);
+
+		switch (table) {
+		case ht_engine: return &hooklist_engine[index];
+		case ht_gamedll: return &hooklist_gamedll[index];
+		case ht_player: return &hooklist_player[index];
+		}
+
+		return nullptr;*/
+	}
+
+	//static hook_t *getHook(size_t hook);
 
 	enum hooks_tables_e
 	{
@@ -197,6 +230,3 @@ enum GamedllFunc_CBasePlayer
 	// [...]
 	RH_CBasePlayer_End
 };
-
-extern hook_t hooklist_engine[];
-extern hook_t hooklist_player[];

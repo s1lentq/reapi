@@ -246,6 +246,7 @@ void CBasePlayer_ImpulseCommands(IReGameHook_CBasePlayer_ImpulseCommands *chain,
 	{
 		chain->callNext();
 	};
+
 	callVoidForward(RH_CBasePlayer_ImpulseCommands, original, pthis->entindex());
 }
 
