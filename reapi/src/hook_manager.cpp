@@ -39,7 +39,7 @@ void CHookManager::clearHandlers() const
 
 hook_t* CHookManager::getHook(size_t func) const
 {
-	return m_hooklist[func];
+	return m_hooklist.getHookSafe(func);
 }
 
 CAmxxHook* CHookManager::getAmxxHook(cell handle) const

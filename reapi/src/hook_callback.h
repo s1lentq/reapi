@@ -123,7 +123,7 @@ void callVoidForward(size_t func, original_t original, f_args... args)
 	hookctx_t hookCtx(sizeof...(args), args...);
 
 	g_hookCtx = &hookCtx;
-	_callVoidForward(g_hookManager.getHook(func), original, args...);
+	_callVoidForward(g_hookManager.getHookFast(func), original, args...);
 	g_hookCtx = nullptr;
 }
 
@@ -186,7 +186,7 @@ R callForward(size_t func, original_t original, f_args... args)
 	hookctx_t hookCtx(sizeof...(args), args...);
 
 	g_hookCtx = &hookCtx;
-	auto ret = _callForward<R>(g_hookManager.getHook(func), original, args...);
+	auto ret = _callForward<R>(g_hookManager.getHookFast(func), original, args...);
 	g_hookCtx = nullptr;
 
 	return ret;

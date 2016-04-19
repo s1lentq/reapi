@@ -34,6 +34,10 @@ public:
 	hook_t* getHook(size_t func) const;
 	CAmxxHook* getAmxxHook(cell hook) const;
 
+	hook_t* getHookFast(size_t func) const {
+		return m_hooklist[func];
+	}
+
 private:
 	hooklist_t m_hooklist;
 };

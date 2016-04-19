@@ -41,6 +41,18 @@ hook_t hooklist_player[] = {
 	DLL(CBasePlayer_Observer_IsValidTarget),
 };
 
-const size_t hooklist_engine_size = arraysize(hooklist_engine);
-const size_t hooklist_gamedll_size = arraysize(hooklist_gamedll);
-const size_t hooklist_player_size = arraysize(hooklist_player);
+hook_t* hooklist_t::getHookSafe(size_t hook)
+{
+	#define CASE(h)	case ht_##h: if (index < arraysize(hooklist_##h)) return &hooklist_##h[index]; else break;
+
+	const auto table = hooks_tables_e(hook / MAX_REGION_RANGE);
+	const auto index = hook & (MAX_REGION_RANGE - 1);
+
+	switch (table) {
+		CASE(engine)
+		CASE(gamedll)
+		CASE(player)
+	}
+
+	return nullptr;
+}
