@@ -124,19 +124,7 @@ struct hooklist_t
 		}
 
 		return nullptr;
-		/*const auto table = hooks_tables_e(hook / MAX_REGION_RANGE);
-		const auto index = hook & (MAX_REGION_RANGE - 1);
-
-		switch (table) {
-		case ht_engine: return &hooklist_engine[index];
-		case ht_gamedll: return &hooklist_gamedll[index];
-		case ht_player: return &hooklist_player[index];
-		}
-
-		return nullptr;*/
 	}
-
-	//static hook_t *getHook(size_t hook);
 
 	enum hooks_tables_e
 	{

@@ -2,7 +2,8 @@
 
 #define BEGIN_MEMBER_REGION(x)			(MAX_REGION_RANGE * memberlist_t::members_tables_e::ht_##x)
 
-enum enum_membertypes
+// member types
+enum MType
 {
 	MEMBER_FLOAT = 0,		// Any floating point value
 	MEMBER_DOUBLE,			// double value
@@ -27,7 +28,7 @@ struct member_t
 	uint16 size;
 	uint16 max_size;
 	uint32 offset;
-	enum_membertypes type;
+	MType type;
 };
 
 struct memberlist_t

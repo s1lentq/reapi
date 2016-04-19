@@ -3,7 +3,7 @@
 struct regmember
 {
 	template<typename T>
-	regmember(T& type, size_t maxsize, size_t offset, enum_membertypes member_type)
+	regmember(T& type, size_t maxsize, size_t offset, MType member_type)
 	{
 		member.size = sizeof(T);
 		member.max_size = sizeof(T);
@@ -11,7 +11,7 @@ struct regmember
 		member.type = member_type;
 	}
 	template<typename T>
-	regmember(T type[], size_t maxsize, size_t offset, enum_membertypes member_type)
+	regmember(T type[], size_t maxsize, size_t offset, MType member_type)
 	{
 		member.size = sizeof(T);
 		member.max_size = maxsize;

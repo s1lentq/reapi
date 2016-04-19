@@ -159,7 +159,8 @@ C_DLLEXPORT int AMXX_Attach(PFN_REQ_FNPTR reqFnptrFunc)
 		*(void **)((unsigned long)&g_amxxapi + g_funcrequests[i].offset) = fptr;
 	}
 
-	RegisterNatives();
+	RegisterNatives_HookChains();
+	RegisterNatives_Members();
 	return AMXX_OK;
 }
 

@@ -78,21 +78,6 @@ struct hookctx_t
 
 extern hookctx_t* g_hookCtx;
 
-#pragma optimize("ts", on)
-
-template <typename original_t, typename ...f_args>
-void callVoidForward(size_t func, original_t original, f_args... args)
-{
-#ifndef _WIN32
-	static
-#endif
-	hookctx_t hookCtx(sizeof...(args), args...);
-
-	g_hookCtx = &hookCtx;
-	_callVoidForward(g_hookManager.getHook(func), original, args...);
-	g_hookCtx = nullptr;
-}
-
 template <typename original_t, typename ...f_args>
 NOINLINE void DLLEXPORT _callVoidForward(const hook_t* hook, original_t original, volatile f_args... args)
 {
@@ -129,8 +114,8 @@ NOINLINE void DLLEXPORT _callVoidForward(const hook_t* hook, original_t original
 	}
 }
 
-template <typename R, typename original_t, typename ...f_args>
-R callForward(size_t func, original_t original, f_args... args)
+template <typename original_t, typename ...f_args>
+void callVoidForward(size_t func, original_t original, f_args... args)
 {
 #ifndef _WIN32
 	static
@@ -138,10 +123,8 @@ R callForward(size_t func, original_t original, f_args... args)
 	hookctx_t hookCtx(sizeof...(args), args...);
 
 	g_hookCtx = &hookCtx;
-	auto ret = _callForward<R>(g_hookManager.getHook(func), original, args...);
+	_callVoidForward(g_hookManager.getHook(func), original, args...);
 	g_hookCtx = nullptr;
-
-	return ret;
 }
 
 template <typename R, typename original_t, typename ...f_args>
@@ -194,7 +177,20 @@ NOINLINE R DLLEXPORT _callForward(const hook_t* hook, original_t original, volat
 	return *(R *)&hookCtx.retVal._interger;
 }
 
-#pragma optimize("", on)
+template <typename R, typename original_t, typename ...f_args>
+R callForward(size_t func, original_t original, f_args... args)
+{
+#ifndef _WIN32
+	static
+#endif
+	hookctx_t hookCtx(sizeof...(args), args...);
+
+	g_hookCtx = &hookCtx;
+	auto ret = _callForward<R>(g_hookManager.getHook(func), original, args...);
+	g_hookCtx = nullptr;
+
+	return ret;
+}
 
 // rehlds functions
 void SV_StartSound(IRehldsHook_SV_StartSound *chain, int recipients, edict_t *entity, int channel, const char *sample, int volume, float attenuation, int fFlags, int pitch);

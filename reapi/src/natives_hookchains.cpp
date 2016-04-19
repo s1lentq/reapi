@@ -265,7 +265,7 @@ static cell AMX_NATIVE_CALL SetHookChainArg(AMX *amx, cell *params)
 	return TRUE;
 }
 
-AMX_NATIVE_INFO Func_Natives[] =
+AMX_NATIVE_INFO HookChain_Natives[] =
 {
 	{ "RegisterHookChain", RegisterHookChain },
 
@@ -280,8 +280,7 @@ AMX_NATIVE_INFO Func_Natives[] =
 	{ nullptr, nullptr }
 };
 
-void RegisterNatives()
+void RegisterNatives_HookChains()
 {
-	g_amxxapi.AddNatives(Func_Natives);
-	g_amxxapi.AddNatives(Member_Natives);
+	g_amxxapi.AddNatives(HookChain_Natives);
 }

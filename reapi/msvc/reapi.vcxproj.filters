@@ -591,9 +591,6 @@
     <ClInclude Include="..\src\amxxmodule.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\natives.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\precompiled.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -621,6 +618,12 @@
     <ClInclude Include="..\src\hook_manager.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\natives_hookchains.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\natives_members.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\include\cssdk\common\parsemsg.cpp">
@@ -642,9 +645,6 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\meta_api.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\natives.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\precompiled.cpp">
@@ -671,9 +671,6 @@
     <ClCompile Include="..\src\member_list.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\natives_member.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\hook_manager.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -684,6 +681,12 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\h_export.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\natives_hookchains.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\natives_members.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

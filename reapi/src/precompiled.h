@@ -36,7 +36,8 @@
 #include "hook_manager.h"
 #include "hook_callback.h"
 #include "member_list.h"
-#include "natives.h"
+#include "natives_hookchains.h"
+#include "natives_members.h"
 
 #undef DLLEXPORT
 #ifdef _WIN32
