@@ -52,7 +52,6 @@ bool RegamedllApi_Init()
 
 	g_ReGameFuncs = g_ReGameApi->GetFuncs();
 	g_ReGameHookchains = g_ReGameApi->GetHookchains();
-	g_pCSGameRules = (CHalfLifeMultiplay **)g_ReGameApi->GetGameData()->GetGameRules();
 
 	return true;
 }

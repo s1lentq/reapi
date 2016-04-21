@@ -10,6 +10,7 @@
 #include <vector>				// std::vector
 
 #include <extdll.h>
+#include "reapi_utils.h"
 #include <cbase.h>
 
 #include "osdep.h"			// win32 vsnprintf, etc
@@ -35,7 +36,9 @@
 #include "hook_manager.h"
 #include "hook_callback.h"
 #include "member_list.h"
-#include "natives.h"
+#include "natives_hookchains.h"
+#include "natives_members.h"
+#include "natives_misc.h"
 
 #undef DLLEXPORT
 #ifdef _WIN32

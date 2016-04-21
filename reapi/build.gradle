@@ -45,7 +45,7 @@ void setupToolchain(NativeBinarySpec b) {
 			pchHeader: 'precompiled.h',
 			pchSourceSet: 'reapi_pch'
 		)
-		cfg.compilerOptions.args '/Ob2', '/Oi', '/GF', '/GR-'
+		cfg.compilerOptions.args '/Ob2', '/Oi', '/GF', '/GR-', '/GS-'
 		cfg.singleDefines('_CRT_SECURE_NO_WARNINGS')
 		cfg.extraLibs 'ws2_32.lib'
 	} else if (cfg instanceof GccToolchainConfig) {
@@ -61,7 +61,7 @@ void setupToolchain(NativeBinarySpec b) {
 				'_snprintf': 'snprintf'
 		])
 
-		cfg.compilerOptions.args '-Qoption,cpp,--treat_func_as_string_literal_cpp', '-msse2', '-fp-model fast', '-fomit-frame-pointer', '-fvisibility=hidden', '-fvisibility-inlines-hidden', '-fno-rtti', '-g0', '-s'
+		cfg.compilerOptions.args '-Qoption,cpp,--treat_func_as_string_literal_cpp', '-msse2', '-fp-model fast=2', '-fomit-frame-pointer', '-inline-forceinline', '-fvisibility=default', '-fvisibility-inlines-hidden', '-fno-rtti', '-g0', '-s'
 	}
 
 	ToolchainConfigUtils.apply(project, cfg, b)

@@ -378,15 +378,6 @@ typedef edict_t *		( *PFN_GET_PLAYER_EDICT )			( int /*id*/ );
 typedef void *			( *PFN_GET_PLAYER_EDICT )			( int /*id*/ );
 #endif
 typedef void *			( *PFN_PLAYER_PROP_ADDR )			( int /*id*/, int /*prop*/ );
-
-#ifdef MEMORY_TEST
-typedef void *			( *PFN_ALLOCATOR )				( const char* /*filename*/, const unsigned int /*line*/, const char* /*func*/,
-														 const unsigned int /*type*/, const size_t /*size*/ );
-typedef void *			( *PFN_REALLOCATOR )				( const char* /*filename*/, const unsigned int /*line*/, const char* /*func*/,
-															 const unsigned int /*type*/, const size_t /*size*/, void* /*addr*/ );
-typedef void(*PFN_DEALLOCATOR)				( const char* /*filename*/, const unsigned int /*line*/, const char* /*func*/,
-											 const unsigned int /*type*/, const void* /*addr*/ );
-#endif
 typedef int(*PFN_AMX_EXEC)					( AMX* /*amx*/, cell* /*return val*/, int /*index*/ );
 typedef int(*PFN_AMX_EXECV)				( AMX* /*amx*/, cell* /*return val*/, int /*index*/, int /*numparams*/, cell[] /*params*/ );
 typedef int(*PFN_AMX_ALLOT)				( AMX* /*amx*/, int /*length*/, cell* /*amx_addr*/, cell** /*phys_addr*/ );
@@ -503,5 +494,32 @@ extern amxxapi_t g_amxxapi;
 
 void MF_Log(const char *fmt, ...);
 void MF_LogError(AMX *amx, int err, const char *fmt, ...);
+char* getAmxStringTemp(cell* src, char* dest, size_t max, size_t* len = nullptr);
+void setAmxString(cell* dest, const char* string, size_t max);
+
+inline cell* getAmxAddr(AMX *amx, cell amx_addr)
+{
+	return (cell *)(amx->base + (int)(((AMX_HEADER *)amx->base)->dat + amx_addr));
+}
+
+struct getAmxString
+{
+	getAmxString(cell* src, size_t* len = nullptr)
+	{
+		getAmxStringTemp(src, temp, sizeof temp - 1, len);
+	}
+
+	getAmxString(AMX* amx, cell addr, size_t* len = nullptr)
+	{
+		getAmxStringTemp(getAmxAddr(amx, addr), temp, sizeof temp - 1, len);
+	}
+
+	operator char *()
+	{
+		return temp;
+	}
+
+	char temp[1024];
+};
 
 #endif // __AMXXMODULE_H__

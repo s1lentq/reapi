@@ -4,6 +4,37 @@ template <typename T, size_t N>
 char(&ArraySizeHelper(T(&array)[N]))[N];
 #define arraysize(array) (sizeof(ArraySizeHelper(array)))
 
+#define INDEXENT edictByIndex
+#define ENTINDEX indexOfEdict
+
+extern edict_t* g_pEdicts;
+
+inline size_t indexOfEdict(edict_t* ed)
+{
+	return ed - g_pEdicts;
+}
+
+inline size_t indexOfEdict(entvars_t* pev)
+{
+	return indexOfEdict(pev->pContainingEntity);
+}
+
+inline edict_t* edictByIndex(size_t index)
+{
+	return g_pEdicts + index;
+}
+
+template<typename T>
+T* getPrivate(int index)
+{
+	return (T *)edictByIndex(index)->pvPrivateData;
+}
+
+inline entvars_t* PEV(int index)
+{
+	return &edictByIndex(index)->v;
+}
+
 // HLTypeConversion.h -> AMXModX
 template <typename T>
 inline T &ref_member(void *ptr, int offset, int element = 0)

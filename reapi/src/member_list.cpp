@@ -3,7 +3,7 @@
 struct regmember
 {
 	template<typename T>
-	regmember(T &type, size_t maxsize, size_t offset, enum_membertypes member_type)
+	regmember(T& type, size_t maxsize, size_t offset, MType member_type)
 	{
 		member.size = sizeof(T);
 		member.max_size = sizeof(T);
@@ -11,7 +11,7 @@ struct regmember
 		member.type = member_type;
 	}
 	template<typename T>
-	regmember(T type[], size_t maxsize, size_t offset, enum_membertypes member_type)
+	regmember(T type[], size_t maxsize, size_t offset, MType member_type)
 	{
 		member.size = sizeof(T);
 		member.max_size = maxsize;
@@ -19,10 +19,7 @@ struct regmember
 		member.type = member_type;
 	}
 
-	regmember(const char *error)
-	{
-		UTIL_SysError("%s", error);
-	}	// to cause a amxx module failure.
+	regmember(const char *error) { UTIL_SysError(error); }	// to cause a amxx module failure.
 	operator member_t() const { return member; }
 	member_t member;
 
@@ -32,9 +29,8 @@ struct regmember
 static char mem_dummy[0xffff];
 int regmember::current_cell = 1;
 
-#define GM_MEMBERS(mx, mtype) ((!(mx & 1023) ? regmember::current_cell = 1, true : false) || (mx & 1023) == regmember::current_cell++) ? regmember(((CHalfLifeMultiplay *)&mem_dummy)->##mx, sizeof(((CHalfLifeMultiplay *)&mem_dummy)->##mx), offsetof(CHalfLifeMultiplay, mx), mtype) : regmember(#mx " doesn't match hook definition")
-#define GM_VOICE_MEMBERS(mx, mtype) ((!(mx & 1023) ? regmember::current_cell = 1, true : false) || (mx & 1023) == regmember::current_cell++) ? regmember(((CVoiceGameMgr *)&mem_dummy)->##mx, sizeof(((CVoiceGameMgr *)&mem_dummy)->##mx), offsetof(CVoiceGameMgr, mx), mtype) : regmember(#mx " doesn't match hook definition")
-
+#define GM_MEMBERS(mx, mtype) ((!(mx & (MAX_REGION_RANGE - 1)) ? regmember::current_cell = 1, true : false) || (mx & (MAX_REGION_RANGE - 1)) == regmember::current_cell++) ? regmember(((CHalfLifeMultiplay *)&mem_dummy)->##mx, sizeof(((CHalfLifeMultiplay *)&mem_dummy)->##mx), offsetof(CHalfLifeMultiplay, mx), mtype) : regmember(#mx " doesn't match member definition")
+#define GM_VOICE_MEMBERS(mx, mtype) ((!(mx & (MAX_REGION_RANGE - 1)) ? regmember::current_cell = 1, true : false) || (mx & (MAX_REGION_RANGE - 1)) == regmember::current_cell++) ? regmember(((CVoiceGameMgr *)&mem_dummy)->##mx, sizeof(((CVoiceGameMgr *)&mem_dummy)->##mx), offsetof(CVoiceGameMgr, mx), mtype) : regmember(#mx " doesn't match member definition")
 member_t memberlist_gamerules[] = {	
 	GM_MEMBERS(m_bFreezePeriod, MEMBER_INTEGER),
 	GM_MEMBERS(m_bBombDropped, MEMBER_INTEGER),
@@ -94,7 +90,7 @@ member_t memberlist_gamerules[] = {
 	GM_MEMBERS(m_iTotalArmourCount, MEMBER_INTEGER),
 	GM_MEMBERS(m_iUnBalancedRounds, MEMBER_INTEGER),
 	GM_MEMBERS(m_iNumEscapeRounds, MEMBER_INTEGER),
-	GM_MEMBERS(m_iMapVotes, MEMBER_INTEGER),			// ARRAY 100
+	GM_MEMBERS(m_iMapVotes, MEMBER_INTEGER),
 	GM_MEMBERS(m_iLastPick, MEMBER_INTEGER),
 	GM_MEMBERS(m_iMaxMapTime, MEMBER_INTEGER),
 	GM_MEMBERS(m_iMaxRounds, MEMBER_INTEGER),
@@ -105,7 +101,7 @@ member_t memberlist_gamerules[] = {
 	GM_MEMBERS(m_flForceChaseCamValue, MEMBER_FLOAT),
 	GM_MEMBERS(m_flFadeToBlackValue, MEMBER_FLOAT),
 	GM_MEMBERS(m_pVIP, MEMBER_CLASSPTR),
-	GM_MEMBERS(VIPQueue, MEMBER_CLASSPTR),				// ARRAY [5]
+	GM_MEMBERS(VIPQueue, MEMBER_CLASSPTR),
 	GM_MEMBERS(m_flIntermissionEndTime, MEMBER_FLOAT),
 	GM_MEMBERS(m_flIntermissionStartTime, MEMBER_FLOAT),
 	GM_MEMBERS(m_iEndIntermissionButtonHit, MEMBER_INTEGER),
@@ -119,8 +115,45 @@ member_t memberlist_gamerules[] = {
 	GM_MEMBERS(m_bSkipSpawn, MEMBER_BOOL),
 };
 
-#define PL_MEMBERS(mx, mtype) ((!(mx & 1023) ? regmember::current_cell = 1, true : false) || (mx & 1023) == regmember::current_cell++) ? regmember(((CBasePlayer *)&mem_dummy)->##mx, sizeof(((CBasePlayer *)&mem_dummy)->##mx), offsetof(CBasePlayer, mx), mtype) : regmember(#mx " doesn't match hook definition")
+#define BASE_MEMBERS(mx, mtype) ((!(mx & (MAX_REGION_RANGE - 1)) ? regmember::current_cell = 1, true : false) || (mx & (MAX_REGION_RANGE - 1)) == regmember::current_cell++) ? regmember(((CBaseEntity *)&mem_dummy)->##mx, sizeof(((CBaseEntity *)&mem_dummy)->##mx), offsetof(CBaseEntity, mx), mtype) : regmember(#mx " doesn't match member definition")
+member_t memberlist_base[] = {
+	BASE_MEMBERS(currentammo, MEMBER_FLOAT),
+	BASE_MEMBERS(maxammo_buckshot, MEMBER_INTEGER),
+	BASE_MEMBERS(ammo_buckshot, MEMBER_INTEGER),
+	BASE_MEMBERS(maxammo_9mm, MEMBER_INTEGER),
+	BASE_MEMBERS(ammo_9mm, MEMBER_INTEGER),
+	BASE_MEMBERS(maxammo_556nato, MEMBER_INTEGER),
+	BASE_MEMBERS(ammo_556nato, MEMBER_INTEGER),
+	BASE_MEMBERS(maxammo_556natobox, MEMBER_INTEGER),
+	BASE_MEMBERS(ammo_556natobox, MEMBER_INTEGER),
+	BASE_MEMBERS(maxammo_762nato, MEMBER_INTEGER),
+	BASE_MEMBERS(ammo_762nato, MEMBER_INTEGER),
+	BASE_MEMBERS(maxammo_45acp, MEMBER_INTEGER),
+	BASE_MEMBERS(ammo_45acp, MEMBER_INTEGER),
+	BASE_MEMBERS(maxammo_50ae, MEMBER_INTEGER),
+	BASE_MEMBERS(ammo_50ae, MEMBER_INTEGER),
+	BASE_MEMBERS(maxammo_338mag, MEMBER_INTEGER),
+	BASE_MEMBERS(ammo_338mag, MEMBER_INTEGER),
+	BASE_MEMBERS(maxammo_57mm, MEMBER_INTEGER),
+	BASE_MEMBERS(ammo_57mm, MEMBER_INTEGER),
+	BASE_MEMBERS(maxammo_357sig, MEMBER_INTEGER),
+	BASE_MEMBERS(ammo_357sig, MEMBER_INTEGER),
+	BASE_MEMBERS(m_flStartThrow, MEMBER_FLOAT),
+	BASE_MEMBERS(m_flReleaseThrow, MEMBER_FLOAT),
+	BASE_MEMBERS(m_iSwing, MEMBER_INTEGER),
+	BASE_MEMBERS(has_disconnected, MEMBER_BOOL),
+};
 
+#define ANIM_MEMBERS(mx, mtype) ((!(mx & (MAX_REGION_RANGE - 1)) ? regmember::current_cell = 1, true : false) || (mx & (MAX_REGION_RANGE - 1)) == regmember::current_cell++) ? regmember(((CBaseAnimating *)&mem_dummy)->##mx, sizeof(((CBaseAnimating *)&mem_dummy)->##mx), offsetof(CBaseAnimating, mx), mtype) : regmember(#mx " doesn't match member definition")
+member_t memberlist_animating[] = {
+	ANIM_MEMBERS(m_flFrameRate, MEMBER_FLOAT),
+	ANIM_MEMBERS(m_flGroundSpeed, MEMBER_FLOAT),
+	ANIM_MEMBERS(m_flLastEventCheck, MEMBER_FLOAT),
+	ANIM_MEMBERS(m_fSequenceFinished, MEMBER_INTEGER),
+	ANIM_MEMBERS(m_fSequenceLoops, MEMBER_INTEGER),
+};
+
+#define PL_MEMBERS(mx, mtype) ((!(mx & (MAX_REGION_RANGE - 1)) ? regmember::current_cell = 1, true : false) || (mx & (MAX_REGION_RANGE - 1)) == regmember::current_cell++) ? regmember(((CBasePlayer *)&mem_dummy)->##mx, sizeof(((CBasePlayer *)&mem_dummy)->##mx), offsetof(CBasePlayer, mx), mtype) : regmember(#mx " doesn't match member definition")
 member_t memberlist_player[] = {
 	PL_MEMBERS(random_seed, MEMBER_INTEGER),
 	PL_MEMBERS(m_usPlayerBleed, MEMBER_SHORT),
@@ -158,7 +191,7 @@ member_t memberlist_player[] = {
 	PL_MEMBERS(m_iIgnoreGlobalChat, MEMBER_INTEGER),
 	PL_MEMBERS(m_bHasNightVision, MEMBER_BOOL),
 	PL_MEMBERS(m_bNightVisionOn, MEMBER_BOOL),
-	PL_MEMBERS(m_vRecentPath, MEMBER_VECTOR),			// ARRAY [20]
+	PL_MEMBERS(m_vRecentPath, MEMBER_VECTOR),
 	PL_MEMBERS(m_flIdleCheckTime, MEMBER_FLOAT),
 	PL_MEMBERS(m_flRadioTime, MEMBER_FLOAT),
 	PL_MEMBERS(m_iRadioMessages, MEMBER_INTEGER),
@@ -191,7 +224,7 @@ member_t memberlist_player[] = {
 	PL_MEMBERS(m_bReceivesNoMoneyNextRound, MEMBER_BOOL),
 	PL_MEMBERS(m_iTimeCheckAllowed, MEMBER_INTEGER),
 	PL_MEMBERS(m_bHasChangedName, MEMBER_BOOL),
-	PL_MEMBERS(m_szNewName, MEMBER_CHAR_ARRAY),			// ARRAY [32]
+	PL_MEMBERS(m_szNewName, MEMBER_CHAR_ARRAY),
 	PL_MEMBERS(m_bIsDefusing, MEMBER_BOOL),
 	PL_MEMBERS(m_tmHandleSignals, MEMBER_FLOAT),
 	PL_MEMBERS(m_signals, MEMBER_SIGNALS),
@@ -211,7 +244,7 @@ member_t memberlist_player[] = {
 	PL_MEMBERS(m_flSndRoomtype, MEMBER_FLOAT),
 	PL_MEMBERS(m_flSndRange, MEMBER_FLOAT),
 	PL_MEMBERS(m_flFallVelocity, MEMBER_FLOAT),
-	PL_MEMBERS(m_rgItems, MEMBER_INTEGER),				// ARRAY [4]
+	PL_MEMBERS(m_rgItems, MEMBER_INTEGER),
 	PL_MEMBERS(m_fNewAmmo, MEMBER_INTEGER),
 	PL_MEMBERS(m_afPhysicsFlags, MEMBER_INTEGER),
 	PL_MEMBERS(m_fNextSuicideTime, MEMBER_FLOAT),
@@ -221,17 +254,17 @@ member_t memberlist_player[] = {
 	PL_MEMBERS(m_flDuckTime, MEMBER_FLOAT),
 	PL_MEMBERS(m_flWallJumpTime, MEMBER_FLOAT),
 	PL_MEMBERS(m_flSuitUpdate, MEMBER_FLOAT),
-	PL_MEMBERS(m_rgSuitPlayList, MEMBER_INTEGER),			// ARRAY [4]
+	PL_MEMBERS(m_rgSuitPlayList, MEMBER_INTEGER),
 	PL_MEMBERS(m_iSuitPlayNext, MEMBER_INTEGER),
-	PL_MEMBERS(m_rgiSuitNoRepeat, MEMBER_INTEGER),			// ARRAY [32]
-	PL_MEMBERS(m_rgflSuitNoRepeatTime, MEMBER_FLOAT),		// ARRAY [32]
+	PL_MEMBERS(m_rgiSuitNoRepeat, MEMBER_INTEGER),
+	PL_MEMBERS(m_rgflSuitNoRepeatTime, MEMBER_FLOAT),
 	PL_MEMBERS(m_lastDamageAmount, MEMBER_INTEGER),
 	PL_MEMBERS(m_tbdPrev, MEMBER_FLOAT),
 	PL_MEMBERS(m_flgeigerRange, MEMBER_FLOAT),
 	PL_MEMBERS(m_flgeigerDelay, MEMBER_FLOAT),
 	PL_MEMBERS(m_igeigerRangePrev, MEMBER_INTEGER),
 	PL_MEMBERS(m_iStepLeft, MEMBER_INTEGER),
-	PL_MEMBERS(m_szTextureName, MEMBER_CHAR_ARRAY),			// ARRAY [17]
+	PL_MEMBERS(m_szTextureName, MEMBER_CHAR_ARRAY),
 	PL_MEMBERS(m_chTextureType, MEMBER_BYTE),
 	PL_MEMBERS(m_idrowndmg, MEMBER_INTEGER),
 	PL_MEMBERS(m_idrownrestored, MEMBER_INTEGER),
@@ -258,22 +291,22 @@ member_t memberlist_player[] = {
 	PL_MEMBERS(m_pActiveItem, MEMBER_CLASSPTR),
 	PL_MEMBERS(m_pClientActiveItem, MEMBER_CLASSPTR),
 	PL_MEMBERS(m_pLastItem, MEMBER_CLASSPTR),
-	PL_MEMBERS(m_rgAmmo, MEMBER_INTEGER),				// ARRAY [32]
-	PL_MEMBERS(m_rgAmmoLast, MEMBER_INTEGER),			// ARRAY [32]
+	PL_MEMBERS(m_rgAmmo, MEMBER_INTEGER),
+	PL_MEMBERS(m_rgAmmoLast, MEMBER_INTEGER),
 	PL_MEMBERS(m_vecAutoAim, MEMBER_VECTOR),
 	PL_MEMBERS(m_fOnTarget, MEMBER_INTEGER),
 	PL_MEMBERS(m_iDeaths, MEMBER_INTEGER),
-	PL_MEMBERS(m_izSBarState, MEMBER_INTEGER),			// ARRAY [4]
+	PL_MEMBERS(m_izSBarState, MEMBER_INTEGER),
 	PL_MEMBERS(m_flNextSBarUpdateTime, MEMBER_FLOAT),
 	PL_MEMBERS(m_flStatusBarDisappearDelay, MEMBER_FLOAT),
-	PL_MEMBERS(m_SbarString0, MEMBER_CHAR_ARRAY),			// ARRAY [128]
+	PL_MEMBERS(m_SbarString0, MEMBER_CHAR_ARRAY),
 	PL_MEMBERS(m_lastx, MEMBER_INTEGER),
 	PL_MEMBERS(m_lasty, MEMBER_INTEGER),
 	PL_MEMBERS(m_nCustomSprayFrames, MEMBER_INTEGER),
 	PL_MEMBERS(m_flNextDecalTime, MEMBER_FLOAT),
-	PL_MEMBERS(m_szTeamName, MEMBER_CHAR_ARRAY),			// ARRAY [16]
+	PL_MEMBERS(m_szTeamName, MEMBER_CHAR_ARRAY),
 	PL_MEMBERS(m_modelIndexPlayer, MEMBER_INTEGER),
-	PL_MEMBERS(m_szAnimExtention, MEMBER_CHAR_ARRAY),		// ARRAY [32]
+	PL_MEMBERS(m_szAnimExtention, MEMBER_CHAR_ARRAY),
 	PL_MEMBERS(m_iGaitsequence, MEMBER_INTEGER),
 	PL_MEMBERS(m_flGaitframe, MEMBER_FLOAT),
 	PL_MEMBERS(m_flGaityaw, MEMBER_FLOAT),
@@ -295,12 +328,12 @@ member_t memberlist_player[] = {
 	PL_MEMBERS(m_blindFadeTime, MEMBER_FLOAT),
 	PL_MEMBERS(m_blindAlpha, MEMBER_INTEGER),
 	PL_MEMBERS(m_allowAutoFollowTime, MEMBER_FLOAT),
-	PL_MEMBERS(m_autoBuyString, MEMBER_CHAR_ARRAY),			// ARRAY 256
+	PL_MEMBERS(m_autoBuyString, MEMBER_CHAR_ARRAY),
 	PL_MEMBERS(m_rebuyString, MEMBER_CHAR_POINTER),
 	PL_MEMBERS(m_rebuyStruct, MEBMER_REBUYSTRUCT),
 	PL_MEMBERS(m_bIsInRebuy, MEMBER_BOOL),
 	PL_MEMBERS(m_flLastUpdateTime, MEMBER_FLOAT),
-	PL_MEMBERS(m_lastLocation, MEMBER_CHAR_ARRAY),			// ARRAY [32]
+	PL_MEMBERS(m_lastLocation, MEMBER_CHAR_ARRAY),
 	PL_MEMBERS(m_progressStart, MEMBER_FLOAT),
 	PL_MEMBERS(m_progressEnd, MEMBER_FLOAT),
 	PL_MEMBERS(m_bObserverAutoDirector, MEMBER_BOOL),
@@ -309,7 +342,7 @@ member_t memberlist_player[] = {
 	PL_MEMBERS(m_intenseTimestamp, MEMBER_FLOAT),
 	PL_MEMBERS(m_silentTimestamp, MEMBER_FLOAT),
 	PL_MEMBERS(m_musicState, MEMBER_INTEGER),
-	PL_MEMBERS(m_flLastCommandTime, MEMBER_FLOAT),			// ARRAY [8]
+	PL_MEMBERS(m_flLastCommandTime, MEMBER_FLOAT),
 };
 
 memberlist_t memberlist;
@@ -318,11 +351,13 @@ member_t *memberlist_t::operator[](size_t members) const
 {	
 	#define CASE(h)	case ht_##h: if (index < arraysize(memberlist_##h)) return &memberlist_##h[index]; else break;
 
-	const auto table = members_tables_e(members / MAX_RANGE_REGION);
-	const auto index = members & (MAX_RANGE_REGION - 1);
+	const auto table = members_tables_e(members / MAX_REGION_RANGE);
+	const auto index = members & (MAX_REGION_RANGE - 1);
 
 	switch (table) {
 		CASE(gamerules)
+		CASE(base)
+		CASE(animating)
 		CASE(player)
 	}
 

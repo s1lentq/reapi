@@ -1,5 +1,6 @@
 #include "precompiled.h"
 
+extern void ServerActivate(edict_t *pEdictList, int edictCount, int clientMax);
 extern void ServerDeactivate_Post();
 
 DLL_FUNCTIONS gFunctionTable =
@@ -25,7 +26,7 @@ DLL_FUNCTIONS gFunctionTable =
 	NULL,					// pfnClientPutInServer
 	NULL,					// pfnClientCommand
 	NULL,					// pfnClientUserInfoChanged
-	NULL,					// pfnServerActivate
+	&ServerActivate,					// pfnServerActivate
 	NULL,					// pfnServerDeactivate
 	NULL,					// pfnPlayerPreThink
 	NULL,					// pfnPlayerPostThink
@@ -80,7 +81,7 @@ DLL_FUNCTIONS gFunctionTable_Post =
 	NULL,					// pfnClientCommand
 	NULL,					// pfnClientUserInfoChanged
 	NULL,					// pfnServerActivate
-	&ServerDeactivate_Post,					// pfnServerDeactivate
+	&ServerDeactivate_Post,	// pfnServerDeactivate
 	NULL,					// pfnPlayerPreThink
 	NULL,					// pfnPlayerPostThink
 	NULL,					// pfnStartFrame

@@ -1,43 +1,44 @@
 #pragma once
 #include "hook_list.h"
 
-//#define MAX_RANGE_HOOKS		RH_EngineFunc_End + RH_GameDLL_End + RH_CBasePlayer_End
-
 enum fwdstate
 {
 	FSTATE_INVALID = 0,
-	FSTATE_OK,
-	FSTATE_PAUSE,
-	FSTATE_STOP
+	FSTATE_ENABLED,
+	FSTATE_PAUSED,
+	FSTATE_STOPPED
 };
 
-class CHook
+class CAmxxHook
 {
 public:
-	CHook(int forward_index) : m_forward(forward_index), m_state(FSTATE_OK) {};
+	CAmxxHook(AMX* amx, int index) : m_index(index), m_state(FSTATE_ENABLED), m_amx(amx) {};
 	
-	int GetForwardID() const { return m_forward; }
-	fwdstate GetState() const { return m_state; }
+	int GetIndex() const;
+	fwdstate GetState() const;
+	AMX* GetAmx() const;
+	void SetState(fwdstate st);
 
-public:
-	int m_forward;
+private:
+	int m_index;
 	fwdstate m_state;
-
-	struct data_return_t
-	{
-		char*		m_string;
-		float		m_float;
-		int		m_interger;
-		CBaseEntity*	m_classptr;
-	};
-	data_return_t m_data;
+	AMX* m_amx;
 };
 
 class CHookManager
 {
 public:
-	void clearHandlers();
-	CHook *addHandler(int func, int forward, bool post);
+	void clearHandlers() const;
+	cell addHandler(AMX* amx, int func, int forward, bool post) const;
+	hook_t* getHook(size_t func) const;
+	CAmxxHook* getAmxxHook(cell hook) const;
+
+	hook_t* getHookFast(size_t func) const {
+		return m_hooklist[func];
+	}
+
+private:
+	hooklist_t m_hooklist;
 };
 
 extern CHookManager g_hookManager;

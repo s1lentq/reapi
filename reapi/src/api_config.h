@@ -5,10 +5,14 @@
 
 class CAPI_Config {
 public:
+	CAPI_Config();
 	bool Init();
 
 	bool hasReHLDS() const { return m_api_rehlds; }
 	bool hasReGameDLL() const { return m_api_regame; }
+
+	void ServerActivate() const;
+	void ServerDeactivate() const;
 
 private:
 	// to provide API functions

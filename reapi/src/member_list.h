@@ -1,8 +1,9 @@
 #pragma once
 
-#define BEGIN_MEMBER_REGION(x)			(MAX_RANGE_REGION * memberlist_t::members_tables_e::ht_##x)
+#define BEGIN_MEMBER_REGION(x)			(MAX_REGION_RANGE * memberlist_t::members_tables_e::ht_##x)
 
-enum enum_membertypes
+// member types
+enum MType
 {
 	MEMBER_FLOAT = 0,		// Any floating point value
 	MEMBER_DOUBLE,			// double value
@@ -27,7 +28,7 @@ struct member_t
 	uint16 size;
 	uint16 max_size;
 	uint32 offset;
-	enum_membertypes type;
+	MType type;
 };
 
 struct memberlist_t
@@ -37,6 +38,8 @@ struct memberlist_t
 	enum members_tables_e
 	{
 		ht_gamerules,
+		ht_base,
+		ht_animating,
 		ht_player
 	};
 };
@@ -130,6 +133,46 @@ enum CSGameRules_Members
 	m_iRoundWinDifference,
 	m_fCareerMatchMenuTime,
 	m_bSkipSpawn
+};
+
+// CBasePlayer
+enum CBaseEntity_Members
+{
+	currentammo = BEGIN_MEMBER_REGION(base),
+	maxammo_buckshot,
+	ammo_buckshot,
+	maxammo_9mm,
+	ammo_9mm,
+	maxammo_556nato,
+	ammo_556nato,
+	maxammo_556natobox,
+	ammo_556natobox,
+	maxammo_762nato,
+	ammo_762nato,
+	maxammo_45acp,
+	ammo_45acp,
+	maxammo_50ae,
+	ammo_50ae,
+	maxammo_338mag,
+	ammo_338mag,
+	maxammo_57mm,
+	ammo_57mm,
+	maxammo_357sig,
+	ammo_357sig,
+	m_flStartThrow,
+	m_flReleaseThrow,
+	m_iSwing,
+	has_disconnected,
+};
+
+// CBaseAnimating
+enum CBaseAnimating_Members
+{
+	m_flFrameRate = BEGIN_MEMBER_REGION(animating),
+	m_flGroundSpeed,
+	m_flLastEventCheck,
+	m_fSequenceFinished,
+	m_fSequenceLoops,
 };
 
 // CBasePlayer

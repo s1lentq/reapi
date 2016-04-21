@@ -1,119 +1,193 @@
 #pragma once
 
-enum
+// hookchain return type
+enum HookChainState
 {
-	RH_UNSET = 0,
-	RH_IGNORED,		// plugin didn't take any action
-	RH_HANDLED,		// plugin did something, but real function should still be called
-	RH_OVERRIDE,		// call real function, but use my return value
-	RH_SUPERCEDE		// skip real function; use my return value
+	HC_CONTINUE = 0,
+	HC_OVERRIDE,
+	HC_SUPERCEDE,
+	HC_BREAK
 };
 
-// for hookchain return
-enum HookChainReturn
+// api types
+enum AType : uint8
 {
-	RHV_STRING = 0,
-	RHV_FLOAT,
-	RHV_INTEGER,
-	RHV_CLASSPTR
+	ATYPE_INTEGER = 0,
+	ATYPE_FLOAT,
+	ATYPE_STRING,
+	ATYPE_CLASSPTR
 };
 
-extern CHook *g_currentHookChain;
-
-template <typename ...t_args>
-inline bool callVoidForward_Pre(int func, t_args... args)
+struct retval_t
 {
-	auto hook = hooklist[func];
-	register int ret = RH_UNSET;
-	for (auto it = hook->pre.begin(), end = hook->pre.end(); it != end; ++it)
-	{
-		if ((*it)->GetState() == FSTATE_OK)
-		{
-			ret = g_amxxapi.ExecuteForward((*it)->GetForwardID(), args...);
-		}
-	}
+	bool set;
+	AType type;
 
-	// no supercede, continue to call original func
-	return (ret < RH_SUPERCEDE);
+	union
+	{
+		char*			_string;
+		float			_float;
+		int				_interger;
+		CBaseEntity*	_classptr;
+	};
+};
+
+inline AType getApiType(int)			{ return ATYPE_INTEGER; }
+inline AType getApiType(unsigned)		{ return ATYPE_INTEGER; }
+inline AType getApiType(cvar_s *)		{ return ATYPE_INTEGER; }
+inline AType getApiType(float)			{ return ATYPE_FLOAT; }
+inline AType getApiType(const char *)	{ return ATYPE_STRING; }
+inline AType getApiType(CBaseEntity *)	{ return ATYPE_CLASSPTR; }
+
+#define MAX_ARGS 12u
+
+template<size_t current>
+void setupArgTypes(AType args_type[MAX_ARGS])
+{
 }
 
-template <typename ...t_args>
-inline void callVoidForward_Post(int func, t_args... args)
+template<size_t current = 0, typename T, typename ...t_args>
+void setupArgTypes(AType args_type[MAX_ARGS], T, t_args... args)
 {
-	auto hook = hooklist[func];
-	for (auto it = hook->post.begin(), end = hook->post.end(); it != end; ++it)
+	args_type[current] = getApiType(T());
+	if (sizeof...(args) && current + 1 < MAX_ARGS)
+		setupArgTypes<current + 1>(args_type, args...);
+}
+
+struct hookctx_t
+{
+	template<typename ...t_args>
+	hookctx_t(size_t arg_count, t_args... args) : args_ptr()
 	{
-		if ((*it)->GetState() == FSTATE_OK)
+		args_count = min(arg_count, MAX_ARGS);
+		setupArgTypes(args_type, args...);
+	}
+
+	void reset(size_t arg_ptr, AType ret_type = ATYPE_INTEGER)
+	{
+		retVal.set = false;
+		retVal.type = ret_type;
+		args_ptr = arg_ptr;
+	}
+
+	retval_t retVal;
+	size_t args_count;
+	size_t args_ptr;
+	AType args_type[MAX_ARGS];
+};
+
+extern hookctx_t* g_hookCtx;
+
+template <typename original_t, typename ...f_args>
+NOINLINE void DLLEXPORT _callVoidForward(const hook_t* hook, original_t original, volatile f_args... args)
+{
+	g_hookCtx->reset(size_t(&original) + sizeof(original));
+	int hc_state = HC_CONTINUE;
+
+	for (auto& fwd : hook->pre)
+	{
+		if (fwd->GetState() == FSTATE_ENABLED)
 		{
-			g_currentHookChain = (*it);
-			g_amxxapi.ExecuteForward((*it)->GetForwardID(), args...);
+			auto ret = g_amxxapi.ExecuteForward(fwd->GetIndex(), args...);
+
+			if (ret == HC_BREAK) {
+				return;
+			}
+
+			if (ret > hc_state)
+				hc_state = ret;
+		}
+	}
+
+	if (hc_state != HC_SUPERCEDE)
+		original(args...);
+
+	for (auto& fwd : hook->post) {
+		if (fwd->GetState() == FSTATE_ENABLED) {
+			auto ret = g_amxxapi.ExecuteForward(fwd->GetIndex(), args...);
+
+			if (ret == HC_BREAK)
+				break;
 		}
 	}
 }
 
-template <typename t_chain, typename ...t_args>
-inline void callVoidForward(t_chain chain, int func, t_args... args)
+template <typename original_t, typename ...f_args>
+void callVoidForward(size_t func, original_t original, f_args... args)
 {
-	auto hook = hooklist[func];
-	register int ret = RH_UNSET;
-	for (auto it = hook->pre.begin(), end = hook->pre.end(); it != end; ++it)
-	{
-		if ((*it)->GetState() == FSTATE_OK)
-		{
-			ret = g_amxxapi.ExecuteForward((*it)->GetForwardID(), args...);
-		}
-	}
+#ifndef _WIN32
+	static
+#endif
+	hookctx_t hookCtx(sizeof...(args), args...);
 
-	// no supercede, continue to call original func
-	if (ret < RH_SUPERCEDE)
-	{
-		chain->callNext(args...);
-	}
-
-	// Post
-	for (auto it = hook->post.begin(), end = hook->post.end(); it != end; ++it)
-	{
-		if ((*it)->GetState() == FSTATE_OK)
-		{
-			g_currentHookChain = (*it);
-			g_amxxapi.ExecuteForward((*it)->GetForwardID(), args...);
-		}
-	}
+	g_hookCtx = &hookCtx;
+	_callVoidForward(g_hookManager.getHookFast(func), original, args...);
+	g_hookCtx = nullptr;
 }
 
-template <typename ...t_args>
-inline bool callForward_Pre(int func, t_args... args)
+template <typename R, typename original_t, typename ...f_args>
+NOINLINE R DLLEXPORT _callForward(const hook_t* hook, original_t original, volatile f_args... args)
 {
-	auto hook = hooklist[func];
-	register int ret = RH_UNSET;
-	for (auto it = hook->pre.begin(), end = hook->pre.end(); it != end; ++it)
+	auto& hookCtx = *g_hookCtx;
+	hookCtx.reset(size_t(&original) + sizeof(original), getApiType(R()));
+	int hc_state = HC_CONTINUE;
+
+	for (auto& fwd : hook->pre)
 	{
-		if ((*it)->GetState() == FSTATE_OK)
+		if (fwd->GetState() == FSTATE_ENABLED)
 		{
-			ret = g_amxxapi.ExecuteForward((*it)->GetForwardID(), args...);
+			auto ret = g_amxxapi.ExecuteForward(fwd->GetIndex(), args...);
+
+			if (ret == HC_CONTINUE)
+				continue;
+
+			if (!hookCtx.retVal.set) {
+				g_amxxapi.LogError(fwd->GetAmx(), AMX_ERR_CALLBACK, "%s", "can't suppress original function call without new return value set");
+				continue;
+			}
+
+			if (ret == HC_BREAK) {
+				return *(R *)&hookCtx.retVal._interger;
+			}
+
+			if (ret > hc_state)
+				hc_state = ret;
 		}
 	}
 
-	// no supercede, continue to call original func
-	return (ret < RH_SUPERCEDE);
+	if (hc_state != HC_SUPERCEDE)
+	{
+		auto retVal = original(args...);
+
+		if (hc_state != HC_OVERRIDE)
+			hookCtx.retVal._interger = *(int *)&retVal;
+	}
+
+	for (auto& fwd : hook->post) {
+		if (fwd->GetState() == FSTATE_ENABLED) {
+			auto ret = g_amxxapi.ExecuteForward(fwd->GetIndex(), args...);
+
+			if (ret == HC_BREAK)
+				break;
+		}
+	}
+
+	return *(R *)&hookCtx.retVal._interger;
 }
 
-template <typename ...t_args>
-inline bool callForward_Post(int func, t_args... args)
+template <typename R, typename original_t, typename ...f_args>
+R callForward(size_t func, original_t original, f_args... args)
 {
-	auto hook = hooklist[func];
-	register int ret = RH_UNSET;
-	for (auto it = hook->post.begin(), end = hook->post.end(); it != end; ++it)
-	{
-		if ((*it)->GetState() == FSTATE_OK)
-		{
-			g_currentHookChain = (*it);
-			ret = g_amxxapi.ExecuteForward((*it)->GetForwardID(), args...);
-		}
-	}
+#ifndef _WIN32
+	static
+#endif
+	hookctx_t hookCtx(sizeof...(args), args...);
 
-	// no override
-	return (ret < RH_OVERRIDE);
+	g_hookCtx = &hookCtx;
+	auto ret = _callForward<R>(g_hookManager.getHookFast(func), original, args...);
+	g_hookCtx = nullptr;
+
+	return ret;
 }
 
 // rehlds functions
@@ -124,13 +198,15 @@ void Cvar_DirectSet(IRehldsHook_Cvar_DirectSet *chain, cvar_t *var, const char *
 
 // regamedll functions
 int GetForceCamera(IReGameHook_GetForceCamera *chain, CBasePlayer *pObserver);
+void PlayerBlind(IReGameHook_PlayerBlind *chain, CBasePlayer *pPlayer, entvars_t *pevInflictor, entvars_t *pevAttacker, float fadeTime, float fadeHold, int alpha, Vector& color);
+void RadiusFlash_TraceLine(IReGameHook_RadiusFlash_TraceLine *chain, CBasePlayer *pPlayer, entvars_t *pevInflictor, entvars_t *pevAttacker, Vector& vecSrc, Vector& vecSpot, TraceResult *ptr);
 
 // regamedll functions - player
 void CBasePlayer_Spawn(IReGameHook_CBasePlayer_Spawn *chain, CBasePlayer *pthis);
 void CBasePlayer_Precache(IReGameHook_CBasePlayer_Precache *chain, CBasePlayer *pthis);
 int CBasePlayer_ObjectCaps(IReGameHook_CBasePlayer_ObjectCaps *chain, CBasePlayer *pthis);
 int CBasePlayer_Classify(IReGameHook_CBasePlayer_Classify *chain, CBasePlayer *pthis);
-void CBasePlayer_TraceAttack(IReGameHook_CBasePlayer_TraceAttack *chain, CBasePlayer *pthis, entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType);
+void CBasePlayer_TraceAttack(IReGameHook_CBasePlayer_TraceAttack *chain, CBasePlayer *pthis, entvars_t *pevAttacker, float flDamage, Vector& vecDir, TraceResult *ptr, int bitsDamageType);
 int CBasePlayer_TakeDamage(IReGameHook_CBasePlayer_TakeDamage *chain, CBasePlayer *pthis, entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType);
 int CBasePlayer_TakeHealth(IReGameHook_CBasePlayer_TakeHealth *chain, CBasePlayer *pthis, float flHealth, int bitsDamageType);
 void CBasePlayer_Killed(IReGameHook_CBasePlayer_Killed *chain, CBasePlayer *pthis, entvars_t *pevAttacker, int iGib);
@@ -148,4 +224,12 @@ void CBasePlayer_UpdateClientData(IReGameHook_CBasePlayer_UpdateClientData *chai
 void CBasePlayer_ImpulseCommands(IReGameHook_CBasePlayer_ImpulseCommands *chain, CBasePlayer *pthis);
 void CBasePlayer_RoundRespawn(IReGameHook_CBasePlayer_RoundRespawn *chain, CBasePlayer *pthis);
 void CBasePlayer_Blind(IReGameHook_CBasePlayer_Blind *chain, CBasePlayer *pthis, float flUntilTime, float flHoldTime, float flFadeTime, int iAlpha);
+
 CBaseEntity *CBasePlayer_Observer_IsValidTarget(IReGameHook_CBasePlayer_Observer_IsValidTarget *chain, CBasePlayer *pthis, int iPlayerIndex, bool bSameTeam);
+void CBasePlayer_SetAnimation(IReGameHook_CBasePlayer_SetAnimation *chain, CBasePlayer *pthis, PLAYER_ANIM playerAnim);
+void CBasePlayer_GiveDefaultItems(IReGameHook_CBasePlayer_GiveDefaultItems *chain, CBasePlayer *pthis);
+void CBasePlayer_GiveNamedItem(IReGameHook_CBasePlayer_GiveNamedItem *chain, CBasePlayer *pthis, const char *pszName);
+void CBasePlayer_AddAccount(IReGameHook_CBasePlayer_AddAccount *chain, CBasePlayer *pthis, int amount, bool bTrackChange);
+void CBasePlayer_GiveShield(IReGameHook_CBasePlayer_GiveShield *chain, CBasePlayer *pthis, bool bDeploy);
+
+void CBaseAnimating_ResetSequenceInfo(IReGameHook_CBaseAnimating_ResetSequenceInfo *chain, CBaseAnimating *pthis);

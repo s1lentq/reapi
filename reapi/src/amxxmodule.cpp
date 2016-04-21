@@ -159,7 +159,10 @@ C_DLLEXPORT int AMXX_Attach(PFN_REQ_FNPTR reqFnptrFunc)
 		*(void **)((unsigned long)&g_amxxapi + g_funcrequests[i].offset) = fptr;
 	}
 
-	RegisterNatives();
+	RegisterNatives_HookChains();
+	RegisterNatives_Members();
+	RegisterNatives_Misc();
+
 	return AMXX_OK;
 }
 
@@ -205,4 +208,26 @@ NOINLINE void MF_LogError(AMX *amx, int err, const char *fmt, ...)
 	va_end(arglst);
 
 	g_amxxapi.LogError(amx, err, "[%s] %s", g_ModuleInfo.logtag, msg);
+}
+
+char* getAmxStringTemp(cell* src, char* dest, size_t max, size_t* len)
+{
+	char* start = dest;
+
+	while (*src && --max)
+		*dest++ = (char)*src++;
+	*dest = '\0';
+
+	if (len)
+		*len = dest - start;
+
+	return start;
+}
+
+void setAmxString(cell* dest, const char* string, size_t max)
+{
+	while (*string && max--)
+		*dest++ = (cell)*string++;
+
+	*dest = 0;
 }

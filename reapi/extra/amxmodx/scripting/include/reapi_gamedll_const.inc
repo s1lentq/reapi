@@ -11,6 +11,21 @@
 #define SIGNAL_ESCAPE		(1<<3)
 #define SIGNAL_VIPSAFETY	(1<<4)
 
+enum PLAYER_ANIM
+{
+	PLAYER_IDLE,
+	PLAYER_WALK,
+	PLAYER_JUMP,
+	PLAYER_SUPERJUMP,
+	PLAYER_DIE,
+	PLAYER_ATTACK1,
+	PLAYER_ATTACK2,
+	PLAYER_FLINCH,
+	PLAYER_LARGE_FLINCH,
+	PLAYER_RELOAD,
+	PLAYER_HOLDBOMB
+};
+
 enum GamedllFunc
 {
 	/**
@@ -20,8 +35,32 @@ enum GamedllFunc
 	 */
 	RH_GetForceCamera = 1024,
 
+	/**
+	 * Description:		-
+	 * Params:		(const index, const inflictor, const attacker, const Float:fadeTime, const Float:fadeHold, const alpha, Float:color[3])
+	 */
+	RH_PlayerBlind,
+
+	/**
+	 * Description:		-
+	 * Params:		(const index, inflictor, attacker, Float:vecSrc[3], Float:vecSpot[3], tracehandle)
+	 */
+	RH_RadiusFlash_TraceLine,
+
 	// [...]
 	RH_GameDLL_End
+};
+
+enum GamedllFunc_CBaseAnimating
+{
+	/**
+	 * Description:		-
+	 * Params:		(const this)
+	 */
+	RH_CBaseAnimating_ResetSequenceInfo = 2048,
+
+	// [...]
+	RH_CBaseAnimating_End
 };
 
 enum GamedllFunc_CBasePlayer
@@ -30,7 +69,7 @@ enum GamedllFunc_CBasePlayer
 	 * Description:		-
 	 * Params:		(const this)
 	 */
-	RH_CBasePlayer_Spawn = 2048,
+	RH_CBasePlayer_Spawn = 3072,
 
 	/**
 	 * Description:		-
@@ -820,6 +859,254 @@ enum CSGameRules_Members
 	m_bSkipSpawn
 };
 
+// CBaseEntity
+enum CBaseEntity_Members
+{
+	/**
+	 * Description:		-
+	 * Member type:		float
+	 * Get params:		Float:get_member(index, member);
+	 * Set params:		set_member(index, member, Float:value);
+	 */
+	currentammo = 1024,
+
+	/**
+	 * Description:		-
+	 * Member type:		int
+	 * Get params:		get_member(index, member);
+	 * Set params:		set_member(index, member, value);
+	 */
+	maxammo_buckshot,
+
+	/**
+	 * Description:		-
+	 * Member type:		int
+	 * Get params:		get_member(index, member);
+	 * Set params:		set_member(index, member, value);
+	 */
+	ammo_buckshot,
+
+	/**
+	 * Description:		-
+	 * Member type:		int
+	 * Get params:		get_member(index, member);
+	 * Set params:		set_member(index, member, value);
+	 */
+	maxammo_9mm,
+
+	/**
+	 * Description:		-
+	 * Member type:		int
+	 * Get params:		get_member(index, member);
+	 * Set params:		set_member(index, member, value);
+	 */
+	ammo_9mm,
+
+	/**
+	 * Description:		-
+	 * Member type:		int
+	 * Get params:		get_member(index, member);
+	 * Set params:		set_member(index, member, value);
+	 */
+	maxammo_556nato,
+
+	/**
+	 * Description:		-
+	 * Member type:		int
+	 * Get params:		get_member(index, member);
+	 * Set params:		set_member(index, member, value);
+	 */
+	ammo_556nato,
+
+	/**
+	 * Description:		-
+	 * Member type:		int
+	 * Get params:		get_member(index, member);
+	 * Set params:		set_member(index, member, value);
+	 */
+	maxammo_556natobox,
+
+	/**
+	 * Description:		-
+	 * Member type:		int
+	 * Get params:		get_member(index, member);
+	 * Set params:		set_member(index, member, value);
+	 */
+	ammo_556natobox,
+
+	/**
+	 * Description:		-
+	 * Member type:		int
+	 * Get params:		get_member(index, member);
+	 * Set params:		set_member(index, member, value);
+	 */
+	maxammo_762nato,
+
+	/**
+	 * Description:		-
+	 * Member type:		int
+	 * Get params:		get_member(index, member);
+	 * Set params:		set_member(index, member, value);
+	 */
+	ammo_762nato,
+
+	/**
+	 * Description:		-
+	 * Member type:		int
+	 * Get params:		get_member(index, member);
+	 * Set params:		set_member(index, member, value);
+	 */
+	maxammo_45acp,
+
+	/**
+	 * Description:		-
+	 * Member type:		int
+	 * Get params:		get_member(index, member);
+	 * Set params:		set_member(index, member, value);
+	 */
+	ammo_45acp,
+
+	/**
+	 * Description:		-
+	 * Member type:		int
+	 * Get params:		get_member(index, member);
+	 * Set params:		set_member(index, member, value);
+	 */
+	maxammo_50ae,
+
+	/**
+	 * Description:		-
+	 * Member type:		int
+	 * Get params:		get_member(index, member);
+	 * Set params:		set_member(index, member, value);
+	 */
+	ammo_50ae,
+
+	/**
+	 * Description:		-
+	 * Member type:		int
+	 * Get params:		get_member(index, member);
+	 * Set params:		set_member(index, member, value);
+	 */
+	maxammo_338mag,
+
+	/**
+	 * Description:		-
+	 * Member type:		int
+	 * Get params:		get_member(index, member);
+	 * Set params:		set_member(index, member, value);
+	 */
+	ammo_338mag,
+
+	/**
+	 * Description:		-
+	 * Member type:		int
+	 * Get params:		get_member(index, member);
+	 * Set params:		set_member(index, member, value);
+	 */
+	maxammo_57mm,
+
+	/**
+	 * Description:		-
+	 * Member type:		int
+	 * Get params:		get_member(index, member);
+	 * Set params:		set_member(index, member, value);
+	 */
+	ammo_57mm,
+
+	/**
+	 * Description:		-
+	 * Member type:		int
+	 * Get params:		get_member(index, member);
+	 * Set params:		set_member(index, member, value);
+	 */
+	maxammo_357sig,
+
+	/**
+	 * Description:		-
+	 * Member type:		int
+	 * Get params:		get_member(index, member);
+	 * Set params:		set_member(index, member, value);
+	 */
+	ammo_357sig,
+
+	/**
+	 * Description:		-
+	 * Member type:		float
+	 * Get params:		Float:get_member(index, member);
+	 * Set params:		set_member(index, member, Float:value);
+	 */
+	m_flStartThrow,
+
+	/**
+	 * Description:		-
+	 * Member type:		float
+	 * Get params:		Float:get_member(index, member);
+	 * Set params:		set_member(index, member, Float:value);
+	 */
+	m_flReleaseThrow,
+
+	/**
+	 * Description:		-
+	 * Member type:		int
+	 * Get params:		get_member(index, member);
+	 * Set params:		set_member(index, member, value);
+	 */
+	m_iSwing,
+
+	/**
+	 * Description:		-
+	 * Member type:		bool
+	 * Get params:		get_member(index, member);
+	 * Set params:		set_member(index, member, value);
+	 */
+	has_disconnected,
+};
+
+// CBaseAnimating
+enum CBaseAnimating_Members
+{
+	/**
+	 * Description:		-
+	 * Member type:		float
+	 * Get params:		Float:get_member(index, member);
+	 * Set params:		set_member(index, member, Float:value);
+	 */
+	m_flFrameRate = 2048,
+
+	/**
+	 * Description:		-
+	 * Member type:		float
+	 * Get params:		Float:get_member(index, member);
+	 * Set params:		set_member(index, member, Float:value);
+	 */
+	m_flGroundSpeed,
+
+	/**
+	 * Description:		-
+	 * Member type:		float
+	 * Get params:		Float:get_member(index, member);
+	 * Set params:		set_member(index, member, Float:value);
+	 */
+	m_flLastEventCheck,
+
+	/**
+	 * Description:		-
+	 * Member type:		int
+	 * Get params:		get_member(index, member);
+	 * Set params:		set_member(index, member, value);
+	 */
+	m_fSequenceFinished,
+
+	/**
+	 * Description:		-
+	 * Member type:		int
+	 * Get params:		get_member(index, member);
+	 * Set params:		set_member(index, member, value);
+	 */
+	m_fSequenceLoops,
+};
+
 // CBasePlayer
 enum CBasePlayer_Members
 {
@@ -829,7 +1116,7 @@ enum CBasePlayer_Members
 	 * Get params:		get_member(index, member);
 	 * Set params:		set_member(index, member, value);
 	 */
-	random_seed = 1024,
+	random_seed = 3072,
 
 	/**
 	 * Description:		-
@@ -1370,8 +1657,8 @@ enum CBasePlayer_Members
 	/**
 	 * Description:		-
 	 * Member type:		char [32]
-	 * Get params:		Float:get_member(index, member, const dest[], const lenght);
-	 * Set params:		set_member(index, member, const dest[]);
+	 * Get params:		get_member(index, member, dest[], const lenght);
+	 * Set params:		set_member(index, member, const source[]);
 	 */
 	m_szNewName,
 
@@ -1394,7 +1681,7 @@ enum CBasePlayer_Members
 	/**
 	 * Description:		-
 	 * Member type:		class CUnifiedSignals
-	 * Get params:		get_member(index, member, &signal, &state);
+	 * Get params:		get_member(index, member, signals[2]); (0 - signal, 1 - state)
 	 * Set params:		set_member(index, member, value);
 	 */
 	m_signals,
@@ -1690,8 +1977,8 @@ enum CBasePlayer_Members
 	/**
 	 * Description:		-
 	 * Member type:		char [17]
-	 * Get params:		Float:get_member(index, member, const dest[], const lenght);
-	 * Set params:		set_member(index, member, const dest[]);
+	 * Get params:		get_member(index, member, dest[], const lenght);
+	 * Set params:		set_member(index, member, const source[]);
 	 */
 	m_szTextureName,
 
@@ -1970,8 +2257,8 @@ enum CBasePlayer_Members
 	/**
 	 * Description:		-
 	 * Member type:		char [128]
-	 * Get params:		Float:get_member(index, member, const dest[], const lenght);
-	 * Set params:		set_member(index, member, const dest[]);
+	 * Get params:		get_member(index, member, dest[], const lenght);
+	 * Set params:		set_member(index, member, const source[]);
 	 */
 	m_SbarString0,
 
@@ -2010,8 +2297,8 @@ enum CBasePlayer_Members
 	/**
 	 * Description:		-
 	 * Member type:		char [16]
-	 * Get params:		Float:get_member(index, member, const dest[], const lenght);
-	 * Set params:		set_member(index, member, const dest[]);
+	 * Get params:		get_member(index, member, dest[], const lenght);
+	 * Set params:		set_member(index, member, const source[]);
 	 */
 	m_szTeamName,
 
@@ -2026,8 +2313,8 @@ enum CBasePlayer_Members
 	/**
 	 * Description:		-
 	 * Member type:		char [32]
-	 * Get params:		Float:get_member(index, member, const dest[], const lenght);
-	 * Set params:		set_member(index, member, const dest[]);
+	 * Get params:		get_member(index, member, dest[], const lenght);
+	 * Set params:		set_member(index, member, const source[]);
 	 */
 	m_szAnimExtention,
 
@@ -2202,16 +2489,16 @@ enum CBasePlayer_Members
 	/**
 	 * Description:		-
 	 * Member type:		char [256]
-	 * Get params:		Float:get_member(index, member, const dest[], const lenght);
-	 * Set params:		set_member(index, member, const dest[]);
+	 * Get params:		get_member(index, member, dest[], const lenght);
+	 * Set params:		set_member(index, member, const source[]);
 	 */
 	m_autoBuyString,
 
 	/**
 	 * Description:		-
 	 * Member type:		char *
-	 * Get params:		Float:get_member(index, member, const dest[], const lenght);
-	 * Set params:		set_member(index, member, const dest[]);
+	 * Get params:		get_member(index, member, dest[], const lenght);
+	 * Set params:		set_member(index, member, const source[]);
 	 */
 	m_rebuyString,
 
@@ -2242,8 +2529,8 @@ enum CBasePlayer_Members
 	/**
 	 * Description:		-
 	 * Member type:		char [32]
-	 * Get params:		Float:get_member(index, member, const dest[], const lenght);
-	 * Set params:		set_member(index, member, const dest[]);
+	 * Get params:		get_member(index, member, dest[], const lenght);
+	 * Set params:		set_member(index, member, const source[]);
 	 */
 	m_lastLocation,
 
