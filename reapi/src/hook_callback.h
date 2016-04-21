@@ -47,7 +47,7 @@ void setupArgTypes(AType args_type[MAX_ARGS])
 }
 
 template<size_t current = 0, typename T, typename ...t_args>
-void setupArgTypes(AType args_type[MAX_ARGS], T arg, t_args... args)
+void setupArgTypes(AType args_type[MAX_ARGS], T, t_args... args)
 {
 	args_type[current] = getApiType(T());
 	if (sizeof...(args) && current + 1 < MAX_ARGS)
@@ -201,7 +201,6 @@ int GetForceCamera(IReGameHook_GetForceCamera *chain, CBasePlayer *pObserver);
 void PlayerBlind(IReGameHook_PlayerBlind *chain, CBasePlayer *pPlayer, entvars_t *pevInflictor, entvars_t *pevAttacker, float fadeTime, float fadeHold, int alpha, Vector& color);
 void RadiusFlash_TraceLine(IReGameHook_RadiusFlash_TraceLine *chain, CBasePlayer *pPlayer, entvars_t *pevInflictor, entvars_t *pevAttacker, Vector& vecSrc, Vector& vecSpot, TraceResult *ptr);
 
-
 // regamedll functions - player
 void CBasePlayer_Spawn(IReGameHook_CBasePlayer_Spawn *chain, CBasePlayer *pthis);
 void CBasePlayer_Precache(IReGameHook_CBasePlayer_Precache *chain, CBasePlayer *pthis);
@@ -232,6 +231,5 @@ void CBasePlayer_GiveDefaultItems(IReGameHook_CBasePlayer_GiveDefaultItems *chai
 void CBasePlayer_GiveNamedItem(IReGameHook_CBasePlayer_GiveNamedItem *chain, CBasePlayer *pthis, const char *pszName);
 void CBasePlayer_AddAccount(IReGameHook_CBasePlayer_AddAccount *chain, CBasePlayer *pthis, int amount, bool bTrackChange);
 void CBasePlayer_GiveShield(IReGameHook_CBasePlayer_GiveShield *chain, CBasePlayer *pthis, bool bDeploy);
-
 
 void CBaseAnimating_ResetSequenceInfo(IReGameHook_CBaseAnimating_ResetSequenceInfo *chain, CBaseAnimating *pthis);

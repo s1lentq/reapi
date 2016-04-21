@@ -255,7 +255,7 @@ static cell AMX_NATIVE_CALL SetHookChainArg(AMX *amx, cell *params)
 		*(cell *)destAddr = *srcAddr;
 		break;
 	case ATYPE_STRING:
-		*(char **)destAddr = getAmxStringTemp(srcAddr, temp_strings[number], 1023);
+		*(char **)destAddr = getAmxStringTemp(srcAddr, temp_strings[number], sizeof temp_strings[0] - 1);
 		break;
 	case ATYPE_CLASSPTR:
 		*(CBaseEntity **)destAddr = CBaseEntity::Instance(INDEXENT(*srcAddr));

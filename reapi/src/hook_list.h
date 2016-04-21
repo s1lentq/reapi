@@ -8,115 +8,6 @@ typedef bool (*reqfunc_t)();
 typedef int (*regfunc_t)(AMX *, const char *);
 typedef void (*regchain_t)();
 
-struct regfunc
-{
-	template<typename T, typename R>
-	regfunc(R (*)(T *, int, edict_t *, int, const char *, int, float, int, int)) {
-		func = [](AMX *amx, const char *name) { return g_amxxapi.RegisterSPForwardByName(amx, name, FP_CELL, FP_CELL, FP_CELL, FP_STRING, FP_CELL, FP_FLOAT, FP_CELL, FP_CELL, FP_DONE); };
-	}
-
-	template<typename T, typename R>
-	regfunc(R (*)(T *, IGameClient *, bool, const char *)) {
-		func = [](AMX *amx, const char *name) { return g_amxxapi.RegisterSPForwardByName(amx, name, FP_CELL, FP_CELL, FP_STRING, FP_DONE); };
-	}
-
-	template<typename T, typename R>
-	regfunc(R (*)(T *, int)) {
-		func = [](AMX *amx, const char *name) { return g_amxxapi.RegisterSPForwardByName(amx, name, FP_CELL, FP_DONE); };
-	}
-
-	template<typename T, typename R>
-	regfunc(R (*)(T *, struct cvar_s *, const char *)) {
-		func = [](AMX *amx, const char *name) { return g_amxxapi.RegisterSPForwardByName(amx, name, FP_CELL, FP_STRING, FP_DONE); };
-	}
-
-	template<typename T, typename R>
-	regfunc(R (*)(T *, CBaseAnimating *)) {
-		func = [](AMX *amx, const char *name) { return g_amxxapi.RegisterSPForwardByName(amx, name, FP_CELL, FP_DONE); };
-	}
-
-	template<typename T, typename R>
-	regfunc(R (*)(T *, CBasePlayer *)) {
-		func = [](AMX *amx, const char *name) { return g_amxxapi.RegisterSPForwardByName(amx, name, FP_CELL, FP_DONE); };
-	}
-
-	template<typename T, typename R>
-	regfunc(R (*)(T *, CBasePlayer *, const char *)) {
-		func = [](AMX *amx, const char *name) { return g_amxxapi.RegisterSPForwardByName(amx, name, FP_CELL, FP_STRING, FP_DONE); };
-	}
-
-	template<typename T, typename R>
-	regfunc(R (*)(T *, CBasePlayer *, bool)) {
-		func = [](AMX *amx, const char *name) { return g_amxxapi.RegisterSPForwardByName(amx, name, FP_CELL, FP_CELL, FP_DONE); };
-	}
-
-	template<typename T, typename R>
-	regfunc(R (*)(T *, CBasePlayer *, PLAYER_ANIM)) {
-		func = [](AMX *amx, const char *name) { return g_amxxapi.RegisterSPForwardByName(amx, name, FP_CELL, FP_CELL, FP_DONE); };
-	}
-
-	template<typename T, typename R>
-	regfunc(R (*)(T *, CBasePlayer *, entvars_t *, float, Vector&, TraceResult *, int)) {
-		func = [](AMX *amx, const char *name) { return g_amxxapi.RegisterSPForwardByName(amx, name, FP_CELL, FP_CELL, FP_FLOAT, FP_ARRAY, FP_CELL, FP_CELL, FP_DONE); };
-	}
-
-	template<typename T, typename R>
-	regfunc(R (*)(T *, CBasePlayer *, entvars_t *, entvars_t *, float, int)) {
-		func = [](AMX *amx, const char *name) { return g_amxxapi.RegisterSPForwardByName(amx, name, FP_CELL, FP_CELL, FP_CELL, FP_FLOAT, FP_CELL, FP_DONE); };
-	}
-
-	template<typename T, typename R>
-	regfunc(R (*)(T *, CBasePlayer *, float, int)) {
-		func = [](AMX *amx, const char *name) { return g_amxxapi.RegisterSPForwardByName(amx, name, FP_CELL, FP_FLOAT, FP_CELL, FP_DONE); };
-	}
-
-	template<typename T, typename R>
-	regfunc(R (*)(T *, CBasePlayer *, entvars_t *, int)) {
-		func = [](AMX *amx, const char *name) { return g_amxxapi.RegisterSPForwardByName(amx, name, FP_CELL, FP_CELL, FP_CELL, FP_DONE); };
-	}
-
-	template<typename T, typename R>
-	regfunc(R (*)(T *, CBasePlayer *, int, BOOL)) {
-		func = [](AMX *amx, const char *name) { return g_amxxapi.RegisterSPForwardByName(amx, name, FP_CELL, FP_CELL, FP_CELL, FP_DONE); };
-	}
-
-	template<typename T, typename R>
-	regfunc(R (*)(T *, CBasePlayer *, CBasePlayerItem *)) {
-		func = [](AMX *amx, const char *name) { return g_amxxapi.RegisterSPForwardByName(amx, name, FP_CELL, FP_CELL, FP_DONE); };
-	}
-
-	template<typename T, typename R>
-	regfunc(R (*)(T *, CBasePlayer *, int, char *, int)) {
-		func = [](AMX *amx, const char *name) { return g_amxxapi.RegisterSPForwardByName(amx, name, FP_CELL, FP_CELL, FP_STRING, FP_CELL, FP_DONE); };
-	}
-
-	template<typename T, typename R>
-	regfunc(R (*)(T *, CBasePlayer *, float, float, float, int)) {
-		func = [](AMX *amx, const char *name) { return g_amxxapi.RegisterSPForwardByName(amx, name, FP_CELL, FP_FLOAT, FP_FLOAT, FP_FLOAT, FP_CELL, FP_DONE); };
-	}
-
-	template<typename T, typename R>
-	regfunc(R (*)(T *, CBasePlayer *, int, bool)) {
-		func = [](AMX *amx, const char *name) { return g_amxxapi.RegisterSPForwardByName(amx, name, FP_CELL, FP_CELL, FP_CELL, FP_DONE); };
-	}
-
-	template<typename T, typename R>
-	regfunc(R (*)(T *, CBasePlayer *, entvars_t *, entvars_t *, float, float, int, Vector&)) {
-		func = [](AMX *amx, const char *name) { return g_amxxapi.RegisterSPForwardByName(amx, name, FP_CELL, FP_CELL, FP_CELL, FP_FLOAT, FP_FLOAT, FP_CELL, FP_ARRAY, FP_DONE); };
-	}
-
-	template<typename T, typename R>
-	regfunc(R (*)(T *, CBasePlayer *, entvars_t *, entvars_t *, Vector&, Vector&, TraceResult *)) {
-		func = [](AMX *amx, const char *name) { return g_amxxapi.RegisterSPForwardByName(amx, name, FP_CELL, FP_CELL, FP_CELL, FP_ARRAY, FP_ARRAY, FP_CELL, FP_DONE); };
-	}
-
-	regfunc(const char *error) { UTIL_SysError(error); }	// to cause a amxx module failure.
-	operator regfunc_t() const { return func; }
-	regfunc_t func;
-
-	static int current_cell;				// the counter of cells
-};
-
 struct hook_t
 {
 	std::vector<class CAmxxHook *> pre;		// pre forwards
@@ -129,6 +20,8 @@ struct hook_t
 	regfunc_t registerForward;		// AMXX forward registration function
 	regchain_t registerHookchain;		// register re* API hook
 	regchain_t unregisterHookchain;		// unregister re* API hook
+
+	void clear();
 };
 
 extern hook_t hooklist_engine[];

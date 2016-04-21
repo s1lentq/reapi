@@ -4,13 +4,15 @@ CHookManager g_hookManager;
 
 int CHookManager::addHandler(AMX* amx, int func, int forward, bool post) const
 {
-	if (!m_hooklist[func]->post.size() && !m_hooklist[func]->pre.size())
+	auto hook = m_hooklist.getHookSafe(func);
+
+	if (!hook->post.size() && !hook->pre.size())
 	{
 		// API hookchain
-		m_hooklist[func]->registerHookchain();
+		hook->registerHookchain();
 	}
 
-	auto& dest = post ? m_hooklist[func]->post : m_hooklist[func]->pre;
+	auto& dest = post ? hook->post : hook->pre;
 	dest.push_back(new CAmxxHook(amx, forward));
 	int id = func * MAX_HOOK_FORWARDS + dest.size();
 	return post ? -id : id; // use unsigned ids for post hooks
@@ -40,11 +42,8 @@ void CHookManager::clearHandlers() const
 {
 #define CLEAR_HOOKLIST(__END__, __START__)\
 	for (size_t i = BEGIN_FUNC_REGION(__START__); i < RH_##__END__##_End; ++i) {\
-		if (m_hooklist[i] == nullptr)\
-			continue;\
-		m_hooklist[i]->pre.clear();\
-		m_hooklist[i]->post.clear();\
-		m_hooklist[i]->unregisterHookchain();\
+		if (m_hooklist[i])\
+			m_hooklist[i]->clear();\
 	}
 
 	CLEAR_HOOKLIST(EngineFunc, engine);
@@ -59,18 +58,16 @@ hook_t* CHookManager::getHook(size_t func) const
 
 CAmxxHook* CHookManager::getAmxxHook(cell handle) const
 {
-	bool post = false;
+	bool post = handle < 0;
 
-	if (handle < 0) // post
-	{
+	if (post)
 		handle = ~handle;
-		post = true;
-	}
-	else handle--;
+	else
+		handle--;
 
 	const size_t func = handle / MAX_HOOK_FORWARDS;
 	const size_t id = handle & (MAX_HOOK_FORWARDS - 1);
-	auto hook = m_hooklist[func];
+	auto hook = m_hooklist.getHookSafe(func);
 
 	if (hook)
 	{

@@ -11,8 +11,8 @@ public:
 	bool hasReHLDS() const { return m_api_rehlds; }
 	bool hasReGameDLL() const { return m_api_regame; }
 
-	void ServerActivate();
-	void ServerDeactivate();
+	void ServerActivate() const;
+	void ServerDeactivate() const;
 
 private:
 	// to provide API functions

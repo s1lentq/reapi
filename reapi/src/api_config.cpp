@@ -15,14 +15,14 @@ bool CAPI_Config::Init()
 	return true;
 }
 
-void CAPI_Config::ServerActivate()
+void CAPI_Config::ServerActivate() const
 {
 	if (m_api_regame) {
 		g_pCSGameRules = (CHalfLifeMultiplay **)g_ReGameApi->GetGameData()->GetGameRules();
 	}
 }
 
-void CAPI_Config::ServerDeactivate()
+void CAPI_Config::ServerDeactivate() const
 {
 	if (m_api_regame) {
 		g_pCSGameRules = nullptr;
