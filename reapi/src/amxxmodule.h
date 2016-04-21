@@ -511,7 +511,7 @@ struct getAmxString
 
 	getAmxString(AMX* amx, cell addr, size_t* len = nullptr)
 	{
-		getAmxString(getAmxAddr(amx, addr), len);
+		getAmxStringTemp(getAmxAddr(amx, addr), temp, sizeof temp - 1, len);
 	}
 
 	operator char *()

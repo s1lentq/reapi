@@ -38,6 +38,7 @@
 #include "member_list.h"
 #include "natives_hookchains.h"
 #include "natives_members.h"
+#include "natives_misc.h"
 
 #undef DLLEXPORT
 #ifdef _WIN32

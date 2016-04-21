@@ -7,7 +7,7 @@
  * @param function	The function to hook.
  * @param callback	The forward to call.
  * @param post		Whether or not to forward this in post.
- * @return 			Returns a handle to the hook. Use EnableHookChain/DisableHookChain to toggle the forward on or off.
+ * @return 		Returns a handle to the hook. Use EnableHookChain/DisableHookChain to toggle the forward on or off.
  *
  * native RegisterHookChain(any:function_id, const callback[], post = 0);
  */
@@ -51,11 +51,11 @@ static cell AMX_NATIVE_CALL RegisterHookChain(AMX *amx, cell *params)
 }
 
 /*
- * Disable hook by handle.
+ * Enable hook by handle.
  * Use the return value from RegisterHookChain as the parameter here!
  *
  * @param fwd		The hook to re-enable.
- * @return			Returns if the function is successful executed true otherwise false
+ * @return		Returns if the function is successful executed true otherwise false
  *
  * native bool:EnableHookChain(any:fwd);
  */
@@ -72,12 +72,12 @@ static cell AMX_NATIVE_CALL EnableHookChain(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	hook->m_state = FSTATE_ENABLED;
+	hook->SetState(FSTATE_ENABLED);
 	return TRUE;
 }
 
 /*
- * Enable hook by handle.
+ * Disable hook by handle.
  * Use the return value from RegisterHookChain as the parameter here!
  *
  * @param fwd		The hook to stop.
@@ -97,7 +97,7 @@ static cell AMX_NATIVE_CALL DisableHookChain(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	hook->m_state = FSTATE_STOPPED;
+	hook->SetState(FSTATE_STOPPED);
 	return TRUE;
 }
 
@@ -164,7 +164,7 @@ static cell AMX_NATIVE_CALL SetHookChainReturn(AMX *amx, cell *params)
 *
 * @param value		The value to set the return to.
 * @param [maxlen]	Max length of string (optional)
-* @return			Returns if the function is successful executed true otherwise false
+* @return		Returns if the function is successful executed true otherwise false
 *
 * native GetHookChainReturn(AType:type, any:...);
 */
@@ -190,7 +190,7 @@ static cell AMX_NATIVE_CALL GetHookChainReturn(AMX *amx, cell *params)
 		break;
 	case ATYPE_STRING:
 	{
-		if (params[arg_count] != 2)
+		if (PARAMS_COUNT != 2)
 			return FALSE;
 
 		setAmxString(dstAddr, retVal._string, params[arg_maxlen]);
@@ -213,7 +213,7 @@ static cell AMX_NATIVE_CALL GetHookChainReturn(AMX *amx, cell *params)
 * @param number		Number of argument
 * @param value		New value
 * @param [maxlen]	Max length of string (optional)
-* @return			Returns if the function is successful executed true otherwise false
+* @return		Returns if the function is successful executed true otherwise false
 *
 * native SetHookChainArg(number, AType:type, any:...);
 */

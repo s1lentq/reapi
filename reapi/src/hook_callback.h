@@ -88,7 +88,7 @@ NOINLINE void DLLEXPORT _callVoidForward(const hook_t* hook, original_t original
 	{
 		if (fwd->GetState() == FSTATE_ENABLED)
 		{
-			auto ret = g_amxxapi.ExecuteForward(fwd->m_forward, args...);
+			auto ret = g_amxxapi.ExecuteForward(fwd->GetIndex(), args...);
 
 			if (ret == HC_BREAK) {
 				return;
@@ -102,11 +102,9 @@ NOINLINE void DLLEXPORT _callVoidForward(const hook_t* hook, original_t original
 	if (hc_state != HC_SUPERCEDE)
 		original(args...);
 
-	for (auto& fwd : hook->post)
-	{
-		if (fwd->GetState() == FSTATE_ENABLED)
-		{
-			auto ret = g_amxxapi.ExecuteForward(fwd->m_forward, args...);
+	for (auto& fwd : hook->post) {
+		if (fwd->GetState() == FSTATE_ENABLED) {
+			auto ret = g_amxxapi.ExecuteForward(fwd->GetIndex(), args...);
 
 			if (ret == HC_BREAK)
 				break;
@@ -138,7 +136,7 @@ NOINLINE R DLLEXPORT _callForward(const hook_t* hook, original_t original, volat
 	{
 		if (fwd->GetState() == FSTATE_ENABLED)
 		{
-			auto ret = g_amxxapi.ExecuteForward(fwd->m_forward, args...);
+			auto ret = g_amxxapi.ExecuteForward(fwd->GetIndex(), args...);
 
 			if (ret == HC_CONTINUE)
 				continue;
@@ -167,7 +165,7 @@ NOINLINE R DLLEXPORT _callForward(const hook_t* hook, original_t original, volat
 
 	for (auto& fwd : hook->post) {
 		if (fwd->GetState() == FSTATE_ENABLED) {
-			auto ret = g_amxxapi.ExecuteForward(fwd->m_forward, args...);
+			auto ret = g_amxxapi.ExecuteForward(fwd->GetIndex(), args...);
 
 			if (ret == HC_BREAK)
 				break;
@@ -200,6 +198,9 @@ void Cvar_DirectSet(IRehldsHook_Cvar_DirectSet *chain, cvar_t *var, const char *
 
 // regamedll functions
 int GetForceCamera(IReGameHook_GetForceCamera *chain, CBasePlayer *pObserver);
+void PlayerBlind(IReGameHook_PlayerBlind *chain, CBasePlayer *pPlayer, entvars_t *pevInflictor, entvars_t *pevAttacker, float fadeTime, float fadeHold, int alpha, Vector& color);
+void RadiusFlash_TraceLine(IReGameHook_RadiusFlash_TraceLine *chain, CBasePlayer *pPlayer, entvars_t *pevInflictor, entvars_t *pevAttacker, Vector& vecSrc, Vector& vecSpot, TraceResult *ptr);
+
 
 // regamedll functions - player
 void CBasePlayer_Spawn(IReGameHook_CBasePlayer_Spawn *chain, CBasePlayer *pthis);
@@ -224,4 +225,13 @@ void CBasePlayer_UpdateClientData(IReGameHook_CBasePlayer_UpdateClientData *chai
 void CBasePlayer_ImpulseCommands(IReGameHook_CBasePlayer_ImpulseCommands *chain, CBasePlayer *pthis);
 void CBasePlayer_RoundRespawn(IReGameHook_CBasePlayer_RoundRespawn *chain, CBasePlayer *pthis);
 void CBasePlayer_Blind(IReGameHook_CBasePlayer_Blind *chain, CBasePlayer *pthis, float flUntilTime, float flHoldTime, float flFadeTime, int iAlpha);
+
 CBaseEntity *CBasePlayer_Observer_IsValidTarget(IReGameHook_CBasePlayer_Observer_IsValidTarget *chain, CBasePlayer *pthis, int iPlayerIndex, bool bSameTeam);
+void CBasePlayer_SetAnimation(IReGameHook_CBasePlayer_SetAnimation *chain, CBasePlayer *pthis, PLAYER_ANIM playerAnim);
+void CBasePlayer_GiveDefaultItems(IReGameHook_CBasePlayer_GiveDefaultItems *chain, CBasePlayer *pthis);
+void CBasePlayer_GiveNamedItem(IReGameHook_CBasePlayer_GiveNamedItem *chain, CBasePlayer *pthis, const char *pszName);
+void CBasePlayer_AddAccount(IReGameHook_CBasePlayer_AddAccount *chain, CBasePlayer *pthis, int amount, bool bTrackChange);
+void CBasePlayer_GiveShield(IReGameHook_CBasePlayer_GiveShield *chain, CBasePlayer *pthis, bool bDeploy);
+
+
+void CBaseAnimating_ResetSequenceInfo(IReGameHook_CBaseAnimating_ResetSequenceInfo *chain, CBaseAnimating *pthis);

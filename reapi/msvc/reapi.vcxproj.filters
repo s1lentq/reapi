@@ -49,6 +49,9 @@
     <Filter Include="amxmodx\scripting\include">
       <UniqueIdentifier>{c4bfa412-f9f4-4b90-9f02-3c1531e2ac23}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\natives">
+      <UniqueIdentifier>{1e41b4f5-768c-437f-af6d-51432194e332}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\metamod\dllapi.h">
@@ -619,10 +622,13 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\src\natives_hookchains.h">
-      <Filter>src</Filter>
+      <Filter>src\natives</Filter>
     </ClInclude>
     <ClInclude Include="..\src\natives_members.h">
-      <Filter>src</Filter>
+      <Filter>src\natives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\natives_misc.h">
+      <Filter>src\natives</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -684,10 +690,13 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\natives_hookchains.cpp">
-      <Filter>src</Filter>
+      <Filter>src\natives</Filter>
     </ClCompile>
     <ClCompile Include="..\src\natives_members.cpp">
-      <Filter>src</Filter>
+      <Filter>src\natives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\natives_misc.cpp">
+      <Filter>src\natives</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -161,6 +161,8 @@ C_DLLEXPORT int AMXX_Attach(PFN_REQ_FNPTR reqFnptrFunc)
 
 	RegisterNatives_HookChains();
 	RegisterNatives_Members();
+	RegisterNatives_Misc();
+
 	return AMXX_OK;
 }
 

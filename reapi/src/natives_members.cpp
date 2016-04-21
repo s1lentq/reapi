@@ -3,7 +3,7 @@
 // native set_member(_index, any:_member, any:...);
 static cell AMX_NATIVE_CALL set_member(AMX *amx, cell *params)
 {
-	enum args_member_e { arg_count, arg_index, arg_member, arg_value, arg_elem };
+	enum args_e { arg_count, arg_index, arg_member, arg_value, arg_elem };
 	member_t *member = memberlist[params[arg_member]];
 
 	if (member == nullptr) {
@@ -13,20 +13,20 @@ static cell AMX_NATIVE_CALL set_member(AMX *amx, cell *params)
 
 	edict_t *pEdict = INDEXENT(params[arg_index]);
 	if (pEdict == nullptr || pEdict->pvPrivateData == nullptr) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "set_member: invalid or uninitialized entity", params[arg_member]);
+		MF_LogError(amx, AMX_ERR_NATIVE, "set_member: invalid or uninitialized entity");
 		return FALSE;
 	}
 	
 	cell* value = getAmxAddr(amx, params[arg_value]);
-	size_t element = (params[arg_count] == 4) ? *getAmxAddr(amx, params[arg_elem]) : 0;
+	size_t element = (PARAMS_COUNT == 4) ? *getAmxAddr(amx, params[arg_elem]) : 0;
 
 	return set_member(pEdict->pvPrivateData, member, element, value);
 }
 
-// native any:get_member(_index = 0, any:_member, any:...);
+// native any:get_member(_index, any:_member, any:...);
 static cell AMX_NATIVE_CALL get_member(AMX *amx, cell *params)
 {
-	enum args_member_e { arg_count, arg_index, arg_member, arg_3, arg_4 };
+	enum args_e { arg_count, arg_index, arg_member, arg_3, arg_4 };
 	member_t *member = memberlist[params[arg_member]];
 
 	if (member == nullptr) {
@@ -36,18 +36,18 @@ static cell AMX_NATIVE_CALL get_member(AMX *amx, cell *params)
 
 	edict_t *pEdict = INDEXENT(params[arg_index]);
 	if (pEdict == nullptr || pEdict->pvPrivateData == nullptr) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "get_member: invalid or uninitialized entity", params[arg_member]);
+		MF_LogError(amx, AMX_ERR_NATIVE, "get_member: invalid or uninitialized entity");
 		return FALSE;
 	}
 
 	cell* dest;
 	size_t element;
 
-	if (params[arg_count] == 4) {
+	if (PARAMS_COUNT == 4) {
 		dest = getAmxAddr(amx, params[arg_3]);
 		element = *getAmxAddr(amx, params[arg_4]);
 	}
-	else if (params[arg_count] == 3) {
+	else if (PARAMS_COUNT == 3) {
 		cell* arg3 = getAmxAddr(amx, params[arg_3]);
 
 		if (isTypeReturnable(member->type)) {
@@ -70,16 +70,21 @@ static cell AMX_NATIVE_CALL get_member(AMX *amx, cell *params)
 // native set_member_game(any:_member, any:...);
 static cell AMX_NATIVE_CALL set_member_game(AMX *amx, cell *params)
 {
-	enum args_member_e { arg_count, arg_member, arg_value, arg_elem };
+	enum args_e { arg_count, arg_member, arg_value, arg_elem };
 	member_t *member = memberlist[params[arg_member]];
 
 	if (member == nullptr) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "set_member_game: unknown member id %i", params[arg_member]);
 		return FALSE;
 	}
-	
+
+	if (g_pCSGameRules == nullptr || *g_pCSGameRules == nullptr) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "get_member_game: gamerules not initialized");
+		return 0;
+	}
+
 	cell* value = getAmxAddr(amx, params[arg_value]);
-	size_t element = (params[arg_count] == 4) ? *getAmxAddr(amx, params[arg_elem]) : 0;
+	size_t element = (PARAMS_COUNT == 4) ? *getAmxAddr(amx, params[arg_elem]) : 0;
 
 	return set_member(*g_pCSGameRules, member, element, value);
 }
@@ -87,7 +92,7 @@ static cell AMX_NATIVE_CALL set_member_game(AMX *amx, cell *params)
 // native get_member_game(any:_member, any:...);
 static cell AMX_NATIVE_CALL get_member_game(AMX *amx, cell *params)
 {
-	enum args_member_e { arg_count, arg_member, arg_3, arg_4 };
+	enum args_e { arg_count, arg_member, arg_3, arg_4 };
 	member_t *member = memberlist[params[arg_member]];
 
 	if (member == nullptr) {
@@ -95,14 +100,19 @@ static cell AMX_NATIVE_CALL get_member_game(AMX *amx, cell *params)
 		return 0;
 	}
 
+	if (g_pCSGameRules == nullptr || *g_pCSGameRules == nullptr) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "get_member_game: gamerules not initialized");
+		return 0;
+	}
+
 	cell* dest;
 	size_t element;
-
-	if (params[arg_count] == 4) {
+	
+	if (PARAMS_COUNT == 4) {
 		dest = getAmxAddr(amx, params[arg_3]);
 		element = *getAmxAddr(amx, params[arg_4]);
 	}
-	else if (params[arg_count] == 3) {
+	else if (PARAMS_COUNT == 3) {
 		cell* arg3 = getAmxAddr(amx, params[arg_3]);
 
 		if (isTypeReturnable(member->type)) {
@@ -183,18 +193,9 @@ BOOL set_member(void* pdata, const member_t *member, size_t element, cell* value
 	case MEMBER_CHAR_POINTER:
 		{
 			// native set_member(_index, any:_member, const source[]);
-			size_t len;
-			char *source = getAmxString(value, &len);
+			char *source = getAmxString(value);
 			char *&dest = get_member<char *>(pdata, member->offset);
-
-			if (dest != nullptr) {
-				delete[] dest;
-			}
-
-			dest = new char[len + 1];
-			strcpy(dest, source);
-
-			set_member<char *>(pdata, member->offset, dest);
+			g_ReGameFuncs->ChangeString(dest, source);
 			return TRUE;
 		}
 	case MEMBER_FLOAT:

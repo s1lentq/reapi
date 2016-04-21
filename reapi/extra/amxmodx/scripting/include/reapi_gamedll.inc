@@ -52,3 +52,16 @@ native set_member(index, any:member, any:...);
 *
 */
 native any:get_member(index, any:member, any:...);
+
+native rg_set_animation(index, PLAYER_ANIM:playerAnim);
+native rg_add_account(index, amount, bool:bTrackChange = true);
+native rg_give_item(index, const pszName[]);
+native rg_give_default_items(index);
+native rg_give_shield(index, bool:bDeploy = true);
+native rg_dmg_radius(Float:vecSrc[3], inflictor, attacker, Float:flDamage, Float:flRadius, iClassIgnore, bitsDamageType);
+native rg_multidmg_clear();
+native rg_multidmg_apply(inflictor, attacker);
+native rg_multidmg_add(inflictor, victim, Float:flDamage, bitsDamageType);
+
+native rg_fire_bullets(inflictor, attacker, shots, Float:vecSrc[3], Float:vecDirShooting[3], Float:vecSpread[3], Float:flDistance, iBulletType, iTracerFreq, iDamage);
+native Float:[3] rg_fire_bullets3(inflictor, attacker, Float:vecSrc[3], Float:vecDirShooting[3], Float:vecSpread, Float:flDistance, iPenetration, iBulletType, iDamage, Float:flRangeModifier, bool:bPistol, shared_rand);

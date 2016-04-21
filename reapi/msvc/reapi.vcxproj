@@ -202,6 +202,7 @@
     <ClInclude Include="..\src\member_list.h" />
     <ClInclude Include="..\src\mod_regamedll_api.h" />
     <ClInclude Include="..\src\mod_rehlds_api.h" />
+    <ClInclude Include="..\src\natives_misc.h" />
     <ClInclude Include="..\src\natives_hookchains.h" />
     <ClInclude Include="..\src\natives_members.h" />
     <ClInclude Include="..\src\precompiled.h" />
@@ -237,6 +238,7 @@
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\meta_api.cpp" />
     <ClCompile Include="..\src\mod_rehlds_api.cpp" />
+    <ClCompile Include="..\src\natives_misc.cpp" />
     <ClCompile Include="..\src\natives_hookchains.cpp" />
     <ClCompile Include="..\src\natives_members.cpp" />
     <ClCompile Include="..\src\precompiled.cpp">

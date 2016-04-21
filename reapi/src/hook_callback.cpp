@@ -280,6 +280,66 @@ CBaseEntity *CBasePlayer_Observer_IsValidTarget(IReGameHook_CBasePlayer_Observer
 	return callForward<CBaseEntity *>(RH_CBasePlayer_Observer_IsValidTarget, original, pthis->entindex(), iPlayerIndex, bSameTeam);
 }
 
+void CBasePlayer_SetAnimation(IReGameHook_CBasePlayer_SetAnimation *chain, CBasePlayer *pthis, PLAYER_ANIM playerAnim)
+{
+	auto original = [chain](int _pthis, PLAYER_ANIM _playerAnim)
+	{
+		chain->callNext(_playerAnim);
+	};
+
+	callVoidForward(RH_CBasePlayer_SetAnimation, original, pthis->entindex(), playerAnim);
+}
+
+void CBasePlayer_GiveDefaultItems(IReGameHook_CBasePlayer_GiveDefaultItems *chain, CBasePlayer *pthis)
+{
+	auto original = [chain](int _pthis)
+	{
+		chain->callNext();
+	};
+
+	callVoidForward(RH_CBasePlayer_GiveDefaultItems, original, pthis->entindex());
+}
+
+void CBasePlayer_GiveNamedItem(IReGameHook_CBasePlayer_GiveNamedItem *chain, CBasePlayer *pthis, const char *pszName)
+{
+	auto original = [chain](int _pthis, const char *_pszName)
+	{
+		chain->callNext(_pszName);
+	};
+
+	callVoidForward(RH_CBasePlayer_GiveNamedItem, original, pthis->entindex(), pszName);
+}
+
+void CBasePlayer_AddAccount(IReGameHook_CBasePlayer_AddAccount *chain, CBasePlayer *pthis, int amount, bool bTrackChange)
+{
+	auto original = [chain](int _pthis, int _amount, bool _bTrackChange)
+	{
+		chain->callNext(_amount, _bTrackChange);
+	};
+
+	callVoidForward(RH_CBasePlayer_AddAccount, original, pthis->entindex(), amount, bTrackChange);
+}
+
+void CBasePlayer_GiveShield(IReGameHook_CBasePlayer_GiveShield *chain, CBasePlayer *pthis, bool bDeploy)
+{
+	auto original = [chain](int _pthis, bool _bDeploy)
+	{
+		chain->callNext(_bDeploy);
+	};
+
+	callVoidForward(RH_CBasePlayer_GiveShield, original, pthis->entindex(), bDeploy);
+}
+
+void CBaseAnimating_ResetSequenceInfo(IReGameHook_CBaseAnimating_ResetSequenceInfo *chain, CBaseAnimating *pthis)
+{
+	auto original = [chain](int _pthis)
+	{
+		chain->callNext();
+	};
+
+	callVoidForward(RH_CBaseAnimating_ResetSequenceInfo, original, pthis->entindex());
+}
+
 int GetForceCamera(IReGameHook_GetForceCamera *chain, CBasePlayer *pObserver)
 {
 	auto original = [chain](int _pObserver)
@@ -288,4 +348,28 @@ int GetForceCamera(IReGameHook_GetForceCamera *chain, CBasePlayer *pObserver)
 	};
 
 	return callForward<int>(RH_GetForceCamera, original, pObserver->entindex());
+}
+
+void PlayerBlind(IReGameHook_PlayerBlind *chain, CBasePlayer *pPlayer, entvars_t *pevInflictor, entvars_t *pevAttacker, float fadeTime, float fadeHold, int alpha, Vector& color)
+{
+	Vector colorCopy(color);
+
+	auto original = [chain, &colorCopy](int _pPlayer, int _pevInflictor, int _pevAttacker, float _fadeTime, float _fadeHold, int _alpha, cell _color)
+	{
+		chain->callNext(getPrivate<CBasePlayer>(_pPlayer), PEV(_pevInflictor), PEV(_pevAttacker), _fadeTime, _fadeHold, _alpha, colorCopy);
+	};
+
+	callVoidForward(RH_PlayerBlind, original, pPlayer->entindex(), indexOfEdict(pevInflictor), indexOfEdict(pevAttacker), fadeTime, fadeHold, alpha, g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&colorCopy), 3, true));
+}
+
+void RadiusFlash_TraceLine(IReGameHook_RadiusFlash_TraceLine *chain, CBasePlayer *pPlayer, entvars_t *pevInflictor, entvars_t *pevAttacker, Vector& vecSrc, Vector& vecSpot, TraceResult *ptr)
+{
+	Vector vecSrcCopy(vecSrc), vecSpotCopy(vecSpot);
+
+	auto original = [chain, &vecSrcCopy, &vecSpotCopy](int _pPlayer, int _pevInflictor, int _pevAttacker, cell _vecSrc, cell _vecSpot, int _ptr)
+	{
+		chain->callNext(getPrivate<CBasePlayer>(_pPlayer), PEV(_pevInflictor), PEV(_pevAttacker), vecSrcCopy, vecSpotCopy, (TraceResult *)_ptr);
+	};
+
+	callVoidForward(RH_RadiusFlash_TraceLine, original, pPlayer->entindex(), indexOfEdict(pevInflictor), indexOfEdict(pevAttacker), g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecSrcCopy), 3, true), g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecSpotCopy), 3, true), int(ptr));
 }

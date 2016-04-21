@@ -50,7 +50,6 @@ enum HookChain
  * @return 		Returns a handle to the hook. Use EnableHookChain/DisableHookChain to toggle the forward on or off.
  *
  */
-
 native HookChain:RegisterHookChain(any:function_id, const callback[], post = 0);
 
 /*
@@ -60,7 +59,6 @@ native HookChain:RegisterHookChain(any:function_id, const callback[], post = 0);
  * @param hook		The hook to stop.
  *
  */
-
 native bool:DisableHookChain(HookChain:hook);
 
 /*
@@ -71,7 +69,6 @@ native bool:DisableHookChain(HookChain:hook);
  * @return		Returns if the function is successful executed true otherwise false
  *
  */
-
 native bool:EnableHookChain(HookChain:hook);
 
 /*
@@ -83,7 +80,6 @@ native bool:EnableHookChain(HookChain:hook);
  *
  * native SetHookChainReturn(AType:type, any:...);
  */
-
 native SetHookChainReturn(HookChainReturn:type, any:...);
 
 /*
@@ -95,7 +91,6 @@ native SetHookChainReturn(HookChainReturn:type, any:...);
  *
  * native GetHookChainReturn(AType:type, any:...);
  */
-
 native GetHookChainReturn(AType:type, any:...);
 
 /*
@@ -109,7 +104,6 @@ native GetHookChainReturn(AType:type, any:...);
 *
 * native SetHookChainArg(number, AType:type, any:...);
 */
-
 native SetHookChainArg(number, AType:type, any:...);
 
 /*

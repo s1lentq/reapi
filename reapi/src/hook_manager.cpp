@@ -21,6 +21,21 @@ AMX* CAmxxHook::GetAmx() const
 	return m_amx;
 }
 
+int CAmxxHook::GetIndex() const
+{
+	return m_index;
+}
+
+fwdstate CAmxxHook::GetState() const
+{
+	return m_state;
+}
+
+void CAmxxHook::SetState(fwdstate st)
+{
+	m_state = st;
+}
+
 void CHookManager::clearHandlers() const
 {
 #define CLEAR_HOOKLIST(__END__, __START__)\
@@ -31,7 +46,7 @@ void CHookManager::clearHandlers() const
 		m_hooklist[i]->post.clear();\
 		m_hooklist[i]->unregisterHookchain();\
 	}
-	
+
 	CLEAR_HOOKLIST(EngineFunc, engine);
 	CLEAR_HOOKLIST(GameDLL, gamedll);
 	CLEAR_HOOKLIST(CBasePlayer, player);

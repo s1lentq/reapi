@@ -17,14 +17,18 @@ void OnMetaDetach()
 	g_hookManager.clearHandlers();
 }
 
-void ServerActivate_Post(edict_t *pEdictList, int edictCount, int clientMax)
+void ServerActivate(edict_t *pEdictList, int edictCount, int clientMax)
 {
 	g_pEdicts = pEdictList;
-	RETURN_META(MRES_IGNORED);
+	api_cfg.ServerActivate();
+
+	SET_META_RESULT(MRES_IGNORED);
 }
 
 void ServerDeactivate_Post()
 {
+	api_cfg.ServerActivate();
 	g_hookManager.clearHandlers();
-	RETURN_META(MRES_IGNORED);
+
+	SET_META_RESULT(MRES_IGNORED);
 }

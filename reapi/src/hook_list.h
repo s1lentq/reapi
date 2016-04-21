@@ -1,10 +1,10 @@
 #pragma once
 
 #define MAX_REGION_RANGE		1024
-#define BEGIN_FUNC_REGION(x)			(MAX_REGION_RANGE * hooklist_t::hooks_tables_e::ht_##x)
+#define BEGIN_FUNC_REGION(x)		(MAX_REGION_RANGE * hooklist_t::hooks_tables_e::ht_##x)
 #define MAX_HOOK_FORWARDS		1024
 
-typedef bool (*ablfunc_t)();
+typedef bool (*reqfunc_t)();
 typedef int (*regfunc_t)(AMX *, const char *);
 typedef void (*regchain_t)();
 
@@ -31,8 +31,28 @@ struct regfunc
 	}
 
 	template<typename T, typename R>
+	regfunc(R (*)(T *, CBaseAnimating *)) {
+		func = [](AMX *amx, const char *name) { return g_amxxapi.RegisterSPForwardByName(amx, name, FP_CELL, FP_DONE); };
+	}
+
+	template<typename T, typename R>
 	regfunc(R (*)(T *, CBasePlayer *)) {
 		func = [](AMX *amx, const char *name) { return g_amxxapi.RegisterSPForwardByName(amx, name, FP_CELL, FP_DONE); };
+	}
+
+	template<typename T, typename R>
+	regfunc(R (*)(T *, CBasePlayer *, const char *)) {
+		func = [](AMX *amx, const char *name) { return g_amxxapi.RegisterSPForwardByName(amx, name, FP_CELL, FP_STRING, FP_DONE); };
+	}
+
+	template<typename T, typename R>
+	regfunc(R (*)(T *, CBasePlayer *, bool)) {
+		func = [](AMX *amx, const char *name) { return g_amxxapi.RegisterSPForwardByName(amx, name, FP_CELL, FP_CELL, FP_DONE); };
+	}
+
+	template<typename T, typename R>
+	regfunc(R (*)(T *, CBasePlayer *, PLAYER_ANIM)) {
+		func = [](AMX *amx, const char *name) { return g_amxxapi.RegisterSPForwardByName(amx, name, FP_CELL, FP_CELL, FP_DONE); };
 	}
 
 	template<typename T, typename R>
@@ -57,7 +77,7 @@ struct regfunc
 
 	template<typename T, typename R>
 	regfunc(R (*)(T *, CBasePlayer *, int, BOOL)) {
-		func = [](AMX *amx, const char *name) { return g_amxxapi.RegisterSPForwardByName(amx, name, FP_CELL, FP_CELL, FP_DONE); };
+		func = [](AMX *amx, const char *name) { return g_amxxapi.RegisterSPForwardByName(amx, name, FP_CELL, FP_CELL, FP_CELL, FP_DONE); };
 	}
 
 	template<typename T, typename R>
@@ -72,12 +92,22 @@ struct regfunc
 
 	template<typename T, typename R>
 	regfunc(R (*)(T *, CBasePlayer *, float, float, float, int)) {
-		func = [](AMX *amx, const char *name) { return g_amxxapi.RegisterSPForwardByName(amx, name, FP_FLOAT, FP_FLOAT, FP_FLOAT, FP_CELL, FP_DONE); };
+		func = [](AMX *amx, const char *name) { return g_amxxapi.RegisterSPForwardByName(amx, name, FP_CELL, FP_FLOAT, FP_FLOAT, FP_FLOAT, FP_CELL, FP_DONE); };
 	}
 
 	template<typename T, typename R>
 	regfunc(R (*)(T *, CBasePlayer *, int, bool)) {
-		func = [](AMX *amx, const char *name) { return g_amxxapi.RegisterSPForwardByName(amx, name, FP_CELL, FP_CELL, FP_DONE); };
+		func = [](AMX *amx, const char *name) { return g_amxxapi.RegisterSPForwardByName(amx, name, FP_CELL, FP_CELL, FP_CELL, FP_DONE); };
+	}
+
+	template<typename T, typename R>
+	regfunc(R (*)(T *, CBasePlayer *, entvars_t *, entvars_t *, float, float, int, Vector&)) {
+		func = [](AMX *amx, const char *name) { return g_amxxapi.RegisterSPForwardByName(amx, name, FP_CELL, FP_CELL, FP_CELL, FP_FLOAT, FP_FLOAT, FP_CELL, FP_ARRAY, FP_DONE); };
+	}
+
+	template<typename T, typename R>
+	regfunc(R (*)(T *, CBasePlayer *, entvars_t *, entvars_t *, Vector&, Vector&, TraceResult *)) {
+		func = [](AMX *amx, const char *name) { return g_amxxapi.RegisterSPForwardByName(amx, name, FP_CELL, FP_CELL, FP_CELL, FP_ARRAY, FP_ARRAY, FP_CELL, FP_DONE); };
 	}
 
 	regfunc(const char *error) { UTIL_SysError(error); }	// to cause a amxx module failure.
@@ -95,7 +125,7 @@ struct hook_t
 	const char *func_name;			// function name
 	const char *depend_name;		// platform dependency
 
-	ablfunc_t checkRequirements;
+	reqfunc_t checkRequirements;
 	regfunc_t registerForward;		// AMXX forward registration function
 	regchain_t registerHookchain;		// register re* API hook
 	regchain_t unregisterHookchain;		// unregister re* API hook
@@ -103,6 +133,7 @@ struct hook_t
 
 extern hook_t hooklist_engine[];
 extern hook_t hooklist_gamedll[];
+extern hook_t hooklist_animating[];
 extern hook_t hooklist_player[];
 
 struct hooklist_t
@@ -117,6 +148,7 @@ struct hooklist_t
 		switch (table) {
 			CASE(engine)
 			CASE(gamedll)
+			CASE(animating)
 			CASE(player)
 		}
 
@@ -129,6 +161,7 @@ struct hooklist_t
 	{
 		ht_engine,
 		ht_gamedll,
+		ht_animating,
 		ht_player,
 
 		ht_end
@@ -181,9 +214,19 @@ enum EngineFunc
 enum GamedllFunc
 {
 	RH_GetForceCamera = BEGIN_FUNC_REGION(gamedll),
+	RH_PlayerBlind,
+	RH_RadiusFlash_TraceLine,
 
 	// [...]
 	RH_GameDLL_End
+};
+
+enum GamedllFunc_CBaseAnimating
+{
+	RH_CBaseAnimating_ResetSequenceInfo = BEGIN_FUNC_REGION(animating),
+
+	// [...]
+	RH_CBaseAnimating_End
 };
 
 enum GamedllFunc_CBasePlayer
@@ -213,6 +256,11 @@ enum GamedllFunc_CBasePlayer
 	RH_CBasePlayer_Blind,
 
 	RH_CBasePlayer_Observer_IsValidTarget,
+	RH_CBasePlayer_SetAnimation,
+	RH_CBasePlayer_GiveDefaultItems,
+	RH_CBasePlayer_GiveNamedItem,
+	RH_CBasePlayer_AddAccount,
+	RH_CBasePlayer_GiveShield,
 
 	// [...]
 	RH_CBasePlayer_End

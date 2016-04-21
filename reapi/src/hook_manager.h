@@ -1,8 +1,6 @@
 #pragma once
 #include "hook_list.h"
 
-//#define MAX_RANGE_HOOKS		RH_EngineFunc_End + RH_GameDLL_End + RH_CBasePlayer_End
-
 enum fwdstate
 {
 	FSTATE_INVALID = 0,
@@ -14,14 +12,15 @@ enum fwdstate
 class CAmxxHook
 {
 public:
-	CAmxxHook(AMX* amx, int forward_index) : m_forward(forward_index), m_state(FSTATE_ENABLED), m_amx(amx) {};
+	CAmxxHook(AMX* amx, int index) : m_index(index), m_state(FSTATE_ENABLED), m_amx(amx) {};
 	
-	int GetForwardID() const { return m_forward; }
-	fwdstate GetState() const { return m_state; }
+	int GetIndex() const;
+	fwdstate GetState() const;
 	AMX* GetAmx() const;
+	void SetState(fwdstate st);
 
-public:
-	int m_forward;
+private:
+	int m_index;
 	fwdstate m_state;
 	AMX* m_amx;
 };
