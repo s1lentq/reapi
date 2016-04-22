@@ -10,5 +10,5 @@ public plugin_init()
 public CBasePlayer_GiveAmmo(const this, iAmount, szName[], iMax)
 {
 	server_print("	-> CBasePlayer_GiveAmmo: index:(%d), amount:(%d), name:(%s), max:(%d)", this, iAmount, szName, iMax);
-	return RH_IGNORED;
+	return HC_CONTINUE;
 }
