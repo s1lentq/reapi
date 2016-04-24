@@ -245,6 +245,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="..\src\reapi_utils.cpp" />
     <ClCompile Include="..\src\sdk_util.cpp" />
   </ItemGroup>
   <ItemGroup>

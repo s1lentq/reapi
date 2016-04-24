@@ -698,6 +698,9 @@
     <ClCompile Include="..\src\natives_misc.cpp">
       <Filter>src\natives</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\reapi_utils.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\extra\amxmodx\scripting\include\reapi.inc">

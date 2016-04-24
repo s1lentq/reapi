@@ -136,7 +136,7 @@ static cell AMX_NATIVE_CALL SetHookChainReturn(AMX *amx, cell *params)
 	case ATYPE_FLOAT:
 		retVal._interger = *srcAddr;
 		break;
-	
+
 	case ATYPE_STRING:
 	{
 		if (retVal._string != nullptr)
@@ -271,7 +271,7 @@ AMX_NATIVE_INFO HookChain_Natives[] =
 
 	{ "EnableHookChain", EnableHookChain },
 	{ "DisableHookChain", DisableHookChain },
-	
+
 	{ "SetHookChainReturn", SetHookChainReturn },
 	{ "GetHookChainReturn", GetHookChainReturn },
 

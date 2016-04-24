@@ -31,7 +31,7 @@ int regmember::current_cell = 1;
 
 #define GM_MEMBERS(mx, mtype) ((!(mx & (MAX_REGION_RANGE - 1)) ? regmember::current_cell = 1, true : false) || (mx & (MAX_REGION_RANGE - 1)) == regmember::current_cell++) ? regmember(((CHalfLifeMultiplay *)&mem_dummy)->##mx, sizeof(((CHalfLifeMultiplay *)&mem_dummy)->##mx), offsetof(CHalfLifeMultiplay, mx), mtype) : regmember(#mx " doesn't match member definition")
 #define GM_VOICE_MEMBERS(mx, mtype) ((!(mx & (MAX_REGION_RANGE - 1)) ? regmember::current_cell = 1, true : false) || (mx & (MAX_REGION_RANGE - 1)) == regmember::current_cell++) ? regmember(((CVoiceGameMgr *)&mem_dummy)->##mx, sizeof(((CVoiceGameMgr *)&mem_dummy)->##mx), offsetof(CVoiceGameMgr, mx), mtype) : regmember(#mx " doesn't match member definition")
-member_t memberlist_gamerules[] = {	
+member_t memberlist_gamerules[] = {
 	GM_MEMBERS(m_bFreezePeriod, MEMBER_INTEGER),
 	GM_MEMBERS(m_bBombDropped, MEMBER_INTEGER),
 	// m_VoiceGameMgr ->
@@ -348,7 +348,7 @@ member_t memberlist_player[] = {
 memberlist_t memberlist;
 
 member_t *memberlist_t::operator[](size_t members) const
-{	
+{
 	#define CASE(h)	case ht_##h: if (index < arraysize(memberlist_##h)) return &memberlist_##h[index]; else break;
 
 	const auto table = members_tables_e(members / MAX_REGION_RANGE);

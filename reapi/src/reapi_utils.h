@@ -8,6 +8,7 @@ char(&ArraySizeHelper(T(&array)[N]))[N];
 #define ENTINDEX indexOfEdict
 
 extern edict_t* g_pEdicts;
+extern enginefuncs_t* g_pengfuncsTable;
 
 inline size_t indexOfEdict(edict_t* ed)
 {
@@ -77,5 +78,8 @@ inline T get_member_direct(edict_t *pEntity, int offset, int element = 0, int si
 {
 	return get_member_direct<T>(pEntity->pvPrivateData, offset, element, size);
 }
+
+void Broadcast(const char *sentence);
+void UpdateTeamScores();
 
 extern void __declspec(noreturn) UTIL_SysError(const char *fmt, ...);

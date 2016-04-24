@@ -55,7 +55,7 @@ struct amxx_module_info_s
 
 /* calling convention for native functions */
 #if !defined AMX_NATIVE_CALL
-#define AMX_NATIVE_CALL
+#define AMX_NATIVE_CALL FORCE_STACK_ALIGN
 #endif
 /* calling convention for all interface functions and callback functions */
 #if !defined AMXAPI

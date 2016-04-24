@@ -63,42 +63,10 @@ struct hooklist_t
 
 enum EngineFunc
 {
-	//RH_Steam_NotifyClientConnect = 0,
-	//RH_SV_ConnectClient,
-	//RH_SV_GetIDString,
-	//RH_SV_SendServerinfo,
-	//RH_SV_CheckProtocol,
-	//RH_SVC_GetChallenge,
-	//RH_SV_CheckKeyInfo,
-	//RH_SV_CheckIPRestrictions,
-	//RH_SV_FinishCertificateCheck,
-	//RH_Steam_NotifyBotConnect,
-	//RH_SV_SerializeSteamid,
-	//RH_SV_CompareUserID,
-	//RH_Steam_NotifyClientDisconnect,
-	//RH_NET_GetPacketPreprocessor,
-	//RH_ValidateCommand,
-	//RH_ClientConnected,
-	//RH_SV_HandleClientMessage,
-	//RH_Mod_LoadBrushModel,
-	//RH_Mod_LoadStudioModel,
-	//RH_ExecuteServerStringCmd,
-	//RH_SV_EmitEvents,
-	//RH_EV_PlayReliableEvent,
 	RH_SV_StartSound = BEGIN_FUNC_REGION(engine),
-	//RH_PF_Remove_I,
-	//RH_PF_BuildSoundMsg_I,
-	//RH_SV_WriteFullClientUpdate,
-	//RH_SV_CheckConsistencyResponse,
 	RH_SV_DropClient,
 	RH_SV_ActivateServer,
-	//RH_SV_WriteVoiceCodec,
-	//RH_Steam_GSGetSteamID,
-	//RH_SV_TransferConsistencyInfo,
-	//RH_Steam_GSBUpdateUserData,
 	RH_Cvar_DirectSet,
-	//RH_SV_EstablishTimeBase,
-	//RH_SV_Spawn_f,
 
 	// [...]
 	RH_EngineFunc_End
@@ -106,55 +74,56 @@ enum EngineFunc
 
 enum GamedllFunc
 {
-	RH_GetForceCamera = BEGIN_FUNC_REGION(gamedll),
-	RH_PlayerBlind,
-	RH_RadiusFlash_TraceLine,
+	RG_GetForceCamera = BEGIN_FUNC_REGION(gamedll),
+	RG_PlayerBlind,
+	RG_RadiusFlash_TraceLine,
+	RG_RoundEnd,
 
 	// [...]
-	RH_GameDLL_End
+	RG_End
 };
 
 enum GamedllFunc_CBaseAnimating
 {
-	RH_CBaseAnimating_ResetSequenceInfo = BEGIN_FUNC_REGION(animating),
+	RG_CBaseAnimating_ResetSequenceInfo = BEGIN_FUNC_REGION(animating),
 
 	// [...]
-	RH_CBaseAnimating_End
+	RG_CBaseAnimating_End
 };
 
 enum GamedllFunc_CBasePlayer
 {
 	// CBasePlayer virtual
-	RH_CBasePlayer_Spawn = BEGIN_FUNC_REGION(player),
-	RH_CBasePlayer_Precache,
-	RH_CBasePlayer_ObjectCaps,
-	RH_CBasePlayer_Classify,
-	RH_CBasePlayer_TraceAttack,
-	RH_CBasePlayer_TakeDamage,
-	RH_CBasePlayer_TakeHealth,
-	RH_CBasePlayer_Killed,
-	RH_CBasePlayer_AddPoints,
-	RH_CBasePlayer_AddPointsToTeam,
-	RH_CBasePlayer_AddPlayerItem,
-	RH_CBasePlayer_RemovePlayerItem,
-	RH_CBasePlayer_GiveAmmo,
-	RH_CBasePlayer_ResetMaxSpeed,
-	RH_CBasePlayer_Jump,
-	RH_CBasePlayer_Duck,
-	RH_CBasePlayer_PreThink,
-	RH_CBasePlayer_PostThink,
-	RH_CBasePlayer_UpdateClientData,
-	RH_CBasePlayer_ImpulseCommands,
-	RH_CBasePlayer_RoundRespawn,
-	RH_CBasePlayer_Blind,
+	RG_CBasePlayer_Spawn = BEGIN_FUNC_REGION(player),
+	RG_CBasePlayer_Precache,
+	RG_CBasePlayer_ObjectCaps,
+	RG_CBasePlayer_Classify,
+	RG_CBasePlayer_TraceAttack,
+	RG_CBasePlayer_TakeDamage,
+	RG_CBasePlayer_TakeHealth,
+	RG_CBasePlayer_Killed,
+	RG_CBasePlayer_AddPoints,
+	RG_CBasePlayer_AddPointsToTeam,
+	RG_CBasePlayer_AddPlayerItem,
+	RG_CBasePlayer_RemovePlayerItem,
+	RG_CBasePlayer_GiveAmmo,
+	RG_CBasePlayer_ResetMaxSpeed,
+	RG_CBasePlayer_Jump,
+	RG_CBasePlayer_Duck,
+	RG_CBasePlayer_PreThink,
+	RG_CBasePlayer_PostThink,
+	RG_CBasePlayer_UpdateClientData,
+	RG_CBasePlayer_ImpulseCommands,
+	RG_CBasePlayer_RoundRespawn,
+	RG_CBasePlayer_Blind,
 
-	RH_CBasePlayer_Observer_IsValidTarget,
-	RH_CBasePlayer_SetAnimation,
-	RH_CBasePlayer_GiveDefaultItems,
-	RH_CBasePlayer_GiveNamedItem,
-	RH_CBasePlayer_AddAccount,
-	RH_CBasePlayer_GiveShield,
+	RG_CBasePlayer_Observer_IsValidTarget,
+	RG_CBasePlayer_SetAnimation,
+	RG_CBasePlayer_GiveDefaultItems,
+	RG_CBasePlayer_GiveNamedItem,
+	RG_CBasePlayer_AddAccount,
+	RG_CBasePlayer_GiveShield,
 
 	// [...]
-	RH_CBasePlayer_End
+	RG_CBasePlayer_End
 };

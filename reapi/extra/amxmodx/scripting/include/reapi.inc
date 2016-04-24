@@ -17,13 +17,13 @@
 #include <reapi_engine.inc>	// NOTE: only for ReHLDS
 #include <reapi_gamedll.inc>	// NOTE: only for gamedll Counter-Strike (ReGameDLL_CS)
 
-// return constants
+// hookchain return type
 enum
 {
-	HC_CONTINUE = 0,
-	HC_OVERRIDE,
-	HC_SUPERCEDE,
-	HC_BREAK
+	HC_CONTINUE = 0,	// plugin didn't take any action
+	HC_OVERRIDE,		// call real function, but use my return value
+	HC_SUPERCEDE,		// skip real function, use my return value
+	HC_BREAK		// skip a call each forward in AMXX plugins
 };
 
 // hookchain types
@@ -80,7 +80,7 @@ native bool:EnableHookChain(HookChain:hook);
  *
  * native SetHookChainReturn(AType:type, any:...);
  */
-native SetHookChainReturn(HookChainReturn:type, any:...);
+native SetHookChainReturn(AType:type, any:...);
 
 /*
  * Gets the return value of a hookchain.

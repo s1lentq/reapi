@@ -4,6 +4,7 @@
 meta_globals_t *gpMetaGlobals;
 gamedll_funcs_t *gpGamedllFuncs;
 mutil_funcs_t *gpMetaUtilFuncs;
+enginefuncs_t *g_pengfuncsTable;
 
 plugin_info_t Plugin_info =
 {
@@ -51,6 +52,7 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME now, META_FUNCTIONS *pFunctionTable, m
 		return FALSE;
 	}
 
+	GET_HOOK_TABLES(PLID, &g_pengfuncsTable, nullptr, nullptr);
 	memcpy(pFunctionTable, &gMetaFunctionTable, sizeof(META_FUNCTIONS));
 	return TRUE;
 }

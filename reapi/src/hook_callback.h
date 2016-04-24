@@ -3,10 +3,10 @@
 // hookchain return type
 enum HookChainState
 {
-	HC_CONTINUE = 0,
-	HC_OVERRIDE,
-	HC_SUPERCEDE,
-	HC_BREAK
+	HC_CONTINUE = 0,	// plugin didn't take any action
+	HC_OVERRIDE,		// call real function, but use my return value
+	HC_SUPERCEDE,		// skip real function, use my return value
+	HC_BREAK		// skip all forwards and real function, use my return value
 };
 
 // api types
@@ -200,6 +200,7 @@ void Cvar_DirectSet(IRehldsHook_Cvar_DirectSet *chain, cvar_t *var, const char *
 int GetForceCamera(IReGameHook_GetForceCamera *chain, CBasePlayer *pObserver);
 void PlayerBlind(IReGameHook_PlayerBlind *chain, CBasePlayer *pPlayer, entvars_t *pevInflictor, entvars_t *pevAttacker, float fadeTime, float fadeHold, int alpha, Vector& color);
 void RadiusFlash_TraceLine(IReGameHook_RadiusFlash_TraceLine *chain, CBasePlayer *pPlayer, entvars_t *pevInflictor, entvars_t *pevAttacker, Vector& vecSrc, Vector& vecSpot, TraceResult *ptr);
+bool RoundEnd(IReGameHook_RoundEnd *chain, int winStatus, ScenarionEventEndRound event, float tmDelay);
 
 // regamedll functions - player
 void CBasePlayer_Spawn(IReGameHook_CBasePlayer_Spawn *chain, CBasePlayer *pthis);

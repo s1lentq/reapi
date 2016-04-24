@@ -11,6 +11,35 @@
 #define SIGNAL_ESCAPE		(1<<3)
 #define SIGNAL_VIPSAFETY	(1<<4)
 
+enum WinStatus
+{
+	WINSTATUS_CTS = 1,
+	WINSTATUS_TERRORISTS,
+	WINSTATUS_DRAW,
+};
+
+// used for EndRoundMessage() logged messages
+enum ScenarionEventEndRound
+{
+	ROUND_NONE,
+	ROUND_TARGET_BOMB,
+	ROUND_VIP_ESCAPED,
+	ROUND_VIP_ASSASSINATED,
+	ROUND_TERRORISTS_ESCAPED,
+	ROUND_CTS_PREVENT_ESCAPE,
+	ROUND_ESCAPING_TERRORISTS_NEUTRALIZED,
+	ROUND_BOMB_DEFUSED,
+	ROUND_CTS_WIN,
+	ROUND_TERRORISTS_WIN,
+	ROUND_END_DRAW,
+	ROUND_ALL_HOSTAGES_RESCUED,
+	ROUND_TARGET_SAVED,
+	ROUND_HOSTAGE_NOT_RESCUED,
+	ROUND_TERRORISTS_NOT_ESCAPED,
+	ROUND_VIP_NOT_ESCAPED,
+	ROUND_GAME_COMMENCE,
+};
+
 enum PLAYER_ANIM
 {
 	PLAYER_IDLE,
@@ -33,22 +62,28 @@ enum GamedllFunc
 	 * Return type:		int
 	 * Params:		(const pObserver)
 	 */
-	RH_GetForceCamera = 1024,
+	RG_GetForceCamera = 1024,
 
 	/**
 	 * Description:		-
 	 * Params:		(const index, const inflictor, const attacker, const Float:fadeTime, const Float:fadeHold, const alpha, Float:color[3])
 	 */
-	RH_PlayerBlind,
+	RG_PlayerBlind,
 
 	/**
 	 * Description:		-
 	 * Params:		(const index, inflictor, attacker, Float:vecSrc[3], Float:vecSpot[3], tracehandle)
 	 */
-	RH_RadiusFlash_TraceLine,
+	RG_RadiusFlash_TraceLine,
+
+	/**
+	 * Description:		-
+	 * Params:		(WinStatus:status, ScenarionEventEndRound:event, Float:tmDelay)
+	 */
+	RG_RoundEnd,
 
 	// [...]
-	RH_GameDLL_End
+	RG_End
 };
 
 enum GamedllFunc_CBaseAnimating
@@ -57,10 +92,10 @@ enum GamedllFunc_CBaseAnimating
 	 * Description:		-
 	 * Params:		(const this)
 	 */
-	RH_CBaseAnimating_ResetSequenceInfo = 2048,
+	RG_CBaseAnimating_ResetSequenceInfo = 2048,
 
 	// [...]
-	RH_CBaseAnimating_End
+	RG_CBaseAnimating_End
 };
 
 enum GamedllFunc_CBasePlayer
@@ -69,149 +104,149 @@ enum GamedllFunc_CBasePlayer
 	 * Description:		-
 	 * Params:		(const this)
 	 */
-	RH_CBasePlayer_Spawn = 3072,
+	RG_CBasePlayer_Spawn = 3072,
 
 	/**
 	 * Description:		-
 	 * Params:		(const this)
 	 */
-	RH_CBasePlayer_Precache,
-
-	/**
-	 * Description:		-
-	 * Return type:		int
-	 * Params:		(const this)
-	 */
-	RH_CBasePlayer_ObjectCaps,
-
+	RG_CBasePlayer_Precache,
 
 	/**
 	 * Description:		-
 	 * Return type:		int
 	 * Params:		(const this)
 	 */
-	RH_CBasePlayer_Classify,
+	RG_CBasePlayer_ObjectCaps,
+
+
+	/**
+	 * Description:		-
+	 * Return type:		int
+	 * Params:		(const this)
+	 */
+	RG_CBasePlayer_Classify,
 
 	/**
 	 * Description:		-
 	 * Params:		(const this, pevAttacker, Float:flDamage, Float:vecDir[3], tracehandle, bitsDamageType)
 	 */
-	RH_CBasePlayer_TraceAttack,
+	RG_CBasePlayer_TraceAttack,
 
 	/**
 	 * Description:		-
 	 * Return type:		int
 	 * Params:		(const this, pevInflictor, pevAttacker, Float:flDamage, bitsDamageType)
 	 */
-	RH_CBasePlayer_TakeDamage,
+	RG_CBasePlayer_TakeDamage,
 
 	/**
 	 * Description:		-
 	 * Params:		(const this, Float:flHealth, bitsDamageType)
 	 */
-	RH_CBasePlayer_TakeHealth,
+	RG_CBasePlayer_TakeHealth,
 
 	/**
 	 * Description:		-
 	 * Params:		(const this, pevAttacker, iGib)
 	 */
-	RH_CBasePlayer_Killed,
+	RG_CBasePlayer_Killed,
 
 	/**
 	 * Description:		-
 	 * Params:		(const this, score, bAllowNegativeScore)
 	 */
-	RH_CBasePlayer_AddPoints,
+	RG_CBasePlayer_AddPoints,
 
 	/**
 	 * Description:		-
 	 * Params:		(const this, score, bAllowNegativeScore)
 	 */
-	RH_CBasePlayer_AddPointsToTeam,
+	RG_CBasePlayer_AddPointsToTeam,
 
 	/**
 	 * Description:		-
 	 * Return type:		BOOL
 	 * Params:		(const this, const pItem)
 	 */
-	RH_CBasePlayer_AddPlayerItem,
+	RG_CBasePlayer_AddPlayerItem,
 
 	/**
 	 * Description:		-
 	 * Return type:		BOOL
 	 * Params:		(const this, const pItem)
 	 */
-	RH_CBasePlayer_RemovePlayerItem,
+	RG_CBasePlayer_RemovePlayerItem,
 
 	/**
 	 * Description:		-
 	 * Return type:		int
 	 * Params:		(const this, iAmount, szName[], iMax)
 	 */
-	RH_CBasePlayer_GiveAmmo,
+	RG_CBasePlayer_GiveAmmo,
 
 	/**
 	 * Description:		-
 	 * Params:		(const this)
 	 */
-	RH_CBasePlayer_ResetMaxSpeed,
+	RG_CBasePlayer_ResetMaxSpeed,
 
 	/**
 	 * Description:		-
 	 * Params:		(const this)
 	 */
-	RH_CBasePlayer_Jump,
+	RG_CBasePlayer_Jump,
 
 	/**
 	 * Description:		-
 	 * Params:		(const this)
 	 */
-	RH_CBasePlayer_Duck,
+	RG_CBasePlayer_Duck,
 
 	/**
 	 * Description:		-
 	 * Params:		(const this)
 	 */
-	RH_CBasePlayer_PreThink,
+	RG_CBasePlayer_PreThink,
 
 	/**
 	 * Description:		-
 	 * Params:		(const this)
 	 */
-	RH_CBasePlayer_PostThink,
+	RG_CBasePlayer_PostThink,
 
 	/**
 	 * Description:		-
 	 * Params:		(const this)
 	 */
-	RH_CBasePlayer_UpdateClientData,
+	RG_CBasePlayer_UpdateClientData,
 
 	/**
 	 * Description:		-
 	 * Params:		(const this)
 	 */
-	RH_CBasePlayer_ImpulseCommands,
+	RG_CBasePlayer_ImpulseCommands,
 
 	/**
 	 * Description:		-
 	 * Params:		(const this)
 	 */
-	RH_CBasePlayer_RoundRespawn,
+	RG_CBasePlayer_RoundRespawn,
 
 	/**
 	 * Description:		-
 	 * Params:		(const this, Float:flUntilTime, Float:flHoldTime, Float:flFadeTime, iAlpha)
 	 */
-	RH_CBasePlayer_Blind,
+	RG_CBasePlayer_Blind,
 
 	/**
 	 * Description:		-
 	 * Params:		(const this, iPlayerIndex, bool:bSameTeam)
 	 */
-	RH_CBasePlayer_Observer_IsValidTarget,
+	RG_CBasePlayer_Observer_IsValidTarget,
 
 	// [...]
-	RH_CBasePlayer_End
+	RG_CBasePlayer_End
 };
 
 // CSGameRules

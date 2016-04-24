@@ -1,14 +1,16 @@
 #include "precompiled.h"
 
-inline size_t getFwdParamType(void(*)(int))		{ return FP_CELL; }
-inline size_t getFwdParamType(void(*)(bool))		{ return FP_CELL; }
-inline size_t getFwdParamType(void(*)(Vector&))		{ return FP_CELL; }
-inline size_t getFwdParamType(void(*)(PLAYER_ANIM))	{ return FP_CELL; }
-inline size_t getFwdParamType(void(*)(float))		{ return FP_FLOAT; }
-inline size_t getFwdParamType(void(*)(const char *))	{ return FP_STRING; }
+inline size_t getFwdParamType(void(*)(int))			{ return FP_CELL; }
+inline size_t getFwdParamType(void(*)(bool))			{ return FP_CELL; }
+inline size_t getFwdParamType(void(*)(Vector&))			{ return FP_ARRAY; }
+inline size_t getFwdParamType(void(*)(PLAYER_ANIM))		{ return FP_CELL; }
+inline size_t getFwdParamType(void(*)(ScenarionEventEndRound))	{ return FP_CELL; }
+inline size_t getFwdParamType(void(*)(float))			{ return FP_FLOAT; }
+inline size_t getFwdParamType(void(*)(const char *))		{ return FP_STRING; }
+inline size_t getFwdParamType(void(*)(char *))			{ return FP_STRING; }
 
 template<typename T>
-inline size_t getFwdParamType(void(*)(T *))		{ return FP_CELL; }
+inline size_t getFwdParamType(void(*)(T *))			{ return FP_CELL; }
 
 template<size_t current = 0>
 void setupParamTypes(size_t param_types[], void (*)())
@@ -66,11 +68,12 @@ hook_t hooklist_engine[] = {
 	ENG(Cvar_DirectSet)
 };
 
-#define DLL(h) { {}, {}, #h, "ReGameDLL", [](){ return api_cfg.hasReGameDLL(); }, ((!(RH_##h & (MAX_REGION_RANGE - 1)) ? regfunc::current_cell = 1, true : false) || (RH_##h & (MAX_REGION_RANGE - 1)) == regfunc::current_cell++) ? regfunc(h) : regfunc(#h " doesn't match hook definition"), [](){ g_ReGameHookchains->##h##()->registerHook(&##h); }, [](){ g_ReGameHookchains->##h##()->unregisterHook(&##h); }}
+#define DLL(h) { {}, {}, #h, "ReGameDLL", [](){ return api_cfg.hasReGameDLL(); }, ((!(RG_##h & (MAX_REGION_RANGE - 1)) ? regfunc::current_cell = 1, true : false) || (RG_##h & (MAX_REGION_RANGE - 1)) == regfunc::current_cell++) ? regfunc(h) : regfunc(#h " doesn't match hook definition"), [](){ g_ReGameHookchains->##h##()->registerHook(&##h); }, [](){ g_ReGameHookchains->##h##()->unregisterHook(&##h); }}
 hook_t hooklist_gamedll[] = {
 	DLL(GetForceCamera),
 	DLL(PlayerBlind),
-	DLL(RadiusFlash_TraceLine)
+	DLL(RadiusFlash_TraceLine),
+	DLL(RoundEnd)
 };
 
 hook_t hooklist_animating[] = {

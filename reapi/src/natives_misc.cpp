@@ -164,6 +164,77 @@ static cell AMX_NATIVE_CALL rg_fire_bullets3(AMX *amx, cell *params)
 	return TRUE;
 }
 
+struct {
+	const char *msg;
+	const char *sentence;
+	size_t status;
+} msg_sentence_list[] = {
+	{ "", "" },									// ROUND_NONE
+	{ "#Target_Bombed",                     "terwin",     WINSTATUS_TERRORISTS  },	// ROUND_TARGET_BOMB
+	{ "#VIP_Escaped",                       "ctwin",      WINSTATUS_CTS         },	// ROUND_VIP_ESCAPED
+	{ "#VIP_Assassinated",                  "terwin",     WINSTATUS_TERRORISTS  },	// ROUND_VIP_ASSASSINATED
+	{ "#Terrorists_Escaped",                "terwin",     WINSTATUS_TERRORISTS  },	// ROUND_TERRORISTS_ESCAPED
+	{ "#CTs_PreventEscape",                 "ctwin",      WINSTATUS_CTS         },	// ROUND_CTS_PREVENT_ESCAPE
+	{ "#Escaping_Terrorists_Neutralized",   "ctwin",      WINSTATUS_CTS         },	// ROUND_ESCAPING_TERRORISTS_NEUTRALIZED
+	{ "#Bomb_Defused",                      "ctwin",      WINSTATUS_CTS         },	// ROUND_BOMB_DEFUSED
+	{ "#CTs_Win",                           "ctwin",      WINSTATUS_CTS         },	// ROUND_CTS_WIN
+	{ "#Terrorists_Win",                    "terwin",     WINSTATUS_TERRORISTS  },	// ROUND_TERRORISTS_WIN
+	{ "#Round_Draw",                        "rounddraw",  WINSTATUS_DRAW        },	// ROUND_END_DRAW
+	{ "#All_Hostages_Rescued",              "ctwin",      WINSTATUS_CTS         },	// ROUND_ALL_HOSTAGES_RESCUED
+	{ "#Target_Saved",                      "ctwin",      WINSTATUS_CTS         },	// ROUND_TARGET_SAVED
+	{ "#Hostages_Not_Rescued",              "terwin",     WINSTATUS_TERRORISTS  },	// ROUND_HOSTAGE_NOT_RESCUED
+	{ "#Terrorists_Not_Escaped",            "ctwin",      WINSTATUS_CTS         },	// ROUND_TERRORISTS_NOT_ESCAPED
+	{ "#VIP_Not_Escaped",                   "terwin",     WINSTATUS_TERRORISTS  },	// ROUND_VIP_NOT_ESCAPED
+	{ "#Game_Commencing",                   "",           WINSTATUS_DRAW        },	// ROUND_GAME_COMMENCE
+};
+
+// native rg_round_end(Float:tmDelay, WinStatus:st, ScenarionEventEndRound:event = ROUND_NONE, const message[] = "default", const sentence[] = "default");
+static cell AMX_NATIVE_CALL rg_round_end(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_delay, arg_win, arg_event, arg_message, arg_sentence, arg_silent };
+
+	size_t winstatus = params[arg_win];
+	if (winstatus <= 0) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "rg_round_end: unknown win-status %i", winstatus);
+		return FALSE;
+	}
+
+	const char *_sentence, *_message;
+	ScenarionEventEndRound event = static_cast<ScenarionEventEndRound>(params[arg_event]);
+
+	_sentence = getAmxString(amx, params[arg_sentence]);
+	_message = getAmxString(amx, params[arg_message]);
+
+	if (event != ROUND_NONE) {
+		auto& lst = msg_sentence_list[event];
+		if (strcmp(_sentence, "default") == 0)
+			_sentence = lst.sentence;
+		if (strcmp(_message, "default") == 0)
+			_message = lst.msg;
+	}
+
+	if (_sentence[0])
+		Broadcast(_sentence);
+
+	if (_message[0])
+		g_ReGameFuncs->EndRoundMessage(_message, event);
+
+	(*g_pCSGameRules)->TerminateRound(*(float *)&params[arg_delay], winstatus);
+	return TRUE;
+}
+
+// native rg_update_teamscores(iCtsWins = 0, iTsWins = 0, bool:bAdd = true);
+static cell AMX_NATIVE_CALL rg_update_teamscores(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_cts, arg_ts, arg_add };
+
+	(*g_pCSGameRules)->m_iNumCTWins = ((params[arg_add] != 0) ? (*g_pCSGameRules)->m_iNumCTWins : 0) + params[arg_cts];
+	(*g_pCSGameRules)->m_iNumTerroristWins = ((params[arg_add] != 0) ? (*g_pCSGameRules)->m_iNumTerroristWins : 0) + params[arg_ts];
+	UpdateTeamScores();
+
+	return TRUE;
+}
+
 AMX_NATIVE_INFO Misc_Natives[] =
 {
 	{ "rg_set_animation", rg_set_animation },
@@ -179,6 +250,9 @@ AMX_NATIVE_INFO Misc_Natives[] =
 
 	{ "rg_fire_bullets", rg_fire_bullets },
 	{ "rg_fire_bullets3", rg_fire_bullets3 },
+
+	{ "rg_round_end", rg_round_end },
+	{ "rg_update_teamscores", rg_update_teamscores },
 
 	{ nullptr, nullptr }
 };

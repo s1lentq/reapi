@@ -65,3 +65,6 @@ native rg_multidmg_add(inflictor, victim, Float:flDamage, bitsDamageType);
 
 native rg_fire_bullets(inflictor, attacker, shots, Float:vecSrc[3], Float:vecDirShooting[3], Float:vecSpread[3], Float:flDistance, iBulletType, iTracerFreq, iDamage);
 native Float:[3] rg_fire_bullets3(inflictor, attacker, Float:vecSrc[3], Float:vecDirShooting[3], Float:vecSpread, Float:flDistance, iPenetration, iBulletType, iDamage, Float:flRangeModifier, bool:bPistol, shared_rand);
+
+native rg_round_end(Float:tmDelay, WinStatus:st, ScenarionEventEndRound:event = ROUND_NONE, const message[] = "default", const sentence[] = "default");
+native rg_update_teamscores(iCtsWins = 0, iTsWins = 0, bool:bAdd = true);
