@@ -383,3 +383,15 @@ bool RoundEnd(IReGameHook_RoundEnd *chain, int winStatus, ScenarionEventEndRound
 	
 	return callForward<bool>(RG_RoundEnd, original, winStatus, event, tmDelay);
 }
+
+int g_iClientStartSpeak, g_iClientStopSpeak;
+
+void ClientStartSpeak(size_t clientIndex)
+{
+	g_amxxapi.ExecuteForward(g_iClientStartSpeak, clientIndex);
+}
+
+void ClientStopSpeak(size_t clientIndex)
+{
+	g_amxxapi.ExecuteForward(g_iClientStopSpeak, clientIndex);
+}

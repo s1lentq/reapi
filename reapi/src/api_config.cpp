@@ -2,7 +2,7 @@
 
 CAPI_Config api_cfg;
 
-CAPI_Config::CAPI_Config() : m_api_rehlds(false), m_api_regame(false)
+CAPI_Config::CAPI_Config() : m_api_rehlds(false), m_api_regame(false), m_api_vtc(false)
 {
 
 }
@@ -11,6 +11,7 @@ bool CAPI_Config::Init()
 {
 	m_api_rehlds = RehldsApi_Init();
 	m_api_regame = RegamedllApi_Init();
+	m_api_vtc    = VTC_Api_Init();
 
 	return true;
 }

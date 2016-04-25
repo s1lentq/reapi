@@ -234,3 +234,9 @@ void CBasePlayer_AddAccount(IReGameHook_CBasePlayer_AddAccount *chain, CBasePlay
 void CBasePlayer_GiveShield(IReGameHook_CBasePlayer_GiveShield *chain, CBasePlayer *pthis, bool bDeploy);
 
 void CBaseAnimating_ResetSequenceInfo(IReGameHook_CBaseAnimating_ResetSequenceInfo *chain, CBaseAnimating *pthis);
+
+extern int g_iClientStartSpeak;
+extern int g_iClientStopSpeak;
+
+void ClientStartSpeak(size_t clientIndex);
+void ClientStopSpeak(size_t clientIndex);

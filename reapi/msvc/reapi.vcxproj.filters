@@ -52,6 +52,9 @@
     <Filter Include="src\natives">
       <UniqueIdentifier>{1e41b4f5-768c-437f-af6d-51432194e332}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\mods">
+      <UniqueIdentifier>{669b4426-091f-4cac-9281-f5585a2922fb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\metamod\dllapi.h">
@@ -597,12 +600,6 @@
     <ClInclude Include="..\src\precompiled.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\mod_regamedll_api.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\mod_rehlds_api.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\api_config.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -621,14 +618,29 @@
     <ClInclude Include="..\src\hook_manager.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\natives_hookchains.h">
+    <ClInclude Include="..\src\mods\mod_regamedll_api.h">
+      <Filter>src\mods</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mods\mod_rehlds_api.h">
+      <Filter>src\mods</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mods\mod_vtc_api.h">
+      <Filter>src\mods</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\natives\natives_hookchains.h">
       <Filter>src\natives</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\natives_members.h">
+    <ClInclude Include="..\src\natives\natives_members.h">
       <Filter>src\natives</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\natives_misc.h">
+    <ClInclude Include="..\src\natives\natives_misc.h">
       <Filter>src\natives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\natives\natives_vtc.h">
+      <Filter>src\natives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\vtc_api.h">
+      <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -659,12 +671,6 @@
     <ClCompile Include="..\src\sdk_util.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\mod_regamedll_api.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\mod_rehlds_api.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\api_config.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -689,17 +695,29 @@
     <ClCompile Include="..\src\h_export.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\natives_hookchains.cpp">
-      <Filter>src\natives</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\natives_members.cpp">
-      <Filter>src\natives</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\natives_misc.cpp">
-      <Filter>src\natives</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\reapi_utils.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mods\mod_regamedll_api.cpp">
+      <Filter>src\mods</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mods\mod_rehlds_api.cpp">
+      <Filter>src\mods</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mods\mod_vtc_api.cpp">
+      <Filter>src\mods</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\natives\natives_hookchains.cpp">
+      <Filter>src\natives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\natives\natives_members.cpp">
+      <Filter>src\natives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\natives\natives_misc.cpp">
+      <Filter>src\natives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\natives\natives_vtc.cpp">
+      <Filter>src\natives</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -723,6 +741,9 @@
       <Filter>amxmodx\scripting\include</Filter>
     </None>
     <None Include="..\extra\amxmodx\scripting\include\reapi_gamedll_const.inc">
+      <Filter>amxmodx\scripting\include</Filter>
+    </None>
+    <None Include="..\extra\amxmodx\scripting\include\reapi_misc.inc">
       <Filter>amxmodx\scripting\include</Filter>
     </None>
   </ItemGroup>

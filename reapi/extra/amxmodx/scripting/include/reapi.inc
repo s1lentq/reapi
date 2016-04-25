@@ -16,6 +16,7 @@
 #include <reapi_const.inc>
 #include <reapi_engine.inc>	// NOTE: only for ReHLDS
 #include <reapi_gamedll.inc>	// NOTE: only for gamedll Counter-Strike (ReGameDLL_CS)
+#include <reapi_misc.inc>	// NOTE: Common set of natives and forwards.
 
 // hookchain return type
 enum

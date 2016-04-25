@@ -15,6 +15,11 @@ void OnMetaDetach()
 {
 	// clear all hooks?
 	g_hookManager.clearHandlers();
+
+	if (api_cfg.hasVTC()) {
+		g_pVoiceTranscoderApi->ClientStartSpeak()->unregisterCallback(&ClientStartSpeak);
+		g_pVoiceTranscoderApi->ClientStopSpeak()->unregisterCallback(&ClientStopSpeak);
+	}
 }
 
 void ServerActivate(edict_t *pEdictList, int edictCount, int clientMax)

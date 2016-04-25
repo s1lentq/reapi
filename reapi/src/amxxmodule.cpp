@@ -162,6 +162,7 @@ C_DLLEXPORT int AMXX_Attach(PFN_REQ_FNPTR reqFnptrFunc)
 	RegisterNatives_HookChains();
 	RegisterNatives_Members();
 	RegisterNatives_Misc();
+	RegisterNatives_Vtc();
 
 	return AMXX_OK;
 }
@@ -175,6 +176,12 @@ C_DLLEXPORT int AMXX_PluginsLoaded()
 {
 	int iFwd = g_amxxapi.RegisterForward("__reapi_version_check", ET_IGNORE, FP_CELL, FP_CELL, FP_DONE);
 	g_amxxapi.ExecuteForward(iFwd, REAPI_VERISON_MAJOR, REAPI_VERISON_MINOR);
+
+	if (api_cfg.hasVTC()) {
+
+		g_iClientStartSpeak = g_amxxapi.RegisterForward("VTC_OnClientStartSpeak", ET_IGNORE, FP_CELL, FP_DONE);
+		g_iClientStopSpeak = g_amxxapi.RegisterForward("VTC_OnClientStopSpeak", ET_IGNORE, FP_CELL, FP_DONE);
+	}
 
 	return AMXX_OK;
 }

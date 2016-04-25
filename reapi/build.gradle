@@ -37,7 +37,7 @@ void postEvaluate(NativeBinarySpec b) {
 
 void setupToolchain(NativeBinarySpec b) {
 	ToolchainConfig cfg = rootProject.createToolchainConfig(b)
-	cfg.projectInclude(project, '', '/src', '/include', '/include/metamod', '/include/cssdk/common', '/include/cssdk/dlls', '/include/cssdk/engine', '/include/cssdk/game_shared', '/include/cssdk/pm_shared', '/include/cssdk/public')
+	cfg.projectInclude(project, '', '/src', '/src/mods', '/src/natives', '/include', '/include/metamod', '/include/cssdk/common', '/include/cssdk/dlls', '/include/cssdk/engine', '/include/cssdk/game_shared', '/include/cssdk/pm_shared', '/include/cssdk/public')
 
 	if (cfg instanceof MsvcToolchainConfig) {
 		cfg.compilerOptions.pchConfig = new MsvcToolchainConfig.PrecompiledHeadersConfig(

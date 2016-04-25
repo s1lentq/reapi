@@ -21,10 +21,8 @@
 #include "amxxmodule.h"
 #include "osconfig.h"
 
-// gamedll
-#include "gamerules.h"
-
 // regamedll API
+#include "gamerules.h"
 #include "regamedll_api.h"
 #include "mod_regamedll_api.h"
 
@@ -32,13 +30,19 @@
 #include "rehlds_api.h"
 #include "mod_rehlds_api.h"
 
+// VTC API
+#include "vtc_api.h"
+#include "mod_vtc_api.h"
+
 #include "api_config.h"
 #include "hook_manager.h"
 #include "hook_callback.h"
 #include "member_list.h"
+
 #include "natives_hookchains.h"
 #include "natives_members.h"
 #include "natives_misc.h"
+#include "natives_vtc.h"
 
 #undef DLLEXPORT
 #ifdef _WIN32
