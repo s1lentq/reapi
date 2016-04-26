@@ -13,8 +13,7 @@ enum MType
 	MEMBER_EVARS,			// EVARS *
 	MEMBER_EDICT,			// edict_t *, or edict_t *  (same thing)
 	MEMBER_VECTOR,			// Any vector
-	MEMBER_CHAR_POINTER,		// char *
-	MEMBER_CHAR_ARRAY,		// char []
+	MEMBER_STRING,			// char *, char []
 	MEMBER_INTEGER,			// Any integer or enum
 	MEMBER_SHORT,			// 2 byte integer
 	MEMBER_BYTE,			// a byte

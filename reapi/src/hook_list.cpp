@@ -4,7 +4,7 @@ inline size_t getFwdParamType(void(*)(int))			{ return FP_CELL; }
 inline size_t getFwdParamType(void(*)(bool))			{ return FP_CELL; }
 inline size_t getFwdParamType(void(*)(Vector&))			{ return FP_ARRAY; }
 inline size_t getFwdParamType(void(*)(PLAYER_ANIM))		{ return FP_CELL; }
-inline size_t getFwdParamType(void(*)(ScenarionEventEndRound))	{ return FP_CELL; }
+inline size_t getFwdParamType(void(*)(ScenarioEventEndRound))	{ return FP_CELL; }
 inline size_t getFwdParamType(void(*)(float))			{ return FP_FLOAT; }
 inline size_t getFwdParamType(void(*)(const char *))		{ return FP_STRING; }
 inline size_t getFwdParamType(void(*)(char *))			{ return FP_STRING; }

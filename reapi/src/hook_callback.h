@@ -34,10 +34,12 @@ struct retval_t
 
 inline AType getApiType(int)			{ return ATYPE_INTEGER; }
 inline AType getApiType(unsigned)		{ return ATYPE_INTEGER; }
-inline AType getApiType(cvar_s *)		{ return ATYPE_INTEGER; }
 inline AType getApiType(float)			{ return ATYPE_FLOAT; }
 inline AType getApiType(const char *)	{ return ATYPE_STRING; }
 inline AType getApiType(CBaseEntity *)	{ return ATYPE_CLASSPTR; }
+
+template<typename T>
+inline AType getApiType(T *) { return ATYPE_INTEGER; }
 
 #define MAX_ARGS 12u
 
@@ -200,7 +202,7 @@ void Cvar_DirectSet(IRehldsHook_Cvar_DirectSet *chain, cvar_t *var, const char *
 int GetForceCamera(IReGameHook_GetForceCamera *chain, CBasePlayer *pObserver);
 void PlayerBlind(IReGameHook_PlayerBlind *chain, CBasePlayer *pPlayer, entvars_t *pevInflictor, entvars_t *pevAttacker, float fadeTime, float fadeHold, int alpha, Vector& color);
 void RadiusFlash_TraceLine(IReGameHook_RadiusFlash_TraceLine *chain, CBasePlayer *pPlayer, entvars_t *pevInflictor, entvars_t *pevAttacker, Vector& vecSrc, Vector& vecSpot, TraceResult *ptr);
-bool RoundEnd(IReGameHook_RoundEnd *chain, int winStatus, ScenarionEventEndRound event, float tmDelay);
+bool RoundEnd(IReGameHook_RoundEnd *chain, int winStatus, ScenarioEventEndRound event, float tmDelay);
 
 // regamedll functions - player
 void CBasePlayer_Spawn(IReGameHook_CBasePlayer_Spawn *chain, CBasePlayer *pthis);

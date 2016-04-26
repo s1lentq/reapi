@@ -80,7 +80,7 @@ static cell AMX_NATIVE_CALL set_member_game(AMX *amx, cell *params)
 
 	if (g_pCSGameRules == nullptr || *g_pCSGameRules == nullptr) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "get_member_game: gamerules not initialized");
-		return 0;
+		return FALSE;
 	}
 
 	cell* value = getAmxAddr(amx, params[arg_value]);
@@ -97,12 +97,12 @@ static cell AMX_NATIVE_CALL get_member_game(AMX *amx, cell *params)
 
 	if (member == nullptr) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "get_member_game: unknown member id %i", params[arg_member]);
-		return 0;
+		return FALSE;
 	}
 
 	if (g_pCSGameRules == nullptr || *g_pCSGameRules == nullptr) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "get_member_game: gamerules not initialized");
-		return 0;
+		return FALSE;
 	}
 
 	cell* dest;
@@ -180,22 +180,23 @@ BOOL set_member(void* pdata, const member_t *member, size_t element, cell* value
 			set_member<Vector>(pdata, member->offset, *pSource, element);
 			return TRUE;
 		}
-	case MEMBER_CHAR_ARRAY:
+	case MEMBER_STRING:
 		{
 			// native set_member(_index, any:_member, const source[]);
-			size_t len;
-			char *source = getAmxString(value, &len);
-			char *dest = get_member_direct<char *>(pdata, member->offset);
-			strncpy(dest, source, member->max_size - 1);
-			dest[member->max_size - 1] = '\0';
-			return TRUE;
-		}
-	case MEMBER_CHAR_POINTER:
-		{
-			// native set_member(_index, any:_member, const source[]);
-			char *source = getAmxString(value);
-			char *&dest = get_member<char *>(pdata, member->offset);
-			g_ReGameFuncs->ChangeString(dest, source);
+			if (member->max_size > sizeof(char*)) {
+				// char []
+				char *source = getAmxString(value);
+				char *dest = get_member_direct<char *>(pdata, member->offset);
+				strncpy(dest, source, member->max_size - 1);
+				dest[member->max_size - 1] = '\0';
+
+			} else {
+				// char *
+				char *source = getAmxString(value);
+				char *&dest = get_member<char *>(pdata, member->offset);
+				g_ReGameFuncs->ChangeString(dest, source);
+			}
+
 			return TRUE;
 		}
 	case MEMBER_FLOAT:
@@ -286,28 +287,26 @@ cell get_member(void* pdata, const member_t *member, size_t element, cell* dest)
 			dest[2] = vecSrc[2];
 			return 1;
 		}
-	case MEMBER_CHAR_ARRAY:
+	case MEMBER_STRING:
 		{
 			// native any:get_member(_index, any:_member, any:output[], maxlength);
 			if (!dest)
 				return 0;
 
-			const char *src = get_member_direct<const char *>(pdata, member->offset);
-			setAmxString(dest, src, element);
-			return 1;
-		}
-	case MEMBER_CHAR_POINTER:
-		{
-			// native any:get_member(_index, any:_member, any:output[], maxlength);
-			if (!dest)
-				return 0;
-
-			const char *src = get_member<const char *>(pdata, member->offset);
-			if (src != nullptr) {
+			if (member->max_size > sizeof(char*)) {
+				// char []
+				const char *src = get_member_direct<const char *>(pdata, member->offset);
 				setAmxString(dest, src, element);
-				return 1;
+			} else {
+				// char *
+				const char *src = get_member<const char *>(pdata, member->offset);
+				if (src != nullptr) {
+					setAmxString(dest, src, element);
+					return 1;
+				}
+				setAmxString(dest, "", 1);
 			}
-			setAmxString(dest, "", 1);
+
 			return 0;
 		}
 	case MEMBER_FLOAT:

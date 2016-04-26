@@ -69,7 +69,7 @@ enum
 
 // custom enum
 // used for EndRoundMessage() logged messages
-enum ScenarionEventEndRound
+enum ScenarioEventEndRound
 {
 	ROUND_NONE,
 	ROUND_TARGET_BOMB,

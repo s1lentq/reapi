@@ -54,7 +54,7 @@ void CBasePlayer_Spawn(IReGameHook_CBasePlayer_Spawn *chain, CBasePlayer *pthis)
 	{
 		chain->callNext();
 	};
-	
+
 	callVoidForward(RG_CBasePlayer_Spawn, original, pthis->entindex());
 }
 
@@ -92,12 +92,12 @@ void CBasePlayer_TraceAttack(IReGameHook_CBasePlayer_TraceAttack *chain, CBasePl
 {
 	Vector vecDirCopy(vecDir);
 
-	auto original = [chain, &vecDirCopy](int _pthis, int _pevAttacker, float _flDamage, cell _vecDir, int _ptr, int _bitsDamageType)
+	auto original = [chain, &vecDirCopy](int _pthis, int _pevAttacker, float _flDamage, cell _vecDir, TraceResult *_ptr, int _bitsDamageType)
 	{
-		chain->callNext(PEV(_pevAttacker), _flDamage, vecDirCopy, (TraceResult *)_ptr, _bitsDamageType);
+		chain->callNext(PEV(_pevAttacker), _flDamage, vecDirCopy, _ptr, _bitsDamageType);
 	};
 
-	callVoidForward(RG_CBasePlayer_TraceAttack, original, pthis->entindex(), indexOfEdict(pevAttacker), flDamage, g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecDirCopy), 3, true), int(ptr), bitsDamageType);
+	callVoidForward(RG_CBasePlayer_TraceAttack, original, pthis->entindex(), indexOfEdict(pevAttacker), flDamage, g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecDirCopy), 3, true), ptr, bitsDamageType);
 }
 
 int CBasePlayer_TakeDamage(IReGameHook_CBasePlayer_TakeDamage *chain, CBasePlayer *pthis, entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType)
@@ -366,21 +366,21 @@ void RadiusFlash_TraceLine(IReGameHook_RadiusFlash_TraceLine *chain, CBasePlayer
 {
 	Vector vecSrcCopy(vecSrc), vecSpotCopy(vecSpot);
 
-	auto original = [chain, &vecSrcCopy, &vecSpotCopy](int _pPlayer, int _pevInflictor, int _pevAttacker, cell _vecSrc, cell _vecSpot, int _ptr)
+	auto original = [chain, &vecSrcCopy, &vecSpotCopy](int _pPlayer, int _pevInflictor, int _pevAttacker, cell _vecSrc, cell _vecSpot, TraceResult *_ptr)
 	{
-		chain->callNext(getPrivate<CBasePlayer>(_pPlayer), PEV(_pevInflictor), PEV(_pevAttacker), vecSrcCopy, vecSpotCopy, (TraceResult *)_ptr);
+		chain->callNext(getPrivate<CBasePlayer>(_pPlayer), PEV(_pevInflictor), PEV(_pevAttacker), vecSrcCopy, vecSpotCopy, _ptr);
 	};
 
-	callVoidForward(RG_RadiusFlash_TraceLine, original, pPlayer->entindex(), indexOfEdict(pevInflictor), indexOfEdict(pevAttacker), g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecSrcCopy), 3, true), g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecSpotCopy), 3, true), int(ptr));
+	callVoidForward(RG_RadiusFlash_TraceLine, original, pPlayer->entindex(), indexOfEdict(pevInflictor), indexOfEdict(pevAttacker), g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecSrcCopy), 3, true), g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecSpotCopy), 3, true), ptr);
 }
 
-bool RoundEnd(IReGameHook_RoundEnd *chain, int winStatus, ScenarionEventEndRound event, float tmDelay)
+bool RoundEnd(IReGameHook_RoundEnd *chain, int winStatus, ScenarioEventEndRound event, float tmDelay)
 {
-	auto original = [chain](int _winStatus, ScenarionEventEndRound _event, float _tmDelay)
+	auto original = [chain](int _winStatus, ScenarioEventEndRound _event, float _tmDelay)
 	{
 		return chain->callNext(_winStatus, _event, _tmDelay);
 	};
-	
+
 	return callForward<bool>(RG_RoundEnd, original, winStatus, event, tmDelay);
 }
 

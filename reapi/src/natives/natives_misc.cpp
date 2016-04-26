@@ -232,16 +232,28 @@ static cell AMX_NATIVE_CALL rg_fire_bullets(AMX *amx, cell *params)
 	ICSEntity *pInflictor = g_ReGameFuncs->INDEX_TO_CSENTITY(params[arg_inflictor]);
 
 	cell *pSrc = getAmxAddr(amx, params[arg_vecSrc]);
-	Vector vecSrc(*(float *)&pSrc[0], *(float *)&pSrc[1], *(float *)&pSrc[2]);
-
 	cell *pDir = getAmxAddr(amx, params[arg_dir]);
-	Vector vecDirShooting(*(float *)&pDir[0], *(float *)&pDir[1], *(float *)&pDir[2]);
-
 	cell *pSpread = getAmxAddr(amx, params[arg_spread]);
+
+	Vector vecSrc(*(float *)&pSrc[0], *(float *)&pSrc[1], *(float *)&pSrc[2]);
+	Vector vecDirShooting(*(float *)&pDir[0], *(float *)&pDir[1], *(float *)&pDir[2]);
 	Vector vecSpread(*(float *)&pSpread[0], *(float *)&pSpread[1], *(float *)&pSpread[2]);
 
 	entvars_t *pevAttacker = VARS(INDEXENT(params[arg_attacker]));
-	pInflictor->FireBullets(params[arg_shots], vecSrc, vecDirShooting, vecSpread, *(float *)&params[arg_dist], params[arg_bullet_type], params[arg_tracefrq], params[arg_dmg], pevAttacker);
+
+	pInflictor->FireBullets
+	(
+		params[arg_shots],
+		vecSrc,
+		vecDirShooting,
+		vecSpread,
+		*(float *)&params[arg_dist],
+		params[arg_bullet_type],
+		params[arg_tracefrq],
+		params[arg_dmg],
+		pevAttacker
+	);
+
 	return TRUE;
 }
 
@@ -272,15 +284,29 @@ static cell AMX_NATIVE_CALL rg_fire_bullets3(AMX *amx, cell *params)
 	ICSEntity *pInflictor = g_ReGameFuncs->INDEX_TO_CSENTITY(params[arg_inflictor]);
 
 	cell *pSrc = getAmxAddr(amx, params[arg_vecSrc]);
-	Vector vecSrc(*(float *)&pSrc[0], *(float *)&pSrc[1], *(float *)&pSrc[2]);
-
 	cell *pDir = getAmxAddr(amx, params[arg_dir]);
+
+	Vector vecSrc(*(float *)&pSrc[0], *(float *)&pSrc[1], *(float *)&pSrc[2]);
 	Vector vecDirShooting(*(float *)&pDir[0], *(float *)&pDir[1], *(float *)&pDir[2]);
 
 	entvars_t *pevAttacker = VARS(INDEXENT(params[arg_attacker]));
 
 	Vector *pOut = (Vector *)getAmxAddr(amx, params[arg_out]);
-	*pOut = pInflictor->FireBullets3(vecSrc, vecDirShooting, *(float *)&params[arg_spread], *(float *)&params[arg_dist], params[arg_penetration], params[arg_bullet_type], params[arg_dmg], *(float *)&params[arg_range_mod], pevAttacker, params[arg_pistol] != 0, params[arg_rand]);
+
+	*pOut = pInflictor->FireBullets3
+	(
+		vecSrc,
+		vecDirShooting,
+		*(float *)&params[arg_spread],
+		*(float *)&params[arg_dist],
+		params[arg_penetration],
+		params[arg_bullet_type],
+		params[arg_dmg],
+		*(float *)&params[arg_range_mod],
+		pevAttacker,
+		params[arg_pistol] != 0,
+		params[arg_rand]
+	);
 
 	return TRUE;
 }
@@ -320,7 +346,7 @@ struct {
 *
 * @noreturn
 *
-* native rg_round_end(Float:tmDelay, WinStatus:st, ScenarionEventEndRound:event = ROUND_NONE, const message[] = "default", const sentence[] = "default");
+* native rg_round_end(Float:tmDelay, WinStatus:st, ScenarioEventEndRound:event = ROUND_NONE, const message[] = "default", const sentence[] = "default");
 */
 static cell AMX_NATIVE_CALL rg_round_end(AMX *amx, cell *params)
 {
@@ -333,7 +359,7 @@ static cell AMX_NATIVE_CALL rg_round_end(AMX *amx, cell *params)
 	}
 
 	const char *_sentence, *_message;
-	ScenarionEventEndRound event = static_cast<ScenarionEventEndRound>(params[arg_event]);
+	ScenarioEventEndRound event = static_cast<ScenarioEventEndRound>(params[arg_event]);
 
 	_sentence = getAmxString(amx, params[arg_sentence]);
 	_message = getAmxString(amx, params[arg_message]);

@@ -171,8 +171,8 @@ typedef IVoidHookChain<class CBasePlayer *, struct entvars_s *, struct entvars_s
 typedef IVoidHookChainRegistry<class CBasePlayer *, struct entvars_s *, struct entvars_s *, Vector &, Vector &, struct TraceResult *> IReGameHookRegistry_RadiusFlash_TraceLine;
 
 // RoundEnd hook
-typedef IHookChain<bool, int, ScenarionEventEndRound, float> IReGameHook_RoundEnd;
-typedef IHookChainRegistryClassEmpty<bool, int, ScenarionEventEndRound, float> IReGameHookRegistry_RoundEnd;
+typedef IHookChain<bool, int, ScenarioEventEndRound, float> IReGameHook_RoundEnd;
+typedef IHookChainRegistryClassEmpty<bool, int, ScenarioEventEndRound, float> IReGameHookRegistry_RoundEnd;
 
 class IReGameHookchains {
 public:
