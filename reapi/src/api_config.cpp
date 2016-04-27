@@ -7,13 +7,11 @@ CAPI_Config::CAPI_Config() : m_api_rehlds(false), m_api_regame(false), m_api_vtc
 
 }
 
-bool CAPI_Config::Init()
+void CAPI_Config::Init()
 {
 	m_api_rehlds = RehldsApi_Init();
 	m_api_regame = RegamedllApi_Init();
 	m_api_vtc    = VTC_Api_Init();
-
-	return true;
 }
 
 void CAPI_Config::ServerActivate() const

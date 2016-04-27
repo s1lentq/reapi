@@ -40,17 +40,7 @@ void CAmxxHook::SetState(fwdstate st)
 
 void CHookManager::clearHandlers() const
 {
-#define CLEAR_HOOKLIST(__END__, __START__)\
-	for (size_t i = BEGIN_FUNC_REGION(__START__); i < ##__END__; ++i) {\
-		if (m_hooklist[i])\
-			m_hooklist[i]->clear();\
-	}
-
-	CLEAR_HOOKLIST(RH_EngineFunc_End, engine);
-
-	CLEAR_HOOKLIST(RG_End, gamedll);
-	CLEAR_HOOKLIST(RG_CBaseAnimating_End, animating);
-	CLEAR_HOOKLIST(RG_CBasePlayer_End, player);
+	m_hooklist.clear();
 }
 
 hook_t* CHookManager::getHook(size_t func) const

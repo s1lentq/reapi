@@ -10,6 +10,7 @@
 #include <vector>				// std::vector
 
 #include <extdll.h>
+#include "main.h"
 #include "reapi_utils.h"
 #include <cbase.h>
 
@@ -43,6 +44,7 @@
 #include "natives_members.h"
 #include "natives_misc.h"
 #include "natives_vtc.h"
+#include "natives_helper.h"
 
 #undef DLLEXPORT
 #ifdef _WIN32

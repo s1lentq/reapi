@@ -7,7 +7,6 @@ char(&ArraySizeHelper(T(&array)[N]))[N];
 #define INDEXENT edictByIndex
 #define ENTINDEX indexOfEdict
 
-extern edict_t* g_pEdicts;
 extern enginefuncs_t* g_pengfuncsTable;
 
 inline size_t indexOfEdict(edict_t* ed)

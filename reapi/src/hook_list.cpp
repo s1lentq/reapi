@@ -129,15 +129,30 @@ hook_t* hooklist_t::getHookSafe(size_t hook)
 	return nullptr;
 }
 
+void hooklist_t::clear()
+{
+	for (auto& h : hooklist_engine)
+		h.clear();
+	for (auto& h : hooklist_gamedll)
+		h.clear();
+	for (auto& h : hooklist_animating)
+		h.clear();
+	for (auto& h : hooklist_player)
+		h.clear();
+}
+
+
 void hook_t::clear()
 {
-	for (auto h : pre)
-		delete h;
-	pre.clear();
+	if (pre.size() || post.size()) {
+		for (auto h : pre)
+			delete h;
+		pre.clear();
 
-	for (auto h : post)
-		delete h;
-	post.clear();
+		for (auto h : post)
+			delete h;
+		post.clear();
 
-	unregisterHookchain();
+		unregisterHookchain();
+	}
 }

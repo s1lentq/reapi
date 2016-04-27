@@ -57,5 +57,6 @@ AMX_NATIVE_INFO Vtc_Natives[] =
 
 void RegisterNatives_Vtc()
 {
-	g_amxxapi.AddNatives(Vtc_Natives);
+	if (api_cfg.hasVTC())
+		g_amxxapi.AddNatives(Vtc_Natives);
 }

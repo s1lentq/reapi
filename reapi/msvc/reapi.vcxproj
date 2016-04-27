@@ -200,10 +200,12 @@
     <ClInclude Include="..\src\hook_manager.h" />
     <ClInclude Include="..\src\hook_callback.h" />
     <ClInclude Include="..\src\hook_list.h" />
+    <ClInclude Include="..\src\main.h" />
     <ClInclude Include="..\src\member_list.h" />
     <ClInclude Include="..\src\mods\mod_regamedll_api.h" />
     <ClInclude Include="..\src\mods\mod_rehlds_api.h" />
     <ClInclude Include="..\src\mods\mod_vtc_api.h" />
+    <ClInclude Include="..\src\natives\natives_helper.h" />
     <ClInclude Include="..\src\natives\natives_hookchains.h" />
     <ClInclude Include="..\src\natives\natives_members.h" />
     <ClInclude Include="..\src\natives\natives_misc.h" />

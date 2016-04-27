@@ -282,5 +282,6 @@ AMX_NATIVE_INFO HookChain_Natives[] =
 
 void RegisterNatives_HookChains()
 {
-	g_amxxapi.AddNatives(HookChain_Natives);
+	if (api_cfg.hasReHLDS() || api_cfg.hasReGameDLL())
+		g_amxxapi.AddNatives(HookChain_Natives);
 }

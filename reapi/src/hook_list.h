@@ -49,6 +49,7 @@ struct hooklist_t
 	}
 
 	static hook_t *getHookSafe(size_t hook);
+	static void clear();
 
 	enum hooks_tables_e
 	{

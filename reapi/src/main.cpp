@@ -1,13 +1,17 @@
 #include "precompiled.h"
 
 edict_t* g_pEdicts;
+int gmsgSendAudio;
+int gmsgTeamScore;
+
+void OnAmxxAttach()
+{
+	// initialize API
+	api_cfg.Init();
+}
 
 bool OnMetaAttach()
 {
-	// initialize API
-	if (!api_cfg.Init())
-		return false;
-
 	return true;
 }
 
@@ -22,9 +26,11 @@ void OnMetaDetach()
 	}
 }
 
-void ServerActivate(edict_t *pEdictList, int edictCount, int clientMax)
+void ServerActivate_Post(edict_t *pEdictList, int edictCount, int clientMax)
 {
 	g_pEdicts = pEdictList;
+	gmsgSendAudio = GET_USER_MSG_ID(PLID, "SendAudio", NULL);
+	gmsgTeamScore = GET_USER_MSG_ID(PLID, "TeamScore", NULL);
 	api_cfg.ServerActivate();
 
 	SET_META_RESULT(MRES_IGNORED);

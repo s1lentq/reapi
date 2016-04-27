@@ -145,7 +145,8 @@ AMX_NATIVE_INFO Member_Natives[] =
 
 void RegisterNatives_Members()
 {
-	g_amxxapi.AddNatives(Member_Natives);
+	if (api_cfg.hasReGameDLL())
+		g_amxxapi.AddNatives(Member_Natives);
 }
 
 BOOL set_member(void* pdata, const member_t *member, size_t element, cell* value)
@@ -300,14 +301,14 @@ cell get_member(void* pdata, const member_t *member, size_t element, cell* dest)
 			} else {
 				// char *
 				const char *src = get_member<const char *>(pdata, member->offset);
-				if (src != nullptr) {
-					setAmxString(dest, src, element);
-					return 1;
+				if (src == nullptr) {
+					setAmxString(dest, "", 1);
+					return 0;
 				}
-				setAmxString(dest, "", 1);
+				setAmxString(dest, src, element);
 			}
 
-			return 0;
+			return 1;
 		}
 	case MEMBER_FLOAT:
 	case MEMBER_INTEGER:

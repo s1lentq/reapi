@@ -642,6 +642,12 @@
     <ClInclude Include="..\include\vtc_api.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\natives\natives_helper.h">
+      <Filter>src\natives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\main.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\include\cssdk\common\parsemsg.cpp">
