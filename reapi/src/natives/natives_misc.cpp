@@ -214,14 +214,14 @@ cell AMX_NATIVE_CALL rg_multidmg_add(AMX *amx, cell *params)
 	CHECK_ISENTITY(params[arg_inflictor]);
 	CHECK_ISENTITY(params[arg_victim]);
 
-	CAmxArgs args(amx, params);
-
 	if (params[arg_victim] < 0) { // null
 		MF_LogError(amx, AMX_ERR_NATIVE, "rg_multidmg_add: victim == null");
 		return FALSE;
 	}
 
+	CAmxArgs args(amx, params);
 	g_ReGameFuncs->AddMultiDamage(args[arg_inflictor], args[arg_victim], args[arg_damage], args[arg_dmg_type]);
+	
 	return TRUE;
 }
 
@@ -251,7 +251,7 @@ cell AMX_NATIVE_CALL rg_fire_bullets(AMX *amx, cell *params)
 	CHECK_ISENTITY(params[arg_attacker]);
 
 	CAmxArgs args(amx, params);
-	ICSEntity *pInflictor = g_ReGameFuncs->INDEX_TO_CSENTITY(params[arg_inflictor]);
+	ICSEntity *pInflictor = args[arg_inflictor];
 
 	pInflictor->FireBullets
 	(
@@ -297,7 +297,8 @@ cell AMX_NATIVE_CALL rg_fire_bullets3(AMX *amx, cell *params)
 	CHECK_ISENTITY(params[arg_attacker]);
 
 	CAmxArgs args(amx, params);
-	ICSEntity *pInflictor = g_ReGameFuncs->INDEX_TO_CSENTITY(params[arg_inflictor]);
+	ICSEntity *pInflictor = args[arg_inflictor];
+	entvars_t *pAttacker = args[arg_attacker];
 
 	args[arg_out].vector() = pInflictor->FireBullets3
 	(
@@ -309,7 +310,7 @@ cell AMX_NATIVE_CALL rg_fire_bullets3(AMX *amx, cell *params)
 		args[arg_bullet_type],
 		args[arg_dmg],
 		args[arg_range_mod],
-		args[arg_attacker],
+		pAttacker,
 		args[arg_pistol],
 		args[arg_rand]
 	);

@@ -7,7 +7,7 @@ class CAmxArg
 {
 public:
 	CAmxArg(AMX* amx, cell value) : m_amx(amx), m_value(value) {}
-	operator float() const
+	operator float&() const
 	{
 		return *(float *)m_value;
 	}
@@ -17,9 +17,8 @@ public:
 	}
 	operator entvars_s*() const
 	{
-		if (m_value < 0)
-			return nullptr;
-		return PEV(m_value);
+		auto pev = PEV(m_value);
+		return m_value < 0 ? nullptr : pev;
 	}
 	operator int() const
 	{
@@ -35,11 +34,16 @@ public:
 	}
 	operator CBaseEntity*() const
 	{
-		return g_ReGameFuncs->UTIL_PlayerByIndex(m_value);
+		auto player = g_ReGameFuncs->UTIL_PlayerByIndex(m_value);
+		return m_value < 0 ? nullptr : player;
 	}
 	operator PLAYER_ANIM() const
 	{
 		return static_cast<PLAYER_ANIM>(m_value);
+	}
+	operator ICSEntity*() const
+	{
+		return g_ReGameFuncs->INDEX_TO_CSENTITY(m_value);
 	}
 
 	Vector& vector() const
