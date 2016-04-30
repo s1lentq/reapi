@@ -1,7 +1,7 @@
 #include "precompiled.h"
 
 // native set_member(_index, any:_member, any:...);
-static cell AMX_NATIVE_CALL set_member(AMX *amx, cell *params)
+cell AMX_NATIVE_CALL set_member(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_index, arg_member, arg_value, arg_elem };
 	member_t *member = memberlist[params[arg_member]];
@@ -24,7 +24,7 @@ static cell AMX_NATIVE_CALL set_member(AMX *amx, cell *params)
 }
 
 // native any:get_member(_index, any:_member, any:...);
-static cell AMX_NATIVE_CALL get_member(AMX *amx, cell *params)
+cell AMX_NATIVE_CALL get_member(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_index, arg_member, arg_3, arg_4 };
 	member_t *member = memberlist[params[arg_member]];
@@ -68,7 +68,7 @@ static cell AMX_NATIVE_CALL get_member(AMX *amx, cell *params)
 }
 
 // native set_member_game(any:_member, any:...);
-static cell AMX_NATIVE_CALL set_member_game(AMX *amx, cell *params)
+cell AMX_NATIVE_CALL set_member_game(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_member, arg_value, arg_elem };
 	member_t *member = memberlist[params[arg_member]];
@@ -90,7 +90,7 @@ static cell AMX_NATIVE_CALL set_member_game(AMX *amx, cell *params)
 }
 
 // native get_member_game(any:_member, any:...);
-static cell AMX_NATIVE_CALL get_member_game(AMX *amx, cell *params)
+cell AMX_NATIVE_CALL get_member_game(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_member, arg_3, arg_4 };
 	member_t *member = memberlist[params[arg_member]];

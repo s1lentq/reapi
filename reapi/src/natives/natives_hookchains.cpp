@@ -12,7 +12,7 @@
  * native RegisterHookChain(any:function_id, const callback[], post = 0);
  */
 
-static cell AMX_NATIVE_CALL RegisterHookChain(AMX *amx, cell *params)
+cell AMX_NATIVE_CALL RegisterHookChain(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_func, arg_handler, arg_post };
 
@@ -60,7 +60,7 @@ static cell AMX_NATIVE_CALL RegisterHookChain(AMX *amx, cell *params)
  * native bool:EnableHookChain(any:fwd);
  */
 
-static cell AMX_NATIVE_CALL EnableHookChain(AMX *amx, cell *params)
+cell AMX_NATIVE_CALL EnableHookChain(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_handle_hook };
 
@@ -85,7 +85,7 @@ static cell AMX_NATIVE_CALL EnableHookChain(AMX *amx, cell *params)
  * native bool:DisableHookChain(any:fwd);
  */
 
-static cell AMX_NATIVE_CALL DisableHookChain(AMX *amx, cell *params)
+cell AMX_NATIVE_CALL DisableHookChain(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_handle_hook };
 
@@ -111,7 +111,7 @@ static cell AMX_NATIVE_CALL DisableHookChain(AMX *amx, cell *params)
  * native SetHookChainReturn(AType:type, any:...);
  */
 
-static cell AMX_NATIVE_CALL SetHookChainReturn(AMX *amx, cell *params)
+cell AMX_NATIVE_CALL SetHookChainReturn(AMX *amx, cell *params)
 {
 	if (!g_hookCtx)
 	{
@@ -169,7 +169,7 @@ static cell AMX_NATIVE_CALL SetHookChainReturn(AMX *amx, cell *params)
 * native GetHookChainReturn(AType:type, any:...);
 */
 
-static cell AMX_NATIVE_CALL GetHookChainReturn(AMX *amx, cell *params)
+cell AMX_NATIVE_CALL GetHookChainReturn(AMX *amx, cell *params)
 {
 	if (!g_hookCtx)
 	{
@@ -218,7 +218,7 @@ static cell AMX_NATIVE_CALL GetHookChainReturn(AMX *amx, cell *params)
 * native SetHookChainArg(number, AType:type, any:...);
 */
 
-static cell AMX_NATIVE_CALL SetHookChainArg(AMX *amx, cell *params)
+cell AMX_NATIVE_CALL SetHookChainArg(AMX *amx, cell *params)
 {
 	if (!g_hookCtx)
 	{

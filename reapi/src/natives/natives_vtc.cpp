@@ -8,7 +8,7 @@
 *
 * native VTC_IsClientSpeaking(index);
 */
-static cell AMX_NATIVE_CALL VTC_IsClientSpeaking(AMX *amx, cell *params)
+cell AMX_NATIVE_CALL VTC_IsClientSpeaking(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_index };
 	return g_pVoiceTranscoderApi->IsClientSpeaking((size_t)params[arg_index]);
@@ -22,7 +22,7 @@ static cell AMX_NATIVE_CALL VTC_IsClientSpeaking(AMX *amx, cell *params)
 *
 * native VTC_MuteClient(index);
 */
-static cell AMX_NATIVE_CALL VTC_MuteClient(AMX *amx, cell *params)
+cell AMX_NATIVE_CALL VTC_MuteClient(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_index };
 	g_pVoiceTranscoderApi->MuteClient((size_t)params[arg_index]);
@@ -38,7 +38,7 @@ static cell AMX_NATIVE_CALL VTC_MuteClient(AMX *amx, cell *params)
 *
 * native VTC_UnmuteClient(index);
 */
-static cell AMX_NATIVE_CALL VTC_UnmuteClient(AMX *amx, cell *params)
+cell AMX_NATIVE_CALL VTC_UnmuteClient(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_index };
 	g_pVoiceTranscoderApi->UnmuteClient((size_t)params[arg_index]);
