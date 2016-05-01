@@ -11,6 +11,54 @@
 #define SIGNAL_ESCAPE		(1<<3)
 #define SIGNAL_VIPSAFETY	(1<<4)
 
+enum WeaponIdType
+{
+	WEAPON_NONE,
+	WEAPON_P228,
+	WEAPON_GLOCK,
+	WEAPON_SCOUT,
+	WEAPON_HEGRENADE,
+	WEAPON_XM1014,
+	WEAPON_C4,
+	WEAPON_MAC10,
+	WEAPON_AUG,
+	WEAPON_SMOKEGRENADE,
+	WEAPON_ELITE,
+	WEAPON_FIVESEVEN,
+	WEAPON_UMP45,
+	WEAPON_SG550,
+	WEAPON_GALIL,
+	WEAPON_FAMAS,
+	WEAPON_USP,
+	WEAPON_GLOCK18,
+	WEAPON_AWP,
+	WEAPON_MP5N,
+	WEAPON_M249,
+	WEAPON_M3,
+	WEAPON_M4A1,
+	WEAPON_TMP,
+	WEAPON_G3SG1,
+	WEAPON_FLASHBANG,
+	WEAPON_DEAGLE,
+	WEAPON_SG552,
+	WEAPON_AK47,
+	WEAPON_KNIFE,
+	WEAPON_P90,
+	WEAPON_SHIELDGUN = 99
+};
+
+/* Weapon info types for use with rg_get_weapon_info() */
+enum WpnInfo
+{
+	WPINFO_COST,
+	WPINFO_CLIP_COST,
+	WPINFO_BUY_CLIP_SIZE,
+	WPINFO_GUN_CLIP_SIZE,
+	WPINFO_MAX_ROUNDS,
+	WPINFO_AMMO_TYPE,
+	WPINFO_NAME
+};
+
 enum WinStatus
 {
 	WINSTATUS_CTS = 1,
@@ -19,7 +67,7 @@ enum WinStatus
 };
 
 // used for EndRoundMessage() logged messages
-enum ScenarionEventEndRound
+enum ScenarioEventEndRound
 {
 	ROUND_NONE,
 	ROUND_TARGET_BOMB,
@@ -78,9 +126,15 @@ enum GamedllFunc
 
 	/**
 	 * Description:		-
-	 * Params:		(WinStatus:status, ScenarionEventEndRound:event, Float:tmDelay)
+	 * Params:		(WinStatus:status, ScenarioEventEndRound:event, Float:tmDelay)
 	 */
 	RG_RoundEnd,
+
+	/**
+	 * Description:		-
+	 * Params:		(const index, const iWeapon)
+	 */
+	RG_CanBuyThis,
 
 	// [...]
 	RG_End

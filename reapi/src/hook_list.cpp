@@ -73,7 +73,8 @@ hook_t hooklist_gamedll[] = {
 	DLL(GetForceCamera),
 	DLL(PlayerBlind),
 	DLL(RadiusFlash_TraceLine),
-	DLL(RoundEnd)
+	DLL(RoundEnd),
+	DLL(CanBuyThis)
 };
 
 hook_t hooklist_animating[] = {
@@ -140,7 +141,6 @@ void hooklist_t::clear()
 	for (auto& h : hooklist_player)
 		h.clear();
 }
-
 
 void hook_t::clear()
 {

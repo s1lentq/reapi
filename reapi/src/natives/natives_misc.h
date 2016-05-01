@@ -1,3 +1,14 @@
 #pragma once
 
+enum WpnInfo
+{
+	WPINFO_COST,
+	WPINFO_CLIP_COST,
+	WPINFO_BUY_CLIP_SIZE,
+	WPINFO_GUN_CLIP_SIZE,
+	WPINFO_MAX_ROUNDS,
+	WPINFO_AMMO_TYPE,
+	WPINFO_NAME
+};
+
 void RegisterNatives_Misc();

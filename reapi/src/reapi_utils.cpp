@@ -16,11 +16,11 @@ void UpdateTeamScores()
 {
 	g_pengfuncsTable->pfnMessageBegin(MSG_ALL, gmsgTeamScore, NULL, NULL);
 	g_pengfuncsTable->pfnWriteString("CT");
-	g_pengfuncsTable->pfnWriteShort((*g_pCSGameRules)->m_iNumCTWins);
+	g_pengfuncsTable->pfnWriteShort(CSGameRules()->m_iNumCTWins);
 	g_pengfuncsTable->pfnMessageEnd();
 
 	g_pengfuncsTable->pfnMessageBegin(MSG_ALL, gmsgTeamScore, NULL, NULL);
 	g_pengfuncsTable->pfnWriteString("TERRORIST");
-	g_pengfuncsTable->pfnWriteShort((*g_pCSGameRules)->m_iNumTerroristWins);
+	g_pengfuncsTable->pfnWriteShort(CSGameRules()->m_iNumTerroristWins);
 	g_pengfuncsTable->pfnMessageEnd();
 }

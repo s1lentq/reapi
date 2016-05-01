@@ -24,6 +24,10 @@ void OnMetaDetach()
 		g_pVoiceTranscoderApi->ClientStartSpeak()->unregisterCallback(&ClientStartSpeak);
 		g_pVoiceTranscoderApi->ClientStopSpeak()->unregisterCallback(&ClientStopSpeak);
 	}
+
+	if (api_cfg.hasReGameDLL()) {
+		g_ReGameHookchains->InstallGameRules()->unregisterHook(&InstallGameRules);
+	}
 }
 
 void ServerActivate_Post(edict_t *pEdictList, int edictCount, int clientMax)
@@ -31,15 +35,19 @@ void ServerActivate_Post(edict_t *pEdictList, int edictCount, int clientMax)
 	g_pEdicts = pEdictList;
 	gmsgSendAudio = GET_USER_MSG_ID(PLID, "SendAudio", NULL);
 	gmsgTeamScore = GET_USER_MSG_ID(PLID, "TeamScore", NULL);
-	api_cfg.ServerActivate();
 
 	SET_META_RESULT(MRES_IGNORED);
 }
 
 void ServerDeactivate_Post()
 {
-	api_cfg.ServerActivate();
+	api_cfg.ServerDeactivate();
 	g_hookManager.clearHandlers();
 
 	SET_META_RESULT(MRES_IGNORED);
+}
+
+CGameRules *InstallGameRules(IReGameHook_InstallGameRules *chain)
+{
+	return g_pGameRules = chain->callNext();
 }

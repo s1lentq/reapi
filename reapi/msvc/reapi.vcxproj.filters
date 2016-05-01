@@ -648,6 +648,9 @@
     <ClInclude Include="..\src\main.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\mods\mod_reunion_api.h">
+      <Filter>src\mods</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\include\cssdk\common\parsemsg.cpp">
@@ -724,6 +727,9 @@
     </ClCompile>
     <ClCompile Include="..\src\natives\natives_vtc.cpp">
       <Filter>src\natives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mods\mod_reunion_api.cpp">
+      <Filter>src\mods</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

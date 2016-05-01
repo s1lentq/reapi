@@ -79,6 +79,7 @@ enum GamedllFunc
 	RG_PlayerBlind,
 	RG_RadiusFlash_TraceLine,
 	RG_RoundEnd,
+	RG_CanBuyThis,
 
 	// [...]
 	RG_End

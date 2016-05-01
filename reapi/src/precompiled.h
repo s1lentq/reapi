@@ -10,8 +10,6 @@
 #include <vector>				// std::vector
 
 #include <extdll.h>
-#include "main.h"
-#include "reapi_utils.h"
 #include <cbase.h>
 
 #include "osdep.h"			// win32 vsnprintf, etc
@@ -27,6 +25,9 @@
 #include "regamedll_api.h"
 #include "mod_regamedll_api.h"
 
+#include "main.h"
+#include "reapi_utils.h"
+
 // rehlds API
 #include "rehlds_api.h"
 #include "mod_rehlds_api.h"
@@ -34,6 +35,10 @@
 // VTC API
 #include "vtc_api.h"
 #include "mod_vtc_api.h"
+
+// Reunion API
+#include "reunion_api.h"
+#include "mod_reunion_api.h"
 
 #include "api_config.h"
 #include "hook_manager.h"

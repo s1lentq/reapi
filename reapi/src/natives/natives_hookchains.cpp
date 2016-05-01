@@ -197,7 +197,7 @@ cell AMX_NATIVE_CALL GetHookChainReturn(AMX *amx, cell *params)
 		break;
 	}
 	case ATYPE_CLASSPTR:
-		*dstAddr = retVal._classptr->entindex();
+		*dstAddr = indexOfEdict(retVal._classptr->pev);
 		break;
 	default:
 		return FALSE;

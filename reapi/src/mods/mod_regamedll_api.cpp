@@ -3,7 +3,7 @@
 IReGameApi *g_ReGameApi;
 const ReGameFuncs_t *g_ReGameFuncs;
 IReGameHookchains *g_ReGameHookchains;
-CHalfLifeMultiplay **g_pCSGameRules = nullptr;
+CGameRules *g_pGameRules = nullptr;
 
 bool RegamedllApi_Init()
 {

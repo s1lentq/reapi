@@ -16,7 +16,7 @@ cell AMX_NATIVE_CALL set_member(AMX *amx, cell *params)
 		MF_LogError(amx, AMX_ERR_NATIVE, "set_member: invalid or uninitialized entity");
 		return FALSE;
 	}
-	
+
 	cell* value = getAmxAddr(amx, params[arg_value]);
 	size_t element = (PARAMS_COUNT == 4) ? *getAmxAddr(amx, params[arg_elem]) : 0;
 
@@ -78,7 +78,7 @@ cell AMX_NATIVE_CALL set_member_game(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	if (g_pCSGameRules == nullptr || *g_pCSGameRules == nullptr) {
+	if (g_pGameRules == nullptr) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "get_member_game: gamerules not initialized");
 		return FALSE;
 	}
@@ -86,7 +86,7 @@ cell AMX_NATIVE_CALL set_member_game(AMX *amx, cell *params)
 	cell* value = getAmxAddr(amx, params[arg_value]);
 	size_t element = (PARAMS_COUNT == 4) ? *getAmxAddr(amx, params[arg_elem]) : 0;
 
-	return set_member(*g_pCSGameRules, member, element, value);
+	return set_member(g_pGameRules, member, element, value);
 }
 
 // native get_member_game(any:_member, any:...);
@@ -100,14 +100,14 @@ cell AMX_NATIVE_CALL get_member_game(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	if (g_pCSGameRules == nullptr || *g_pCSGameRules == nullptr) {
+	if (g_pGameRules == nullptr) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "get_member_game: gamerules not initialized");
 		return FALSE;
 	}
 
 	cell* dest;
 	size_t element;
-	
+
 	if (PARAMS_COUNT == 4) {
 		dest = getAmxAddr(amx, params[arg_3]);
 		element = *getAmxAddr(amx, params[arg_4]);
@@ -129,14 +129,14 @@ cell AMX_NATIVE_CALL get_member_game(AMX *amx, cell *params)
 		element = 0;
 	}
 
-	return get_member(*g_pCSGameRules, member, element, dest);
+	return get_member(g_pGameRules, member, element, dest);
 }
 
 AMX_NATIVE_INFO Member_Natives[] =
 {
 	{ "set_member", set_member },
 	{ "get_member", get_member },
-	
+
 	{ "set_member_game", set_member_game },
 	{ "get_member_game", get_member_game },
 
@@ -254,7 +254,7 @@ cell get_member(void* pdata, const member_t *member, size_t element, cell* dest)
 	{
 	case MEMBER_CLASSPTR:
 		// native any:get_member(_index, any:_member, element);
-		return get_member<CBaseEntity *>(pdata, member->offset, element)->entindex();
+		return indexOfEdict(get_member<CBaseEntity *>(pdata, member->offset, element)->pev);
 	case MEMBER_EHANDLE:
 		{
 			// native any:get_member(_index, any:_member, element);
