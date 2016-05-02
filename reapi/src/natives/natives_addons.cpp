@@ -55,8 +55,50 @@ AMX_NATIVE_INFO Vtc_Natives[] =
 	{ nullptr, nullptr }
 };
 
-void RegisterNatives_Vtc()
+/*
+* Get client protocol
+*
+* @param index		Client index
+*
+* native REU_GetProtocol(const index);
+*/
+cell AMX_NATIVE_CALL REU_GetProtocol(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index };
+
+	CHECK_ISPLAYER(params[arg_index]);
+
+	return g_ReunionApi->GetClientProtocol(params[arg_index] - 1);
+}
+
+/*
+* Get client auth type
+*
+* @param index		Client index
+*
+* native REU_GetAuthtype(const index);
+*/
+cell AMX_NATIVE_CALL REU_GetAuthtype(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index };
+
+	CHECK_ISPLAYER(params[arg_index]);
+
+	return g_ReunionApi->GetClientAuthtype(params[arg_index] - 1);
+}
+
+AMX_NATIVE_INFO Reunion_Natives[] =
+{
+	{ "REU_GetProtocol", REU_GetProtocol },
+	{ "REU_GetAuthtype", REU_GetAuthtype },
+
+	{ nullptr, nullptr }
+};
+
+void RegisterNatives_Addons()
 {
 	if (api_cfg.hasVTC())
 		g_amxxapi.AddNatives(Vtc_Natives);
+	if (api_cfg.hasReunion())
+		g_amxxapi.AddNatives(Reunion_Natives);
 }

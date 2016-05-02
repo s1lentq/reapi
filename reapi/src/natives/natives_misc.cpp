@@ -310,7 +310,7 @@ cell AMX_NATIVE_CALL rg_fire_bullets3(AMX *amx, cell *params)
 		args[arg_bullet_type],
 		args[arg_dmg],
 		args[arg_range_mod],
-		pAttacker,
+		pAttacker, // icc fix
 		args[arg_pistol],
 		args[arg_rand]
 	);
@@ -428,7 +428,7 @@ cell AMX_NATIVE_CALL rg_create_entity(AMX *amx, cell *params)
 	string_t iClass = g_engfuncs.pfnAllocString(getAmxString(amx, params[arg_classname]));
 	edict_t	*pEnt = g_ReGameFuncs->CREATE_NAMED_ENTITY2(iClass);
 
-	if (!FNullEnt(pEnt))
+	if (pEnt != nullptr)
 	{
 		return ENTINDEX(pEnt);
 	}
@@ -452,10 +452,9 @@ cell AMX_NATIVE_CALL rg_find_ent_by_class(AMX *amx, cell *params)
 
 	CBaseEntity *pStartEntity = getPrivate<CBaseEntity>(params[arg_start_index]);
 	const char* value = getAmxString(amx, params[arg_classname]);
-
 	CBaseEntity *pEntity = g_ReGameFuncs->UTIL_FindEntityByString(pStartEntity, "classname", value);
 
-	if (pEntity != nullptr && !FNullEnt(pEntity->edict()))
+	if (pEntity != nullptr)
 	{
 		return indexOfEdict(pEntity->pev);
 	}
@@ -479,16 +478,14 @@ cell AMX_NATIVE_CALL rg_find_ent_by_owner(AMX *amx, cell *params)
 
 	CHECK_ISENTITY(params[arg_onwer]);
 
-	CBaseEntity *pEntity = getPrivate<CBaseEntity>(params[arg_start_index]);
 	const char* value = getAmxString(amx, params[arg_classname]);
-
 	edict_t *pOwner = edictByIndex(params[arg_onwer]);
-	while ((pEntity = g_ReGameFuncs->UTIL_FindEntityByString(pEntity, "classname", value)) != nullptr)
+	edict_t *pEntity = g_pEdicts;
+	
+	for (int i = 0; i < gpGlobals->maxEntities; i++, pEntity++)
 	{
-		if (pEntity != nullptr && !FNullEnt(pEntity->edict()) && pEntity->pev->owner == pOwner)
-		{
-			return indexOfEdict(pEntity->pev);
-		}
+		if (pEntity->v.owner == pOwner && !strcmp(STRING(pEntity->v.classname), value))
+			return i;
 	}
 
 	return 0;
@@ -602,9 +599,8 @@ cell AMX_NATIVE_CALL rg_remove_item(AMX *amx, cell *params)
 	}
 
 	const char* szItemName = getAmxString(amx, params[arg_item_name]);
-	for (auto& item : pPlayer->m_rgpPlayerItems)
+	for (auto pItem : pPlayer->m_rgpPlayerItems)
 	{
-		CBasePlayerItem *pItem = item;
 		while (pItem != nullptr)
 		{
 			if (FClassnameIs(pItem->pev, szItemName))
@@ -655,94 +651,8 @@ AMX_NATIVE_INFO Misc_Natives_RG[] =
 	{ nullptr, nullptr }
 };
 
-enum client_auth
-{
-	/**
-	 * Description:		-
-	 * Return type:		int
-	 * Params:		get_client_data(const index, CA_PROTOCOL)
-	 */
-	CA_PROTOCOL,
-
-	/**
-	 * Description:		-
-	 * Return type:		client_auth_type
-	 * Params:		get_client_data(const index, CA_TYPE)
-	 */
-	CA_TYPE,
-
-	/**
-	 * Description:		-
-	 * Return type:		-
-	 * Params:		get_client_data(const index, CA_STRING, output[], maxlength)
-	 */
-	CA_STRING,
-};
-
-/*
-* Get out information of the client
-*
-* @param index		Client index
-* @type			to look enum client_auth
-*
-* native get_client_data(const index, client_auth:type, any:...);
-*/
-cell AMX_NATIVE_CALL get_client_data(AMX *amx, cell *params)
-{
-	enum args_e { arg_count, arg_index, arg_type, arg_3, arg_4 };
-
-	CHECK_ISPLAYER(params[arg_index]);
-
-	client_auth type = static_cast<client_auth>(params[arg_type]);
-	switch (type)
-	{
-	case CA_PROTOCOL:
-		{
-			// native get_client_data(id, CA_PROTOCOL);
-			return g_ReunionApi->GetClientProtocol(params[arg_index] - 1);
-		}
-	case CA_TYPE:
-		{
-			// native client_auth_type:get_client_data(id, CA_TYPE);
-			return g_ReunionApi->GetClientAuthtype(params[arg_index] - 1);
-		}
-	case CA_STRING:
-		{
-			if (PARAMS_COUNT != arg_4) {
-				MF_LogError(amx, AMX_ERR_NATIVE, "get_client_data: bad parameter count, got %i, expected %i", PARAMS_COUNT, arg_4);
-				return -1;
-			}
-
-			// native get_client_data(id, CA_STRING, output[], maxlength);
-			cell* dest = getAmxAddr(amx, params[arg_3]);
-			size_t length = *getAmxAddr(amx, params[arg_4]);
-
-			char data[128];
-			g_ReunionApi->GetClientAuthdataString(params[arg_index] - 1, data, sizeof data);
-			setAmxString(dest, data, length);
-
-			return 1;
-		}
-	default:
-		{
-			MF_LogError(amx, AMX_ERR_NATIVE, "get_client_data: unknown type statement %i, params count %i", type, PARAMS_COUNT);
-			return -1;
-		}
-	}
-}
-
-AMX_NATIVE_INFO Misc_Natives_Reunion[] =
-{
-	{ "get_client_data", get_client_data },
-
-	{ nullptr, nullptr }
-};
-
 void RegisterNatives_Misc()
 {
 	if (api_cfg.hasReGameDLL())
 		g_amxxapi.AddNatives(Misc_Natives_RG);
-
-	if (api_cfg.hasReunion())
-		g_amxxapi.AddNatives(Misc_Natives_Reunion);
 }

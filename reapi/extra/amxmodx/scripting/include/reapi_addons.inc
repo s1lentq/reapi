@@ -1,31 +1,7 @@
-#if defined _reapi_misc_included
+#if defined _reapi_addons_included
 	#endinput
 #endif
-#define _reapi_misc_included
-
-enum client_auth
-{
-	/**
-	 * Description:		-
-	 * Return type:		int
-	 * Params:		get_client_data(const index, CA_PROTOCOL)
-	 */
-	CA_PROTOCOL,
-
-	/**
-	 * Description:		-
-	 * Return type:		client_auth_type
-	 * Params:		get_client_data(const index, CA_TYPE)
-	 */
-	CA_TYPE,
-
-	/**
-	 * Description:		-
-	 * Return type:		-
-	 * Params:		get_client_data(const index, CA_STRING, output[], maxlength)
-	 */
-	CA_STRING,
-};
+#define _reapi_addons_included
 
 enum client_auth_type
 {
@@ -85,9 +61,17 @@ forward VTC_OnClientStartSpeak(index);
 forward VTC_OnClientStopSpeak(index);
 
 /*
-* Get out information of the client
+* Get client protocol
 *
 * @param index		Client index
-* @type			to look enum client_auth
+* @noreturn
 */
-native get_client_data(const index, client_auth:type, any:...);
+native REU_GetProtocol(const index);
+
+/*
+* Get client auth type
+*
+* @param index		Client index
+* @noreturn
+*/
+native REU_GetAuthtype(const index);

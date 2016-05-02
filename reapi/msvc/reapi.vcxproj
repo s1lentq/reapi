@@ -210,7 +210,7 @@
     <ClInclude Include="..\src\natives\natives_hookchains.h" />
     <ClInclude Include="..\src\natives\natives_members.h" />
     <ClInclude Include="..\src\natives\natives_misc.h" />
-    <ClInclude Include="..\src\natives\natives_vtc.h" />
+    <ClInclude Include="..\src\natives\natives_addons.h" />
     <ClInclude Include="..\src\precompiled.h" />
     <ClInclude Include="..\src\reapi_utils.h" />
   </ItemGroup>
@@ -249,7 +249,7 @@
     <ClCompile Include="..\src\natives\natives_hookchains.cpp" />
     <ClCompile Include="..\src\natives\natives_members.cpp" />
     <ClCompile Include="..\src\natives\natives_misc.cpp" />
-    <ClCompile Include="..\src\natives\natives_vtc.cpp" />
+    <ClCompile Include="..\src\natives\natives_addons.cpp" />
     <ClCompile Include="..\src\precompiled.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -264,9 +264,10 @@
     <None Include="..\extra\amxmodx\scripting\include\reapi.inc" />
     <None Include="..\extra\amxmodx\scripting\include\reapi_const.inc" />
     <None Include="..\extra\amxmodx\scripting\include\reapi_engine.inc" />
+    <None Include="..\extra\amxmodx\scripting\include\reapi_engine_const.inc" />
     <None Include="..\extra\amxmodx\scripting\include\reapi_gamedll.inc" />
     <None Include="..\extra\amxmodx\scripting\include\reapi_gamedll_const.inc" />
-    <None Include="..\extra\amxmodx\scripting\include\reapi_misc.inc" />
+    <None Include="..\extra\amxmodx\scripting\include\reapi_addons.inc" />
     <None Include="..\extra\amxmodx\scripting\reapi_test.sma" />
     <None Include="..\src\reapi_const.inc" />
     <None Include="reapi.def" />
