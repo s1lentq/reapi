@@ -1,13 +1,13 @@
 #pragma once
 
-#define CHECK_ISPLAYER(x)	if (x <= 0 || x > gpGlobals->maxClients) { MF_LogError(amx, AMX_ERR_NATIVE, "invalid player index %i", x); return FALSE; }
-#define CHECK_ISENTITY(x)	if (x > gpGlobals->maxEntities) { MF_LogError(amx, AMX_ERR_NATIVE, "invalid entity index %i", x); return FALSE; }
+#define CHECK_ISPLAYER(x)	if (params[x] <= 0 || params[x] > gpGlobals->maxClients) { MF_LogError(amx, AMX_ERR_NATIVE, "invalid player index %i [%s]", params[x], #x); return FALSE; }
+#define CHECK_ISENTITY(x)	if (params[x] > gpGlobals->maxEntities) { MF_LogError(amx, AMX_ERR_NATIVE, "invalid entity index %i [%s]", params[x], #x); return FALSE; }
 
 class CAmxArg
 {
 public:
 	CAmxArg(AMX* amx, cell value) : m_amx(amx), m_value(value) {}
-	operator float&() const
+	operator float() const
 	{
 		return *(float *)m_value;
 	}
@@ -17,7 +17,7 @@ public:
 	}
 	operator entvars_s*() const
 	{
-		auto pev = PEV(m_value);
+		auto pev = PEV(m_value); // faster
 		return m_value < 0 ? nullptr : pev;
 	}
 	operator int() const
@@ -34,8 +34,9 @@ public:
 	}
 	operator CBaseEntity*() const
 	{
-		auto player = g_ReGameFuncs->UTIL_PlayerByIndex(m_value);
-		return m_value < 0 ? nullptr : player;
+		if (m_value < 0)
+			return nullptr;
+		return g_ReGameFuncs->UTIL_PlayerByIndex(m_value);
 	}
 	operator PLAYER_ANIM() const
 	{

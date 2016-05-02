@@ -14,7 +14,7 @@ cell AMX_NATIVE_CALL rg_set_animation(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_index, arg_anim };
 
-	CHECK_ISPLAYER(params[arg_index]);
+	CHECK_ISPLAYER(arg_index);
 
 	ICSPlayer *pPlayer = g_ReGameFuncs->INDEX_TO_CSPLAYER(params[arg_index]);
 	if (pPlayer == nullptr || !pPlayer->IsConnected()) {
@@ -41,7 +41,7 @@ cell AMX_NATIVE_CALL rg_add_account(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_index, arg_amount, arg_track_change };
 
-	CHECK_ISPLAYER(params[arg_index]);
+	CHECK_ISPLAYER(arg_index);
 
 	ICSPlayer *pPlayer = g_ReGameFuncs->INDEX_TO_CSPLAYER(params[arg_index]);
 	if (pPlayer == nullptr || !pPlayer->IsConnected()) {
@@ -67,7 +67,7 @@ cell AMX_NATIVE_CALL rg_give_item(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_index, arg_item };
 
-	CHECK_ISPLAYER(params[arg_index]);
+	CHECK_ISPLAYER(arg_index);
 
 	ICSPlayer *pPlayer = g_ReGameFuncs->INDEX_TO_CSPLAYER(params[arg_index]);
 	if (pPlayer == nullptr || !pPlayer->IsConnected()) {
@@ -93,7 +93,7 @@ cell AMX_NATIVE_CALL rg_give_default_items(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_index };
 
-	CHECK_ISPLAYER(params[arg_index]);
+	CHECK_ISPLAYER(arg_index);
 
 	ICSPlayer *pPlayer = g_ReGameFuncs->INDEX_TO_CSPLAYER(params[arg_index]);
 	if (pPlayer == nullptr || !pPlayer->IsConnected()) {
@@ -119,7 +119,7 @@ cell AMX_NATIVE_CALL rg_give_shield(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_index, arg_deploy };
 
-	CHECK_ISPLAYER(params[arg_index]);
+	CHECK_ISPLAYER(arg_index);
 
 	ICSPlayer *pPlayer = g_ReGameFuncs->INDEX_TO_CSPLAYER(params[arg_index]);
 	if (pPlayer == nullptr || !pPlayer->IsConnected()) {
@@ -150,8 +150,8 @@ cell AMX_NATIVE_CALL rg_dmg_radius(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_vec, arg_inflictor, arg_attacker, arg_damage, arg_radius, arg_ignore_class, arg_dmg_type };
 
-	CHECK_ISENTITY(params[arg_inflictor]);
-	CHECK_ISENTITY(params[arg_attacker]);
+	CHECK_ISENTITY(arg_inflictor);
+	CHECK_ISENTITY(arg_attacker);
 
 	CAmxArgs args(amx, params);
 	g_ReGameFuncs->RadiusDamage(args[arg_vec], args[arg_inflictor], args[arg_attacker], args[arg_damage], args[arg_radius], args[arg_ignore_class], args[arg_dmg_type]);
@@ -186,8 +186,8 @@ cell AMX_NATIVE_CALL rg_multidmg_apply(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_inflictor, arg_attacker };
 
-	CHECK_ISENTITY(params[arg_inflictor]);
-	CHECK_ISENTITY(params[arg_attacker]);
+	CHECK_ISENTITY(arg_inflictor);
+	CHECK_ISENTITY(arg_attacker);
 
 	CAmxArgs args(amx, params);
 	g_ReGameFuncs->ApplyMultiDamage(args[arg_inflictor], args[arg_attacker]);
@@ -211,8 +211,8 @@ cell AMX_NATIVE_CALL rg_multidmg_add(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_inflictor, arg_victim, arg_damage, arg_dmg_type };
 
-	CHECK_ISENTITY(params[arg_inflictor]);
-	CHECK_ISENTITY(params[arg_victim]);
+	CHECK_ISENTITY(arg_inflictor);
+	CHECK_ISENTITY(arg_victim);
 
 	if (params[arg_victim] < 0) { // null
 		MF_LogError(amx, AMX_ERR_NATIVE, "rg_multidmg_add: victim == null");
@@ -247,8 +247,8 @@ cell AMX_NATIVE_CALL rg_fire_bullets(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_inflictor, arg_attacker, arg_shots, arg_vecSrc, arg_dir, arg_spread, arg_dist, arg_bullet_type, arg_tracefrq, arg_dmg };
 
-	CHECK_ISENTITY(params[arg_inflictor]);
-	CHECK_ISENTITY(params[arg_attacker]);
+	CHECK_ISENTITY(arg_inflictor);
+	CHECK_ISENTITY(arg_attacker);
 
 	CAmxArgs args(amx, params);
 	ICSEntity *pInflictor = args[arg_inflictor];
@@ -293,8 +293,8 @@ cell AMX_NATIVE_CALL rg_fire_bullets3(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_inflictor, arg_attacker, arg_vecSrc, arg_dir, arg_spread, arg_dist, arg_penetration, arg_bullet_type, arg_dmg, arg_range_mod, arg_pistol, arg_rand, arg_out };
 
-	CHECK_ISENTITY(params[arg_inflictor]);
-	CHECK_ISENTITY(params[arg_attacker]);
+	CHECK_ISENTITY(arg_inflictor);
+	CHECK_ISENTITY(arg_attacker);
 
 	CAmxArgs args(amx, params);
 	ICSEntity *pInflictor = args[arg_inflictor];
@@ -476,7 +476,7 @@ cell AMX_NATIVE_CALL rg_find_ent_by_owner(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_start_index, arg_classname, arg_onwer };
 
-	CHECK_ISENTITY(params[arg_onwer]);
+	CHECK_ISENTITY(arg_onwer);
 
 	const char* value = getAmxString(amx, params[arg_classname]);
 	edict_t *pOwner = edictByIndex(params[arg_onwer]);
@@ -564,7 +564,7 @@ cell AMX_NATIVE_CALL rg_remove_all_items(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_index, arg_suit };
 
-	CHECK_ISPLAYER(params[arg_index]);
+	CHECK_ISPLAYER(arg_index);
 
 	ICSPlayer *pPlayer = g_ReGameFuncs->INDEX_TO_CSPLAYER(params[arg_index]);
 	if (pPlayer == nullptr || !pPlayer->IsConnected()) {
@@ -590,7 +590,7 @@ cell AMX_NATIVE_CALL rg_remove_item(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_index, arg_item_name };
 
-	CHECK_ISPLAYER(params[arg_index]);
+	CHECK_ISPLAYER(arg_index);
 
 	CBasePlayer *pPlayer = (CBasePlayer *)g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
 	if (pPlayer == nullptr || pPlayer->has_disconnected) {

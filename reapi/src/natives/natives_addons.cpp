@@ -66,7 +66,7 @@ cell AMX_NATIVE_CALL REU_GetProtocol(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_index };
 
-	CHECK_ISPLAYER(params[arg_index]);
+	CHECK_ISPLAYER(arg_index);
 
 	return g_ReunionApi->GetClientProtocol(params[arg_index] - 1);
 }
@@ -82,7 +82,7 @@ cell AMX_NATIVE_CALL REU_GetAuthtype(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_index };
 
-	CHECK_ISPLAYER(params[arg_index]);
+	CHECK_ISPLAYER(arg_index);
 
 	return g_ReunionApi->GetClientAuthtype(params[arg_index] - 1);
 }

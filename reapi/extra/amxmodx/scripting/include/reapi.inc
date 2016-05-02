@@ -17,6 +17,8 @@
 #define REAPI_VERISON_MAJOR 1
 #define REAPI_VERISON_MINOR 0
 
+#define NULLENT -1
+
 #include <reapi_const.inc>
 #include <reapi_engine.inc>	// NOTE: only for ReHLDS
 #include <reapi_gamedll.inc>	// NOTE: only for gamedll Counter-Strike (ReGameDLL_CS)

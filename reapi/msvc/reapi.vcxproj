@@ -262,7 +262,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\extra\amxmodx\scripting\include\reapi.inc" />
-    <None Include="..\extra\amxmodx\scripting\include\reapi_const.inc" />
     <None Include="..\extra\amxmodx\scripting\include\reapi_engine.inc" />
     <None Include="..\extra\amxmodx\scripting\include\reapi_engine_const.inc" />
     <None Include="..\extra\amxmodx\scripting\include\reapi_gamedll.inc" />

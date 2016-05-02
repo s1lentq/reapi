@@ -743,9 +743,6 @@
       <Filter>src</Filter>
     </None>
     <None Include="reapi.def" />
-    <None Include="..\extra\amxmodx\scripting\include\reapi_const.inc">
-      <Filter>amxmodx\scripting\include</Filter>
-    </None>
     <None Include="..\extra\amxmodx\scripting\include\reapi_gamedll.inc">
       <Filter>amxmodx\scripting\include</Filter>
     </None>
