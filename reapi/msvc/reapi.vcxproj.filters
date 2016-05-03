@@ -739,9 +739,6 @@
     <None Include="..\extra\amxmodx\scripting\reapi_test.sma">
       <Filter>amxmodx\scripting</Filter>
     </None>
-    <None Include="..\src\reapi_const.inc">
-      <Filter>src</Filter>
-    </None>
     <None Include="reapi.def" />
     <None Include="..\extra\amxmodx\scripting\include\reapi_gamedll.inc">
       <Filter>amxmodx\scripting\include</Filter>
@@ -757,6 +754,9 @@
     </None>
     <None Include="..\extra\amxmodx\scripting\include\reapi_addons.inc">
       <Filter>amxmodx\scripting\include</Filter>
+    </None>
+    <None Include="..\src\reapi_version.inc">
+      <Filter>src</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

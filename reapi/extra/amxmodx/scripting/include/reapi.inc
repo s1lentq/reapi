@@ -13,16 +13,12 @@
 	#pragma library reapi
 #endif
 
-// reapi version
-#define REAPI_VERSION_MAJOR 1
-#define REAPI_VERSION_MINOR 0
-
 #define NULLENT -1
 
-#include <reapi_const.inc>
 #include <reapi_engine.inc>	// NOTE: only for ReHLDS
 #include <reapi_gamedll.inc>	// NOTE: only for gamedll Counter-Strike (ReGameDLL_CS)
 #include <reapi_addons.inc>	// NOTE: 3-rd party addons
+#include <reapi_version.inc>
 
 // hookchain return type
 enum

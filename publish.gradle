@@ -31,6 +31,10 @@ task publishPrepareFiles << {
 		from 'reapi/extra'
 		into 'publish/publishRoot/reapi/addons'
 	}
+	copy {
+		from 'reapi/src/reapi_version.inc'
+		into 'publish/publishRoot/reapi/addons/amxmodx/scripting/include'
+	}
 }
 
 task publishPackage(type: Zip, dependsOn: 'publishPrepareFiles') {

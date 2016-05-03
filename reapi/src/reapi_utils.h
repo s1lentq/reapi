@@ -27,7 +27,11 @@ inline edict_t* edictByIndex(size_t index)
 template<typename T>
 T* getPrivate(int index)
 {
-	return (T *)edictByIndex(index)->pvPrivateData;
+	edict_t* pent = edictByIndex(index);
+	if (pent)
+		return (T *)pent->pvPrivateData;
+
+	return nullptr;
 }
 
 inline entvars_t* PEV(int index)

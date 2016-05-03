@@ -1,7 +1,7 @@
 #pragma once
 
 // reapi version
-#include "reapi_const.inc"
+#include "reapi_version.inc"
 
 class CAPI_Config {
 public:

@@ -173,7 +173,6 @@ enum GamedllFunc_CBasePlayer
 	 */
 	RG_CBasePlayer_ObjectCaps,
 
-
 	/**
 	 * Description:		-
 	 * Return type:		int
@@ -571,7 +570,7 @@ enum CSGameRules_Members
 	m_bMapHasEscapeZone,
 
 	/**
-	 * Description:		0 = uninitialized,   1 = has VIP safety zone,   2 = DOES not have VIP safetyzone
+	 * Description:		0 = uninitialized, 1 = has VIP safety zone, 2 = DOES not have VIP safetyzone
 	 * Member type:		int
 	 * Get params:		get_member_game(member);
 	 * Set params:		set_member_game(member, value);

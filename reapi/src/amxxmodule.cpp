@@ -177,7 +177,7 @@ C_DLLEXPORT int AMXX_Detach()
 C_DLLEXPORT int AMXX_PluginsLoaded()
 {
 	int iFwd = g_amxxapi.RegisterForward("__reapi_version_check", ET_IGNORE, FP_CELL, FP_CELL, FP_DONE);
-	g_amxxapi.ExecuteForward(iFwd, REAPI_VERISON_MAJOR, REAPI_VERISON_MINOR);
+	g_amxxapi.ExecuteForward(iFwd, REAPI_VERSION_MAJOR, REAPI_VERSION_MINOR);
 
 	if (api_cfg.hasVTC()) {
 

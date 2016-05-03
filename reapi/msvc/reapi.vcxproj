@@ -268,7 +268,7 @@
     <None Include="..\extra\amxmodx\scripting\include\reapi_gamedll_const.inc" />
     <None Include="..\extra\amxmodx\scripting\include\reapi_addons.inc" />
     <None Include="..\extra\amxmodx\scripting\reapi_test.sma" />
-    <None Include="..\src\reapi_const.inc" />
+    <None Include="..\src\reapi_version.inc" />
     <None Include="reapi.def" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

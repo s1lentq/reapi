@@ -221,7 +221,7 @@ cell AMX_NATIVE_CALL rg_multidmg_add(AMX *amx, cell *params)
 
 	CAmxArgs args(amx, params);
 	g_ReGameFuncs->AddMultiDamage(args[arg_inflictor], args[arg_victim], args[arg_damage], args[arg_dmg_type]);
-	
+
 	return TRUE;
 }
 
@@ -481,7 +481,7 @@ cell AMX_NATIVE_CALL rg_find_ent_by_owner(AMX *amx, cell *params)
 	const char* value = getAmxString(amx, params[arg_classname]);
 	edict_t *pOwner = edictByIndex(params[arg_onwer]);
 	edict_t *pEntity = g_pEdicts;
-	
+
 	for (int i = 0; i < gpGlobals->maxEntities; i++, pEntity++)
 	{
 		if (pEntity->v.owner == pOwner && !strcmp(STRING(pEntity->v.classname), value))

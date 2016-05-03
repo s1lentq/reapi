@@ -6,7 +6,7 @@
 * @param index		Client index
 * @return		1 if client is speaking, 0 otherwise
 *
-* native VTC_IsClientSpeaking(index);
+* native VTC_IsClientSpeaking(const index);
 */
 cell AMX_NATIVE_CALL VTC_IsClientSpeaking(AMX *amx, cell *params)
 {
@@ -23,7 +23,7 @@ cell AMX_NATIVE_CALL VTC_IsClientSpeaking(AMX *amx, cell *params)
 * @param index		Client index
 * @noreturn
 *
-* native VTC_MuteClient(index);
+* native VTC_MuteClient(const index);
 */
 cell AMX_NATIVE_CALL VTC_MuteClient(AMX *amx, cell *params)
 {
@@ -42,7 +42,7 @@ cell AMX_NATIVE_CALL VTC_MuteClient(AMX *amx, cell *params)
 * @param index		Client index
 * @noreturn
 *
-* native VTC_UnmuteClient(index);
+* native VTC_UnmuteClient(const index);
 */
 cell AMX_NATIVE_CALL VTC_UnmuteClient(AMX *amx, cell *params)
 {
@@ -68,6 +68,7 @@ AMX_NATIVE_INFO Vtc_Natives[] =
 * Get client protocol
 *
 * @param index		Client index
+* @return		client protocol
 *
 * native REU_GetProtocol(const index);
 */
@@ -84,6 +85,7 @@ cell AMX_NATIVE_CALL REU_GetProtocol(AMX *amx, cell *params)
 * Get client auth type
 *
 * @param index		Client index
+* @return		client auth type
 *
 * native REU_GetAuthtype(const index);
 */

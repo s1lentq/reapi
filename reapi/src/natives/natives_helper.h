@@ -36,7 +36,13 @@ public:
 	{
 		if (m_value < 0)
 			return nullptr;
-		return g_ReGameFuncs->UTIL_PlayerByIndex(m_value);
+		return getPrivate<CBaseEntity>(m_value);
+	}
+	operator CBasePlayer*() const
+	{
+		if (m_value < 0)
+			return nullptr;
+		return static_cast<CBasePlayer *>(g_ReGameFuncs->UTIL_PlayerByIndex(m_value));
 	}
 	operator PLAYER_ANIM() const
 	{

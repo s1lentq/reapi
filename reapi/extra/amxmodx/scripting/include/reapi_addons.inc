@@ -26,7 +26,7 @@ enum client_auth_type
 * @return		1 if client is speaking, 0 otherwise
 *
 */
-native VTC_IsClientSpeaking(index);
+native VTC_IsClientSpeaking(const index);
 
 /*
 * Mutes this player
@@ -34,7 +34,7 @@ native VTC_IsClientSpeaking(index);
 * @param index		Client index
 * @noreturn
 */
-native VTC_MuteClient(index);
+native VTC_MuteClient(const index);
 
 /*
 * Unmutes this player
@@ -42,7 +42,7 @@ native VTC_MuteClient(index);
 * @param index		Client index
 * @noreturn
 */
-native VTC_UnmuteClient(index);
+native VTC_UnmuteClient(const index);
 
 /*
 * Called when player started talking
@@ -50,7 +50,7 @@ native VTC_UnmuteClient(index);
 * @param index		Client index
 * @noreturn
 */
-forward VTC_OnClientStartSpeak(index);
+forward VTC_OnClientStartSpeak(const index);
 
 /*
 * Called when player stopped talking
@@ -58,13 +58,13 @@ forward VTC_OnClientStartSpeak(index);
 * @param index		Client index
 * @noreturn
 */
-forward VTC_OnClientStopSpeak(index);
+forward VTC_OnClientStopSpeak(const index);
 
 /*
 * Get client protocol
 *
 * @param index		Client index
-* @noreturn
+* @return		client protocol
 */
 native REU_GetProtocol(const index);
 
@@ -72,6 +72,6 @@ native REU_GetProtocol(const index);
 * Get client auth type
 *
 * @param index		Client index
-* @noreturn
+* @return		client auth type
 */
-native REU_GetAuthtype(const index);
+native client_auth_type:REU_GetAuthtype(const index);
