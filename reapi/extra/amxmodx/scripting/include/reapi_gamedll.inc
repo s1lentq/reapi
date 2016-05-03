@@ -228,10 +228,10 @@ native rg_find_ent_by_class(start_index, const classname[]);
 * @param start_index		Entity index to start searching from. -1 to start from the first entity
 * @param classname		Classname to search for
 *
-* @return			Entity index > 0 if found, 0 otherwise
+* @return			1 if found, 0 otherwise
 *
 */
-native rg_find_ent_by_owner(start_index, const classname[], owner);
+native rg_find_ent_by_owner(&start_index, const classname[], owner);
 
 /**
 * Returns some information about a weapon.

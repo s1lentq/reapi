@@ -148,7 +148,7 @@ cell AMX_NATIVE_CALL SetHookChainReturn(AMX *amx, cell *params)
 		break;
 	}
 	case ATYPE_CLASSPTR:
-		retVal._classptr = CBaseEntity::Instance(INDEXENT(*srcAddr));
+		retVal._classptr = getPrivate<CBaseEntity>(*srcAddr);
 		break;
 	default:
 		return FALSE;
@@ -258,7 +258,7 @@ cell AMX_NATIVE_CALL SetHookChainArg(AMX *amx, cell *params)
 		*(char **)destAddr = getAmxStringTemp(srcAddr, temp_strings[number], sizeof temp_strings[0] - 1);
 		break;
 	case ATYPE_CLASSPTR:
-		*(CBaseEntity **)destAddr = CBaseEntity::Instance(INDEXENT(*srcAddr));
+		*(CBaseEntity **)destAddr = getPrivate<CBaseEntity>(*srcAddr);
 		break;
 	}
 

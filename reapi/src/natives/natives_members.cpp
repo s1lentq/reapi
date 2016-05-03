@@ -11,7 +11,7 @@ cell AMX_NATIVE_CALL set_member(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	edict_t *pEdict = INDEXENT(params[arg_index]);
+	edict_t *pEdict = edictByIndexAmx(params[arg_index]);
 	if (pEdict == nullptr || pEdict->pvPrivateData == nullptr) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
 		return FALSE;
@@ -34,7 +34,7 @@ cell AMX_NATIVE_CALL get_member(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	edict_t *pEdict = INDEXENT(params[arg_index]);
+	edict_t *pEdict = edictByIndexAmx(params[arg_index]);
 	if (pEdict == nullptr || pEdict->pvPrivateData == nullptr) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
 		return FALSE;
@@ -155,7 +155,7 @@ BOOL set_member(void* pdata, const member_t *member, size_t element, cell* value
 	case MEMBER_CLASSPTR:
 		{
 			// native set_member(_index, any:_member, _value, _elem);
-			CBaseEntity *pEntity = CBaseEntity::Instance(INDEXENT(*value));
+			CBaseEntity *pEntity = getPrivate<CBaseEntity>(*value);
 			set_member<CBaseEntity *>(pdata, member->offset, pEntity, element);
 			return TRUE;
 		}
@@ -163,14 +163,14 @@ BOOL set_member(void* pdata, const member_t *member, size_t element, cell* value
 		{
 			// native set_member(_index, any:_member, _value, _elem);
 			EHANDLE& ehandle = get_member<EHANDLE>(pdata, member->offset, element);
-			edict_t *pEdictValue = INDEXENT(*value);
+			edict_t *pEdictValue = edictByIndexAmx(*value);
 			ehandle.Set(pEdictValue);
 			return TRUE;
 		}
 	case MEMBER_EDICT:
 		{
 			// native set_member(_index, any:_member, _value, _elem);
-			edict_t *pEdictValue = INDEXENT(*value);
+			edict_t *pEdictValue = edictByIndexAmx(*value);
 			set_member<edict_t *>(pdata, member->offset, pEdictValue, element);
 			return TRUE;
 		}
@@ -261,7 +261,7 @@ cell get_member(void* pdata, const member_t *member, size_t element, cell* dest)
 			EHANDLE ehandle = get_member<EHANDLE>(pdata, member->offset, element);
 			edict_t *pEntity = ehandle.Get();
 			if (pEntity != nullptr) {
-				return ENTINDEX(pEntity);
+				return indexOfEdict(pEntity);
 			}
 			return -1;
 		}
@@ -270,7 +270,7 @@ cell get_member(void* pdata, const member_t *member, size_t element, cell* dest)
 			// native any:get_member(_index, any:_member, element);
 			edict_t *pEntity = get_member<edict_t *>(pdata, member->offset, element);
 			if (pEntity != nullptr) {
-				return ENTINDEX(pEntity);
+				return indexOfEdict(pEntity);
 			}
 
 			return -1;
@@ -281,11 +281,7 @@ cell get_member(void* pdata, const member_t *member, size_t element, cell* dest)
 			if (!dest)
 				return 0;
 
-			cell* vecSrc = get_member_direct<cell *>(pdata, member->offset, element);
-
-			dest[0] = vecSrc[0];
-			dest[1] = vecSrc[1];
-			dest[2] = vecSrc[2];
+			dest = get_member_direct<cell *>(pdata, member->offset, element);
 			return 1;
 		}
 	case MEMBER_STRING:

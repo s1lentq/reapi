@@ -422,7 +422,6 @@ cell AMX_NATIVE_CALL rg_update_teamscores(AMX *amx, cell *params)
 */
 cell AMX_NATIVE_CALL rg_create_entity(AMX *amx, cell *params)
 {
-	//g_ReGameFuncs->CREATE_NAMED_ENTITY2();
 	enum args_e { arg_count, arg_classname };
 
 	string_t iClass = g_engfuncs.pfnAllocString(getAmxString(amx, params[arg_classname]));
@@ -430,7 +429,7 @@ cell AMX_NATIVE_CALL rg_create_entity(AMX *amx, cell *params)
 
 	if (pEnt != nullptr)
 	{
-		return ENTINDEX(pEnt);
+		return indexOfEdict(pEnt);
 	}
 
 	return 0;
@@ -468,9 +467,9 @@ cell AMX_NATIVE_CALL rg_find_ent_by_class(AMX *amx, cell *params)
 * @param start_index		Entity index to start searching from. -1 to start from the first entity
 * @param classname		Classname to search for
 *
-* @return			Entity index > 0 if found, 0 otherwise
+* @return			1 if found, 0 otherwise
 *
-* native rg_find_ent_by_owner(start_index, const classname[], owner);
+* native rg_find_ent_by_owner(&start_index, const classname[], owner);
 */
 cell AMX_NATIVE_CALL rg_find_ent_by_owner(AMX *amx, cell *params)
 {
@@ -478,24 +477,35 @@ cell AMX_NATIVE_CALL rg_find_ent_by_owner(AMX *amx, cell *params)
 
 	CHECK_ISENTITY(arg_onwer);
 
+	cell& startIndex = *getAmxAddr(amx, params[arg_start_index]);
 	const char* value = getAmxString(amx, params[arg_classname]);
-	edict_t *pOwner = edictByIndex(params[arg_onwer]);
-	edict_t *pEntity = g_pEdicts;
+	edict_t* pOwner = edictByIndexAmx(params[arg_onwer]);
+	edict_t* pEntity = &g_pEdicts[startIndex];
 
-	for (int i = 0; i < gpGlobals->maxEntities; i++, pEntity++)
+	for (int i = startIndex; i < gpGlobals->maxEntities; i++, pEntity++)
 	{
-		if (pEntity->v.owner == pOwner && !strcmp(STRING(pEntity->v.classname), value))
-			return i;
+		if (pEntity->v.owner != pOwner)
+			continue;
+
+		// yet not allocated
+		if (!pEntity->pvPrivateData || pEntity->free)
+			continue;
+
+		if (!strcmp(STRING(pEntity->v.classname), value))
+		{
+			startIndex = i;
+			return TRUE;
+		}
 	}
 
-	return 0;
+	return FALSE;
 }
 
 /**
 * Returns some information about a weapon.
 *
 * @param weapon_id	Weapon id, see WEAPON_* constants
-* @param type		Info type, see WPINFO_* constants
+* @param type		Info type, see WI_* constants
 *
 * @return		Weapon information value
 * @error		If weapon_id and type are out of bound, an error will be thrown.
@@ -518,19 +528,19 @@ cell AMX_NATIVE_CALL rg_get_weapon_info(AMX *amx, cell *params)
 
 	switch (info_type)
 	{
-	case WPINFO_COST:
+	case WI_COST:
 			return info->cost;
-	case WPINFO_CLIP_COST:
+	case WI_CLIP_COST:
 			return info->clipCost;
-	case WPINFO_BUY_CLIP_SIZE:
+	case WI_BUY_CLIP_SIZE:
 			return info->buyClipSize;
-	case WPINFO_GUN_CLIP_SIZE:
+	case WI_GUN_CLIP_SIZE:
 			return info->gunClipSize;
-	case WPINFO_MAX_ROUNDS:
+	case WI_MAX_ROUNDS:
 			return info->maxRounds;
-	case WPINFO_AMMO_TYPE:
+	case WI_AMMO_TYPE:
 			return info->ammoType;
-	case WPINFO_NAME:
+	case WI_NAME:
 		{
 			if (PARAMS_COUNT != arg_4) {
 				MF_LogError(amx, AMX_ERR_NATIVE, "%s: bad parameter count, got %i, expected %i", __FUNCTION__, PARAMS_COUNT, arg_4);

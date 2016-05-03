@@ -19,7 +19,15 @@ inline size_t indexOfEdict(entvars_t* pev)
 	return indexOfEdict(pev->pContainingEntity);
 }
 
-inline edict_t* edictByIndex(size_t index)
+// safe to index -1
+inline edict_t* edictByIndexAmx(int index)
+{
+	auto ed = g_pEdicts + index;
+	return index < 0 ? nullptr : ed;
+}
+
+// fast
+inline edict_t* edictByIndex(int index)
 {
 	return g_pEdicts + index;
 }
@@ -27,16 +35,12 @@ inline edict_t* edictByIndex(size_t index)
 template<typename T>
 T* getPrivate(int index)
 {
-	edict_t* pent = edictByIndex(index);
-	if (pent)
-		return (T *)pent->pvPrivateData;
-
-	return nullptr;
+	return (T *)GET_PRIVATE(edictByIndexAmx(index));
 }
 
 inline entvars_t* PEV(int index)
 {
-	return &edictByIndex(index)->v;
+	return VARS(edictByIndexAmx(index));
 }
 
 // HLTypeConversion.h -> AMXModX

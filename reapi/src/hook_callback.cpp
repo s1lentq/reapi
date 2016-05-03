@@ -9,7 +9,7 @@ void SV_StartSound(IRehldsHook_SV_StartSound *chain, int recipients, edict_t *en
 {
 	auto original = [chain](int _recipients, int _entity, int _channel, const char *_sample, int _volume, float _attenuation, int _fFlags, int _pitch)
 	{
-		chain->callNext(_recipients, INDEXENT(_entity), _channel, _sample, _volume, _attenuation, _fFlags, _pitch);
+		chain->callNext(_recipients, edictByIndexAmx(_entity), _channel, _sample, _volume, _attenuation, _fFlags, _pitch);
 	};
 
 	callVoidForward(RH_SV_StartSound, original, recipients, indexOfEdict(entity), channel, sample, volume, attenuation, fFlags, pitch);

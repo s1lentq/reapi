@@ -11,6 +11,10 @@
 #define SIGNAL_ESCAPE		(1<<3)
 #define SIGNAL_VIPSAFETY	(1<<4)
 
+// Returns 1, if round ended by expired time
+// NOTE: Use this for hookchain RG_RoundEnd with the parametr ScenarioEventEndRound:event
+#define HadRoundExpired(event)	(1<<event) & (1<<ROUND_TARGET_SAVED) | (1<<ROUND_HOSTAGE_NOT_RESCUED) | (1<<ROUND_TERRORISTS_NOT_ESCAPED) | (1<<ROUND_VIP_NOT_ESCAPED)
+
 enum WeaponIdType
 {
 	WEAPON_NONE,
@@ -47,16 +51,16 @@ enum WeaponIdType
 	WEAPON_SHIELDGUN = 99
 };
 
-/* Weapon info types for use with rg_get_weapon_info() */
+// Weapon info types for use with rg_get_weapon_info()
 enum WpnInfo
 {
-	WPINFO_COST,
-	WPINFO_CLIP_COST,
-	WPINFO_BUY_CLIP_SIZE,
-	WPINFO_GUN_CLIP_SIZE,
-	WPINFO_MAX_ROUNDS,
-	WPINFO_AMMO_TYPE,
-	WPINFO_NAME
+	WI_COST,
+	WI_CLIP_COST,
+	WI_BUY_CLIP_SIZE,
+	WI_GUN_CLIP_SIZE,
+	WI_MAX_ROUNDS,
+	WI_AMMO_TYPE,
+	WI_NAME
 };
 
 enum WinStatus
