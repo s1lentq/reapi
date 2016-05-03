@@ -11,6 +11,9 @@
 cell AMX_NATIVE_CALL VTC_IsClientSpeaking(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_index };
+
+	CHECK_ISPLAYER(arg_index);
+
 	return g_pVoiceTranscoderApi->IsClientSpeaking((size_t)params[arg_index]);
 }
 
@@ -25,6 +28,9 @@ cell AMX_NATIVE_CALL VTC_IsClientSpeaking(AMX *amx, cell *params)
 cell AMX_NATIVE_CALL VTC_MuteClient(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_index };
+
+	CHECK_ISPLAYER(arg_index);
+
 	g_pVoiceTranscoderApi->MuteClient((size_t)params[arg_index]);
 
 	return FALSE;
@@ -41,6 +47,9 @@ cell AMX_NATIVE_CALL VTC_MuteClient(AMX *amx, cell *params)
 cell AMX_NATIVE_CALL VTC_UnmuteClient(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_index };
+
+	CHECK_ISPLAYER(arg_index);
+
 	g_pVoiceTranscoderApi->UnmuteClient((size_t)params[arg_index]);
 
 	return FALSE;

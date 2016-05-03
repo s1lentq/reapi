@@ -1,7 +1,7 @@
 #pragma once
 
-#define CHECK_ISPLAYER(x)	if (params[x] <= 0 || params[x] > gpGlobals->maxClients) { MF_LogError(amx, AMX_ERR_NATIVE, "invalid player index %i [%s]", params[x], #x); return FALSE; }
-#define CHECK_ISENTITY(x)	if (params[x] > gpGlobals->maxEntities) { MF_LogError(amx, AMX_ERR_NATIVE, "invalid entity index %i [%s]", params[x], #x); return FALSE; }
+#define CHECK_ISPLAYER(x)	if (params[x] <= 0 || params[x] > gpGlobals->maxClients) { MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid player index %i [%s]", __FUNCTION__, params[x], #x); return FALSE; }
+#define CHECK_ISENTITY(x)	if (params[x] > gpGlobals->maxEntities) { MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid entity index %i [%s]", __FUNCTION__, params[x], #x); return FALSE; }
 
 class CAmxArg
 {

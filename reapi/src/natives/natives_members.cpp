@@ -7,13 +7,13 @@ cell AMX_NATIVE_CALL set_member(AMX *amx, cell *params)
 	member_t *member = memberlist[params[arg_member]];
 
 	if (member == nullptr) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "set_member: unknown member id %i", params[arg_member]);
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_member]);
 		return FALSE;
 	}
 
 	edict_t *pEdict = INDEXENT(params[arg_index]);
 	if (pEdict == nullptr || pEdict->pvPrivateData == nullptr) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "set_member: invalid or uninitialized entity");
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
 		return FALSE;
 	}
 
@@ -30,13 +30,13 @@ cell AMX_NATIVE_CALL get_member(AMX *amx, cell *params)
 	member_t *member = memberlist[params[arg_member]];
 
 	if (member == nullptr) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "get_member: unknown member id %i", params[arg_member]);
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_member]);
 		return FALSE;
 	}
 
 	edict_t *pEdict = INDEXENT(params[arg_index]);
 	if (pEdict == nullptr || pEdict->pvPrivateData == nullptr) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "get_member: invalid or uninitialized entity");
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
 		return FALSE;
 	}
 
@@ -74,12 +74,12 @@ cell AMX_NATIVE_CALL set_member_game(AMX *amx, cell *params)
 	member_t *member = memberlist[params[arg_member]];
 
 	if (member == nullptr) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "set_member_game: unknown member id %i", params[arg_member]);
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_member]);
 		return FALSE;
 	}
 
 	if (g_pGameRules == nullptr) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "get_member_game: gamerules not initialized");
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: gamerules not initialized", __FUNCTION__);
 		return FALSE;
 	}
 
@@ -96,12 +96,12 @@ cell AMX_NATIVE_CALL get_member_game(AMX *amx, cell *params)
 	member_t *member = memberlist[params[arg_member]];
 
 	if (member == nullptr) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "get_member_game: unknown member id %i", params[arg_member]);
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_member]);
 		return FALSE;
 	}
 
 	if (g_pGameRules == nullptr) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "get_member_game: gamerules not initialized");
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: gamerules not initialized", __FUNCTION__);
 		return FALSE;
 	}
 

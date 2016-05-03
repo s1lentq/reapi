@@ -18,7 +18,7 @@ cell AMX_NATIVE_CALL rg_set_animation(AMX *amx, cell *params)
 
 	ICSPlayer *pPlayer = g_ReGameFuncs->INDEX_TO_CSPLAYER(params[arg_index]);
 	if (pPlayer == nullptr || !pPlayer->IsConnected()) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "player %i is not connected", params[arg_index]);
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
 		return FALSE;
 	}
 
@@ -45,7 +45,7 @@ cell AMX_NATIVE_CALL rg_add_account(AMX *amx, cell *params)
 
 	ICSPlayer *pPlayer = g_ReGameFuncs->INDEX_TO_CSPLAYER(params[arg_index]);
 	if (pPlayer == nullptr || !pPlayer->IsConnected()) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "player %i is not connected", params[arg_index]);
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
 		return FALSE;
 	}
 
@@ -71,7 +71,7 @@ cell AMX_NATIVE_CALL rg_give_item(AMX *amx, cell *params)
 
 	ICSPlayer *pPlayer = g_ReGameFuncs->INDEX_TO_CSPLAYER(params[arg_index]);
 	if (pPlayer == nullptr || !pPlayer->IsConnected()) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "player %i is not connected", params[arg_index]);
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
 		return FALSE;
 	}
 
@@ -97,7 +97,7 @@ cell AMX_NATIVE_CALL rg_give_default_items(AMX *amx, cell *params)
 
 	ICSPlayer *pPlayer = g_ReGameFuncs->INDEX_TO_CSPLAYER(params[arg_index]);
 	if (pPlayer == nullptr || !pPlayer->IsConnected()) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "player %i is not connected", params[arg_index]);
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
 		return FALSE;
 	}
 
@@ -123,7 +123,7 @@ cell AMX_NATIVE_CALL rg_give_shield(AMX *amx, cell *params)
 
 	ICSPlayer *pPlayer = g_ReGameFuncs->INDEX_TO_CSPLAYER(params[arg_index]);
 	if (pPlayer == nullptr || !pPlayer->IsConnected()) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "player %i is not connected", params[arg_index]);
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
 		return FALSE;
 	}
 
@@ -215,7 +215,7 @@ cell AMX_NATIVE_CALL rg_multidmg_add(AMX *amx, cell *params)
 	CHECK_ISENTITY(arg_victim);
 
 	if (params[arg_victim] < 0) { // null
-		MF_LogError(amx, AMX_ERR_NATIVE, "rg_multidmg_add: victim == null");
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: victim == null", __FUNCTION__);
 		return FALSE;
 	}
 
@@ -361,7 +361,7 @@ cell AMX_NATIVE_CALL rg_round_end(AMX *amx, cell *params)
 
 	size_t winstatus = params[arg_win];
 	if (winstatus <= 0) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "rg_round_end: unknown win-status %i", winstatus);
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown win status %i", __FUNCTION__, winstatus);
 		return FALSE;
 	}
 
@@ -509,7 +509,7 @@ cell AMX_NATIVE_CALL rg_get_weapon_info(AMX *amx, cell *params)
 	int weapon_id = params[arg_weapon_id];
 	if (weapon_id <= WEAPON_NONE || weapon_id == WEAPON_C4 || weapon_id == WEAPON_KNIFE || weapon_id > WEAPON_P90)
 	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "Invalid weapon id %i", weapon_id);
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid weapon id %i", __FUNCTION__, weapon_id);
 		return 0;
 	}
 
@@ -533,7 +533,7 @@ cell AMX_NATIVE_CALL rg_get_weapon_info(AMX *amx, cell *params)
 	case WPINFO_NAME:
 		{
 			if (PARAMS_COUNT != arg_4) {
-				MF_LogError(amx, AMX_ERR_NATIVE, "rg_get_weapon_info: bad parameter count, got %i, expected %i", PARAMS_COUNT, arg_4);
+				MF_LogError(amx, AMX_ERR_NATIVE, "%s: bad parameter count, got %i, expected %i", __FUNCTION__, PARAMS_COUNT, arg_4);
 				return -1;
 			}
 
@@ -545,7 +545,7 @@ cell AMX_NATIVE_CALL rg_get_weapon_info(AMX *amx, cell *params)
 		}
 	default:
 		{
-			MF_LogError(amx, AMX_ERR_NATIVE, "rg_get_weapon_info: unknown type statement %i, params count %i", info_type, PARAMS_COUNT);
+			MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown type statement %i, params count %i", __FUNCTION__, info_type, PARAMS_COUNT);
 			return -1;
 		}
 	}
@@ -568,7 +568,7 @@ cell AMX_NATIVE_CALL rg_remove_all_items(AMX *amx, cell *params)
 
 	ICSPlayer *pPlayer = g_ReGameFuncs->INDEX_TO_CSPLAYER(params[arg_index]);
 	if (pPlayer == nullptr || !pPlayer->IsConnected()) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "player %i is not connected", params[arg_index]);
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
 		return FALSE;
 	}
 
@@ -594,7 +594,7 @@ cell AMX_NATIVE_CALL rg_remove_item(AMX *amx, cell *params)
 
 	CBasePlayer *pPlayer = (CBasePlayer *)g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
 	if (pPlayer == nullptr || pPlayer->has_disconnected) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "player %i is not connected", params[arg_index]);
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
 		return FALSE;
 	}
 

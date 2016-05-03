@@ -14,8 +14,8 @@
 #endif
 
 // reapi version
-#define REAPI_VERISON_MAJOR 1
-#define REAPI_VERISON_MINOR 0
+#define REAPI_VERSION_MAJOR 1
+#define REAPI_VERSION_MINOR 0
 
 #define NULLENT -1
 
