@@ -246,6 +246,17 @@ native rg_find_ent_by_owner(&start_index, const classname[], owner);
 native rg_get_weapon_info(const {WeaponIdType,_}:weapon_id, WpnInfo:type, any:...);
 
 /**
+* Sets specific values of weapons info.
+*
+* @param weapon_id	Weapon id, see WEAPON_* constants
+* @param type		Info type, see WI_* constants
+*
+* @return		1 if successfully, 0 otherwise
+*
+*/
+native rg_set_weapon_info(const {WeaponIdType,_}:weapon_id, WpnInfo:type, any:...);
+
+/**
 * Remove specifed the player's item by class name
 *
 * @param index		Client index

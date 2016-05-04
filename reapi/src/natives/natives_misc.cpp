@@ -523,23 +523,23 @@ cell AMX_NATIVE_CALL rg_get_weapon_info(AMX *amx, cell *params)
 		return 0;
 	}
 
-	WeaponInfoStruct *info = g_ReGameFuncs->GetWeaponInfo(weapon_id);
+	WeaponInfoStruct *info = g_ReGameApi->GetGameData()->GetWeaponInfo(weapon_id);
 	WpnInfo info_type = static_cast<WpnInfo>(params[arg_type]);
 
 	switch (info_type)
 	{
 	case WI_COST:
-			return info->cost;
+		return info->cost;
 	case WI_CLIP_COST:
-			return info->clipCost;
+		return info->clipCost;
 	case WI_BUY_CLIP_SIZE:
-			return info->buyClipSize;
+		return info->buyClipSize;
 	case WI_GUN_CLIP_SIZE:
-			return info->gunClipSize;
+		return info->gunClipSize;
 	case WI_MAX_ROUNDS:
-			return info->maxRounds;
+		return info->maxRounds;
 	case WI_AMMO_TYPE:
-			return info->ammoType;
+		return info->ammoType;
 	case WI_NAME:
 		{
 			if (PARAMS_COUNT != arg_4) {
@@ -550,15 +550,67 @@ cell AMX_NATIVE_CALL rg_get_weapon_info(AMX *amx, cell *params)
 			// native rg_get_weapon_info(id, WPINFO_NAME, output[], maxlength);
 			cell* dest = getAmxAddr(amx, params[arg_3]);
 			size_t length = *getAmxAddr(amx, params[arg_4]);
+
+			if (info->entityName == nullptr) {
+				setAmxString(dest, "", 1);
+				return 0;
+			}
+
 			setAmxString(dest, info->entityName, length);
 			return 1;
 		}
 	default:
-		{
-			MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown type statement %i, params count %i", __FUNCTION__, info_type, PARAMS_COUNT);
-			return -1;
-		}
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown type statement %i, params count %i", __FUNCTION__, info_type, PARAMS_COUNT);
+		return -1;
 	}
+}
+
+/**
+* Sets specific values of weapons info.
+*
+* @param weapon_id	Weapon id, see WEAPON_* constants
+* @param type		Info type, see WI_* constants
+*
+* @return		1 if successfully, 0 otherwise
+*
+* native rg_set_weapon_info(const {WeaponIdType,_}:weapon_id, WpnInfo:type, any:...);
+*/
+cell AMX_NATIVE_CALL rg_set_weapon_info(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_weapon_id, arg_type, arg_value };
+
+	int weapon_id = params[arg_weapon_id];
+	if (weapon_id <= WEAPON_NONE || weapon_id == WEAPON_C4 || weapon_id == WEAPON_KNIFE || weapon_id > WEAPON_P90)
+	{
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid weapon id %i", __FUNCTION__, weapon_id);
+		return 0;
+	}
+
+	cell* value = getAmxAddr(amx, params[arg_value]);
+	WeaponInfoStruct *info = g_ReGameApi->GetGameData()->GetWeaponInfo(weapon_id);
+	WpnInfo info_type = static_cast<WpnInfo>(params[arg_type]);
+
+	switch (info_type)
+	{
+	case WI_COST:
+		info->cost = *value;
+		break;
+	case WI_CLIP_COST:
+		info->clipCost = *value;
+		break;
+	case WI_BUY_CLIP_SIZE:
+	case WI_GUN_CLIP_SIZE:
+	case WI_MAX_ROUNDS:
+	case WI_AMMO_TYPE:
+	case WI_NAME:
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: this change will have no effect", __FUNCTION__);
+		return 0;
+	default:
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown type statement %i, params count %i", __FUNCTION__, info_type, PARAMS_COUNT);
+		return 0;
+	}
+
+	return 1;
 }
 
 /**
@@ -653,7 +705,9 @@ AMX_NATIVE_INFO Misc_Natives_RG[] =
 	{ "rg_create_entity", rg_create_entity },
 	{ "rg_find_ent_by_class", rg_find_ent_by_class },
 	{ "rg_find_ent_by_owner", rg_find_ent_by_owner },
+
 	{ "rg_get_weapon_info", rg_get_weapon_info },
+	{ "rg_set_weapon_info", rg_set_weapon_info },
 
 	{ "rg_remove_all_items", rg_remove_all_items },
 	{ "rg_remove_item", rg_remove_item },

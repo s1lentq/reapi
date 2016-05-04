@@ -399,4 +399,5 @@ struct WeaponInfoStruct
 	int maxRounds;
 	int ammoType;
 	char *entityName;
+	const char *ammoName;
 };
