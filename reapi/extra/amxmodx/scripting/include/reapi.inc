@@ -116,18 +116,18 @@ native SetHookChainArg(number, AType:type, any:...);
 */
 public __reapi_version_check(const majorVersion, const minorVersion)
 {
-	if (majorVersion != REAPI_VERISON_MAJOR)
+	if (majorVersion != REAPI_VERSION_MAJOR)
 	{
 		new temp[512];
-		formatex(temp, sizeof temp - 1, "[ReAPI]: Api major version mismatch; expected %d, real %d", REAPI_VERISON_MAJOR, majorVersion);
+		formatex(temp, sizeof temp - 1, "[ReAPI]: Api major version mismatch; expected %d, real %d", REAPI_VERSION_MAJOR, majorVersion);
 		set_fail_state(temp);
 		return;
 	}
 
-	if (minorVersion < REAPI_VERISON_MINOR)
+	if (minorVersion < REAPI_VERSION_MINOR)
 	{
 		new temp[512];
-		formatex(temp, sizeof temp - 1, "[ReAPI]: Api minor version mismatch; expected at least %d, real %d", REAPI_VERISON_MINOR, minorVersion);
+		formatex(temp, sizeof temp - 1, "[ReAPI]: Api minor version mismatch; expected at least %d, real %d", REAPI_VERSION_MINOR, minorVersion);
 		set_fail_state(temp);
 		return;
 	}
