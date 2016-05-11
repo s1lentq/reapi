@@ -233,7 +233,7 @@ native rg_find_ent_by_class(start_index, const classname[]);
 */
 native rg_find_ent_by_owner(&start_index, const classname[], owner);
 
-/**
+/*
 * Returns some information about a weapon.
 *
 * @param weapon name or id	Weapon id, see WEAPON_* constants WeaponIdType or weapon_* name
@@ -242,11 +242,10 @@ native rg_find_ent_by_owner(&start_index, const classname[], owner);
 * @return			Weapon information value
 * @error			If weapon_id and type are out of bound, an error will be thrown.
 *
-* native rg_get_weapon_info(any:...);
 */
 native rg_get_weapon_info(any:...);
 
-/**
+/*
 * Sets specific values of weapons info.
 *
 * @param weapon_id	Weapon id, see WEAPON_* constants
@@ -257,7 +256,17 @@ native rg_get_weapon_info(any:...);
 */
 native rg_set_weapon_info(const {WeaponIdType,_}:weapon_id, WpnInfo:type, any:...);
 
-/**
+/*
+* Remove all the player's stuff
+*
+* @param index		Client index
+*
+* @noreturn
+*
+*/
+native rg_remove_all_items(const index, bool:bRemoveSuit);
+
+/*
 * Remove specifed the player's item by class name
 *
 * @param index		Client index

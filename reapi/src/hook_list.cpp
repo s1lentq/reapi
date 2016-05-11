@@ -132,14 +132,12 @@ hook_t* hooklist_t::getHookSafe(size_t hook)
 
 void hooklist_t::clear()
 {
-	for (auto& h : hooklist_engine)
-		h.clear();
-	for (auto& h : hooklist_gamedll)
-		h.clear();
-	for (auto& h : hooklist_animating)
-		h.clear();
-	for (auto& h : hooklist_player)
-		h.clear();
+	#define FOREACH_CLEAR(h) for (auto& h : hooklist_##h) h.clear();
+
+	FOREACH_CLEAR(engine);
+	FOREACH_CLEAR(gamedll);
+	FOREACH_CLEAR(animating);
+	FOREACH_CLEAR(player);
 }
 
 void hook_t::clear()

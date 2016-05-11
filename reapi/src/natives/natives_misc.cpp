@@ -480,7 +480,7 @@ cell AMX_NATIVE_CALL rg_find_ent_by_owner(AMX *amx, cell *params)
 	cell& startIndex = *getAmxAddr(amx, params[arg_start_index]);
 	const char* value = getAmxString(amx, params[arg_classname]);
 	edict_t* pOwner = edictByIndexAmx(params[arg_onwer]);
-	edict_t* pEntity = &g_pEdicts[startIndex];
+	edict_t* pEntity = g_pEdicts + startIndex;
 
 	for (int i = startIndex; i < gpGlobals->maxEntities; i++, pEntity++)
 	{
@@ -501,7 +501,7 @@ cell AMX_NATIVE_CALL rg_find_ent_by_owner(AMX *amx, cell *params)
 	return FALSE;
 }
 
-/**
+/*
 * Returns some information about a weapon.
 *
 * @param weapon name or id	Weapon id, see WEAPON_* constants or weapon_* name
@@ -583,7 +583,7 @@ cell AMX_NATIVE_CALL rg_get_weapon_info(AMX *amx, cell *params)
 	}
 }
 
-/**
+/*
 * Sets specific values of weapons info.
 *
 * @param weapon_id	Weapon id, see WEAPON_* constants
@@ -631,14 +631,14 @@ cell AMX_NATIVE_CALL rg_set_weapon_info(AMX *amx, cell *params)
 	return 1;
 }
 
-/**
+/*
 * Remove all the player's stuff
 *
 * @param index		Client index
 *
 * @noreturn
 *
-* native rg_remove_all_items(const index, bool:bRemove);
+* native rg_remove_all_items(const index, bool:bRemoveSuit);
 */
 cell AMX_NATIVE_CALL rg_remove_all_items(AMX *amx, cell *params)
 {
@@ -656,7 +656,7 @@ cell AMX_NATIVE_CALL rg_remove_all_items(AMX *amx, cell *params)
 	return TRUE;
 }
 
-/**
+/*
 * Remove specifed the player's item by class name
 *
 * @param index		Client index

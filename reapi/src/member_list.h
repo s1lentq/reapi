@@ -134,7 +134,7 @@ enum CSGameRules_Members
 	m_bSkipSpawn
 };
 
-// CBasePlayer
+// CBaseEntity
 enum CBaseEntity_Members
 {
 	currentammo = BEGIN_MEMBER_REGION(base),

@@ -110,6 +110,7 @@ void RegisterNatives_Addons()
 {
 	if (api_cfg.hasVTC())
 		g_amxxapi.AddNatives(Vtc_Natives);
+
 	if (api_cfg.hasReunion())
 		g_amxxapi.AddNatives(Reunion_Natives);
 }

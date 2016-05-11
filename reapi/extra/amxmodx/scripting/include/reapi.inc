@@ -44,56 +44,54 @@ enum HookChain
 };
 
 /*
- * Hook API function that are available into enum
- * Look at the enum's for parameter lists.
- *
- * @param function	The function to hook.
- * @param callback	The forward to call.
- * @param post		Whether or not to forward this in post.
- * @return 		Returns a handle to the hook. Use EnableHookChain/DisableHookChain to toggle the forward on or off.
- *
- */
+* Hook API function that are available into enum
+* Look at the enum's for parameter lists.
+*
+* @param function	The function to hook.
+* @param callback	The forward to call.
+* @param post		Whether or not to forward this in post.
+* @return 		Returns a handle to the hook. Use EnableHookChain/DisableHookChain to toggle the forward on or off.
+*
+*/
 native HookChain:RegisterHookChain(any:function_id, const callback[], post = 0);
 
 /*
- * Stops a hook from triggering.
- * Use the return value from RegisterHookChain as the parameter here!
- *
- * @param hook		The hook to stop.
- *
- */
+* Stops a hook from triggering.
+* Use the return value from RegisterHookChain as the parameter here!
+*
+* @param hook		The hook to stop.
+*
+*/
 native bool:DisableHookChain(HookChain:hook);
 
 /*
- * Starts a hook back up.
- * Use the return value from RegisterHookChain as the parameter here!
- *
- * @param hook		The hook to re-enable.
- * @return		Returns if the function is successful executed true otherwise false
- *
- */
+* Starts a hook back up.
+* Use the return value from RegisterHookChain as the parameter here!
+*
+* @param hook		The hook to re-enable.
+* @return		Returns if the function is successful executed true otherwise false
+*
+*/
 native bool:EnableHookChain(HookChain:hook);
 
 /*
- * Sets the return value of a hookchain.
- * This needs to be used in conjunction with RH_OVERRIDE or RH_SUPERCEDE.
- *
- * @param type		To specify the type RHV_*, look at the enum HookChainReturn
- * @param value		The value to set the return to.
- *
- * native SetHookChainReturn(AType:type, any:...);
- */
+* Sets the return value of a hookchain.
+* This needs to be used in conjunction with RH_OVERRIDE or RH_SUPERCEDE.
+*
+* @param type		To specify the type RHV_*, look at the enum HookChainReturn
+* @param value		The value to set the return to.
+*
+*/
 native SetHookChainReturn(AType:type, any:...);
 
 /*
- * Gets the return value of a hookchain.
- * This needs to be used in conjunction with RH_OVERRIDE or RH_SUPERCEDE.
- *
- * @param type		To specify the type RHV_*, look at the enum HookChainReturn
- * @param value	The value to set the return to.
- *
- * native GetHookChainReturn(AType:type, any:...);
- */
+* Gets the return value of a hookchain.
+* This needs to be used in conjunction with RH_OVERRIDE or RH_SUPERCEDE.
+*
+* @param type		To specify the type RHV_*, look at the enum HookChainReturn
+* @param value	The value to set the return to.
+*
+*/
 native GetHookChainReturn(AType:type, any:...);
 
 /*
@@ -105,7 +103,6 @@ native GetHookChainReturn(AType:type, any:...);
 * @param [maxlen]	Max length of string (optional)
 * @return		Returns if the function is successful executed true otherwise false
 *
-* native SetHookChainArg(number, AType:type, any:...);
 */
 native SetHookChainArg(number, AType:type, any:...);
 

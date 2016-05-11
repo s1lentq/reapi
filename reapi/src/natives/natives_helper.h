@@ -52,7 +52,6 @@ public:
 	{
 		return g_ReGameFuncs->INDEX_TO_CSENTITY(m_value);
 	}
-
 	Vector& vector() const
 	{
 		return operator Vector&();

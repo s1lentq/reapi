@@ -1,8 +1,9 @@
 #pragma once
 
-#define MAX_REGION_RANGE		1024
-#define BEGIN_FUNC_REGION(x)		(MAX_REGION_RANGE * hooklist_t::hooks_tables_e::ht_##x)
 #define MAX_HOOK_FORWARDS		1024
+#define MAX_REGION_RANGE		1024
+
+#define BEGIN_FUNC_REGION(x)		(MAX_REGION_RANGE * hooklist_t::hooks_tables_e::ht_##x)
 
 typedef bool (*reqfunc_t)();
 typedef int (*regfunc_t)(AMX *, const char *);

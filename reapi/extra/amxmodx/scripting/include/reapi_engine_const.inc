@@ -6,28 +6,28 @@
 
 enum EngineFunc
 {
-	/**
-	 * Description:		-
-	 * Params:		(const recipients, const entity, const channel, const sample[], const volume, Float:attenuation, const fFlags, const pitch)
-	 */
+	/*
+	* Description:		-
+	* Params:		(const recipients, const entity, const channel, const sample[], const volume, Float:attenuation, const fFlags, const pitch)
+	*/
 	RH_SV_StartSound = 0,
 
-	/**
-	 * Description:		-
-	 * Params:		(const client, bool:crash, const fmt[])
-	 */
+	/*
+	* Description:		-
+	* Params:		(const client, bool:crash, const fmt[])
+	*/
 	RH_SV_DropClient,
 
-	/**
-	 * Description:		-
-	 * Params:		(const runPhysics)
-	 */
+	/*
+	* Description:		-
+	* Params:		(const runPhysics)
+	*/
 	RH_SV_ActivateServer,
 
-	/**
-	 * Description:		-
-	 * Params:		(pcvar, const value[])
-	 */
+	/*
+	* Description:		-
+	* Params:		(pcvar, const value[])
+	*/
 	RH_Cvar_DirectSet,
 
 	// [...]
