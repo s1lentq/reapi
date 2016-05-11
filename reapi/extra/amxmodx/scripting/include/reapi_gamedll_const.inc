@@ -54,6 +54,7 @@ enum WeaponIdType
 // Weapon info types for use with rg_get_weapon_info()
 enum WpnInfo
 {
+	WI_ID,
 	WI_COST,
 	WI_CLIP_COST,
 	WI_BUY_CLIP_SIZE,

@@ -236,14 +236,15 @@ native rg_find_ent_by_owner(&start_index, const classname[], owner);
 /**
 * Returns some information about a weapon.
 *
-* @param weapon_id	Weapon id, see WEAPON_* constants
-* @param type		Info type, see WPINFO_* constants
+* @param weapon name or id	Weapon id, see WEAPON_* constants WeaponIdType or weapon_* name
+* @param WpnInfo:type		Info type, see WI_* constants
 *
-* @return		Weapon information value
-* @error		If weapon_id and type are out of bound, an error will be thrown.
+* @return			Weapon information value
+* @error			If weapon_id and type are out of bound, an error will be thrown.
 *
+* native rg_get_weapon_info(any:...);
 */
-native rg_get_weapon_info(const {WeaponIdType,_}:weapon_id, WpnInfo:type, any:...);
+native rg_get_weapon_info(any:...);
 
 /**
 * Sets specific values of weapons info.

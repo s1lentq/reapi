@@ -504,30 +504,48 @@ cell AMX_NATIVE_CALL rg_find_ent_by_owner(AMX *amx, cell *params)
 /**
 * Returns some information about a weapon.
 *
-* @param weapon_id	Weapon id, see WEAPON_* constants
-* @param type		Info type, see WI_* constants
+* @param weapon name or id	Weapon id, see WEAPON_* constants or weapon_* name
+* @param WpnInfo:type		Info type, see WI_* constants
 *
-* @return		Weapon information value
-* @error		If weapon_id and type are out of bound, an error will be thrown.
+* @return			Weapon information value
+* @error			If weapon_id and type are out of bound, an error will be thrown.
 *
-* native rg_get_weapon_info(const {WeaponIdType,_}:weapon_id, WpnInfo:type, any:...);
+* native rg_get_weapon_info(any:...);
 */
 cell AMX_NATIVE_CALL rg_get_weapon_info(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_weapon_id, arg_type, arg_3, arg_4 };
 
-	int weapon_id = params[arg_weapon_id];
-	if (weapon_id <= WEAPON_NONE || weapon_id == WEAPON_C4 || weapon_id == WEAPON_KNIFE || weapon_id > WEAPON_P90)
+	WeaponIdType weaponID = static_cast<WeaponIdType>(params[arg_weapon_id]);
+	WpnInfo info_type = static_cast<WpnInfo>(*getAmxAddr(amx, params[arg_type]));
+
+	if (!GetWeaponInfoRange(weaponID) && info_type != WI_ID)
 	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid weapon id %i", __FUNCTION__, weapon_id);
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid weapon id %i", __FUNCTION__, weaponID);
 		return 0;
 	}
 
-	WeaponInfoStruct *info = g_ReGameApi->GetGameData()->GetWeaponInfo(weapon_id);
-	WpnInfo info_type = static_cast<WpnInfo>(params[arg_type]);
+	WeaponInfoStruct* info = g_ReGameApi->GetGameData()->GetWeaponInfo(weaponID);
+	char* szWeaponName = getAmxString(amx, params[arg_weapon_id]);
 
 	switch (info_type)
 	{
+	case WI_ID:
+		if (szWeaponName == nullptr) {
+			return WEAPON_NONE;
+		}
+
+		_strlwr(szWeaponName);
+		for (int i = 0; i < MAX_WEAPONS; ++i) {
+			info = g_ReGameApi->GetGameData()->GetWeaponInfo(i);
+			if (info == nullptr || info->id == WEAPON_NONE)
+				continue;
+
+			if (strcmp(info->entityName, szWeaponName) == 0) {
+				return info->id;
+			}
+		}
+		return WEAPON_NONE;
 	case WI_COST:
 		return info->cost;
 	case WI_CLIP_COST:
@@ -579,15 +597,15 @@ cell AMX_NATIVE_CALL rg_set_weapon_info(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_weapon_id, arg_type, arg_value };
 
-	int weapon_id = params[arg_weapon_id];
-	if (weapon_id <= WEAPON_NONE || weapon_id == WEAPON_C4 || weapon_id == WEAPON_KNIFE || weapon_id > WEAPON_P90)
+	WeaponIdType weaponID = static_cast<WeaponIdType>(params[arg_weapon_id]);
+	if (!GetWeaponInfoRange(weaponID))
 	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid weapon id %i", __FUNCTION__, weapon_id);
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid weapon id %i", __FUNCTION__, weaponID);
 		return 0;
 	}
 
 	cell* value = getAmxAddr(amx, params[arg_value]);
-	WeaponInfoStruct *info = g_ReGameApi->GetGameData()->GetWeaponInfo(weapon_id);
+	WeaponInfoStruct *info = g_ReGameApi->GetGameData()->GetWeaponInfo(weaponID);
 	WpnInfo info_type = static_cast<WpnInfo>(params[arg_type]);
 
 	switch (info_type)

@@ -7,6 +7,10 @@ char(&ArraySizeHelper(T(&array)[N]))[N];
 #define INDEXENT edictByIndex
 #define ENTINDEX indexOfEdict
 
+#ifndef _WIN32
+#define _strlwr(p) for (int i = 0; p[i] != 0; i++) p[i] = tolower(p[i]);
+#endif
+
 extern enginefuncs_t* g_pengfuncsTable;
 
 inline size_t indexOfEdict(edict_t* ed)
@@ -84,6 +88,17 @@ template <typename T>
 inline T get_member_direct(edict_t *pEntity, int offset, int element = 0, int size = 0)
 {
 	return get_member_direct<T>(pEntity->pvPrivateData, offset, element, size);
+}
+
+inline bool GetWeaponInfoRange(WeaponIdType wpnid)
+{
+	if (wpnid == WEAPON_SHIELDGUN)
+		return true;
+
+	if (wpnid > WEAPON_NONE && wpnid != WEAPON_C4 && wpnid != WEAPON_KNIFE && wpnid <= WEAPON_P90)
+		return true;
+
+	return false;
 }
 
 void Broadcast(const char *sentence);
