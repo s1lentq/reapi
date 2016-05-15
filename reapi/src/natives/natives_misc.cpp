@@ -10,16 +10,19 @@
 *
 * native rg_set_animation(index, PLAYER_ANIM:playerAnim);
 */
-static cell AMX_NATIVE_CALL rg_set_animation(AMX *amx, cell *params)
+cell AMX_NATIVE_CALL rg_set_animation(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_index, arg_anim };
 
+	CHECK_ISPLAYER(arg_index);
+
 	ICSPlayer *pPlayer = g_ReGameFuncs->INDEX_TO_CSPLAYER(params[arg_index]);
 	if (pPlayer == nullptr || !pPlayer->IsConnected()) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
 		return FALSE;
 	}
 
-	pPlayer->SetAnimation(static_cast<PLAYER_ANIM>(params[arg_anim]));
+	pPlayer->SetAnimation(CAmxArg(amx, params[arg_anim]));
 	return TRUE;
 }
 
@@ -34,12 +37,15 @@ static cell AMX_NATIVE_CALL rg_set_animation(AMX *amx, cell *params)
 *
 * native rg_add_account(index, amount, bool:bTrackChange = true);
 */
-static cell AMX_NATIVE_CALL rg_add_account(AMX *amx, cell *params)
+cell AMX_NATIVE_CALL rg_add_account(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_index, arg_amount, arg_track_change };
 
+	CHECK_ISPLAYER(arg_index);
+
 	ICSPlayer *pPlayer = g_ReGameFuncs->INDEX_TO_CSPLAYER(params[arg_index]);
 	if (pPlayer == nullptr || !pPlayer->IsConnected()) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
 		return FALSE;
 	}
 
@@ -57,13 +63,15 @@ static cell AMX_NATIVE_CALL rg_add_account(AMX *amx, cell *params)
 *
 * native rg_give_item(index, const pszName[]);
 */
-static cell AMX_NATIVE_CALL rg_give_item(AMX *amx, cell *params)
+cell AMX_NATIVE_CALL rg_give_item(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_index, arg_item };
 
-	ICSPlayer *pPlayer = g_ReGameFuncs->INDEX_TO_CSPLAYER(params[arg_index]);
+	CHECK_ISPLAYER(arg_index);
 
+	ICSPlayer *pPlayer = g_ReGameFuncs->INDEX_TO_CSPLAYER(params[arg_index]);
 	if (pPlayer == nullptr || !pPlayer->IsConnected()) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
 		return FALSE;
 	}
 
@@ -81,12 +89,15 @@ static cell AMX_NATIVE_CALL rg_give_item(AMX *amx, cell *params)
 *
 * native rg_give_default_items(index);
 */
-static cell AMX_NATIVE_CALL rg_give_default_items(AMX *amx, cell *params)
+cell AMX_NATIVE_CALL rg_give_default_items(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_index };
 
+	CHECK_ISPLAYER(arg_index);
+
 	ICSPlayer *pPlayer = g_ReGameFuncs->INDEX_TO_CSPLAYER(params[arg_index]);
 	if (pPlayer == nullptr || !pPlayer->IsConnected()) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
 		return FALSE;
 	}
 
@@ -104,12 +115,15 @@ static cell AMX_NATIVE_CALL rg_give_default_items(AMX *amx, cell *params)
 *
 * native rg_give_shield(index, bool:bDeploy = true);
 */
-static cell AMX_NATIVE_CALL rg_give_shield(AMX *amx, cell *params)
+cell AMX_NATIVE_CALL rg_give_shield(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_index, arg_deploy };
 
+	CHECK_ISPLAYER(arg_index);
+
 	ICSPlayer *pPlayer = g_ReGameFuncs->INDEX_TO_CSPLAYER(params[arg_index]);
 	if (pPlayer == nullptr || !pPlayer->IsConnected()) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
 		return FALSE;
 	}
 
@@ -132,17 +146,16 @@ static cell AMX_NATIVE_CALL rg_give_shield(AMX *amx, cell *params)
 *
 * native rg_dmg_radius(Float:vecSrc[3], inflictor, attacker, Float:flDamage, Float:flRadius, iClassIgnore, bitsDamageType);
 */
-static cell AMX_NATIVE_CALL rg_dmg_radius(AMX *amx, cell *params)
+cell AMX_NATIVE_CALL rg_dmg_radius(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_vec, arg_inflictor, arg_attacker, arg_damage, arg_radius, arg_ignore_class, arg_dmg_type };
 
-	cell *pSrc = getAmxAddr(amx, params[arg_vec]);
+	CHECK_ISENTITY(arg_inflictor);
+	CHECK_ISENTITY(arg_attacker);
 
-	entvars_t *pevInflictor = VARS(INDEXENT(params[arg_inflictor]));
-	entvars_t *pevAttacker = VARS(INDEXENT(params[arg_attacker]));
+	CAmxArgs args(amx, params);
+	g_ReGameFuncs->RadiusDamage(args[arg_vec], args[arg_inflictor], args[arg_attacker], args[arg_damage], args[arg_radius], args[arg_ignore_class], args[arg_dmg_type]);
 
-	Vector vecSrc(*(float *)&pSrc[0], *(float *)&pSrc[1], *(float *)&pSrc[2]);
-	g_ReGameFuncs->RadiusDamage(vecSrc, pevInflictor, pevAttacker, *(float *)&params[arg_damage], *(float *)&params[arg_radius], params[arg_ignore_class], params[arg_dmg_type]);
 	return TRUE;
 }
 
@@ -153,7 +166,7 @@ static cell AMX_NATIVE_CALL rg_dmg_radius(AMX *amx, cell *params)
 *
 * native rg_multidmg_clear();
 */
-static cell AMX_NATIVE_CALL rg_multidmg_clear(AMX *amx, cell *params)
+cell AMX_NATIVE_CALL rg_multidmg_clear(AMX *amx, cell *params)
 {
 	g_ReGameFuncs->ClearMultiDamage();
 	return TRUE;
@@ -169,14 +182,16 @@ static cell AMX_NATIVE_CALL rg_multidmg_clear(AMX *amx, cell *params)
 *
 * native rg_multidmg_apply(inflictor, attacker);
 */
-static cell AMX_NATIVE_CALL rg_multidmg_apply(AMX *amx, cell *params)
+cell AMX_NATIVE_CALL rg_multidmg_apply(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_inflictor, arg_attacker };
 
-	entvars_t *pevInflictor = VARS(INDEXENT(params[arg_inflictor]));
-	entvars_t *pevAttacker = VARS(INDEXENT(params[arg_attacker]));
+	CHECK_ISENTITY(arg_inflictor);
+	CHECK_ISENTITY(arg_attacker);
 
-	g_ReGameFuncs->ApplyMultiDamage(pevInflictor, pevAttacker);
+	CAmxArgs args(amx, params);
+	g_ReGameFuncs->ApplyMultiDamage(args[arg_inflictor], args[arg_attacker]);
+
 	return TRUE;
 }
 
@@ -192,18 +207,21 @@ static cell AMX_NATIVE_CALL rg_multidmg_apply(AMX *amx, cell *params)
 *
 * native rg_multidmg_add(inflictor, victim, Float:flDamage, bitsDamageType);
 */
-static cell AMX_NATIVE_CALL rg_multidmg_add(AMX *amx, cell *params)
+cell AMX_NATIVE_CALL rg_multidmg_add(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_inflictor, arg_victim, arg_damage, arg_dmg_type };
 
-	entvars_t *pevInflictor = VARS(INDEXENT(params[arg_inflictor]));
-	CBaseEntity *pVictim = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_inflictor]);
+	CHECK_ISENTITY(arg_inflictor);
+	CHECK_ISENTITY(arg_victim);
 
-	if (pVictim == nullptr) {
+	if (params[arg_victim] < 0) { // null
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: victim == null", __FUNCTION__);
 		return FALSE;
 	}
 
-	g_ReGameFuncs->AddMultiDamage(pevInflictor, pVictim, *(float *)&params[arg_damage], params[arg_dmg_type]);
+	CAmxArgs args(amx, params);
+	g_ReGameFuncs->AddMultiDamage(args[arg_inflictor], args[arg_victim], args[arg_damage], args[arg_dmg_type]);
+
 	return TRUE;
 }
 
@@ -225,33 +243,27 @@ static cell AMX_NATIVE_CALL rg_multidmg_add(AMX *amx, cell *params)
 *
 * native rg_fire_bullets(inflictor, attacker, shots, Float:vecSrc[3], Float:vecDirShooting[3], Float::vecSpread[3], Float:flDistance, iBulletType, iTracerFreq, iDamage);
 */
-static cell AMX_NATIVE_CALL rg_fire_bullets(AMX *amx, cell *params)
+cell AMX_NATIVE_CALL rg_fire_bullets(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_inflictor, arg_attacker, arg_shots, arg_vecSrc, arg_dir, arg_spread, arg_dist, arg_bullet_type, arg_tracefrq, arg_dmg };
 
-	ICSEntity *pInflictor = g_ReGameFuncs->INDEX_TO_CSENTITY(params[arg_inflictor]);
+	CHECK_ISENTITY(arg_inflictor);
+	CHECK_ISENTITY(arg_attacker);
 
-	cell *pSrc = getAmxAddr(amx, params[arg_vecSrc]);
-	cell *pDir = getAmxAddr(amx, params[arg_dir]);
-	cell *pSpread = getAmxAddr(amx, params[arg_spread]);
-
-	Vector vecSrc(*(float *)&pSrc[0], *(float *)&pSrc[1], *(float *)&pSrc[2]);
-	Vector vecDirShooting(*(float *)&pDir[0], *(float *)&pDir[1], *(float *)&pDir[2]);
-	Vector vecSpread(*(float *)&pSpread[0], *(float *)&pSpread[1], *(float *)&pSpread[2]);
-
-	entvars_t *pevAttacker = VARS(INDEXENT(params[arg_attacker]));
+	CAmxArgs args(amx, params);
+	ICSEntity *pInflictor = args[arg_inflictor];
 
 	pInflictor->FireBullets
 	(
-		params[arg_shots],
-		vecSrc,
-		vecDirShooting,
-		vecSpread,
-		*(float *)&params[arg_dist],
-		params[arg_bullet_type],
-		params[arg_tracefrq],
-		params[arg_dmg],
-		pevAttacker
+		args[arg_shots],
+		args[arg_vecSrc],
+		args[arg_dir],
+		args[arg_spread],
+		args[arg_dist],
+		args[arg_bullet_type],
+		args[arg_tracefrq],
+		args[arg_dmg],
+		args[arg_attacker]
 	);
 
 	return TRUE;
@@ -277,35 +289,30 @@ static cell AMX_NATIVE_CALL rg_fire_bullets(AMX *amx, cell *params)
 *
 * native Float:[3] rg_fire_bullets3(inflictor, attacker, Float:vecSrc[3], Float:vecDirShooting[3], Float:vecSpread, Float:flDistance, iPenetration, iBulletType, iDamage, Float:flRangeModifier, bool:bPistol, shared_rand);
 */
-static cell AMX_NATIVE_CALL rg_fire_bullets3(AMX *amx, cell *params)
+cell AMX_NATIVE_CALL rg_fire_bullets3(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_inflictor, arg_attacker, arg_vecSrc, arg_dir, arg_spread, arg_dist, arg_penetration, arg_bullet_type, arg_dmg, arg_range_mod, arg_pistol, arg_rand, arg_out };
 
-	ICSEntity *pInflictor = g_ReGameFuncs->INDEX_TO_CSENTITY(params[arg_inflictor]);
+	CHECK_ISENTITY(arg_inflictor);
+	CHECK_ISENTITY(arg_attacker);
 
-	cell *pSrc = getAmxAddr(amx, params[arg_vecSrc]);
-	cell *pDir = getAmxAddr(amx, params[arg_dir]);
+	CAmxArgs args(amx, params);
+	ICSEntity *pInflictor = args[arg_inflictor];
+	entvars_t *pAttacker = args[arg_attacker];
 
-	Vector vecSrc(*(float *)&pSrc[0], *(float *)&pSrc[1], *(float *)&pSrc[2]);
-	Vector vecDirShooting(*(float *)&pDir[0], *(float *)&pDir[1], *(float *)&pDir[2]);
-
-	entvars_t *pevAttacker = VARS(INDEXENT(params[arg_attacker]));
-
-	Vector *pOut = (Vector *)getAmxAddr(amx, params[arg_out]);
-
-	*pOut = pInflictor->FireBullets3
+	args[arg_out].vector() = pInflictor->FireBullets3
 	(
-		vecSrc,
-		vecDirShooting,
-		*(float *)&params[arg_spread],
-		*(float *)&params[arg_dist],
-		params[arg_penetration],
-		params[arg_bullet_type],
-		params[arg_dmg],
-		*(float *)&params[arg_range_mod],
-		pevAttacker,
-		params[arg_pistol] != 0,
-		params[arg_rand]
+		args[arg_vecSrc],
+		args[arg_dir],
+		args[arg_spread],
+		args[arg_dist],
+		args[arg_penetration],
+		args[arg_bullet_type],
+		args[arg_dmg],
+		args[arg_range_mod],
+		pAttacker, // icc fix
+		args[arg_pistol],
+		args[arg_rand]
 	);
 
 	return TRUE;
@@ -348,13 +355,13 @@ struct {
 *
 * native rg_round_end(Float:tmDelay, WinStatus:st, ScenarioEventEndRound:event = ROUND_NONE, const message[] = "default", const sentence[] = "default");
 */
-static cell AMX_NATIVE_CALL rg_round_end(AMX *amx, cell *params)
+cell AMX_NATIVE_CALL rg_round_end(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_delay, arg_win, arg_event, arg_message, arg_sentence, arg_silent };
 
 	size_t winstatus = params[arg_win];
 	if (winstatus <= 0) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "rg_round_end: unknown win-status %i", winstatus);
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown win status %i", __FUNCTION__, winstatus);
 		return FALSE;
 	}
 
@@ -378,7 +385,7 @@ static cell AMX_NATIVE_CALL rg_round_end(AMX *amx, cell *params)
 	if (_message[0])
 		g_ReGameFuncs->EndRoundMessage(_message, event);
 
-	(*g_pCSGameRules)->TerminateRound(*(float *)&params[arg_delay], winstatus);
+	CSGameRules()->TerminateRound(CAmxArg(amx, params[arg_delay]), winstatus);
 	return TRUE;
 }
 
@@ -393,18 +400,308 @@ static cell AMX_NATIVE_CALL rg_round_end(AMX *amx, cell *params)
 *
 * native rg_update_teamscores(iCtsWins = 0, iTsWins = 0, bool:bAdd = true);
 */
-static cell AMX_NATIVE_CALL rg_update_teamscores(AMX *amx, cell *params)
+cell AMX_NATIVE_CALL rg_update_teamscores(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_cts, arg_ts, arg_add };
 
-	(*g_pCSGameRules)->m_iNumCTWins = ((params[arg_add] != 0) ? (*g_pCSGameRules)->m_iNumCTWins : 0) + params[arg_cts];
-	(*g_pCSGameRules)->m_iNumTerroristWins = ((params[arg_add] != 0) ? (*g_pCSGameRules)->m_iNumTerroristWins : 0) + params[arg_ts];
+	CSGameRules()->m_iNumCTWins = ((params[arg_add] != 0) ? CSGameRules()->m_iNumCTWins : 0) + params[arg_cts];
+	CSGameRules()->m_iNumTerroristWins = ((params[arg_add] != 0) ? CSGameRules()->m_iNumTerroristWins : 0) + params[arg_ts];
 	UpdateTeamScores();
 
 	return TRUE;
 }
 
-AMX_NATIVE_INFO Misc_Natives[] =
+/*
+* Creates an entity using Counter-Strike's custom CreateNamedEntity wrapper.
+*
+* @param classname		Entity class name
+*
+* @return			Index of the created entity or 0 otherwise
+*
+* native rg_create_entity(const classname[]);
+*/
+cell AMX_NATIVE_CALL rg_create_entity(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_classname };
+
+	string_t iClass = g_engfuncs.pfnAllocString(getAmxString(amx, params[arg_classname]));
+	edict_t	*pEnt = g_ReGameFuncs->CREATE_NAMED_ENTITY2(iClass);
+
+	if (pEnt != nullptr)
+	{
+		return indexOfEdict(pEnt);
+	}
+
+	return 0;
+}
+
+/*
+* Finds an entity in the world using Counter-Strike's custom FindEntityByString wrapper.
+*
+* @param start_index		Entity index to start searching from. -1 to start from the first entity
+* @param classname		Classname to search for
+*
+* @return			Entity index > 0 if found, 0 otherwise
+*
+* native rg_find_ent_by_class(start_index, const classname[]);
+*/
+cell AMX_NATIVE_CALL rg_find_ent_by_class(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_start_index, arg_classname };
+
+	CBaseEntity *pStartEntity = getPrivate<CBaseEntity>(params[arg_start_index]);
+	const char* value = getAmxString(amx, params[arg_classname]);
+	CBaseEntity *pEntity = g_ReGameFuncs->UTIL_FindEntityByString(pStartEntity, "classname", value);
+
+	if (pEntity != nullptr)
+	{
+		return indexOfEdict(pEntity->pev);
+	}
+
+	return 0;
+}
+
+/*
+* Finds an entity in the world using Counter-Strike's custom FindEntityByString wrapper, matching by owner.
+*
+* @param start_index		Entity index to start searching from. -1 to start from the first entity
+* @param classname		Classname to search for
+*
+* @return			1 if found, 0 otherwise
+*
+* native rg_find_ent_by_owner(&start_index, const classname[], owner);
+*/
+cell AMX_NATIVE_CALL rg_find_ent_by_owner(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_start_index, arg_classname, arg_onwer };
+
+	CHECK_ISENTITY(arg_onwer);
+
+	cell& startIndex = *getAmxAddr(amx, params[arg_start_index]);
+	const char* value = getAmxString(amx, params[arg_classname]);
+	edict_t* pOwner = edictByIndexAmx(params[arg_onwer]);
+	edict_t* pEntity = g_pEdicts + startIndex;
+
+	for (int i = startIndex; i < gpGlobals->maxEntities; i++, pEntity++)
+	{
+		if (pEntity->v.owner != pOwner)
+			continue;
+
+		// yet not allocated
+		if (!pEntity->pvPrivateData || pEntity->free)
+			continue;
+
+		if (!strcmp(STRING(pEntity->v.classname), value))
+		{
+			startIndex = i;
+			return TRUE;
+		}
+	}
+
+	return FALSE;
+}
+
+/*
+* Returns some information about a weapon.
+*
+* @param weapon name or id	Weapon id, see WEAPON_* constants or weapon_* name
+* @param WpnInfo:type		Info type, see WI_* constants
+*
+* @return			Weapon information value
+* @error			If weapon_id and type are out of bound, an error will be thrown.
+*
+* native rg_get_weapon_info(any:...);
+*/
+cell AMX_NATIVE_CALL rg_get_weapon_info(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_weapon_id, arg_type, arg_3, arg_4 };
+
+	WeaponIdType weaponID = static_cast<WeaponIdType>(params[arg_weapon_id]);
+	WpnInfo info_type = static_cast<WpnInfo>(*getAmxAddr(amx, params[arg_type]));
+
+	if (!GetWeaponInfoRange(weaponID) && info_type != WI_ID)
+	{
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid weapon id %i", __FUNCTION__, weaponID);
+		return 0;
+	}
+
+	WeaponInfoStruct* info = g_ReGameApi->GetGameData()->GetWeaponInfo(weaponID);
+	char* szWeaponName = getAmxString(amx, params[arg_weapon_id]);
+
+	switch (info_type)
+	{
+	case WI_ID:
+		if (szWeaponName == nullptr) {
+			return WEAPON_NONE;
+		}
+
+		_strlwr(szWeaponName);
+		for (int i = 0; i < MAX_WEAPONS; ++i) {
+			info = g_ReGameApi->GetGameData()->GetWeaponInfo(i);
+			if (info == nullptr || info->id == WEAPON_NONE)
+				continue;
+
+			if (strcmp(info->entityName, szWeaponName) == 0) {
+				return info->id;
+			}
+		}
+		return WEAPON_NONE;
+	case WI_COST:
+		return info->cost;
+	case WI_CLIP_COST:
+		return info->clipCost;
+	case WI_BUY_CLIP_SIZE:
+		return info->buyClipSize;
+	case WI_GUN_CLIP_SIZE:
+		return info->gunClipSize;
+	case WI_MAX_ROUNDS:
+		return info->maxRounds;
+	case WI_AMMO_TYPE:
+		return info->ammoType;
+	case WI_NAME:
+		{
+			if (PARAMS_COUNT != arg_4) {
+				MF_LogError(amx, AMX_ERR_NATIVE, "%s: bad parameter count, got %i, expected %i", __FUNCTION__, PARAMS_COUNT, arg_4);
+				return -1;
+			}
+
+			// native rg_get_weapon_info(id, WPINFO_NAME, output[], maxlength);
+			cell* dest = getAmxAddr(amx, params[arg_3]);
+			size_t length = *getAmxAddr(amx, params[arg_4]);
+
+			if (info->entityName == nullptr) {
+				setAmxString(dest, "", 1);
+				return 0;
+			}
+
+			setAmxString(dest, info->entityName, length);
+			return 1;
+		}
+	default:
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown type statement %i, params count %i", __FUNCTION__, info_type, PARAMS_COUNT);
+		return -1;
+	}
+}
+
+/*
+* Sets specific values of weapons info.
+*
+* @param weapon_id	Weapon id, see WEAPON_* constants
+* @param type		Info type, see WI_* constants
+*
+* @return		1 if successfully, 0 otherwise
+*
+* native rg_set_weapon_info(const {WeaponIdType,_}:weapon_id, WpnInfo:type, any:...);
+*/
+cell AMX_NATIVE_CALL rg_set_weapon_info(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_weapon_id, arg_type, arg_value };
+
+	WeaponIdType weaponID = static_cast<WeaponIdType>(params[arg_weapon_id]);
+	if (!GetWeaponInfoRange(weaponID))
+	{
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid weapon id %i", __FUNCTION__, weaponID);
+		return 0;
+	}
+
+	cell* value = getAmxAddr(amx, params[arg_value]);
+	WeaponInfoStruct *info = g_ReGameApi->GetGameData()->GetWeaponInfo(weaponID);
+	WpnInfo info_type = static_cast<WpnInfo>(params[arg_type]);
+
+	switch (info_type)
+	{
+	case WI_COST:
+		info->cost = *value;
+		break;
+	case WI_CLIP_COST:
+		info->clipCost = *value;
+		break;
+	case WI_BUY_CLIP_SIZE:
+	case WI_GUN_CLIP_SIZE:
+	case WI_MAX_ROUNDS:
+	case WI_AMMO_TYPE:
+	case WI_NAME:
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: this change will have no effect", __FUNCTION__);
+		return 0;
+	default:
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown type statement %i, params count %i", __FUNCTION__, info_type, PARAMS_COUNT);
+		return 0;
+	}
+
+	return 1;
+}
+
+/*
+* Remove all the player's stuff
+*
+* @param index		Client index
+*
+* @noreturn
+*
+* native rg_remove_all_items(const index, bool:bRemoveSuit);
+*/
+cell AMX_NATIVE_CALL rg_remove_all_items(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_suit };
+
+	CHECK_ISPLAYER(arg_index);
+
+	ICSPlayer *pPlayer = g_ReGameFuncs->INDEX_TO_CSPLAYER(params[arg_index]);
+	if (pPlayer == nullptr || !pPlayer->IsConnected()) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
+		return FALSE;
+	}
+
+	pPlayer->RemoveAllItems(params[arg_suit] != 0);
+	return TRUE;
+}
+
+/*
+* Remove specifed the player's item by class name
+*
+* @param index		Client index
+* @param item_name	Class name item
+*
+* @noreturn
+*
+* native rg_remove_item(const index, const item_name[]);
+*/
+cell AMX_NATIVE_CALL rg_remove_item(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_item_name };
+
+	CHECK_ISPLAYER(arg_index);
+
+	CBasePlayer *pPlayer = (CBasePlayer *)g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
+	if (pPlayer == nullptr || pPlayer->has_disconnected) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
+		return FALSE;
+	}
+
+	const char* szItemName = getAmxString(amx, params[arg_item_name]);
+	for (auto pItem : pPlayer->m_rgpPlayerItems)
+	{
+		while (pItem != nullptr)
+		{
+			if (FClassnameIs(pItem->pev, szItemName))
+			{
+				CBasePlayerWeapon *pWeapon = static_cast<CBasePlayerWeapon *>(pItem);
+				if (pWeapon->IsWeapon()) {
+					pWeapon->RetireWeapon();
+				}
+
+				pPlayer->RemovePlayerItem(pItem);
+				return TRUE;
+			}
+
+			pItem = pItem->m_pNext;
+		}
+	}
+
+	return FALSE;
+}
+
+AMX_NATIVE_INFO Misc_Natives_RG[] =
 {
 	{ "rg_set_animation", rg_set_animation },
 	{ "rg_add_account", rg_add_account },
@@ -423,10 +720,21 @@ AMX_NATIVE_INFO Misc_Natives[] =
 	{ "rg_round_end", rg_round_end },
 	{ "rg_update_teamscores", rg_update_teamscores },
 
+	{ "rg_create_entity", rg_create_entity },
+	{ "rg_find_ent_by_class", rg_find_ent_by_class },
+	{ "rg_find_ent_by_owner", rg_find_ent_by_owner },
+
+	{ "rg_get_weapon_info", rg_get_weapon_info },
+	{ "rg_set_weapon_info", rg_set_weapon_info },
+
+	{ "rg_remove_all_items", rg_remove_all_items },
+	{ "rg_remove_item", rg_remove_item },
+
 	{ nullptr, nullptr }
 };
 
 void RegisterNatives_Misc()
 {
-	g_amxxapi.AddNatives(Misc_Natives);
+	if (api_cfg.hasReGameDLL())
+		g_amxxapi.AddNatives(Misc_Natives_RG);
 }

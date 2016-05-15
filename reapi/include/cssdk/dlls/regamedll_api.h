@@ -174,6 +174,14 @@ typedef IVoidHookChainRegistry<class CBasePlayer *, struct entvars_s *, struct e
 typedef IHookChain<bool, int, ScenarioEventEndRound, float> IReGameHook_RoundEnd;
 typedef IHookChainRegistryClassEmpty<bool, int, ScenarioEventEndRound, float> IReGameHookRegistry_RoundEnd;
 
+// CanBuyThis hook
+typedef IHookChain<bool, class CBasePlayer *, int> IReGameHook_CanBuyThis;
+typedef IHookChainRegistry<bool, class CBasePlayer *, int> IReGameHookRegistry_CanBuyThis;
+
+// InstallGameRules hook
+typedef IHookChain<class CGameRules *> IReGameHook_InstallGameRules;
+typedef IHookChainRegistry<class CGameRules *> IReGameHookRegistry_InstallGameRules;
+
 class IReGameHookchains {
 public:
 	virtual ~IReGameHookchains() {}
@@ -216,6 +224,8 @@ public:
 	virtual IReGameHookRegistry_PlayerBlind* PlayerBlind() = 0;
 	virtual IReGameHookRegistry_RadiusFlash_TraceLine* RadiusFlash_TraceLine() = 0;
 	virtual IReGameHookRegistry_RoundEnd* RoundEnd() = 0;
+	virtual IReGameHookRegistry_CanBuyThis* CanBuyThis() = 0;
+	virtual IReGameHookRegistry_InstallGameRules* InstallGameRules() = 0;
 
 };
 
@@ -235,7 +245,7 @@ struct ReGameFuncs_t {
 	void (*AddMultiDamage)(entvars_t *pevInflictor, CBaseEntity *pEntity, float flDamage, int bitsDamageType);
 
 	void (*EndRoundMessage)(const char *sentence, int event);
-
+	class CBaseEntity *(*UTIL_FindEntityByString)(class CBaseEntity *pStartEntity, const char *szKeyword, const char *szValue);
 };
 
 class IReGameApi {

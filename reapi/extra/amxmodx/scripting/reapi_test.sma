@@ -4,7 +4,7 @@
 public plugin_init()
 {
 	register_plugin("ReAPI Test", "1.0", "s1lent");
-	RegisterHookChain(RH_CBasePlayer_GiveAmmo, "CBasePlayer_GiveAmmo");
+	RegisterHookChain(RG_CBasePlayer_GiveAmmo, "CBasePlayer_GiveAmmo");
 }
 
 public CBasePlayer_GiveAmmo(const this, iAmount, szName[], iMax)

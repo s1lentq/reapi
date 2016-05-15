@@ -1,6 +1,6 @@
 #include "precompiled.h"
 
-#define CLASS_MEMBERS(cx, mx) ((!(mx & (MAX_REGION_RANGE - 1)) ? regmember::current_cell = 1, true : false) || (mx & (MAX_REGION_RANGE - 1)) == regmember::current_cell++) ? regmember([](member_t* ptr){ decltype(##cx::##mx) f = {};ptr->size = getTypeSize(f);ptr->max_size = sizeof(f);ptr->offset = offsetof(##cx, ##mx);ptr->type = getMemberType(f);}) : regmember(#mx " doesn't match member definition")
+#define CLASS_MEMBERS(cx, mx) ((!(mx & (MAX_REGION_RANGE - 1)) ? regmember::current_cell = 1, true : false) || (mx & (MAX_REGION_RANGE - 1)) == regmember::current_cell++) ? regmember([](member_t* ptr){ decltype(##cx::##mx) f = {};ptr->size = getTypeSize(f);ptr->max_size = sizeof(f);ptr->offset = offsetof(##cx, ##mx);ptr->type = getMemberType(f);}) : regmember(#mx)
 
 #define GM_MEMBERS(mx) CLASS_MEMBERS(CHalfLifeMultiplay, mx)
 #define GM_VOICE_MEMBERS(mx) CLASS_MEMBERS(CVoiceGameMgr, mx)
@@ -59,7 +59,7 @@ struct regmember
 	template<typename T>
 	regmember(T lambdaFunc) { lambdaFunc(&member); }
 
-	regmember(const char *error) { UTIL_SysError(error); }	// to cause a amxx module failure.
+	regmember(const char *name) { UTIL_SysError("%s doesn't match member definition", name); }	// to cause a amxx module failure.
 	operator member_t() const { return member; }
 	member_t member;
 

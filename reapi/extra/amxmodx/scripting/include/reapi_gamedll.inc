@@ -188,7 +188,7 @@ native Float:[3] rg_fire_bullets3(const inflictor, const attacker, Float:vecSrc[
 *
 * @noreturn
 */
-native rg_round_end(const Float:tmDelay, const WinStatus:st, const ScenarionEventEndRound:event = ROUND_NONE, const message[] = "default", const sentence[] = "default");
+native rg_round_end(const Float:tmDelay, const WinStatus:st, const ScenarioEventEndRound:event = ROUND_NONE, const message[] = "default", const sentence[] = "default");
 
 /*
 * Update current scores
@@ -200,3 +200,79 @@ native rg_round_end(const Float:tmDelay, const WinStatus:st, const ScenarionEven
 * @noreturn
 */
 native rg_update_teamscores(const iCtsWins = 0, const iTsWins = 0, const bool:bAdd = true);
+
+/*
+* Creates an entity using Counter-Strike's custom CreateNamedEntity wrapper.
+*
+* @param classname		Entity class name
+*
+* @return			Index of the created entity or 0 otherwise
+*
+*/
+native rg_create_entity(const classname[]);
+
+/*
+* Finds an entity in the world using Counter-Strike's custom FindEntityByString wrapper.
+*
+* @param start_index		Entity index to start searching from. -1 to start from the first entity
+* @param classname		Classname to search for
+*
+* @return			Entity index > 0 if found, 0 otherwise
+*
+*/
+native rg_find_ent_by_class(start_index, const classname[]);
+
+/*
+* Finds an entity in the world using Counter-Strike's custom FindEntityByString wrapper, matching by owner.
+*
+* @param start_index		Entity index to start searching from. -1 to start from the first entity
+* @param classname		Classname to search for
+*
+* @return			1 if found, 0 otherwise
+*
+*/
+native rg_find_ent_by_owner(&start_index, const classname[], owner);
+
+/*
+* Returns some information about a weapon.
+*
+* @param weapon name or id	Weapon id, see WEAPON_* constants WeaponIdType or weapon_* name
+* @param WpnInfo:type		Info type, see WI_* constants
+*
+* @return			Weapon information value
+* @error			If weapon_id and type are out of bound, an error will be thrown.
+*
+*/
+native rg_get_weapon_info(any:...);
+
+/*
+* Sets specific values of weapons info.
+*
+* @param weapon_id	Weapon id, see WEAPON_* constants
+* @param type		Info type, see WI_* constants
+*
+* @return		1 if successfully, 0 otherwise
+*
+*/
+native rg_set_weapon_info(const {WeaponIdType,_}:weapon_id, WpnInfo:type, any:...);
+
+/*
+* Remove all the player's stuff
+*
+* @param index		Client index
+*
+* @noreturn
+*
+*/
+native rg_remove_all_items(const index, bool:bRemoveSuit);
+
+/*
+* Remove specifed the player's item by class name
+*
+* @param index		Client index
+* @param item_name	Class name item
+*
+* @return		1 if found and remove, 0 otherwise
+*
+*/
+native rg_remove_item(const index, const item_name[]);

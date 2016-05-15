@@ -636,11 +636,20 @@
     <ClInclude Include="..\src\natives\natives_misc.h">
       <Filter>src\natives</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\natives\natives_vtc.h">
-      <Filter>src\natives</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\vtc_api.h">
       <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\natives\natives_helper.h">
+      <Filter>src\natives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\main.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mods\mod_reunion_api.h">
+      <Filter>src\mods</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\natives\natives_addons.h">
+      <Filter>src\natives</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -716,7 +725,10 @@
     <ClCompile Include="..\src\natives\natives_misc.cpp">
       <Filter>src\natives</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\natives\natives_vtc.cpp">
+    <ClCompile Include="..\src\mods\mod_reunion_api.cpp">
+      <Filter>src\mods</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\natives\natives_addons.cpp">
       <Filter>src\natives</Filter>
     </ClCompile>
   </ItemGroup>
@@ -727,24 +739,24 @@
     <None Include="..\extra\amxmodx\scripting\reapi_test.sma">
       <Filter>amxmodx\scripting</Filter>
     </None>
-    <None Include="..\src\reapi_const.inc">
-      <Filter>src</Filter>
-    </None>
     <None Include="reapi.def" />
-    <None Include="..\extra\amxmodx\scripting\include\reapi_const.inc">
-      <Filter>amxmodx\scripting\include</Filter>
-    </None>
-    <None Include="..\extra\amxmodx\scripting\include\reapi_engine.inc">
-      <Filter>amxmodx\scripting\include</Filter>
-    </None>
     <None Include="..\extra\amxmodx\scripting\include\reapi_gamedll.inc">
       <Filter>amxmodx\scripting\include</Filter>
     </None>
     <None Include="..\extra\amxmodx\scripting\include\reapi_gamedll_const.inc">
       <Filter>amxmodx\scripting\include</Filter>
     </None>
-    <None Include="..\extra\amxmodx\scripting\include\reapi_misc.inc">
+    <None Include="..\extra\amxmodx\scripting\include\reapi_engine_const.inc">
       <Filter>amxmodx\scripting\include</Filter>
+    </None>
+    <None Include="..\extra\amxmodx\scripting\include\reapi_engine.inc">
+      <Filter>amxmodx\scripting\include</Filter>
+    </None>
+    <None Include="..\extra\amxmodx\scripting\include\reapi_addons.inc">
+      <Filter>amxmodx\scripting\include</Filter>
+    </None>
+    <None Include="..\src\reapi_version.inc">
+      <Filter>src</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

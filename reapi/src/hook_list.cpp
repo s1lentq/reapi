@@ -51,7 +51,7 @@ struct regfunc
 		};
 	}
 
-	regfunc(const char *error) { UTIL_SysError(error); }	// to cause a amxx module failure.
+	regfunc(const char *name) { UTIL_SysError("%s doesn't match hook definition", name); }	// to cause a amxx module failure.
 	operator regfunc_t() const { return func; }
 	regfunc_t func;
 
@@ -60,7 +60,7 @@ struct regfunc
 
 int regfunc::current_cell = 1;
 
-#define ENG(h) { {}, {}, #h, "ReHLDS", [](){ return api_cfg.hasReHLDS(); }, ((!(RH_##h & (MAX_REGION_RANGE - 1)) ? regfunc::current_cell = 1, true : false) || (RH_##h & (MAX_REGION_RANGE - 1)) == regfunc::current_cell++) ? regfunc(h) : regfunc(#h " doesn't match hook definition"), [](){ g_RehldsHookchains->##h##()->registerHook(&##h); }, [](){ g_RehldsHookchains->##h##()->unregisterHook(&##h); }}
+#define ENG(h) { {}, {}, #h, "ReHLDS", [](){ return api_cfg.hasReHLDS(); }, ((!(RH_##h & (MAX_REGION_RANGE - 1)) ? regfunc::current_cell = 1, true : false) || (RH_##h & (MAX_REGION_RANGE - 1)) == regfunc::current_cell++) ? regfunc(h) : regfunc(#h), [](){ g_RehldsHookchains->##h##()->registerHook(&##h); }, [](){ g_RehldsHookchains->##h##()->unregisterHook(&##h); }}
 hook_t hooklist_engine[] = {
 	ENG(SV_StartSound),
 	ENG(SV_DropClient),
@@ -68,12 +68,13 @@ hook_t hooklist_engine[] = {
 	ENG(Cvar_DirectSet)
 };
 
-#define DLL(h) { {}, {}, #h, "ReGameDLL", [](){ return api_cfg.hasReGameDLL(); }, ((!(RG_##h & (MAX_REGION_RANGE - 1)) ? regfunc::current_cell = 1, true : false) || (RG_##h & (MAX_REGION_RANGE - 1)) == regfunc::current_cell++) ? regfunc(h) : regfunc(#h " doesn't match hook definition"), [](){ g_ReGameHookchains->##h##()->registerHook(&##h); }, [](){ g_ReGameHookchains->##h##()->unregisterHook(&##h); }}
+#define DLL(h) { {}, {}, #h, "ReGameDLL", [](){ return api_cfg.hasReGameDLL(); }, ((!(RG_##h & (MAX_REGION_RANGE - 1)) ? regfunc::current_cell = 1, true : false) || (RG_##h & (MAX_REGION_RANGE - 1)) == regfunc::current_cell++) ? regfunc(h) : regfunc(#h), [](){ g_ReGameHookchains->##h##()->registerHook(&##h); }, [](){ g_ReGameHookchains->##h##()->unregisterHook(&##h); }}
 hook_t hooklist_gamedll[] = {
 	DLL(GetForceCamera),
 	DLL(PlayerBlind),
 	DLL(RadiusFlash_TraceLine),
-	DLL(RoundEnd)
+	DLL(RoundEnd),
+	DLL(CanBuyThis)
 };
 
 hook_t hooklist_animating[] = {
@@ -129,15 +130,27 @@ hook_t* hooklist_t::getHookSafe(size_t hook)
 	return nullptr;
 }
 
+void hooklist_t::clear()
+{
+	#define FOREACH_CLEAR(h) for (auto& h : hooklist_##h) h.clear();
+
+	FOREACH_CLEAR(engine);
+	FOREACH_CLEAR(gamedll);
+	FOREACH_CLEAR(animating);
+	FOREACH_CLEAR(player);
+}
+
 void hook_t::clear()
 {
-	for (auto h : pre)
-		delete h;
-	pre.clear();
+	if (pre.size() || post.size()) {
+		for (auto h : pre)
+			delete h;
+		pre.clear();
 
-	for (auto h : post)
-		delete h;
-	post.clear();
+		for (auto h : post)
+			delete h;
+		post.clear();
 
-	unregisterHookchain();
+		unregisterHookchain();
+	}
 }

@@ -13,10 +13,12 @@
 	#pragma library reapi
 #endif
 
-#include <reapi_const.inc>
+#define NULLENT -1
+
 #include <reapi_engine.inc>	// NOTE: only for ReHLDS
 #include <reapi_gamedll.inc>	// NOTE: only for gamedll Counter-Strike (ReGameDLL_CS)
-#include <reapi_misc.inc>	// NOTE: Common set of natives and forwards.
+#include <reapi_addons.inc>	// NOTE: 3-rd party addons
+#include <reapi_version.inc>
 
 // hookchain return type
 enum
@@ -42,56 +44,54 @@ enum HookChain
 };
 
 /*
- * Hook API function that are available into enum
- * Look at the enum's for parameter lists.
- *
- * @param function	The function to hook.
- * @param callback	The forward to call.
- * @param post		Whether or not to forward this in post.
- * @return 		Returns a handle to the hook. Use EnableHookChain/DisableHookChain to toggle the forward on or off.
- *
- */
+* Hook API function that are available into enum
+* Look at the enum's for parameter lists.
+*
+* @param function	The function to hook.
+* @param callback	The forward to call.
+* @param post		Whether or not to forward this in post.
+* @return 		Returns a handle to the hook. Use EnableHookChain/DisableHookChain to toggle the forward on or off.
+*
+*/
 native HookChain:RegisterHookChain(any:function_id, const callback[], post = 0);
 
 /*
- * Stops a hook from triggering.
- * Use the return value from RegisterHookChain as the parameter here!
- *
- * @param hook		The hook to stop.
- *
- */
+* Stops a hook from triggering.
+* Use the return value from RegisterHookChain as the parameter here!
+*
+* @param hook		The hook to stop.
+*
+*/
 native bool:DisableHookChain(HookChain:hook);
 
 /*
- * Starts a hook back up.
- * Use the return value from RegisterHookChain as the parameter here!
- *
- * @param hook		The hook to re-enable.
- * @return		Returns if the function is successful executed true otherwise false
- *
- */
+* Starts a hook back up.
+* Use the return value from RegisterHookChain as the parameter here!
+*
+* @param hook		The hook to re-enable.
+* @return		Returns if the function is successful executed true otherwise false
+*
+*/
 native bool:EnableHookChain(HookChain:hook);
 
 /*
- * Sets the return value of a hookchain.
- * This needs to be used in conjunction with RH_OVERRIDE or RH_SUPERCEDE.
- *
- * @param type		To specify the type RHV_*, look at the enum HookChainReturn
- * @param value		The value to set the return to.
- *
- * native SetHookChainReturn(AType:type, any:...);
- */
+* Sets the return value of a hookchain.
+* This needs to be used in conjunction with RH_OVERRIDE or RH_SUPERCEDE.
+*
+* @param type		To specify the type RHV_*, look at the enum HookChainReturn
+* @param value		The value to set the return to.
+*
+*/
 native SetHookChainReturn(AType:type, any:...);
 
 /*
- * Gets the return value of a hookchain.
- * This needs to be used in conjunction with RH_OVERRIDE or RH_SUPERCEDE.
- *
- * @param type		To specify the type RHV_*, look at the enum HookChainReturn
- * @param value	The value to set the return to.
- *
- * native GetHookChainReturn(AType:type, any:...);
- */
+* Gets the return value of a hookchain.
+* This needs to be used in conjunction with RH_OVERRIDE or RH_SUPERCEDE.
+*
+* @param type		To specify the type RHV_*, look at the enum HookChainReturn
+* @param value	The value to set the return to.
+*
+*/
 native GetHookChainReturn(AType:type, any:...);
 
 /*
@@ -103,7 +103,6 @@ native GetHookChainReturn(AType:type, any:...);
 * @param [maxlen]	Max length of string (optional)
 * @return		Returns if the function is successful executed true otherwise false
 *
-* native SetHookChainArg(number, AType:type, any:...);
 */
 native SetHookChainArg(number, AType:type, any:...);
 
@@ -114,18 +113,18 @@ native SetHookChainArg(number, AType:type, any:...);
 */
 public __reapi_version_check(const majorVersion, const minorVersion)
 {
-	if (majorVersion != REAPI_VERISON_MAJOR)
+	if (majorVersion != REAPI_VERSION_MAJOR)
 	{
 		new temp[512];
-		formatex(temp, sizeof temp - 1, "[ReAPI]: Api major version mismatch; expected %d, real %d", REAPI_VERISON_MAJOR, majorVersion);
+		formatex(temp, sizeof temp - 1, "[ReAPI]: Api major version mismatch; expected %d, real %d", REAPI_VERSION_MAJOR, majorVersion);
 		set_fail_state(temp);
 		return;
 	}
 
-	if (minorVersion < REAPI_VERISON_MINOR)
+	if (minorVersion < REAPI_VERSION_MINOR)
 	{
 		new temp[512];
-		formatex(temp, sizeof temp - 1, "[ReAPI]: Api minor version mismatch; expected at least %d, real %d", REAPI_VERISON_MINOR, minorVersion);
+		formatex(temp, sizeof temp - 1, "[ReAPI]: Api minor version mismatch; expected at least %d, real %d", REAPI_VERSION_MINOR, minorVersion);
 		set_fail_state(temp);
 		return;
 	}

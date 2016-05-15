@@ -301,6 +301,7 @@ public:
 	virtual void GiveNamedItem(const char *pszName) = 0;
 	virtual void GiveDefaultItems() = 0;
 	virtual void GiveShield(bool bDeploy = true) = 0;
+	virtual void RemoveAllItems(bool bRemoveSuit) = 0;
 };
 
 class IAPI_Bot: public ICSPlayer {
@@ -2075,5 +2076,6 @@ class IReGameData {
 public:
 	virtual ~IReGameData() {}
 
-	virtual class CGameRules** GetGameRules() = 0;
+	virtual class CGameRules* GetGameRules() = 0;
+	virtual struct WeaponInfoStruct *GetWeaponInfo(int weaponID) = 0;
 };

@@ -200,14 +200,17 @@
     <ClInclude Include="..\src\hook_manager.h" />
     <ClInclude Include="..\src\hook_callback.h" />
     <ClInclude Include="..\src\hook_list.h" />
+    <ClInclude Include="..\src\main.h" />
     <ClInclude Include="..\src\member_list.h" />
     <ClInclude Include="..\src\mods\mod_regamedll_api.h" />
     <ClInclude Include="..\src\mods\mod_rehlds_api.h" />
+    <ClInclude Include="..\src\mods\mod_reunion_api.h" />
     <ClInclude Include="..\src\mods\mod_vtc_api.h" />
+    <ClInclude Include="..\src\natives\natives_helper.h" />
     <ClInclude Include="..\src\natives\natives_hookchains.h" />
     <ClInclude Include="..\src\natives\natives_members.h" />
     <ClInclude Include="..\src\natives\natives_misc.h" />
-    <ClInclude Include="..\src\natives\natives_vtc.h" />
+    <ClInclude Include="..\src\natives\natives_addons.h" />
     <ClInclude Include="..\src\precompiled.h" />
     <ClInclude Include="..\src\reapi_utils.h" />
   </ItemGroup>
@@ -241,11 +244,12 @@
     <ClCompile Include="..\src\meta_api.cpp" />
     <ClCompile Include="..\src\mods\mod_regamedll_api.cpp" />
     <ClCompile Include="..\src\mods\mod_rehlds_api.cpp" />
+    <ClCompile Include="..\src\mods\mod_reunion_api.cpp" />
     <ClCompile Include="..\src\mods\mod_vtc_api.cpp" />
     <ClCompile Include="..\src\natives\natives_hookchains.cpp" />
     <ClCompile Include="..\src\natives\natives_members.cpp" />
     <ClCompile Include="..\src\natives\natives_misc.cpp" />
-    <ClCompile Include="..\src\natives\natives_vtc.cpp" />
+    <ClCompile Include="..\src\natives\natives_addons.cpp" />
     <ClCompile Include="..\src\precompiled.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -258,13 +262,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\extra\amxmodx\scripting\include\reapi.inc" />
-    <None Include="..\extra\amxmodx\scripting\include\reapi_const.inc" />
     <None Include="..\extra\amxmodx\scripting\include\reapi_engine.inc" />
+    <None Include="..\extra\amxmodx\scripting\include\reapi_engine_const.inc" />
     <None Include="..\extra\amxmodx\scripting\include\reapi_gamedll.inc" />
     <None Include="..\extra\amxmodx\scripting\include\reapi_gamedll_const.inc" />
-    <None Include="..\extra\amxmodx\scripting\include\reapi_misc.inc" />
+    <None Include="..\extra\amxmodx\scripting\include\reapi_addons.inc" />
     <None Include="..\extra\amxmodx\scripting\reapi_test.sma" />
-    <None Include="..\src\reapi_const.inc" />
+    <None Include="..\src\reapi_version.inc" />
     <None Include="reapi.def" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

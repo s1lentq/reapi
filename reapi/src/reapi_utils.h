@@ -7,7 +7,10 @@ char(&ArraySizeHelper(T(&array)[N]))[N];
 #define INDEXENT edictByIndex
 #define ENTINDEX indexOfEdict
 
-extern edict_t* g_pEdicts;
+#ifndef _WIN32
+#define _strlwr(p) for (int i = 0; p[i] != 0; i++) p[i] = tolower(p[i]);
+#endif
+
 extern enginefuncs_t* g_pengfuncsTable;
 
 inline size_t indexOfEdict(edict_t* ed)
@@ -20,7 +23,15 @@ inline size_t indexOfEdict(entvars_t* pev)
 	return indexOfEdict(pev->pContainingEntity);
 }
 
-inline edict_t* edictByIndex(size_t index)
+// safe to index -1
+inline edict_t* edictByIndexAmx(int index)
+{
+	auto ed = g_pEdicts + index;
+	return index < 0 ? nullptr : ed;
+}
+
+// fast
+inline edict_t* edictByIndex(int index)
 {
 	return g_pEdicts + index;
 }
@@ -28,12 +39,12 @@ inline edict_t* edictByIndex(size_t index)
 template<typename T>
 T* getPrivate(int index)
 {
-	return (T *)edictByIndex(index)->pvPrivateData;
+	return (T *)GET_PRIVATE(edictByIndexAmx(index));
 }
 
 inline entvars_t* PEV(int index)
 {
-	return &edictByIndex(index)->v;
+	return VARS(edictByIndexAmx(index));
 }
 
 // HLTypeConversion.h -> AMXModX
@@ -77,6 +88,17 @@ template <typename T>
 inline T get_member_direct(edict_t *pEntity, int offset, int element = 0, int size = 0)
 {
 	return get_member_direct<T>(pEntity->pvPrivateData, offset, element, size);
+}
+
+inline bool GetWeaponInfoRange(WeaponIdType wpnid)
+{
+	if (wpnid == WEAPON_SHIELDGUN)
+		return true;
+
+	if (wpnid > WEAPON_NONE && wpnid != WEAPON_C4 && wpnid != WEAPON_KNIFE && wpnid <= WEAPON_P90)
+		return true;
+
+	return false;
 }
 
 void Broadcast(const char *sentence);
