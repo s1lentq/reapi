@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\com_progdefs.h" />
     <ClInclude Include="..\include\cssdk\common\beamdef.h" />
     <ClInclude Include="..\include\cssdk\common\cl_entity.h" />
     <ClInclude Include="..\include\cssdk\common\com_model.h" />
@@ -194,6 +195,7 @@
     <ClInclude Include="..\include\metamod\plinfo.h" />
     <ClInclude Include="..\include\metamod\sdk_util.h" />
     <ClInclude Include="..\include\metamod\types_meta.h" />
+    <ClInclude Include="..\include\reunion_api.h" />
     <ClInclude Include="..\include\vtc_api.h" />
     <ClInclude Include="..\src\amxxmodule.h" />
     <ClInclude Include="..\src\api_config.h" />

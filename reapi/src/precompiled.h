@@ -11,6 +11,7 @@
 
 #include <extdll.h>
 #include <cbase.h>
+#include "com_progdefs.h"
 
 #include "osdep.h"			// win32 vsnprintf, etc
 #include "sdk_util.h"

@@ -53,6 +53,8 @@ cell AMX_NATIVE_CALL rg_add_account(AMX *amx, cell *params)
 	return TRUE;
 }
 
+enum GiveType { GT_APPEND, GT_REPLACE, GT_DROP_AND_REPLACE };
+
 /*
 * Gives item to player
 *
@@ -61,11 +63,11 @@ cell AMX_NATIVE_CALL rg_add_account(AMX *amx, cell *params)
 *
 * @noreturn
 *
-* native rg_give_item(index, const pszName[]);
+* native rg_give_item(index, const pszName[], GiveType:type = GT_APPEND);
 */
 cell AMX_NATIVE_CALL rg_give_item(AMX *amx, cell *params)
 {
-	enum args_e { arg_count, arg_index, arg_item };
+	enum args_e { arg_count, arg_index, arg_item, arg_type };
 
 	CHECK_ISPLAYER(arg_index);
 
@@ -75,8 +77,38 @@ cell AMX_NATIVE_CALL rg_give_item(AMX *amx, cell *params)
 		return FALSE;
 	}
 
+	GiveType type = static_cast<GiveType>(params[arg_type]);
 	const char *itemName = getAmxString(amx, params[arg_item]);
-	pPlayer->GiveNamedItem(itemName);
+
+	if (type > GT_APPEND) {
+		CBasePlayer *player = static_cast<CBasePlayer *>(pPlayer->GetEntity());
+
+		auto pInfo = g_ReGameApi->GetWeaponSlot(itemName);
+		auto pItem = player->m_rgpPlayerItems[ pInfo->slot ];
+
+		while (pItem != nullptr) {
+			if (pItem->m_iId == pInfo->id) {
+				pItem = pItem->m_pNext;
+				continue;
+			}
+
+			switch (type)
+			{
+			case GT_DROP_AND_REPLACE:
+				pPlayer->DropPlayerItem(STRING(pItem->pev->classname));
+				break;
+			case GT_REPLACE:
+				player->pev->weapons &= ~(1 << pItem->m_iId);
+				player->RemovePlayerItem(pItem);
+				pItem->Kill();
+				break;
+			}
+
+			pItem = pItem->m_pNext;
+		}
+	}
+
+	pPlayer->GiveNamedItemEx(itemName);
 	return TRUE;
 }
 
@@ -510,7 +542,7 @@ cell AMX_NATIVE_CALL rg_find_ent_by_owner(AMX *amx, cell *params)
 * @return			Weapon information value
 * @error			If weapon_id and type are out of bound, an error will be thrown.
 *
-* native rg_get_weapon_info(any:...);
+* native any:rg_get_weapon_info(any:...);
 */
 cell AMX_NATIVE_CALL rg_get_weapon_info(AMX *amx, cell *params)
 {
@@ -525,26 +557,19 @@ cell AMX_NATIVE_CALL rg_get_weapon_info(AMX *amx, cell *params)
 		return 0;
 	}
 
-	WeaponInfoStruct* info = g_ReGameApi->GetGameData()->GetWeaponInfo(weaponID);
+	WeaponInfoStruct* info = g_ReGameApi->GetWeaponInfo(weaponID);
 	char* szWeaponName = getAmxString(amx, params[arg_weapon_id]);
 
 	switch (info_type)
 	{
 	case WI_ID:
-		if (szWeaponName == nullptr) {
-			return WEAPON_NONE;
-		}
-
-		_strlwr(szWeaponName);
-		for (int i = 0; i < MAX_WEAPONS; ++i) {
-			info = g_ReGameApi->GetGameData()->GetWeaponInfo(i);
-			if (info == nullptr || info->id == WEAPON_NONE)
-				continue;
-
-			if (strcmp(info->entityName, szWeaponName) == 0) {
-				return info->id;
+		if (szWeaponName != nullptr) {
+			auto infoName = g_ReGameApi->GetWeaponInfo(szWeaponName);
+			if (infoName != nullptr) {
+				return infoName->id;
 			}
 		}
+
 		return WEAPON_NONE;
 	case WI_COST:
 		return info->cost;
@@ -605,7 +630,7 @@ cell AMX_NATIVE_CALL rg_set_weapon_info(AMX *amx, cell *params)
 	}
 
 	cell* value = getAmxAddr(amx, params[arg_value]);
-	WeaponInfoStruct *info = g_ReGameApi->GetGameData()->GetWeaponInfo(weaponID);
+	WeaponInfoStruct *info = g_ReGameApi->GetWeaponInfo(weaponID);
 	WpnInfo info_type = static_cast<WpnInfo>(params[arg_type]);
 
 	switch (info_type)
@@ -690,7 +715,9 @@ cell AMX_NATIVE_CALL rg_remove_item(AMX *amx, cell *params)
 					pWeapon->RetireWeapon();
 				}
 
+				pPlayer->pev->weapons &= ~(1 << pItem->m_iId);
 				pPlayer->RemovePlayerItem(pItem);
+				pItem->Kill();
 				return TRUE;
 			}
 
@@ -699,6 +726,216 @@ cell AMX_NATIVE_CALL rg_remove_item(AMX *amx, cell *params)
 	}
 
 	return FALSE;
+}
+
+/*
+* Returns amount of ammo in the client's backpack for a specific weapon.
+*
+* @param index		Client index
+* @param weapon		Weapon id
+*
+* @return		Amount of ammo in backpack
+*
+* native rg_get_user_bpammo(const index, WeaponIdType:weapon);
+*/
+cell AMX_NATIVE_CALL rg_get_user_bpammo(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_weapon };
+
+	CHECK_ISPLAYER(arg_index);
+
+	CBasePlayer *pPlayer = (CBasePlayer *)g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
+	if (pPlayer == nullptr || pPlayer->has_disconnected) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
+		return FALSE;
+	}
+
+	WeaponIdType weaponId = static_cast<WeaponIdType>(params[arg_weapon]);
+	if (weaponId < WEAPON_P228 || weaponId > WEAPON_P90 || weaponId == WEAPON_KNIFE)
+	{
+		MF_LogError(amx, AMX_ERR_NATIVE, "Invalid weapon id %d", params[arg_weapon]);
+		return FALSE;
+	}
+
+	for (auto pItem : pPlayer->m_rgpPlayerItems)
+	{
+		while (pItem != nullptr)
+		{
+			if (pItem->m_iId == weaponId) {
+				return pPlayer->m_rgAmmo[ static_cast<CBasePlayerWeapon *>(pItem)->m_iPrimaryAmmoType ];
+			}
+
+			pItem = pItem->m_pNext;
+		}
+	}
+
+	return FALSE;
+}
+
+/*
+* Sets amount of ammo in the client's backpack for a specific weapon.
+*
+* @param index		Client index
+* @param weapon		Weapon id
+* @param amount		New backpack ammo amount to set
+*
+* @noreturn
+*
+* native rg_set_user_bpammo(const index, WeaponIdType:weapon, amount);
+*/
+cell AMX_NATIVE_CALL rg_set_user_bpammo(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_weapon, arg_amount };
+
+	CHECK_ISPLAYER(arg_index);
+
+	CBasePlayer *pPlayer = (CBasePlayer *)g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
+	if (pPlayer == nullptr || pPlayer->has_disconnected) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
+		return FALSE;
+	}
+
+	WeaponIdType weaponId = static_cast<WeaponIdType>(params[arg_weapon]);
+	if (weaponId < WEAPON_P228 || weaponId > WEAPON_P90 || weaponId == WEAPON_KNIFE)
+	{
+		MF_LogError(amx, AMX_ERR_NATIVE, "Invalid weapon id %d", params[arg_weapon]);
+		return FALSE;
+	}
+
+	for (auto pItem : pPlayer->m_rgpPlayerItems)
+	{
+		while (pItem != nullptr)
+		{
+			if (pItem->m_iId == weaponId) {
+				pPlayer->m_rgAmmo[ static_cast<CBasePlayerWeapon *>(pItem)->m_iPrimaryAmmoType ] = params[arg_amount];
+				return TRUE;
+			}
+
+			pItem = pItem->m_pNext;
+		}
+	}
+
+	return FALSE;
+}
+
+/*
+* Sets the client's defusekit status and allows to set a custom HUD icon and color.
+*
+* @param index		Client index
+* @param defusekit	If nonzero the client will have a defusekit, otherwise it will be removed
+* @param color		Color RGB
+* @param icon		HUD sprite to use as icon
+* @param flash		If nonzero the icon will flash red
+*
+* @noreturn
+*
+* native rg_give_defusekit(const index, bool:bDefusekit = true, Float:color[] = {0.0, 160.0, 0.0}, const icon[] = "defuser", bool:bFlash = false);
+*/
+cell AMX_NATIVE_CALL rg_give_defusekit(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_def, arg_color, arg_icon, arg_flash };
+
+	CHECK_ISPLAYER(arg_index);
+
+	CBasePlayer *pPlayer = (CBasePlayer *)g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
+	if (pPlayer == nullptr || pPlayer->has_disconnected) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
+		return FALSE;
+	}
+
+	// on the map there is not bomb places
+	if (CSGameRules() != nullptr && !CSGameRules()->m_bMapHasBombTarget && !CSGameRules()->m_bMapHasBombZone) {
+		return FALSE;
+	}
+
+	pPlayer->m_bHasDefuser =
+		pPlayer->pev->body = params[arg_def] != 0;
+
+	if (params[arg_def] != 0)
+	{
+		Vector* color = (Vector *)getAmxAddr(amx, params[arg_color]);
+		const char* icon = getAmxString(amx, params[arg_icon]);
+
+		MESSAGE_BEGIN(MSG_ONE, gmsgStatusIcon, nullptr, pPlayer->pev);
+			WRITE_BYTE(params[arg_flash] != 0 ? STATUSICON_FLASH : STATUSICON_SHOW);
+			WRITE_STRING(icon);
+			WRITE_BYTE(color->x);
+			WRITE_BYTE(color->y);
+			WRITE_BYTE(color->z);
+		MESSAGE_END();
+	}
+	else
+	{
+		MESSAGE_BEGIN(MSG_ONE, gmsgStatusIcon, nullptr, pPlayer->pev);
+			WRITE_BYTE(STATUSICON_HIDE);
+			WRITE_STRING("defuser");
+		MESSAGE_END();
+	}
+
+	return TRUE;
+}
+
+/*
+* Returns the client's armor value and retrieves the type of armor.
+*
+* @param index		Client index
+* @param armortype	Variable to store armor type in
+*
+* @return		Amount of armor, 0 if client has no armor
+*
+* native rg_get_user_armor(const index, &ArmorType:armortype);
+*/
+cell AMX_NATIVE_CALL rg_get_user_armor(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_armortype };
+
+	CHECK_ISPLAYER(arg_index);
+
+	CBasePlayer *pPlayer = (CBasePlayer *)g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
+	if (pPlayer == nullptr || pPlayer->has_disconnected) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
+		return FALSE;
+	}
+
+	*getAmxAddr(amx, params[arg_armortype]) = pPlayer->m_iKevlar;
+	return static_cast<cell>(pPlayer->pev->armorvalue);
+}
+
+/*
+* Sets the client's armor value the type of armor.
+*
+* @param index		Client index
+* @param armorvalue	Amount of armor to set
+* @param armortype	Armor type
+*
+* @noreturn
+*
+* native rg_set_user_armor(const index, armorvalue, ArmorType:armortype);
+*/
+cell AMX_NATIVE_CALL rg_set_user_armor(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_armorvalue, arg_armortype };
+
+	CHECK_ISPLAYER(arg_index);
+
+	CBasePlayer *pPlayer = (CBasePlayer *)g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
+	if (pPlayer == nullptr || pPlayer->has_disconnected) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
+		return FALSE;
+	}
+
+	int armorType = params[arg_armortype];
+
+	pPlayer->pev->armorvalue = params[arg_armorvalue];
+	pPlayer->m_iKevlar = armorType;
+
+	if (armorType == ARMOR_KEVLAR || armorType == ARMOR_VESTHELM) {
+		MESSAGE_BEGIN(MSG_ONE, gmsgArmorType, nullptr, pPlayer->pev);
+			WRITE_BYTE(armorType == ARMOR_VESTHELM ? 1 : 0);
+		MESSAGE_END();
+	}
+
+	return TRUE;
 }
 
 AMX_NATIVE_INFO Misc_Natives_RG[] =
@@ -729,6 +966,14 @@ AMX_NATIVE_INFO Misc_Natives_RG[] =
 
 	{ "rg_remove_all_items", rg_remove_all_items },
 	{ "rg_remove_item", rg_remove_item },
+
+	{ "rg_get_user_bpammo", rg_get_user_bpammo },
+	{ "rg_set_user_bpammo", rg_set_user_bpammo },
+
+	{ "rg_give_defusekit", rg_give_defusekit },
+
+	{ "rg_get_user_armor", rg_get_user_armor },
+	{ "rg_set_user_armor", rg_set_user_armor },
 
 	{ nullptr, nullptr }
 };

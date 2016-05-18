@@ -33,3 +33,992 @@ enum EngineFunc
 	// [...]
 	RH_EngineFunc_End
 };
+
+enum EntVars
+{
+	/*
+	* Description:		-
+	* Member type:		string_t
+	* Get params:		get_entvar(index, EntVars:var, dest[], const lenght);
+	* Set params:		set_entvar(index, EntVars:var, const source[]);
+	*/
+	var_classname = 4096,
+
+	/*
+	* Description:		-
+	* Member type:		string_t
+	* Get params:		get_entvar(index, EntVars:var, dest[], const lenght);
+	* Set params:		set_entvar(index, EntVars:var, const source[]);
+	*/
+	var_globalname,
+
+	/*
+	* Description:		-
+	* Member type:		class Vector
+	* Get params:		get_entvar(index, EntVars:var, Float:output[3]);
+	* Set params:		set_entvar(index, EntVars:var, Float:dest[3]);
+	*/
+	var_origin,
+
+	/*
+	* Description:		-
+	* Member type:		class Vector
+	* Get params:		get_entvar(index, EntVars:var, Float:output[3]);
+	* Set params:		set_entvar(index, EntVars:var, Float:dest[3]);
+	*/
+	var_oldorigin,
+
+	/*
+	* Description:		-
+	* Member type:		class Vector
+	* Get params:		get_entvar(index, EntVars:var, Float:output[3]);
+	* Set params:		set_entvar(index, EntVars:var, Float:dest[3]);
+	*/
+	var_velocity,
+
+	/*
+	* Description:		-
+	* Member type:		class Vector
+	* Get params:		get_entvar(index, EntVars:var, Float:output[3]);
+	* Set params:		set_entvar(index, EntVars:var, Float:dest[3]);
+	*/
+	var_basevelocity,
+
+	/*
+	* Description:		Base velocity that was passed in to server physics so client can predict conveyors correctly. Server zeroes it, so we need to store here, too.
+	* Member type:		class Vector
+	* Get params:		get_entvar(index, EntVars:var, Float:output[3]);
+	* Set params:		set_entvar(index, EntVars:var, Float:dest[3]);
+	*/
+	var_clbasevelocity,
+
+	/*
+	* Description:		-
+	* Member type:		class Vector
+	* Get params:		get_entvar(index, EntVars:var, Float:output[3]);
+	* Set params:		set_entvar(index, EntVars:var, Float:dest[3]);
+	*/
+	var_movedir,
+
+	/*
+	* Description:		Model angles
+	* Member type:		class Vector
+	* Get params:		get_entvar(index, EntVars:var, Float:output[3]);
+	* Set params:		set_entvar(index, EntVars:var, Float:dest[3]);
+	*/
+	var_angles,
+
+	/*
+	* Description:		angle velocity (degrees per second)
+	* Member type:		class Vector
+	* Get params:		get_entvar(index, EntVars:var, Float:output[3]);
+	* Set params:		set_entvar(index, EntVars:var, Float:dest[3]);
+	*/
+	var_avelocity,
+
+	/*
+	* Description:		auto-decaying view angle adjustment
+	* Member type:		class Vector
+	* Get params:		get_entvar(index, EntVars:var, Float:output[3]);
+	* Set params:		set_entvar(index, EntVars:var, Float:dest[3]);
+	*/
+	var_punchangle,
+
+	/*
+	* Description:		Viewing angle (player only)
+	* Member type:		class Vector
+	* Get params:		get_entvar(index, EntVars:var, Float:output[3]);
+	* Set params:		set_entvar(index, EntVars:var, Float:dest[3]);
+	*/
+	var_v_angle,
+
+	/*
+	* Description:		-
+	* Member type:		class Vector
+	* Get params:		get_entvar(index, EntVars:var, Float:output[3]);
+	* Set params:		set_entvar(index, EntVars:var, Float:dest[3]);
+	*/
+	var_endpos,
+
+	/*
+	* Description:		-
+	* Member type:		class Vector
+	* Get params:		get_entvar(index, EntVars:var, Float:output[3]);
+	* Set params:		set_entvar(index, EntVars:var, Float:dest[3]);
+	*/
+	var_startpos,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, Float:value);
+	*/
+	var_impacttime,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, Float:value);
+	*/
+	var_starttime,
+
+	/*
+	* Description:		0:nothing, 1:force view angles, 2:add avelocity
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_fixangle,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, Float:value);
+	*/
+	var_idealpitch,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, Float:value);
+	*/
+	var_pitch_speed,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, Float:value);
+	*/
+	var_ideal_yaw,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, Float:value);
+	*/
+	var_yaw_speed,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_modelindex,
+
+	/*
+	* Description:		-
+	* Member type:		string_t
+	* Get params:		get_entvar(index, EntVars:var, dest[], const lenght);
+	* Set params:		set_entvar(index, EntVars:var, const source[]);
+	*/
+	var_model,
+
+	/*
+	* Description:		player's viewmodel
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_viewmodel,
+
+	/*
+	* Description:		what other players see
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_weaponmodel,
+
+	/*
+	* Description:		BB min translated to world coord
+	* Member type:		class Vector
+	* Get params:		get_entvar(index, EntVars:var, Float:output[3]);
+	* Set params:		set_entvar(index, EntVars:var, Float:dest[3]);
+	*/
+	var_absmin,
+
+	/*
+	* Description:		BB max translated to world coord
+	* Member type:		class Vector
+	* Get params:		get_entvar(index, EntVars:var, Float:output[3]);
+	* Set params:		set_entvar(index, EntVars:var, Float:dest[3]);
+	*/
+	var_absmax,
+
+	/*
+	* Description:		local BB min
+	* Member type:		class Vector
+	* Get params:		get_entvar(index, EntVars:var, Float:output[3]);
+	* Set params:		set_entvar(index, EntVars:var, Float:dest[3]);
+	*/
+	var_mins,
+
+	/*
+	* Description:		local BB max
+	* Member type:		class Vector
+	* Get params:		get_entvar(index, EntVars:var, Float:output[3]);
+	* Set params:		set_entvar(index, EntVars:var, Float:dest[3]);
+	*/
+	var_maxs,
+
+	/*
+	* Description:		maxs - mins
+	* Member type:		class Vector
+	* Get params:		get_entvar(index, EntVars:var, Float:output[3]);
+	* Set params:		set_entvar(index, EntVars:var, Float:dest[3]);
+	*/
+	var_size,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, Float:value);
+	*/
+	var_ltime,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, Float:value);
+	*/
+	var_nextthink,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_movetype,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_solid,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_skin,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_body,
+
+	/*
+	* Description:		sub-model selection for studiomodels
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_effects,
+
+	/*
+	* Description:		% of "normal" gravity
+	* Member type:		float
+	* Get params:		Float:get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, Float:value);
+	*/
+	var_gravity,
+
+	/*
+	* Description:		inverse elasticity of MOVETYPE_BOUNCE
+	* Member type:		float
+	* Get params:		Float:get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, Float:value);
+	*/
+	var_friction,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_light_level,
+
+	/*
+	* Description:		animation sequence
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_sequence,
+
+	/*
+	* Description:		movement animation sequence for player (0 for none)
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_gaitsequence,
+
+	/*
+	* Description:		% playback position in animation sequences (0..255)
+	* Member type:		float
+	* Get params:		Float:get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, Float:value);
+	*/
+	var_frame,
+
+	/*
+	* Description:		world time when frame was set
+	* Member type:		float
+	* Get params:		Float:get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, Float:value);
+	*/
+	var_animtime,
+
+	/*
+	* Description:		animation playback rate (-8x to 8x)
+	* Member type:		float
+	* Get params:		Float:get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, Float:value);
+	*/
+	var_framerate,
+
+	/*
+	* Description:		bone controller setting (0..255)
+	* Member type:		byte [4]
+	* Get params:		get_entvar(index, EntVars:var, element);
+	* Set params:		set_entvar(index, EntVars:var, value, element);
+	*/
+	var_controller,
+
+	/*
+	* Description:		blending amount between sub-sequences (0..255)
+	* Member type:		byte [2]
+	* Get params:		get_entvar(index, EntVars:var, element);
+	* Set params:		set_entvar(index, EntVars:var, value, element);
+	*/
+	var_blending,
+
+	/*
+	* Description:		sprite rendering scale (0..255)
+	* Member type:		float
+	* Get params:		Float:get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, Float:value);
+	*/
+	var_scale,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_rendermode,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, Float:value);
+	*/
+	var_renderamt,
+
+	/*
+	* Description:		-
+	* Member type:		class Vector
+	* Get params:		get_entvar(index, EntVars:var, Float:output[3]);
+	* Set params:		set_entvar(index, EntVars:var, Float:dest[3]);
+	*/
+	var_rendercolor,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_renderfx,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, Float:value);
+	*/
+	var_health,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, Float:value);
+	*/
+	var_frags,
+
+	/*
+	* Description:		bit mask for available weapons
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_weapons,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, Float:value);
+	*/
+	var_takedamage,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_deadflag,
+
+	/*
+	* Description:		eye position
+	* Member type:		class Vector
+	* Get params:		get_entvar(index, EntVars:var, Float:output[3]);
+	* Set params:		set_entvar(index, EntVars:var, Float:dest[3]);
+	*/
+	var_view_ofs,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_button,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_impulse,
+
+	/*
+	* Description:		Entity pointer when linked into a linked list
+	* Member type:		struct edict_s *
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_chain,
+
+	/*
+	* Description:		-
+	* Member type:		struct edict_s *
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_dmg_inflictor,
+
+	/*
+	* Description:		-
+	* Member type:		struct edict_s *
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_enemy,
+
+	/*
+	* Description:		entity pointer when MOVETYPE_FOLLOW
+	* Member type:		struct edict_s *
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_aiment,
+
+	/*
+	* Description:		-
+	* Member type:		struct edict_s *
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_owner,
+
+	/*
+	* Description:		-
+	* Member type:		struct edict_s *
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_groundentity,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_spawnflags,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_flags,
+
+	/*
+	* Description:		lowbyte topcolor, highbyte bottomcolor
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_colormap,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_team,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, Float:value);
+	*/
+	var_max_health,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, Float:value);
+	*/
+	var_teleport_time,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, Float:value);
+	*/
+	var_armortype,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, Float:value);
+	*/
+	var_armorvalue,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_waterlevel,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_watertype,
+
+	/*
+	* Description:		-
+	* Member type:		string_t
+	* Get params:		get_entvar(index, EntVars:var, dest[], const lenght);
+	* Set params:		set_entvar(index, EntVars:var, const source[]);
+	*/
+	var_target,
+
+	/*
+	* Description:		-
+	* Member type:		string_t
+	* Get params:		get_entvar(index, EntVars:var, dest[], const lenght);
+	* Set params:		set_entvar(index, EntVars:var, const source[]);
+	*/
+	var_targetname,
+
+	/*
+	* Description:		-
+	* Member type:		string_t
+	* Get params:		get_entvar(index, EntVars:var, dest[], const lenght);
+	* Set params:		set_entvar(index, EntVars:var, const source[]);
+	*/
+	var_netname,
+
+	/*
+	* Description:		-
+	* Member type:		string_t
+	* Get params:		get_entvar(index, EntVars:var, dest[], const lenght);
+	* Set params:		set_entvar(index, EntVars:var, const source[]);
+	*/
+	var_message,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_dmg_take,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_dmg_save,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_dmg,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_dmgtime,
+
+	/*
+	* Description:		-
+	* Member type:		string_t
+	* Get params:		get_entvar(index, EntVars:var, dest[], const lenght);
+	* Set params:		set_entvar(index, EntVars:var, const source[]);
+	*/
+	var_noise,
+
+	/*
+	* Description:		-
+	* Member type:		string_t
+	* Get params:		get_entvar(index, EntVars:var, dest[], const lenght);
+	* Set params:		set_entvar(index, EntVars:var, const source[]);
+	*/
+	var_noise1,
+
+	/*
+	* Description:		-
+	* Member type:		string_t
+	* Get params:		get_entvar(index, EntVars:var, dest[], const lenght);
+	* Set params:		set_entvar(index, EntVars:var, const source[]);
+	*/
+	var_noise2,
+
+	/*
+	* Description:		-
+	* Member type:		string_t
+	* Get params:		get_entvar(index, EntVars:var, dest[], const lenght);
+	* Set params:		set_entvar(index, EntVars:var, const source[]);
+	*/
+	var_noise3,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, Float:value);
+	*/
+	var_speed,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, Float:value);
+	*/
+	var_air_finished,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, Float:value);
+	*/
+	var_pain_finished,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, Float:value);
+	*/
+	var_radsuit_finished,
+
+	/*
+	* Description:		-
+	* Member type:		struct edict_s *
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_pContainingEntity,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_playerclass,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, Float:value);
+	*/
+	var_maxspeed,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, Float:value);
+	*/
+	var_fov,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_weaponanim,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_pushmsec,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_bInDuck,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_flTimeStepSound,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_flSwimTime,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_flDuckTime,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_iStepLeft,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, Float:value);
+	*/
+	var_flFallVelocity,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_gamestate,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_oldbuttons,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_groupinfo,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_iuser1,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_iuser2,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_iuser3,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_iuser4,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_fuser1,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_fuser2,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_fuser3,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_fuser4,
+
+	/*
+	* Description:		-
+	* Member type:		class Vector
+	* Get params:		get_entvar(index, EntVars:var, Float:output[3]);
+	* Set params:		set_entvar(index, EntVars:var, Float:dest[3]);
+	*/
+	var_vuser1,
+
+	/*
+	* Description:		-
+	* Member type:		class Vector
+	* Get params:		get_entvar(index, EntVars:var, Float:output[3]);
+	* Set params:		set_entvar(index, EntVars:var, Float:dest[3]);
+	*/
+	var_vuser2,
+
+	/*
+	* Description:		-
+	* Member type:		class Vector
+	* Get params:		get_entvar(index, EntVars:var, Float:output[3]);
+	* Set params:		set_entvar(index, EntVars:var, Float:dest[3]);
+	*/
+	var_vuser3,
+
+	/*
+	* Description:		-
+	* Member type:		class Vector
+	* Get params:		get_entvar(index, EntVars:var, Float:output[3]);
+	* Set params:		set_entvar(index, EntVars:var, Float:dest[3]);
+	*/
+	var_vuser4,
+
+	/*
+	* Description:		-
+	* Member type:		struct edict_s *
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_euser1,
+
+	/*
+	* Description:		-
+	* Member type:		struct edict_s *
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_euser2,
+
+	/*
+	* Description:		-
+	* Member type:		struct edict_s *
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_euser3,
+
+	/*
+	* Description:		-
+	* Member type:		struct edict_s *
+	* Get params:		get_entvar(index, EntVars:var);
+	* Set params:		set_entvar(index, EntVars:var, value);
+	*/
+	var_euser4
+};
+
+

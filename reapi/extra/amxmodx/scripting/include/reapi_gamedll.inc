@@ -74,7 +74,7 @@ native rg_add_account(const index, amount, bool:bTrackChange = true);
 *
 * @noreturn
 */
-native rg_give_item(const index, const pszName[]);
+native rg_give_item(index, const pszName[], GiveType:type = GT_APPEND);
 
 /*
 * Give the player default items
@@ -243,7 +243,7 @@ native rg_find_ent_by_owner(&start_index, const classname[], owner);
 * @error			If weapon_id and type are out of bound, an error will be thrown.
 *
 */
-native rg_get_weapon_info(any:...);
+native any:rg_get_weapon_info(any:...);
 
 /*
 * Sets specific values of weapons info.
@@ -276,3 +276,63 @@ native rg_remove_all_items(const index, bool:bRemoveSuit);
 *
 */
 native rg_remove_item(const index, const item_name[]);
+
+/*
+* Returns amount of ammo in the client's backpack for a specific weapon.
+*
+* @param index		Client index
+* @param weapon		Weapon id
+*
+* @return		Amount of ammo in backpack
+*
+*/
+native rg_get_user_bpammo(const index, WeaponIdType:weapon);
+
+/*
+* Sets amount of ammo in the client's backpack for a specific weapon.
+*
+* @param index		Client index
+* @param weapon		Weapon id
+* @param amount		New backpack ammo amount to set
+*
+* @noreturn
+*
+*/
+native rg_set_user_bpammo(const index, WeaponIdType:weapon, amount);
+
+/*
+* Sets the client's defusekit status and allows to set a custom HUD icon and color.
+*
+* @param index		Client index
+* @param defusekit	If nonzero the client will have a defusekit, otherwise it will be removed
+* @param color		Color RGB
+* @param icon		HUD sprite to use as icon
+* @param flash		If nonzero the icon will flash red
+*
+* @noreturn
+*
+*/
+native rg_give_defusekit(const index, bool:bDefusekit = true, Float:color[] = {0.0, 160.0, 0.0}, const icon[] = "defuser", bool:bFlash = false);
+
+/*
+* Returns the client's armor value and retrieves the type of armor.
+*
+* @param index		Client index
+* @param armortype	Variable to store armor type in
+*
+* @return		Amount of armor, 0 if client has no armor
+*
+*/
+native rg_get_user_armor(const index, &ArmorType:armortype);
+
+/*
+* Sets the client's armor value the type of armor.
+*
+* @param index		Client index
+* @param armorvalue	Amount of armor to set
+* @param armortype	Armor type
+*
+* @noreturn
+*
+*/
+native rg_set_user_armor(const index, armorvalue, ArmorType:armortype);

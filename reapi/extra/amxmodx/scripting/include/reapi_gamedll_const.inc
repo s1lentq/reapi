@@ -22,6 +22,21 @@
 	#define RG_CBasePlayer_Observer_IsValidTarget RG_CBasePlayer_Observer_IsValid
 #endif
 
+// use with rg_give_item
+enum GiveType
+{
+	GT_APPEND,		// just give item
+	GT_REPLACE,		// to remove all weapons from the slot
+	GT_DROP_AND_REPLACE	// drop all weapons on the ground
+};
+
+enum ArmorType
+{
+	ARMOR_NONE,	// no armor
+	ARMOR_KEVLAR,	// body vest only
+	ARMOR_VESTHELM,	// vest and helmet
+};
+
 enum WeaponIdType
 {
 	WEAPON_NONE,

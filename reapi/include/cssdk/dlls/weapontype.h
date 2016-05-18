@@ -251,6 +251,7 @@ enum MaxAmmoType
 
 enum AmmoType
 {
+	AMMO_NONE = -1,
 	AMMO_BUCKSHOT,
 	AMMO_9MM,
 	AMMO_556NATO,
@@ -327,7 +328,8 @@ enum shieldgren_e
 
 enum InventorySlotType
 {
-	PRIMARY_WEAPON_SLOT = 1,
+	NONE_SLOT,
+	PRIMARY_WEAPON_SLOT,
 	PISTOL_SLOT,
 	KNIFE_SLOT,
 	GRENADE_SLOT,
@@ -400,4 +402,11 @@ struct WeaponInfoStruct
 	int ammoType;
 	char *entityName;
 	const char *ammoName;
+};
+
+struct WeaponSlotInfo
+{
+	WeaponIdType id;
+	InventorySlotType slot;
+	const char *weaponName;
 };

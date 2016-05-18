@@ -3,6 +3,8 @@
 extern edict_t* g_pEdicts;
 extern int gmsgSendAudio;
 extern int gmsgTeamScore;
+extern int gmsgStatusIcon;
+extern int gmsgArmorType;
 
 void OnAmxxAttach();
 bool OnMetaAttach();

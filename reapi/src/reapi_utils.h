@@ -79,9 +79,9 @@ inline void set_member(edict_t *pEntity, int offset, T value, int element = 0)
 }
 
 template <typename T>
-inline T get_member_direct(void *ptr, int offset, int element = 0, int size = 0)
+inline T* get_member_direct(void *ptr, int offset, int element = 0, int size = sizeof(T))
 {
-	return reinterpret_cast<T>(reinterpret_cast<int8 *>(ptr) + offset + (element * size));
+	return reinterpret_cast<T *>(reinterpret_cast<int8 *>(ptr) + offset + (element * size));
 }
 
 template <typename T>

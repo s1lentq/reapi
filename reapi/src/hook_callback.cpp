@@ -100,11 +100,11 @@ void CBasePlayer_TraceAttack(IReGameHook_CBasePlayer_TraceAttack *chain, CBasePl
 	callVoidForward(RG_CBasePlayer_TraceAttack, original, indexOfEdict(pthis->pev), indexOfEdict(pevAttacker), flDamage, g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecDirCopy), 3, true), ptr, bitsDamageType);
 }
 
-int CBasePlayer_TakeDamage(IReGameHook_CBasePlayer_TakeDamage *chain, CBasePlayer *pthis, entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType)
+int CBasePlayer_TakeDamage(IReGameHook_CBasePlayer_TakeDamage *chain, CBasePlayer *pthis, entvars_t *pevInflictor, entvars_t *pevAttacker, float& flDamage, int bitsDamageType)
 {
-	auto original = [chain](int _pthis, int _pevInflictor, int _pevAttacker, float _flDamage, int _bitsDamageType)
+	auto original = [chain](int _pthis, int _pevInflictor, int _pevAttacker, volatile float& _flDamage, int _bitsDamageType)
 	{
-		return chain->callNext(PEV(_pevInflictor), PEV(_pevAttacker), _flDamage, _bitsDamageType);
+		return chain->callNext(PEV(_pevInflictor), PEV(_pevAttacker), const_cast<float&>(_flDamage), _bitsDamageType);
 	};
 
 	return callForward<int>(RG_CBasePlayer_TakeDamage, original, indexOfEdict(pthis->pev), indexOfEdict(pevInflictor), indexOfEdict(pevAttacker), flDamage, bitsDamageType);

@@ -7,6 +7,7 @@
 #define BASE_MEMBERS(mx) CLASS_MEMBERS(CBaseEntity, mx)
 #define ANIM_MEMBERS(mx) CLASS_MEMBERS(CBaseAnimating, mx)
 #define PL_MEMBERS(mx) CLASS_MEMBERS(CBasePlayer, mx)
+#define EVAR_MEMBERS(mx) CLASS_MEMBERS(com_entvars, mx)
 
 inline MType getMemberType(float*)			{ return MEMBER_FLOAT; }
 inline MType getMemberType(float)			{ return MEMBER_FLOAT; }
@@ -27,6 +28,11 @@ inline MType getMemberType(Vector*)			{ return MEMBER_VECTOR; }
 inline MType getMemberType(Vector)			{ return MEMBER_VECTOR; }
 
 inline MType getMemberType(char*)			{ return MEMBER_STRING; }
+inline MType getMemberType(qstring_t)		{ return MEMBER_QSTRING; }
+
+inline MType getMemberType(char)			{ return MEMBER_BYTE; }
+inline MType getMemberType(byte)			{ return MEMBER_BYTE; }
+inline MType getMemberType(byte*)			{ return MEMBER_BYTE; }
 
 inline MType getMemberType(int*)			{ return MEMBER_INTEGER; }
 inline MType getMemberType(int)				{ return MEMBER_INTEGER; }
@@ -40,7 +46,6 @@ inline MType getMemberType(MusicState)			{ return MEMBER_INTEGER; }
 inline MType getMemberType(short)			{ return MEMBER_SHORT; }
 inline MType getMemberType(unsigned short)		{ return MEMBER_SHORT; }
 
-inline MType getMemberType(char)			{ return MEMBER_BYTE; }
 inline MType getMemberType(bool)			{ return MEMBER_BOOL; }
 inline MType getMemberType(CUnifiedSignals)		{ return MEMBER_SIGNALS; }
 inline MType getMemberType(RebuyStruct)			{ return MEBMER_REBUYSTRUCT; }
@@ -379,6 +384,133 @@ member_t memberlist_player[] = {
 	PL_MEMBERS(m_flLastCommandTime),
 };
 
+member_t memberlist_entvars[] = {
+	EVAR_MEMBERS(classname),
+	EVAR_MEMBERS(globalname),
+	EVAR_MEMBERS(origin),
+	EVAR_MEMBERS(oldorigin),
+	EVAR_MEMBERS(velocity),
+	EVAR_MEMBERS(basevelocity),
+	EVAR_MEMBERS(clbasevelocity),
+	EVAR_MEMBERS(movedir),
+	EVAR_MEMBERS(angles),
+	EVAR_MEMBERS(avelocity),
+	EVAR_MEMBERS(punchangle),
+	EVAR_MEMBERS(v_angle),
+	EVAR_MEMBERS(endpos),
+	EVAR_MEMBERS(startpos),
+	EVAR_MEMBERS(impacttime),
+	EVAR_MEMBERS(starttime),
+	EVAR_MEMBERS(fixangle),
+	EVAR_MEMBERS(idealpitch),
+	EVAR_MEMBERS(pitch_speed),
+	EVAR_MEMBERS(ideal_yaw),
+	EVAR_MEMBERS(yaw_speed),
+	EVAR_MEMBERS(modelindex),
+	EVAR_MEMBERS(model),
+	EVAR_MEMBERS(viewmodel),
+	EVAR_MEMBERS(weaponmodel),
+	EVAR_MEMBERS(absmin),
+	EVAR_MEMBERS(absmax),
+	EVAR_MEMBERS(mins),
+	EVAR_MEMBERS(maxs),
+	EVAR_MEMBERS(size),
+	EVAR_MEMBERS(ltime),
+	EVAR_MEMBERS(nextthink),
+	EVAR_MEMBERS(movetype),
+	EVAR_MEMBERS(solid),
+	EVAR_MEMBERS(skin),
+	EVAR_MEMBERS(body),
+	EVAR_MEMBERS(effects),
+	EVAR_MEMBERS(gravity),
+	EVAR_MEMBERS(friction),
+	EVAR_MEMBERS(light_level),
+	EVAR_MEMBERS(sequence),
+	EVAR_MEMBERS(gaitsequence),
+	EVAR_MEMBERS(frame),
+	EVAR_MEMBERS(animtime),
+	EVAR_MEMBERS(framerate),
+	EVAR_MEMBERS(controller),
+	EVAR_MEMBERS(blending),
+	EVAR_MEMBERS(scale),
+	EVAR_MEMBERS(rendermode),
+	EVAR_MEMBERS(renderamt),
+	EVAR_MEMBERS(rendercolor),
+	EVAR_MEMBERS(renderfx),
+	EVAR_MEMBERS(health),
+	EVAR_MEMBERS(frags),
+	EVAR_MEMBERS(weapons),
+	EVAR_MEMBERS(takedamage),
+	EVAR_MEMBERS(deadflag),
+	EVAR_MEMBERS(view_ofs),
+	EVAR_MEMBERS(button),
+	EVAR_MEMBERS(impulse),
+	EVAR_MEMBERS(chain),
+	EVAR_MEMBERS(dmg_inflictor),
+	EVAR_MEMBERS(enemy),
+	EVAR_MEMBERS(aiment),
+	EVAR_MEMBERS(owner),
+	EVAR_MEMBERS(groundentity),
+	EVAR_MEMBERS(spawnflags),
+	EVAR_MEMBERS(flags),
+	EVAR_MEMBERS(colormap),
+	EVAR_MEMBERS(team),
+	EVAR_MEMBERS(max_health),
+	EVAR_MEMBERS(teleport_time),
+	EVAR_MEMBERS(armortype),
+	EVAR_MEMBERS(armorvalue),
+	EVAR_MEMBERS(waterlevel),
+	EVAR_MEMBERS(watertype),
+	EVAR_MEMBERS(target),
+	EVAR_MEMBERS(targetname),
+	EVAR_MEMBERS(netname),
+	EVAR_MEMBERS(message),
+	EVAR_MEMBERS(dmg_take),
+	EVAR_MEMBERS(dmg_save),
+	EVAR_MEMBERS(dmg),
+	EVAR_MEMBERS(dmgtime),
+	EVAR_MEMBERS(noise),
+	EVAR_MEMBERS(noise1),
+	EVAR_MEMBERS(noise2),
+	EVAR_MEMBERS(noise3),
+	EVAR_MEMBERS(speed),
+	EVAR_MEMBERS(air_finished),
+	EVAR_MEMBERS(pain_finished),
+	EVAR_MEMBERS(radsuit_finished),
+	EVAR_MEMBERS(pContainingEntity),
+	EVAR_MEMBERS(playerclass),
+	EVAR_MEMBERS(maxspeed),
+	EVAR_MEMBERS(fov),
+	EVAR_MEMBERS(weaponanim),
+	EVAR_MEMBERS(pushmsec),
+	EVAR_MEMBERS(bInDuck),
+	EVAR_MEMBERS(flTimeStepSound),
+	EVAR_MEMBERS(flSwimTime),
+	EVAR_MEMBERS(flDuckTime),
+	EVAR_MEMBERS(iStepLeft),
+	EVAR_MEMBERS(flFallVelocity),
+	EVAR_MEMBERS(gamestate),
+	EVAR_MEMBERS(oldbuttons),
+	EVAR_MEMBERS(groupinfo),
+	EVAR_MEMBERS(iuser1),
+	EVAR_MEMBERS(iuser2),
+	EVAR_MEMBERS(iuser3),
+	EVAR_MEMBERS(iuser4),
+	EVAR_MEMBERS(fuser1),
+	EVAR_MEMBERS(fuser2),
+	EVAR_MEMBERS(fuser3),
+	EVAR_MEMBERS(fuser4),
+	EVAR_MEMBERS(vuser1),
+	EVAR_MEMBERS(vuser2),
+	EVAR_MEMBERS(vuser3),
+	EVAR_MEMBERS(vuser4),
+	EVAR_MEMBERS(euser1),
+	EVAR_MEMBERS(euser2),
+	EVAR_MEMBERS(euser3),
+	EVAR_MEMBERS(euser4)
+};
+
+
 memberlist_t memberlist;
 
 member_t *memberlist_t::operator[](size_t members) const
@@ -393,6 +525,7 @@ member_t *memberlist_t::operator[](size_t members) const
 		CASE(base)
 		CASE(animating)
 		CASE(player)
+		CASE(entvars)
 	}
 
 	return nullptr;

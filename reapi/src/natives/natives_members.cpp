@@ -132,6 +132,84 @@ cell AMX_NATIVE_CALL get_member_game(AMX *amx, cell *params)
 	return get_member(g_pGameRules, member, element, dest);
 }
 
+// native set_entvar(const index, const EntVars:var, any:...);
+cell AMX_NATIVE_CALL set_entvar(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_var, arg_value, arg_elem };
+	member_t *member = memberlist[params[arg_var]];
+
+	if (member == nullptr) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_var]);
+		return FALSE;
+	}
+	CHECK_ISENTITY(arg_index);
+
+	edict_t *pEdict = edictByIndexAmx(params[arg_index]);
+	if (pEdict == nullptr || pEdict->pvPrivateData == nullptr) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
+		return FALSE;
+	}
+
+	cell* value = getAmxAddr(amx, params[arg_value]);
+	size_t element = (PARAMS_COUNT == 4) ? *getAmxAddr(amx, params[arg_elem]) : 0;
+
+	return set_member(&pEdict->v, member, element, value);
+}
+
+// native any:get_entvar(const index, const EntVars:var, any:...);
+cell AMX_NATIVE_CALL get_entvar(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_var, arg_3, arg_4 };
+	member_t *member = memberlist[params[arg_var]];
+
+	if (member == nullptr) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_var]);
+		return FALSE;
+	}
+
+	CHECK_ISENTITY(arg_index);
+
+	edict_t *pEdict = edictByIndexAmx(params[arg_index]);
+	if (pEdict == nullptr || pEdict->pvPrivateData == nullptr) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
+		return FALSE;
+	}
+
+	cell* dest;
+	size_t element;
+
+	if (PARAMS_COUNT == 4) {
+		dest = getAmxAddr(amx, params[arg_3]);
+		element = *getAmxAddr(amx, params[arg_4]);
+	}
+	else if (PARAMS_COUNT == 3) {
+		cell* arg3 = getAmxAddr(amx, params[arg_3]);
+
+		if (isTypeReturnable(member->type)) {
+			dest = nullptr;
+			element = *arg3;
+		}
+		else {
+			dest = arg3;
+			element = 0;
+		}
+	}
+	else {
+		dest = nullptr;
+		element = 0;
+	}
+
+	return get_member(&pEdict->v, member, element, dest);
+}
+
+AMX_NATIVE_INFO EntVars_Natives[] =
+{
+	{ "set_entvar", set_entvar },
+	{ "get_entvar", get_entvar },
+
+	{ nullptr, nullptr }
+};
+
 AMX_NATIVE_INFO Member_Natives[] =
 {
 	{ "set_member", set_member },
@@ -147,6 +225,8 @@ void RegisterNatives_Members()
 {
 	if (api_cfg.hasReGameDLL())
 		g_amxxapi.AddNatives(Member_Natives);
+
+	g_amxxapi.AddNatives(EntVars_Natives);
 }
 
 BOOL set_member(void* pdata, const member_t *member, size_t element, cell* value)
@@ -187,7 +267,7 @@ BOOL set_member(void* pdata, const member_t *member, size_t element, cell* value
 			if (member->max_size > sizeof(char*)) {
 				// char []
 				char *source = getAmxString(value);
-				char *dest = get_member_direct<char *>(pdata, member->offset);
+				char *dest = get_member_direct<char>(pdata, member->offset);
 				strncpy(dest, source, member->max_size - 1);
 				dest[member->max_size - 1] = '\0';
 
@@ -197,6 +277,14 @@ BOOL set_member(void* pdata, const member_t *member, size_t element, cell* value
 				char *&dest = get_member<char *>(pdata, member->offset);
 				g_ReGameFuncs->ChangeString(dest, source);
 			}
+
+			return TRUE;
+		}
+	case MEMBER_QSTRING:
+		{
+			char *source = getAmxString(value);
+			string_t newstr = ALLOC_STRING(source);
+			set_member<string_t>(pdata, member->offset, newstr, element);
 
 			return TRUE;
 		}
@@ -281,7 +369,7 @@ cell get_member(void* pdata, const member_t *member, size_t element, cell* dest)
 			if (!dest)
 				return 0;
 
-			dest = get_member_direct<cell *>(pdata, member->offset, element);
+			dest = (cell *)get_member_direct<Vector>(pdata, member->offset, element);
 			return 1;
 		}
 	case MEMBER_STRING:
@@ -292,7 +380,7 @@ cell get_member(void* pdata, const member_t *member, size_t element, cell* dest)
 
 			if (member->max_size > sizeof(char*)) {
 				// char []
-				const char *src = get_member_direct<const char *>(pdata, member->offset);
+				const char *src = get_member_direct<char>(pdata, member->offset);
 				setAmxString(dest, src, element);
 			} else {
 				// char *
@@ -304,6 +392,20 @@ cell get_member(void* pdata, const member_t *member, size_t element, cell* dest)
 				setAmxString(dest, src, element);
 			}
 
+			return 1;
+		}
+	case MEMBER_QSTRING:
+		{
+			if (!dest)
+				return 0;
+
+			string_t str = get_member<string_t>(pdata, member->offset);
+			if (str == 0) {
+				setAmxString(dest, "", 1);
+				return 0;
+			}
+
+			setAmxString(dest, STRING(str), element);
 			return 1;
 		}
 	case MEMBER_FLOAT:

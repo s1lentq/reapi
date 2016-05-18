@@ -651,6 +651,12 @@
     <ClInclude Include="..\src\natives\natives_addons.h">
       <Filter>src\natives</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\com_progdefs.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\reunion_api.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\include\cssdk\common\parsemsg.cpp">

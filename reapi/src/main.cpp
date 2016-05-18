@@ -1,8 +1,7 @@
 #include "precompiled.h"
 
 edict_t* g_pEdicts;
-int gmsgSendAudio;
-int gmsgTeamScore;
+int gmsgSendAudio, gmsgTeamScore, gmsgStatusIcon, gmsgArmorType;
 
 void OnAmxxAttach()
 {
@@ -33,8 +32,11 @@ void OnMetaDetach()
 void ServerActivate_Post(edict_t *pEdictList, int edictCount, int clientMax)
 {
 	g_pEdicts = pEdictList;
+
 	gmsgSendAudio = GET_USER_MSG_ID(PLID, "SendAudio", NULL);
 	gmsgTeamScore = GET_USER_MSG_ID(PLID, "TeamScore", NULL);
+	gmsgStatusIcon = GET_USER_MSG_ID(PLID, "StatusIcon", NULL);
+	gmsgArmorType = GET_USER_MSG_ID(PLID, "ArmorType", NULL);
 
 	SET_META_RESULT(MRES_IGNORED);
 }
