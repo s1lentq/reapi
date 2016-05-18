@@ -7,7 +7,6 @@
 #define GM_VOICE_MEMBERS(mx) CLASS_MEMBERS_DEF(CVoiceGameMgr, mx)
 #define BASE_MEMBERS(mx) CLASS_MEMBERS_DEF(CBaseEntity, mx)
 #define ANIM_MEMBERS(mx) CLASS_MEMBERS_DEF(CBaseAnimating, mx)
-#define MONST_MEMBERS(mx) CLASS_MEMBERS_DEF(CBaseMonster, mx)
 #define PL_MEMBERS(mx) CLASS_MEMBERS_DEF(CBasePlayer, mx)
 #define EVAR_MEMBERS(mx) CLASS_MEMBERS_DEF(com_entvars, mx)
 #define MOVEVAR_MEMBERS(mx) CLASS_MEMBERS(movevars_t, MoveVars::##mx, mx)
