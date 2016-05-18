@@ -31,7 +31,7 @@ META_FUNCTIONS gMetaFunctionTable =
 {
 	NULL,			// pfnGetEntityAPI		HL SDK; called before game DLL
 	NULL,			// pfnGetEntityAPI_Post		META; called after game DLL
-	NULL,			// pfnGetEntityAPI2		HL SDK2; called before game DLL
+	GetEntityAPI2,			// pfnGetEntityAPI2		HL SDK2; called before game DLL
 	GetEntityAPI2_Post,			// pfnGetEntityAPI2_Post	META; called after game DLL
 	NULL,			// pfnGetNewDLLFunctions	HL SDK2; called before game DLL
 	NULL,			// pfnGetNewDLLFunctions_Post	META; called after game DLL

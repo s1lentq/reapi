@@ -43,6 +43,7 @@ struct memberlist_t
 		ht_animating,
 		ht_player,
 		ht_entvars,
+		ht_movevars
 	};
 };
 
@@ -496,4 +497,37 @@ enum EntVars
 	euser2,
 	euser3,
 	euser4
+};
+
+// in order to avoid problems with redefinition enumerator
+namespace MoveVars {
+	enum MoveVars
+	{
+		gravity = BEGIN_MEMBER_REGION(movevars),
+		stopspeed,
+		maxspeed,
+		spectatormaxspeed,
+		accelerate,
+		airaccelerate,
+		wateraccelerate,
+		friction,
+		edgefriction,
+		waterfriction,
+		entgravity,
+		bounce,
+		stepsize,
+		maxvelocity,
+		zmax,
+		waveHeight,
+		footsteps,
+		skyName,
+		rollangle,
+		rollspeed,
+		skycolor_r,
+		skycolor_g,
+		skycolor_b,
+		skyvec_x,
+		skyvec_y,
+		skyvec_z,
+	};
 };

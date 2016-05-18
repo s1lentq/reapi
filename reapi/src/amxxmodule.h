@@ -440,7 +440,7 @@ struct amxxapi_t
 	PFN_IS_PLAYER_VALID		IsPlayerValid;
 	PFN_GET_PLAYER_NAME		GetPlayerName;
 	PFN_GET_PLAYER_IP		GetPlayerIP;
-	PFN_IS_PLAYER_INGAME		IsPlayerIngame;
+	PFN_IS_PLAYER_INGAME		IsPlayerInGame;
 	PFN_IS_PLAYER_BOT		IsPlayerBot;
 	PFN_IS_PLAYER_AUTHORIZED	IsPlayerAuthorized;
 	PFN_GET_PLAYER_TIME		GetPlayerTime;

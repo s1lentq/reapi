@@ -20,6 +20,17 @@
 	#define ROUND_ESCAPING_TERRORISTS_NEUTRALIZED ROUND_ESCAPING_TERRORISTS_NEUTR
 	#define RG_CBaseAnimating_ResetSequenceInfo RG_CBaseAnimating_ResetSequence
 	#define RG_CBasePlayer_Observer_IsValidTarget RG_CBasePlayer_Observer_IsValid
+	#define RG_CSGameRules_FShouldSwitchWeapon RG_CSGameRules_ShouldSwitchWpn
+	#define RG_CSGameRules_GetNextBestWeapon RG_CSGameRules_GetNextBestWpn
+	#define RG_CSGameRules_FlPlayerFallDamage RG_CSGameRules_PlayerFallDmg
+	#define RG_CSGameRules_FPlayerCanTakeDamage RG_CSGameRules_PlayerCanTakeDmg
+	#define RG_CSGameRules_FPlayerCanRespawn RG_CSGameRules_PlayerCanRespawn
+	#define RG_CSGameRules_GetPlayerSpawnSpot RG_CSGameRules_PlayerSpawnSpot
+	#define RG_CSGameRules_ClientUserInfoChanged RG_CSGameRules_UserInfoChanged
+	#define RG_CSGameRules_CanHavePlayerItem RG_CSGameRules_CanPlayerItem
+	#define RG_CSGameRules_DeadPlayerWeapons RG_CSGameRules_DeadPlayerWpn
+	#define RG_CSGameRules_CheckMapConditions RG_CSGameRules_CheckMapCond
+	#define RG_CSGameRules_CheckWinConditions RG_CSGameRules_CheckWinCond
 #endif
 
 // use with rg_give_item
@@ -35,6 +46,23 @@ enum ArmorType
 	ARMOR_NONE,	// no armor
 	ARMOR_KEVLAR,	// body vest only
 	ARMOR_VESTHELM,	// vest and helmet
+};
+
+enum
+{
+	GR_NONE = 0,
+	GR_WEAPON_RESPAWN_YES,
+	GR_WEAPON_RESPAWN_NO,
+	GR_AMMO_RESPAWN_YES,
+	GR_AMMO_RESPAWN_NO,
+	GR_ITEM_RESPAWN_YES,
+	GR_ITEM_RESPAWN_NO,
+	GR_PLR_DROP_GUN_ALL,
+	GR_PLR_DROP_GUN_ACTIVE,
+	GR_PLR_DROP_GUN_NO,
+	GR_PLR_DROP_AMMO_ALL,
+	GR_PLR_DROP_AMMO_ACTIVE,
+	GR_PLR_DROP_AMMO_NO
 };
 
 enum WeaponIdType
@@ -162,6 +190,18 @@ enum GamedllFunc
 	* Params:		(const index, const iWeapon)
 	*/
 	RG_CanBuyThis,
+
+	/*
+	* Description:		-
+	* Params:		(const PlayerMove:ppmove, const server)
+	*/
+	RG_PM_Move,
+
+	/*
+	* Description:		-
+	* Params:		(const playerIndex)
+	*/
+	RG_PM_AirMove,
 
 	// [...]
 	RG_End
@@ -327,6 +367,144 @@ enum GamedllFunc_CBasePlayer
 
 	// [...]
 	RG_CBasePlayer_End
+};
+
+enum GamedllFunc_CSGameRules
+{
+	/*
+	* Description:		-
+	* Params:		(const index, const weapon)
+	*/
+	RG_CSGameRules_FShouldSwitchWeapon = 4096,
+
+	/*
+	* Description:		-
+	* Params:		(const index, const currentWeapon)
+	*/
+	RG_CSGameRules_GetNextBestWeapon,
+
+	/*
+	* Description:		-
+	* Params:		(const index)
+	*/
+	RG_CSGameRules_FlPlayerFallDamage,
+
+	/*
+	* Description:		-
+	* Params:		(const index, const attacker)
+	*/
+	RG_CSGameRules_FPlayerCanTakeDamage,
+
+	/*
+	* Description:		-
+	* Params:		(const index)
+	*/
+	RG_CSGameRules_PlayerSpawn,
+
+	/*
+	* Description:		-
+	* Params:		(const index)
+	*/
+	RG_CSGameRules_FPlayerCanRespawn,
+
+	/*
+	* Description:		-
+	* Params:		(const index)
+	*/
+	RG_CSGameRules_GetPlayerSpawnSpot,
+
+	/*
+	* Description:		-
+	* Params:		(const index, infobuffer[])
+	*/
+	RG_CSGameRules_ClientUserInfoChanged,
+
+	/*
+	* Description:		-
+	* Params:		(const victim, const killer, const inflictor)
+	*/
+	RG_CSGameRules_PlayerKilled,
+
+	/*
+	* Description:		-
+	* Params:		(const victim, const killer, const inflictor)
+	*/
+	RG_CSGameRules_DeathNotice,
+
+	/*
+	* Description:		-
+	* Params:		(const index, const item)
+	*/
+	RG_CSGameRules_CanHavePlayerItem,
+
+	/*
+	* Description:		-
+	* Params:		(const index)
+	*/
+	RG_CSGameRules_DeadPlayerWeapons,
+
+	/*
+	* Description:		-
+	* Params:		()
+	*/
+	RG_CSGameRules_ServerDeactivate,
+
+	/*
+	* Description:		-
+	* Params:		()
+	*/
+	RG_CSGameRules_CheckMapConditions,
+
+	/*
+	* Description:		-
+	* Params:		()
+	*/
+	RG_CSGameRules_CleanUpMap,
+
+	/*
+	* Description:		-
+	* Params:		()
+	*/
+	RG_CSGameRules_RestartRound,
+
+	/*
+	* Description:		-
+	* Params:		()
+	*/
+	RG_CSGameRules_CheckWinConditions,
+
+	/*
+	* Description:		-
+	* Params:		()
+	*/
+	RG_CSGameRules_RemoveGuns,
+
+	/*
+	* Description:		-
+	* Params:		()
+	*/
+	RG_CSGameRules_GiveC4,
+
+	/*
+	* Description:		-
+	* Params:		()
+	*/
+	RG_CSGameRules_ChangeLevel,
+
+	/*
+	* Description:		-
+	* Params:		()
+	*/
+	RG_CSGameRules_GoToIntermission,
+
+	/*
+	* Description:		-
+	* Params:		()
+	*/
+	RG_CSGameRules_BalanceTeams,
+
+	// [...]
+	RG_CSGameRules_End
 };
 
 // CSGameRules
@@ -2720,4 +2898,215 @@ enum CBasePlayer_Members
 	* Set params:		set_member(index, member, Float:value, element);
 	*/
 	m_flLastCommandTime
+};
+
+enum MoveVars
+{
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_mvar(const MoveVars:var);
+	* Set params:		set_mvar(const MoveVars:var, Float:value);
+	*/
+	mv_gravity = 5120,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_mvar(const MoveVars:var);
+	* Set params:		set_mvar(const MoveVars:var, Float:value);
+	*/
+	mv_stopspeed,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_mvar(const MoveVars:var);
+	* Set params:		set_mvar(const MoveVars:var, Float:value);
+	*/
+	mv_maxspeed,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_mvar(const MoveVars:var);
+	* Set params:		set_mvar(const MoveVars:var, Float:value);
+	*/
+	mv_spectatormaxspeed,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_mvar(const MoveVars:var);
+	* Set params:		set_mvar(const MoveVars:var, Float:value);
+	*/
+	mv_accelerate,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_mvar(const MoveVars:var);
+	* Set params:		set_mvar(const MoveVars:var, Float:value);
+	*/
+	mv_airaccelerate,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_mvar(const MoveVars:var);
+	* Set params:		set_mvar(const MoveVars:var, Float:value);
+	*/
+	mv_wateraccelerate,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_mvar(const MoveVars:var);
+	* Set params:		set_mvar(const MoveVars:var, Float:value);
+	*/
+	mv_friction,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_mvar(const MoveVars:var);
+	* Set params:		set_mvar(const MoveVars:var, Float:value);
+	*/
+	mv_edgefriction,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_mvar(const MoveVars:var);
+	* Set params:		set_mvar(const MoveVars:var, Float:value);
+	*/
+	mv_waterfriction,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_mvar(const MoveVars:var);
+	* Set params:		set_mvar(const MoveVars:var, Float:value);
+	*/
+	mv_entgravity,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_mvar(const MoveVars:var);
+	* Set params:		set_mvar(const MoveVars:var, Float:value);
+	*/
+	mv_bounce,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_mvar(const MoveVars:var);
+	* Set params:		set_mvar(const MoveVars:var, Float:value);
+	*/
+	mv_stepsize,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_mvar(const MoveVars:var);
+	* Set params:		set_mvar(const MoveVars:var, Float:value);
+	*/
+	mv_maxvelocity,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_mvar(const MoveVars:var);
+	* Set params:		set_mvar(const MoveVars:var, Float:value);
+	*/
+	mv_zmax,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_mvar(const MoveVars:var);
+	* Set params:		set_mvar(const MoveVars:var, Float:value);
+	*/
+	mv_waveHeight,
+
+	/*
+	* Description:		-
+	* Member type:		BOOL
+	* Get params:		Float:get_mvar(const MoveVars:var);
+	* Set params:		set_mvar(const MoveVars:var, Float:value);
+	*/
+	mv_footsteps,
+
+	/*
+	* Description:		-
+	* Member type:		char [32]
+	* Get params:		Float:get_mvar(const MoveVars:var, dest[], const lenght);
+	* Set params:		set_mvar(const MoveVars:var, const source[]);
+	*/
+	mv_skyName,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_mvar(const MoveVars:var);
+	* Set params:		set_mvar(const MoveVars:var, Float:value);
+	*/
+	mv_rollangle,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_mvar(const MoveVars:var);
+	* Set params:		set_mvar(const MoveVars:var, Float:value);
+	*/
+	mv_rollspeed,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_mvar(const MoveVars:var);
+	* Set params:		set_mvar(const MoveVars:var, Float:value);
+	*/
+	mv_skycolor_r,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_mvar(const MoveVars:var);
+	* Set params:		set_mvar(const MoveVars:var, Float:value);
+	*/
+	mv_skycolor_g,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_mvar(const MoveVars:var);
+	* Set params:		set_mvar(const MoveVars:var, Float:value);
+	*/
+	mv_skycolor_b,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_mvar(const MoveVars:var);
+	* Set params:		set_mvar(const MoveVars:var, Float:value);
+	*/
+	mv_skyvec_x,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_mvar(const MoveVars:var);
+	* Set params:		set_mvar(const MoveVars:var, Float:value);
+	*/
+	mv_skyvec_y,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_mvar(const MoveVars:var);
+	* Set params:		set_mvar(const MoveVars:var, Float:value);
+	*/
+	mv_skyvec_z
 };

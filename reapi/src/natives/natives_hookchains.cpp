@@ -102,7 +102,7 @@ cell AMX_NATIVE_CALL DisableHookChain(AMX *amx, cell *params)
 * Sets the return value of a hookchain.
 * This needs to be used in conjunction with RH_OVERRIDE or RH_SUPERCEDE.
 *
-* @param type		To specify the type RHV_*, look at the enum AType
+* @param type		To specify the type ATYPE_*, look at the enum AType
 * @param value		The value to set the return to.
 *
 * native SetHookChainReturn(AType:type, any:...);
@@ -146,6 +146,12 @@ cell AMX_NATIVE_CALL SetHookChainReturn(AMX *amx, cell *params)
 	case ATYPE_CLASSPTR:
 		retVal._classptr = getPrivate<CBaseEntity>(*srcAddr);
 		break;
+	case ATYPE_EDICT:
+		retVal._edict = edictByIndexAmx(*srcAddr);
+		break;
+	case ATYPE_EVARS:
+		retVal._pev = PEV(*srcAddr);
+		break;
 	default:
 		return FALSE;
 	}
@@ -155,14 +161,13 @@ cell AMX_NATIVE_CALL SetHookChainReturn(AMX *amx, cell *params)
 }
 
 /*
-* Get the return value of a hookchain.
-* This needs to be used in conjunction with RH_OVERRIDE or RH_SUPERCEDE.
+* Gets the return value of the current hookchain.
+* This has no effect in pre hookchain.
 *
-* @param value		The value to set the return to.
 * @param [maxlen]	Max length of string (optional)
-* @return		Returns if the function is successful executed true otherwise false
+* @return		If an integer or boolean or one byte or float, array or everything else is passed via 1rd argument and more
 *
-* native GetHookChainReturn(AType:type, any:...);
+* native any:GetHookChainReturn(any:...);
 */
 cell AMX_NATIVE_CALL GetHookChainReturn(AMX *amx, cell *params)
 {
@@ -181,8 +186,7 @@ cell AMX_NATIVE_CALL GetHookChainReturn(AMX *amx, cell *params)
 	{
 	case ATYPE_INTEGER:
 	case ATYPE_FLOAT:
-		*dstAddr = retVal._interger;
-		break;
+		return retVal._interger;
 	case ATYPE_STRING:
 	{
 		if (PARAMS_COUNT != 2)
@@ -192,8 +196,11 @@ cell AMX_NATIVE_CALL GetHookChainReturn(AMX *amx, cell *params)
 		break;
 	}
 	case ATYPE_CLASSPTR:
-		*dstAddr = indexOfEdict(retVal._classptr->pev);
-		break;
+		return indexOfEdict(retVal._classptr->pev);
+	case ATYPE_EDICT:
+		return indexOfEdict(retVal._edict);
+	case ATYPE_EVARS:
+		return indexOfEdict(retVal._pev);
 	default:
 		return FALSE;
 	}
@@ -203,7 +210,7 @@ cell AMX_NATIVE_CALL GetHookChainReturn(AMX *amx, cell *params)
 
 /*
 * Set hookchain argument.
-* This needs to be used in conjunction with RH_OVERRIDE or RH_SUPERCEDE.
+* This has no effect in post hookchain.
 *
 * @param number		Number of argument
 * @param value		New value
@@ -253,6 +260,12 @@ cell AMX_NATIVE_CALL SetHookChainArg(AMX *amx, cell *params)
 		break;
 	case ATYPE_CLASSPTR:
 		*(CBaseEntity **)destAddr = getPrivate<CBaseEntity>(*srcAddr);
+		break;
+	case ATYPE_EDICT:
+		*(edict_t **)destAddr = edictByIndexAmx(*srcAddr);
+		break;
+	case ATYPE_EVARS:
+		*(entvars_t **)destAddr = PEV(*srcAddr);
 		break;
 	}
 

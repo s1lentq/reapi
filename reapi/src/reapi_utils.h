@@ -12,6 +12,7 @@ char(&ArraySizeHelper(T(&array)[N]))[N];
 #endif
 
 extern enginefuncs_t* g_pengfuncsTable;
+extern DLL_FUNCTIONS *g_pFunctionTable;
 
 inline size_t indexOfEdict(edict_t* ed)
 {

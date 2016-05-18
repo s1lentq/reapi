@@ -15,7 +15,9 @@ enum AType : uint8
 	ATYPE_INTEGER = 0,
 	ATYPE_FLOAT,
 	ATYPE_STRING,
-	ATYPE_CLASSPTR
+	ATYPE_CLASSPTR,
+	ATYPE_EDICT,
+	ATYPE_EVARS
 };
 
 struct retval_t
@@ -29,6 +31,8 @@ struct retval_t
 		float			_float;
 		int				_interger;
 		CBaseEntity*	_classptr;
+		edict_t*		_edict;
+		entvars_t*		_pev;
 	};
 };
 
@@ -37,13 +41,15 @@ inline AType getApiType(unsigned)		{ return ATYPE_INTEGER; }
 inline AType getApiType(float)			{ return ATYPE_FLOAT; }
 inline AType getApiType(const char *)	{ return ATYPE_STRING; }
 inline AType getApiType(CBaseEntity *)	{ return ATYPE_CLASSPTR; }
+inline AType getApiType(edict_t *)	{ return ATYPE_CLASSPTR; }
+inline AType getApiType(entvars_t *)	{ return ATYPE_EVARS; }
 
 template<typename T>
 inline AType getApiType(T *) { return ATYPE_INTEGER; }
 
 #define MAX_ARGS 12u
 
-template<size_t current>
+template<size_t current = 0>
 void setupArgTypes(AType args_type[MAX_ARGS])
 {
 }
@@ -160,7 +166,6 @@ NOINLINE R DLLEXPORT _callForward(const hook_t* hook, original_t original, volat
 	if (hc_state != HC_SUPERCEDE)
 	{
 		auto retVal = original(args...);
-
 		if (hc_state != HC_OVERRIDE)
 			hookCtx.retVal._interger = *(int *)&retVal;
 	}
@@ -237,6 +242,32 @@ void CBasePlayer_AddAccount(IReGameHook_CBasePlayer_AddAccount *chain, CBasePlay
 void CBasePlayer_GiveShield(IReGameHook_CBasePlayer_GiveShield *chain, CBasePlayer *pthis, bool bDeploy);
 
 void CBaseAnimating_ResetSequenceInfo(IReGameHook_CBaseAnimating_ResetSequenceInfo *chain, CBaseAnimating *pthis);
+
+void PM_Move(IReGameHook_PM_Move *chain, playermove_t *ppmove, int server);
+void PM_AirMove(IReGameHook_PM_AirMove *chain, int playerIndex);
+
+BOOL CSGameRules_FShouldSwitchWeapon(IReGameHook_CSGameRules_FShouldSwitchWeapon *chain, CBasePlayer *pPlayer, CBasePlayerItem *pWeapon);
+BOOL CSGameRules_GetNextBestWeapon(IReGameHook_CSGameRules_GetNextBestWeapon *chain, CBasePlayer *pPlayer, CBasePlayerItem *pCurrentWeapon);
+float CSGameRules_FlPlayerFallDamage(IReGameHook_CSGameRules_FlPlayerFallDamage *chain, CBasePlayer *pPlayer);
+BOOL CSGameRules_FPlayerCanTakeDamage(IReGameHook_CSGameRules_FPlayerCanTakeDamage *chain, CBasePlayer *pPlayer, CBaseEntity *pAttacker);
+void CSGameRules_PlayerSpawn(IReGameHook_CSGameRules_PlayerSpawn *chain, CBasePlayer *pPlayer);
+BOOL CSGameRules_FPlayerCanRespawn(IReGameHook_CSGameRules_FPlayerCanRespawn *chain, CBasePlayer *pPlayer);
+edict_t *CSGameRules_GetPlayerSpawnSpot(IReGameHook_CSGameRules_GetPlayerSpawnSpot *chain, CBasePlayer *pPlayer);
+void CSGameRules_ClientUserInfoChanged(IReGameHook_CSGameRules_ClientUserInfoChanged *chain, CBasePlayer *pPlayer, char *infobuffer);
+void CSGameRules_PlayerKilled(IReGameHook_CSGameRules_PlayerKilled *chain, CBasePlayer *pVictim, entvars_t *pKiller, entvars_t *pInflictor);
+void CSGameRules_DeathNotice(IReGameHook_CSGameRules_DeathNotice *chain, CBasePlayer *pVictim, entvars_t *pKiller, entvars_t *pevInflictor);
+int CSGameRules_CanHavePlayerItem(IReGameHook_CSGameRules_CanHavePlayerItem *chain, CBasePlayer *pPlayer, CBasePlayerItem *pItem);
+int CSGameRules_DeadPlayerWeapons(IReGameHook_CSGameRules_DeadPlayerWeapons *chain, CBasePlayer *pPlayer);
+void CSGameRules_ServerDeactivate(IReGameHook_CSGameRules_ServerDeactivate *chain);
+void CSGameRules_CheckMapConditions(IReGameHook_CSGameRules_CheckMapConditions *chain);
+void CSGameRules_CleanUpMap(IReGameHook_CSGameRules_CleanUpMap *chain);
+void CSGameRules_RestartRound(IReGameHook_CSGameRules_RestartRound *chain);
+void CSGameRules_CheckWinConditions(IReGameHook_CSGameRules_CheckWinConditions *chain);
+void CSGameRules_RemoveGuns(IReGameHook_CSGameRules_RemoveGuns *chain);
+void CSGameRules_GiveC4(IReGameHook_CSGameRules_GiveC4 *chain);
+void CSGameRules_ChangeLevel(IReGameHook_CSGameRules_ChangeLevel *chain);
+void CSGameRules_GoToIntermission(IReGameHook_CSGameRules_GoToIntermission *chain);
+void CSGameRules_BalanceTeams(IReGameHook_CSGameRules_BalanceTeams *chain);
 
 extern int g_iClientStartSpeak;
 extern int g_iClientStopSpeak;

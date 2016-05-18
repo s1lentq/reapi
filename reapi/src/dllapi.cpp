@@ -1,9 +1,10 @@
 #include "precompiled.h"
 
+DLL_FUNCTIONS *g_pFunctionTable;
 DLL_FUNCTIONS gFunctionTable =
 {
 	NULL,					// pfnGameInit
-	NULL,					// pfnSpawn
+	Spawn,					// pfnSpawn
 	NULL,					// pfnThink
 	NULL,					// pfnUse
 	NULL,					// pfnTouch
@@ -125,6 +126,7 @@ C_DLLEXPORT int GetEntityAPI2(DLL_FUNCTIONS *pFunctionTable, int *interfaceVersi
 	}
 
 	memcpy(pFunctionTable, &gFunctionTable, sizeof(DLL_FUNCTIONS));
+	g_pFunctionTable = pFunctionTable;
 	return TRUE;
 }
 

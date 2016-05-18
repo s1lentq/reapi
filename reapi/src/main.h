@@ -12,4 +12,6 @@ void OnMetaDetach();
 
 void ServerActivate_Post(edict_t *pEdictList, int edictCount, int clientMax);
 void ServerDeactivate_Post();
+int Spawn(edict_t* pEntity);
+
 CGameRules *InstallGameRules(IReGameHook_InstallGameRules *chain);

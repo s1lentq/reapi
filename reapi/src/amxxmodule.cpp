@@ -69,7 +69,7 @@ static struct funcreq_t
 	//DECLARE_REQ(IsPlayerValid),
 	//DECLARE_REQ(GetPlayerName),
 	//DECLARE_REQ(GetPlayerIP),
-	//DECLARE_REQ(IsPlayerIngame),
+	//DECLARE_REQ(IsPlayerInGame),
 	//DECLARE_REQ(IsPlayerBot),
 	//DECLARE_REQ(IsPlayerAuthorized),
 	//DECLARE_REQ(GetPlayerTime),

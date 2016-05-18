@@ -29,6 +29,7 @@ extern hook_t hooklist_engine[];
 extern hook_t hooklist_gamedll[];
 extern hook_t hooklist_animating[];
 extern hook_t hooklist_player[];
+extern hook_t hooklist_gamerules[];
 
 struct hooklist_t
 {
@@ -44,6 +45,7 @@ struct hooklist_t
 			CASE(gamedll)
 			CASE(animating)
 			CASE(player)
+			CASE(gamerules)
 		}
 
 		return nullptr;
@@ -58,6 +60,7 @@ struct hooklist_t
 		ht_gamedll,
 		ht_animating,
 		ht_player,
+		ht_gamerules,
 
 		ht_end
 	};
@@ -81,6 +84,9 @@ enum GamedllFunc
 	RG_RadiusFlash_TraceLine,
 	RG_RoundEnd,
 	RG_CanBuyThis,
+
+	RG_PM_Move,
+	RG_PM_AirMove,
 
 	// [...]
 	RG_End
@@ -129,4 +135,35 @@ enum GamedllFunc_CBasePlayer
 
 	// [...]
 	RG_CBasePlayer_End
+};
+
+enum GamedllFunc_CSGameRules
+{
+	// CSGameRules virtual
+	RG_CSGameRules_FShouldSwitchWeapon = BEGIN_FUNC_REGION(gamerules),
+	RG_CSGameRules_GetNextBestWeapon,
+	RG_CSGameRules_FlPlayerFallDamage,
+	RG_CSGameRules_FPlayerCanTakeDamage,
+	RG_CSGameRules_PlayerSpawn,
+	RG_CSGameRules_FPlayerCanRespawn,
+	RG_CSGameRules_GetPlayerSpawnSpot,
+	RG_CSGameRules_ClientUserInfoChanged,
+	RG_CSGameRules_PlayerKilled,
+	RG_CSGameRules_DeathNotice,
+	RG_CSGameRules_CanHavePlayerItem,
+	RG_CSGameRules_DeadPlayerWeapons,
+	RG_CSGameRules_ServerDeactivate,
+	RG_CSGameRules_CheckMapConditions,
+	RG_CSGameRules_CleanUpMap,
+	RG_CSGameRules_RestartRound,
+	RG_CSGameRules_CheckWinConditions,
+	RG_CSGameRules_RemoveGuns,
+	RG_CSGameRules_GiveC4,
+	RG_CSGameRules_ChangeLevel,
+	RG_CSGameRules_GoToIntermission,
+
+	RG_CSGameRules_BalanceTeams,
+
+	// [...]
+	RG_CSGameRules_End
 };

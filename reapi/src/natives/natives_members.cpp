@@ -129,7 +129,15 @@ cell AMX_NATIVE_CALL get_member_game(AMX *amx, cell *params)
 		element = 0;
 	}
 
-	return get_member(g_pGameRules, member, element, dest);
+	void* data;
+	// members of m_VoiceGameMgr
+	if (params[arg_member] >= m_msgPlayerVoiceMask && params[arg_member] <= m_UpdateInterval) {
+		data = &CSGameRules()->m_VoiceGameMgr;
+	} else {
+		data = g_pGameRules;
+	}
+
+	return get_member(data, member, element, dest);
 }
 
 // native set_entvar(const index, const EntVars:var, any:...);
@@ -170,7 +178,7 @@ cell AMX_NATIVE_CALL get_entvar(AMX *amx, cell *params)
 	CHECK_ISENTITY(arg_index);
 
 	edict_t *pEdict = edictByIndexAmx(params[arg_index]);
-	if (pEdict == nullptr || pEdict->pvPrivateData == nullptr) {
+	if (pEdict == nullptr || &pEdict->v == nullptr) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
 		return FALSE;
 	}
@@ -202,6 +210,59 @@ cell AMX_NATIVE_CALL get_entvar(AMX *amx, cell *params)
 	return get_member(&pEdict->v, member, element, dest);
 }
 
+// native set_movevar(const MoveVars:var, any:...);
+cell AMX_NATIVE_CALL set_movevar(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_var, arg_value };
+	member_t *member = memberlist[params[arg_var]];
+
+	if (member == nullptr) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_var]);
+		return FALSE;
+	}
+
+	auto& movevars = g_ReGameApi->GetPlayerMove()->movevars;
+	if (movevars == nullptr) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: movevars not initialized", __FUNCTION__);
+		return FALSE;
+	}
+
+	cell* value = getAmxAddr(amx, params[arg_value]);
+	return set_member(movevars, member, 0, value);
+}
+
+// native any:get_movevar(const MoveVars:var, any:...);
+cell AMX_NATIVE_CALL get_movevar(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_var, arg_2, arg_3 };
+	member_t *member = memberlist[params[arg_var]];
+
+	if (member == nullptr) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_var]);
+		return FALSE;
+	}
+
+	cell* dest;
+	size_t element;
+
+	auto& movevars = g_ReGameApi->GetPlayerMove()->movevars;
+	if (movevars == nullptr) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: movevars not initialized", __FUNCTION__);
+		return FALSE;
+	}
+
+	if (PARAMS_COUNT == 3) {
+		dest = getAmxAddr(amx, params[arg_2]);
+		element = *getAmxAddr(amx, params[arg_3]);
+	}
+	else {
+		dest = nullptr;
+		element = 0;
+	}
+
+	return get_member(movevars, member, element, dest);
+}
+
 AMX_NATIVE_INFO EntVars_Natives[] =
 {
 	{ "set_entvar", set_entvar },
@@ -217,6 +278,9 @@ AMX_NATIVE_INFO Member_Natives[] =
 
 	{ "set_member_game", set_member_game },
 	{ "get_member_game", get_member_game },
+
+	{ "set_movevar", set_movevar },
+	{ "get_movevar", get_movevar },
 
 	{ nullptr, nullptr }
 };

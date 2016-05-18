@@ -1,13 +1,15 @@
 #include "precompiled.h"
 
-#define CLASS_MEMBERS(cx, mx) ((!(mx & (MAX_REGION_RANGE - 1)) ? regmember::current_cell = 1, true : false) || (mx & (MAX_REGION_RANGE - 1)) == regmember::current_cell++) ? regmember([](member_t* ptr){ decltype(##cx::##mx) f = {};ptr->size = getTypeSize(f);ptr->max_size = sizeof(f);ptr->offset = offsetof(##cx, ##mx);ptr->type = getMemberType(f);}) : regmember(#mx)
+#define CLASS_MEMBERS(cx, enmx, mx) ((!(enmx & (MAX_REGION_RANGE - 1)) ? regmember::current_cell = 1, true : false) || (enmx & (MAX_REGION_RANGE - 1)) == regmember::current_cell++) ? regmember([](member_t* ptr){ decltype(##cx::##mx) f = {};ptr->size = getTypeSize(f);ptr->max_size = sizeof(f);ptr->offset = offsetof(##cx, ##mx);ptr->type = getMemberType(f);}) : regmember(#enmx)
+#define CLASS_MEMBERS_DEF(cx, mx) CLASS_MEMBERS(cx, mx, mx)
 
-#define GM_MEMBERS(mx) CLASS_MEMBERS(CHalfLifeMultiplay, mx)
-#define GM_VOICE_MEMBERS(mx) CLASS_MEMBERS(CVoiceGameMgr, mx)
-#define BASE_MEMBERS(mx) CLASS_MEMBERS(CBaseEntity, mx)
-#define ANIM_MEMBERS(mx) CLASS_MEMBERS(CBaseAnimating, mx)
-#define PL_MEMBERS(mx) CLASS_MEMBERS(CBasePlayer, mx)
-#define EVAR_MEMBERS(mx) CLASS_MEMBERS(com_entvars, mx)
+#define GM_MEMBERS(mx) CLASS_MEMBERS_DEF(CHalfLifeMultiplay, mx)
+#define GM_VOICE_MEMBERS(mx) CLASS_MEMBERS_DEF(CVoiceGameMgr, mx)
+#define BASE_MEMBERS(mx) CLASS_MEMBERS_DEF(CBaseEntity, mx)
+#define ANIM_MEMBERS(mx) CLASS_MEMBERS_DEF(CBaseAnimating, mx)
+#define PL_MEMBERS(mx) CLASS_MEMBERS_DEF(CBasePlayer, mx)
+#define EVAR_MEMBERS(mx) CLASS_MEMBERS_DEF(com_entvars, mx)
+#define MOVEVAR_MEMBERS(mx) CLASS_MEMBERS(movevars_t, MoveVars::##mx, mx)
 
 inline MType getMemberType(float*)			{ return MEMBER_FLOAT; }
 inline MType getMemberType(float)			{ return MEMBER_FLOAT; }
@@ -510,6 +512,34 @@ member_t memberlist_entvars[] = {
 	EVAR_MEMBERS(euser4)
 };
 
+member_t memberlist_movevars[] = {
+	MOVEVAR_MEMBERS(gravity),
+	MOVEVAR_MEMBERS(stopspeed),
+	MOVEVAR_MEMBERS(maxspeed),
+	MOVEVAR_MEMBERS(spectatormaxspeed),
+	MOVEVAR_MEMBERS(accelerate),
+	MOVEVAR_MEMBERS(airaccelerate),
+	MOVEVAR_MEMBERS(wateraccelerate),
+	MOVEVAR_MEMBERS(friction),
+	MOVEVAR_MEMBERS(edgefriction),
+	MOVEVAR_MEMBERS(waterfriction),
+	MOVEVAR_MEMBERS(entgravity),
+	MOVEVAR_MEMBERS(bounce),
+	MOVEVAR_MEMBERS(stepsize),
+	MOVEVAR_MEMBERS(maxvelocity),
+	MOVEVAR_MEMBERS(zmax),
+	MOVEVAR_MEMBERS(waveHeight),
+	MOVEVAR_MEMBERS(footsteps),
+	MOVEVAR_MEMBERS(skyName),
+	MOVEVAR_MEMBERS(rollangle),
+	MOVEVAR_MEMBERS(rollspeed),
+	MOVEVAR_MEMBERS(skycolor_r),
+	MOVEVAR_MEMBERS(skycolor_g),
+	MOVEVAR_MEMBERS(skycolor_b),
+	MOVEVAR_MEMBERS(skyvec_x),
+	MOVEVAR_MEMBERS(skyvec_y),
+	MOVEVAR_MEMBERS(skyvec_z),
+};
 
 memberlist_t memberlist;
 
@@ -526,6 +556,7 @@ member_t *memberlist_t::operator[](size_t members) const
 		CASE(animating)
 		CASE(player)
 		CASE(entvars)
+		CASE(movevars)
 	}
 
 	return nullptr;

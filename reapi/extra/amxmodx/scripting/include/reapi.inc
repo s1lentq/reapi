@@ -35,7 +35,8 @@ enum AType
 	ATYPE_INTEGER = 0,
 	ATYPE_FLOAT,
 	ATYPE_STRING,
-	ATYPE_CLASSPTR
+	ATYPE_CLASSPTR,
+	ATYPE_EDICT
 };
 
 enum HookChain
@@ -78,25 +79,25 @@ native bool:EnableHookChain(HookChain:hook);
 * Sets the return value of a hookchain.
 * This needs to be used in conjunction with RH_OVERRIDE or RH_SUPERCEDE.
 *
-* @param type		To specify the type RHV_*, look at the enum HookChainReturn
+* @param type		To specify the type ATYPE_*, look at the enum AType
 * @param value		The value to set the return to.
 *
 */
 native SetHookChainReturn(AType:type, any:...);
 
 /*
-* Gets the return value of a hookchain.
-* This needs to be used in conjunction with RH_OVERRIDE or RH_SUPERCEDE.
+* Gets the return value of the current hookchain.
+* This has no effect in pre hookchain.
 *
-* @param type		To specify the type RHV_*, look at the enum HookChainReturn
-* @param value	The value to set the return to.
+* @param [maxlen]	Max length of string (optional)
+* @return		If an integer or boolean or one byte or float, array or everything else is passed via 1rd argument and more
 *
 */
-native GetHookChainReturn(AType:type, any:...);
+native any:GetHookChainReturn(any:...);
 
 /*
 * Set hookchain argument.
-* This needs to be used in conjunction with RH_OVERRIDE or RH_SUPERCEDE.
+* This has no effect in post hookchain.
 *
 * @param number		Number of argument
 * @param value		New value

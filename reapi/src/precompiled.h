@@ -21,6 +21,9 @@
 #include "amxxmodule.h"
 #include "osconfig.h"
 
+#include "pm_defs.h"
+#include "pm_movevars.h"
+
 // regamedll API
 #include "gamerules.h"
 #include "regamedll_api.h"

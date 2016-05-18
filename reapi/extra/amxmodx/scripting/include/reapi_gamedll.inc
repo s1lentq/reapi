@@ -46,6 +46,24 @@ native set_member(const index, any:member, any:...);
 native any:get_member(const index, any:member, any:...);
 
 /*
+* Sets a movevars value to an playermove
+*
+* @param var		The specified mvar, look at the enum's MoveVars
+*
+* @return		1 on success.
+*/
+native set_movevar(const MoveVars:var, any:...);
+
+/*
+* Returns a movevars value from an playermove
+*
+* @param var		The specified mvar, look at the enum's MoveVars
+*
+* @return		If an integer or boolean or one byte, array or everything else is passed via 3rd argument and more, look at argument list for specified mvar
+*/
+native any:get_movevar(const MoveVars:var, any:...);
+
+/*
 * Assign the number of the player animations.
 *
 * @param index		Client index

@@ -75,7 +75,9 @@ hook_t hooklist_gamedll[] = {
 	DLL(PlayerBlind),
 	DLL(RadiusFlash_TraceLine),
 	DLL(RoundEnd),
-	DLL(CanBuyThis)
+	DLL(CanBuyThis),
+	DLL(PM_Move),
+	DLL(PM_AirMove),
 };
 
 hook_t hooklist_animating[] = {
@@ -114,6 +116,31 @@ hook_t hooklist_player[] = {
 	DLL(CBasePlayer_GiveShield),
 };
 
+hook_t hooklist_gamerules[] = {
+	DLL(CSGameRules_FShouldSwitchWeapon),
+	DLL(CSGameRules_GetNextBestWeapon),
+	DLL(CSGameRules_FlPlayerFallDamage),
+	DLL(CSGameRules_FPlayerCanTakeDamage),
+	DLL(CSGameRules_PlayerSpawn),
+	DLL(CSGameRules_FPlayerCanRespawn),
+	DLL(CSGameRules_GetPlayerSpawnSpot),
+	DLL(CSGameRules_ClientUserInfoChanged),
+	DLL(CSGameRules_PlayerKilled),
+	DLL(CSGameRules_DeathNotice),
+	DLL(CSGameRules_CanHavePlayerItem),
+	DLL(CSGameRules_DeadPlayerWeapons),
+	DLL(CSGameRules_ServerDeactivate),
+	DLL(CSGameRules_CheckMapConditions),
+	DLL(CSGameRules_CleanUpMap),
+	DLL(CSGameRules_RestartRound),
+	DLL(CSGameRules_CheckWinConditions),
+	DLL(CSGameRules_RemoveGuns),
+	DLL(CSGameRules_GiveC4),
+	DLL(CSGameRules_ChangeLevel),
+	DLL(CSGameRules_GoToIntermission),
+	DLL(CSGameRules_BalanceTeams),
+};
+
 hook_t* hooklist_t::getHookSafe(size_t hook)
 {
 	#define CASE(h)	case ht_##h: if (index < arraysize(hooklist_##h)) return &hooklist_##h[index]; else break;
@@ -126,6 +153,7 @@ hook_t* hooklist_t::getHookSafe(size_t hook)
 		CASE(gamedll)
 		CASE(animating)
 		CASE(player)
+		CASE(gamerules)
 	}
 
 	return nullptr;
@@ -139,6 +167,7 @@ void hooklist_t::clear()
 	FOREACH_CLEAR(gamedll);
 	FOREACH_CLEAR(animating);
 	FOREACH_CLEAR(player);
+	FOREACH_CLEAR(gamerules);
 }
 
 void hook_t::clear()

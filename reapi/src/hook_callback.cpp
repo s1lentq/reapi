@@ -1,6 +1,6 @@
 #include "precompiled.h"
 
-hookctx_t* g_hookCtx;
+hookctx_t* g_hookCtx = nullptr;
 
 /*
 * ReHLDS functions
@@ -392,6 +392,246 @@ bool CanBuyThis(IReGameHook_CanBuyThis *chain, CBasePlayer *pPlayer, int iWeapon
 	};
 
 	return callForward<bool>(RG_CanBuyThis, original, indexOfEdict(pPlayer->pev), iWeapon);
+}
+
+void PM_Move(IReGameHook_PM_Move *chain, playermove_t *ppmove, int server)
+{
+	auto original = [chain](playermove_t *_ppmove, int _server)
+	{
+		chain->callNext(_ppmove, _server);
+	};
+
+	callVoidForward(RG_PM_Move, original, ppmove, server);
+}
+
+void PM_AirMove(IReGameHook_PM_AirMove *chain, int playerIndex)
+{
+	auto original = [chain](int _playerIndex)
+	{
+		chain->callNext(_playerIndex);
+	};
+
+	callVoidForward(RG_PM_AirMove, original, playerIndex);
+}
+
+BOOL CSGameRules_FShouldSwitchWeapon(IReGameHook_CSGameRules_FShouldSwitchWeapon *chain, CBasePlayer *pPlayer, CBasePlayerItem *pWeapon)
+{
+	auto original = [chain](int _pPlayer, int _pWeapon)
+	{
+		return chain->callNext(getPrivate<CBasePlayer>(_pPlayer), getPrivate<CBasePlayerItem>(_pWeapon));
+	};
+
+	return callForward<BOOL>(RG_CSGameRules_FShouldSwitchWeapon, original, indexOfEdict(pPlayer->pev), indexOfEdict(pWeapon->pev));
+}
+
+BOOL CSGameRules_GetNextBestWeapon(IReGameHook_CSGameRules_GetNextBestWeapon *chain, CBasePlayer *pPlayer, CBasePlayerItem *pCurrentWeapon)
+{
+	auto original = [chain](int _pPlayer, int _pCurrentWeapon)
+	{
+		return chain->callNext(getPrivate<CBasePlayer>(_pPlayer), getPrivate<CBasePlayerItem>(_pCurrentWeapon));
+	};
+
+	return callForward<BOOL>(RG_CSGameRules_GetNextBestWeapon, original, indexOfEdict(pPlayer->pev), indexOfEdict(pCurrentWeapon->pev));
+}
+
+float CSGameRules_FlPlayerFallDamage(IReGameHook_CSGameRules_FlPlayerFallDamage *chain, CBasePlayer *pPlayer)
+{
+	auto original = [chain](int _pPlayer)
+	{
+		return chain->callNext(getPrivate<CBasePlayer>(_pPlayer));
+	};
+
+	return callForward<float>(RG_CSGameRules_FlPlayerFallDamage, original, indexOfEdict(pPlayer->pev));
+}
+
+BOOL CSGameRules_FPlayerCanTakeDamage(IReGameHook_CSGameRules_FPlayerCanTakeDamage *chain, CBasePlayer *pPlayer, CBaseEntity *pAttacker)
+{
+	auto original = [chain](int _pPlayer, int _pAttacker)
+	{
+		return chain->callNext(getPrivate<CBasePlayer>(_pPlayer), getPrivate<CBaseEntity>(_pAttacker));
+	};
+
+	return callForward<BOOL>(RG_CSGameRules_FPlayerCanTakeDamage, original, indexOfEdict(pPlayer->pev), indexOfEdict(pAttacker->pev));
+}
+
+void CSGameRules_PlayerSpawn(IReGameHook_CSGameRules_PlayerSpawn *chain, CBasePlayer *pPlayer)
+{
+	auto original = [chain](int _pPlayer)
+	{
+		chain->callNext(getPrivate<CBasePlayer>(_pPlayer));
+	};
+
+	callVoidForward(RG_CSGameRules_PlayerSpawn, original, indexOfEdict(pPlayer->pev));
+}
+
+BOOL CSGameRules_FPlayerCanRespawn(IReGameHook_CSGameRules_FPlayerCanRespawn *chain, CBasePlayer *pPlayer)
+{
+	auto original = [chain](int _pPlayer)
+	{
+		return chain->callNext(getPrivate<CBasePlayer>(_pPlayer));
+	};
+
+	return callForward<BOOL>(RG_CSGameRules_FPlayerCanRespawn, original, indexOfEdict(pPlayer->pev));
+}
+
+edict_t *CSGameRules_GetPlayerSpawnSpot(IReGameHook_CSGameRules_GetPlayerSpawnSpot *chain, CBasePlayer *pPlayer)
+{
+	auto original = [chain](int _pPlayer)
+	{
+		return chain->callNext(getPrivate<CBasePlayer>(_pPlayer));
+	};
+
+	return callForward<edict_t *>(RG_CSGameRules_GetPlayerSpawnSpot, original, indexOfEdict(pPlayer->pev));
+}
+
+void CSGameRules_ClientUserInfoChanged(IReGameHook_CSGameRules_ClientUserInfoChanged *chain, CBasePlayer *pPlayer, char *infobuffer)
+{
+	auto original = [chain](int _pPlayer, char *infobuffer)
+	{
+		chain->callNext(getPrivate<CBasePlayer>(_pPlayer), infobuffer);
+	};
+
+	callVoidForward(RG_CSGameRules_ClientUserInfoChanged, original, indexOfEdict(pPlayer->pev), infobuffer);
+}
+
+void CSGameRules_PlayerKilled(IReGameHook_CSGameRules_PlayerKilled *chain, CBasePlayer *pVictim, entvars_t *pKiller, entvars_t *pInflictor)
+{
+	auto original = [chain](int _pVictim, int _pKiller, int _pInflictor)
+	{
+		chain->callNext(getPrivate<CBasePlayer>(_pVictim), PEV(_pKiller), PEV(_pInflictor));
+	};
+
+	callVoidForward(RG_CSGameRules_ClientUserInfoChanged, original, indexOfEdict(pVictim->pev), indexOfEdict(pKiller), indexOfEdict(pInflictor));
+}
+
+void CSGameRules_DeathNotice(IReGameHook_CSGameRules_DeathNotice *chain, CBasePlayer *pVictim, entvars_t *pKiller, entvars_t *pevInflictor)
+{
+	auto original = [chain](int _pVictim, int _pKiller, int _pevInflictor)
+	{
+		chain->callNext(getPrivate<CBasePlayer>(_pVictim), PEV(_pKiller), PEV(_pevInflictor));
+	};
+
+	callVoidForward(RG_CSGameRules_DeathNotice, original, indexOfEdict(pVictim->pev), indexOfEdict(pKiller), indexOfEdict(pevInflictor));
+}
+
+int CSGameRules_CanHavePlayerItem(IReGameHook_CSGameRules_CanHavePlayerItem *chain, CBasePlayer *pPlayer, CBasePlayerItem *pItem)
+{
+	auto original = [chain](int _pPlayer, int _pItem)
+	{
+		return chain->callNext(getPrivate<CBasePlayer>(_pPlayer), getPrivate<CBasePlayerItem>(_pItem));
+	};
+
+	return callForward<int>(RG_CSGameRules_CanHavePlayerItem, original, indexOfEdict(pPlayer->pev), indexOfEdict(pItem->pev));
+}
+
+int CSGameRules_DeadPlayerWeapons(IReGameHook_CSGameRules_DeadPlayerWeapons *chain, CBasePlayer *pPlayer)
+{
+	auto original = [chain](int _pPlayer)
+	{
+		return chain->callNext(getPrivate<CBasePlayer>(_pPlayer));
+	};
+
+	return callForward<int>(RG_CSGameRules_DeadPlayerWeapons, original, indexOfEdict(pPlayer->pev));
+}
+
+void CSGameRules_ServerDeactivate(IReGameHook_CSGameRules_ServerDeactivate *chain)
+{
+	auto original = [chain]()
+	{
+		chain->callNext();
+	};
+
+	callVoidForward(RG_CSGameRules_ServerDeactivate, original);
+}
+
+void CSGameRules_CheckMapConditions(IReGameHook_CSGameRules_CheckMapConditions *chain)
+{
+	auto original = [chain]()
+	{
+		chain->callNext();
+	};
+
+	callVoidForward(RG_CSGameRules_CheckMapConditions, original);
+}
+
+void CSGameRules_CleanUpMap(IReGameHook_CSGameRules_CleanUpMap *chain)
+{
+	auto original = [chain]()
+	{
+		chain->callNext();
+	};
+
+	callVoidForward(RG_CSGameRules_CleanUpMap, original);
+}
+
+void CSGameRules_RestartRound(IReGameHook_CSGameRules_RestartRound *chain)
+{
+	auto original = [chain]()
+	{
+		chain->callNext();
+	};
+
+	callVoidForward(RG_CSGameRules_RestartRound, original);
+}
+
+void CSGameRules_CheckWinConditions(IReGameHook_CSGameRules_CheckWinConditions *chain)
+{
+	auto original = [chain]()
+	{
+		chain->callNext();
+	};
+
+	callVoidForward(RG_CSGameRules_CheckWinConditions, original);
+}
+
+void CSGameRules_RemoveGuns(IReGameHook_CSGameRules_RemoveGuns *chain)
+{
+	auto original = [chain]()
+	{
+		chain->callNext();
+	};
+
+	callVoidForward(RG_CSGameRules_RemoveGuns, original);
+}
+
+void CSGameRules_GiveC4(IReGameHook_CSGameRules_GiveC4 *chain)
+{
+	auto original = [chain]()
+	{
+		chain->callNext();
+	};
+
+	callVoidForward(RG_CSGameRules_GiveC4, original);
+}
+
+void CSGameRules_ChangeLevel(IReGameHook_CSGameRules_ChangeLevel *chain)
+{
+	auto original = [chain]()
+	{
+		chain->callNext();
+	};
+
+	callVoidForward(RG_CSGameRules_ChangeLevel, original);
+}
+
+void CSGameRules_GoToIntermission(IReGameHook_CSGameRules_GoToIntermission *chain)
+{
+	auto original = [chain]()
+	{
+		chain->callNext();
+	};
+
+	callVoidForward(RG_CSGameRules_GoToIntermission, original);
+}
+
+void CSGameRules_BalanceTeams(IReGameHook_CSGameRules_BalanceTeams *chain)
+{
+	auto original = [chain]()
+	{
+		chain->callNext();
+	};
+
+	callVoidForward(RG_CSGameRules_BalanceTeams, original);
 }
 
 int g_iClientStartSpeak, g_iClientStopSpeak;

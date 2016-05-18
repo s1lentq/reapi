@@ -191,8 +191,8 @@ typedef IVoidHookChain<struct playermove_s *, int> IReGameHook_PM_Move;
 typedef IVoidHookChainRegistry<struct playermove_s *, int> IReGameHookRegistry_PM_Move;
 
 // PM_AirMove hook
-typedef IVoidHookChain<> IReGameHook_PM_AirMove;
-typedef IVoidHookChainRegistry<> IReGameHookRegistry_PM_AirMove;
+typedef IVoidHookChain<int> IReGameHook_PM_AirMove;
+typedef IVoidHookChainRegistry<int> IReGameHookRegistry_PM_AirMove;
 
 // CHalfLifeMultiplay::FShouldSwitchWeapon hook
 typedef IHookChain<BOOL, class CBasePlayer *, class CBasePlayerItem *> IReGameHook_CSGameRules_FShouldSwitchWeapon;
