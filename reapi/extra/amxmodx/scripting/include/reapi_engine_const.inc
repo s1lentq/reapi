@@ -13,7 +13,7 @@ enum EngineFunc
 	* Description:		-
 	* Params:		(const recipients, const entity, const channel, const sample[], const volume, Float:attenuation, const fFlags, const pitch)
 	*/
-	RH_SV_StartSound = 0,
+	RH_SV_StartSound = 0 * 1024,
 
 	/*
 	* Description:		-
@@ -45,7 +45,7 @@ enum EntVars
 	* Get params:		get_entvar(index, EntVars:var, dest[], const lenght);
 	* Set params:		set_entvar(index, EntVars:var, const source[]);
 	*/
-	var_classname = 5120,
+	var_classname = 4 * 1024,
 
 	/*
 	* Description:		-
@@ -1024,4 +1024,101 @@ enum EntVars
 	var_euser4
 };
 
+enum UserCmd
+{
+	/*
+	* Description:		-
+	* Member type:		short
+	* Get params:		get_ucmd(const ucmd, UserCmd:var);
+	* Set params:		set_ucmd(const ucmd, UserCmd:var, value);
+	*/
+	ucmd_lerp_msec = 7 * 1024,
 
+	/*
+	* Description:		-
+	* Member type:		byte
+	* Get params:		get_ucmd(const ucmd, UserCmd:var);
+	* Set params:		set_ucmd(const ucmd, UserCmd:var, value);
+	*/
+	ucmd_msec,
+
+	/*
+	* Description:		-
+	* Member type:		vec3_t
+	* Get params:		get_ucmd(const ucmd, UserCmd:var, Float:output[3]);
+	* Set params:		set_ucmd(const ucmd, UserCmd:var, Float:dest[3]);
+	*/
+	ucmd_viewangles,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_ucmd(const ucmd, UserCmd:var);
+	* Set params:		set_ucmd(const ucmd, UserCmd:var, Float:value);
+	*/
+	ucmd_forwardmove,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_ucmd(const ucmd, UserCmd:var);
+	* Set params:		set_ucmd(const ucmd, UserCmd:var, Float:value);
+	*/
+	ucmd_sidemove,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_ucmd(const ucmd, UserCmd:var);
+	* Set params:		set_ucmd(const ucmd, UserCmd:var, Float:value);
+	*/
+	ucmd_upmove,
+
+	/*
+	* Description:		-
+	* Member type:		byte
+	* Get params:		get_ucmd(const ucmd, UserCmd:var);
+	* Set params:		set_ucmd(const ucmd, UserCmd:var, value);
+	*/
+	ucmd_lightlevel,
+
+	/*
+	* Description:		-
+	* Member type:		unsigned short
+	* Get params:		get_ucmd(const ucmd, UserCmd:var);
+	* Set params:		set_ucmd(const ucmd, UserCmd:var, value);
+	*/
+	ucmd_buttons,
+
+	/*
+	* Description:		-
+	* Member type:		byte
+	* Get params:		get_ucmd(const ucmd, UserCmd:var);
+	* Set params:		set_ucmd(const ucmd, UserCmd:var, value);
+	*/
+	ucmd_impulse,
+
+	/*
+	* Description:		-
+	* Member type:		byte
+	* Get params:		get_ucmd(const ucmd, UserCmd:var);
+	* Set params:		set_ucmd(const ucmd, UserCmd:var, value);
+	*/
+	ucmd_weaponselect,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_ucmd(const ucmd, UserCmd:var);
+	* Set params:		set_ucmd(const ucmd, UserCmd:var, value);
+	*/
+	ucmd_impact_index,
+
+	/*
+	* Description:		-
+	* Member type:		vec3_t
+	* Get params:		get_ucmd(const ucmd, UserCmd:var, Float:output[3]);
+	* Set params:		set_ucmd(const ucmd, UserCmd:var, Float:dest[3]);
+	*/
+	ucmd_impact_position
+};

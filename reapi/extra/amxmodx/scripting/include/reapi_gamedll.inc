@@ -46,6 +46,24 @@ native set_member(const index, any:member, any:...);
 native any:get_member(const index, any:member, any:...);
 
 /*
+* Sets a playermove vars
+*
+* @param var		The specified playermove, look at the enum's PlayerMove
+*
+* @return		1 on success.
+*/
+native set_pmove(const PlayerMove:var, any:...);
+
+/*
+* Returns a playermove vars
+*
+* @param var		The specified playermove var, look at the enum's PlayerMove
+*
+* @return		If an integer or boolean or one byte, array or everything else is passed via 3rd argument and more, look at argument list for specified mvar
+*/
+native any:get_pmove(const PlayerMove:var, any:...);
+
+/*
 * Sets a movevars value to an playermove
 *
 * @param var		The specified mvar, look at the enum's MoveVars
@@ -62,6 +80,24 @@ native set_movevar(const MoveVars:var, any:...);
 * @return		If an integer or boolean or one byte, array or everything else is passed via 3rd argument and more, look at argument list for specified mvar
 */
 native any:get_movevar(const MoveVars:var, any:...);
+
+/*
+* Sets a pmtrace vars
+*
+* @param var		The specified mvar, look at the enum's PMTrace
+*
+* @return		1 on success.
+*/
+native set_pmtrace(const PMTrace:var, any:...);
+
+/*
+* Returns a pmtrace vars
+*
+* @param var		The specified mvar, look at the enum's PMTrace
+*
+* @return		If an integer or boolean or one byte, array or everything else is passed via 3rd argument and more, look at argument list for specified mvar
+*/
+native any:get_pmtrace(const PMTrace:var, any:...);
 
 /*
 * Assign the number of the player animations.

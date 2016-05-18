@@ -274,10 +274,10 @@ CBasePlayer *CBasePlayer_Observer_IsValidTarget(IReGameHook_CBasePlayer_Observer
 {
 	auto original = [chain](int _pthis, int _iPlayerIndex, bool _bSameTeam)
 	{
-		return chain->callNext(_iPlayerIndex, _bSameTeam);
+		return indexOfEdict(chain->callNext(_iPlayerIndex, _bSameTeam)->pev);
 	};
 
-	return callForward<CBasePlayer *>(RG_CBasePlayer_Observer_IsValidTarget, original, indexOfEdict(pthis->pev), iPlayerIndex, bSameTeam);
+	return getPrivate<CBasePlayer>(callForward<size_t>(RG_CBasePlayer_Observer_IsValidTarget, original, indexOfEdict(pthis->pev), iPlayerIndex, bSameTeam));
 }
 
 void CBasePlayer_SetAnimation(IReGameHook_CBasePlayer_SetAnimation *chain, CBasePlayer *pthis, PLAYER_ANIM playerAnim)
@@ -478,17 +478,17 @@ edict_t *CSGameRules_GetPlayerSpawnSpot(IReGameHook_CSGameRules_GetPlayerSpawnSp
 {
 	auto original = [chain](int _pPlayer)
 	{
-		return chain->callNext(getPrivate<CBasePlayer>(_pPlayer));
+		return indexOfEdict(chain->callNext(getPrivate<CBasePlayer>(_pPlayer)));
 	};
 
-	return callForward<edict_t *>(RG_CSGameRules_GetPlayerSpawnSpot, original, indexOfEdict(pPlayer->pev));
+	return edictByIndexAmx(callForward<size_t>(RG_CSGameRules_GetPlayerSpawnSpot, original, indexOfEdict(pPlayer->pev)));
 }
 
 void CSGameRules_ClientUserInfoChanged(IReGameHook_CSGameRules_ClientUserInfoChanged *chain, CBasePlayer *pPlayer, char *infobuffer)
 {
-	auto original = [chain](int _pPlayer, char *infobuffer)
+	auto original = [chain](int _pPlayer, char *_infobuffer)
 	{
-		chain->callNext(getPrivate<CBasePlayer>(_pPlayer), infobuffer);
+		chain->callNext(getPrivate<CBasePlayer>(_pPlayer), _infobuffer);
 	};
 
 	callVoidForward(RG_CSGameRules_ClientUserInfoChanged, original, indexOfEdict(pPlayer->pev), infobuffer);

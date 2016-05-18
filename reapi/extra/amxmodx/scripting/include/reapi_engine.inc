@@ -19,6 +19,18 @@ native set_entvar(const index, const EntVars:var, any:...);
 native any:get_entvar(const index, const EntVars:var, any:...);
 
 /*
+* Sets usercmd data.
+* Use the var_* EntVars enum
+*/
+native set_ucmd(const ucmd, const UserCmd:var, any:...);
+
+/*
+* Returns entvar data from an entity.
+* Use the var_* EntVars enum
+*/
+native any:get_ucmd(const ucmd, const UserCmd:var, any:...);
+
+/*
 * Set name of the map
 *
 * @param mapname	Change the name of the map.

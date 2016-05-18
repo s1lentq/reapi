@@ -108,6 +108,38 @@ native any:GetHookChainReturn(any:...);
 native SetHookChainArg(number, AType:type, any:...);
 
 /*
+* Check if the rehlds is available
+*
+* @return			1/0
+*
+*/
+native is_rehlds();
+
+/*
+* Check if the regamedll is available
+*
+* @return			1/0
+*
+*/
+native is_regamedll();
+
+/*
+* Check if the reunion is available
+*
+* @return			1/0
+*
+*/
+native is_has_reunion();
+
+/*
+* Check if the vtc is available
+*
+* @return			1/0
+*
+*/
+native is_has_vtc();
+
+/*
 * This is the callback from the module that gives major/minor versions for verifying compatibility reapi API versions
 * If will be amxx plugin a failure, then you do need to upgrade to the latest version of the module reapi or do update files included for amxx plugins
 * Do not modify this!

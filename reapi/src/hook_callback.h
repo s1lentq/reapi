@@ -90,7 +90,8 @@ extern hookctx_t* g_hookCtx;
 template <typename original_t, typename ...f_args>
 NOINLINE void DLLEXPORT _callVoidForward(const hook_t* hook, original_t original, volatile f_args... args)
 {
-	g_hookCtx->reset(size_t(&original) + sizeof(original));
+	auto hookCtx = g_hookCtx;
+	hookCtx->reset(size_t(&original) + sizeof(original));
 	int hc_state = HC_CONTINUE;
 
 	for (auto& fwd : hook->pre)
@@ -108,8 +109,11 @@ NOINLINE void DLLEXPORT _callVoidForward(const hook_t* hook, original_t original
 		}
 	}
 
-	if (hc_state != HC_SUPERCEDE)
+	if (hc_state != HC_SUPERCEDE) {
+		g_hookCtx = nullptr;
 		original(args...);
+		g_hookCtx = hookCtx;
+	}
 
 	for (auto& fwd : hook->post) {
 		if (fwd->GetState() == FSTATE_ENABLED) {
@@ -137,8 +141,8 @@ void callVoidForward(size_t func, original_t original, f_args... args)
 template <typename R, typename original_t, typename ...f_args>
 NOINLINE R DLLEXPORT _callForward(const hook_t* hook, original_t original, volatile f_args... args)
 {
-	auto& hookCtx = *g_hookCtx;
-	hookCtx.reset(size_t(&original) + sizeof(original), getApiType(R()));
+	auto hookCtx = g_hookCtx;
+	hookCtx->reset(size_t(&original) + sizeof(original), getApiType(R()));
 	int hc_state = HC_CONTINUE;
 
 	for (auto& fwd : hook->pre)
@@ -150,13 +154,13 @@ NOINLINE R DLLEXPORT _callForward(const hook_t* hook, original_t original, volat
 			if (ret == HC_CONTINUE)
 				continue;
 
-			if (!hookCtx.retVal.set) {
+			if (!hookCtx->retVal.set) {
 				g_amxxapi.LogError(fwd->GetAmx(), AMX_ERR_CALLBACK, "%s", "can't suppress original function call without new return value set");
 				continue;
 			}
 
 			if (ret == HC_BREAK) {
-				return *(R *)&hookCtx.retVal._interger;
+				return *(R *)&hookCtx->retVal._interger;
 			}
 
 			if (ret > hc_state)
@@ -166,9 +170,12 @@ NOINLINE R DLLEXPORT _callForward(const hook_t* hook, original_t original, volat
 
 	if (hc_state != HC_SUPERCEDE)
 	{
+		g_hookCtx = nullptr;
 		auto retVal = original(args...);
+		g_hookCtx = hookCtx;
+
 		if (hc_state != HC_OVERRIDE)
-			hookCtx.retVal._interger = *(int *)&retVal;
+			hookCtx->retVal._interger = *(int *)&retVal;
 	}
 
 	for (auto& fwd : hook->post) {
@@ -180,7 +187,7 @@ NOINLINE R DLLEXPORT _callForward(const hook_t* hook, original_t original, volat
 		}
 	}
 
-	return *(R *)&hookCtx.retVal._interger;
+	return *(R *)&hookCtx->retVal._interger;
 }
 
 template <typename R, typename original_t, typename ...f_args>

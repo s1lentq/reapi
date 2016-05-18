@@ -138,7 +138,7 @@ enum GamedllFunc
 	* Return type:		int
 	* Params:		(const pObserver)
 	*/
-	RG_GetForceCamera = 1024,
+	RG_GetForceCamera = 1 * 1024,
 
 	/*
 	* Description:		-
@@ -210,7 +210,7 @@ enum GamedllFunc_CBaseAnimating
 	* Description:		-
 	* Params:		(const this)
 	*/
-	RG_CBaseAnimating_ResetSequenceInfo = 2048,
+	RG_CBaseAnimating_ResetSequenceInfo = 2 * 1024,
 
 	// [...]
 	RG_CBaseAnimating_End
@@ -222,7 +222,7 @@ enum GamedllFunc_CBasePlayer
 	* Description:		-
 	* Params:		(const this)
 	*/
-	RG_CBasePlayer_Spawn = 3072,
+	RG_CBasePlayer_Spawn = 3 * 1024,
 
 	/*
 	* Description:		-
@@ -414,7 +414,7 @@ enum GamedllFunc_CSGameRules
 	* Description:		-
 	* Params:		(const index, const weapon)
 	*/
-	RG_CSGameRules_FShouldSwitchWeapon = 4096,
+	RG_CSGameRules_FShouldSwitchWeapon = 4 * 1024,
 
 	/*
 	* Description:		-
@@ -1200,7 +1200,7 @@ enum CBaseEntity_Members
 	* Get params:		Float:get_member(index, member);
 	* Set params:		set_member(index, member, Float:value);
 	*/
-	currentammo = 1024,
+	currentammo = 1 * 1024,
 
 	/*
 	* Description:		-
@@ -1404,7 +1404,7 @@ enum CBaseAnimating_Members
 	* Get params:		Float:get_member(index, member);
 	* Set params:		set_member(index, member, Float:value);
 	*/
-	m_flFrameRate = 2048,
+	m_flFrameRate = 2 * 1024,
 
 	/*
 	* Description:		-
@@ -1580,7 +1580,7 @@ enum CBasePlayer_Members
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);
 	*/
-	random_seed = 4096,
+	random_seed = 3 * 1024,
 
 	/*
 	* Description:		-
@@ -3071,6 +3071,489 @@ enum CBasePlayer_Members
 	m_flLastCommandTime
 };
 
+enum PlayerMove
+{
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, value);
+	*/
+	pm_player_index = 5 * 1024,
+
+	/*
+	* Description:		-
+	* Member type:		qboolean
+	* Get params:		get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, value);
+	*/
+	pm_server,
+
+	/*
+	* Description:		-
+	* Member type:		qboolean
+	* Get params:		get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, value);
+	*/
+	pm_multiplayer,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_pmove(const MoveVars:var);
+	* Set params:		set_pmove(const MoveVars:var, Float:value);
+	*/
+	pm_time,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_pmove(const MoveVars:var);
+	* Set params:		set_pmove(const MoveVars:var, Float:value);
+	*/
+	pm_frametime,
+
+	/*
+	* Description:		-
+	* Member type:		vec3_t
+	* Get params:		get_pmove(const PlayerMove:var, Float:output[3]);
+	* Set params:		set_pmove(const PlayerMove:var, Float:dest[3]);
+	*/
+	pm_forward,
+
+	/*
+	* Description:		-
+	* Member type:		vec3_t
+	* Get params:		get_pmove(const PlayerMove:var, Float:output[3]);
+	* Set params:		set_pmove(const PlayerMove:var, Float:dest[3]);
+	*/
+	pm_right,
+
+	/*
+	* Description:		-
+	* Member type:		vec3_t
+	* Get params:		get_pmove(const PlayerMove:var, Float:output[3]);
+	* Set params:		set_pmove(const PlayerMove:var, Float:dest[3]);
+	*/
+	pm_up,
+
+	/*
+	* Description:		-
+	* Member type:		vec3_t
+	* Get params:		get_pmove(const PlayerMove:var, Float:output[3]);
+	* Set params:		set_pmove(const PlayerMove:var, Float:dest[3]);
+	*/
+	pm_origin,
+
+	/*
+	* Description:		-
+	* Member type:		vec3_t
+	* Get params:		get_pmove(const PlayerMove:var, Float:output[3]);
+	* Set params:		set_pmove(const PlayerMove:var, Float:dest[3]);
+	*/
+	pm_angles,
+
+	/*
+	* Description:		-
+	* Member type:		vec3_t
+	* Get params:		get_pmove(const PlayerMove:var, Float:output[3]);
+	* Set params:		set_pmove(const PlayerMove:var, Float:dest[3]);
+	*/
+	pm_oldangles,
+
+	/*
+	* Description:		-
+	* Member type:		vec3_t
+	* Get params:		get_pmove(const PlayerMove:var, Float:output[3]);
+	* Set params:		set_pmove(const PlayerMove:var, Float:dest[3]);
+	*/
+	pm_velocity,
+
+	/*
+	* Description:		-
+	* Member type:		vec3_t
+	* Get params:		get_pmove(const PlayerMove:var, Float:output[3]);
+	* Set params:		set_pmove(const PlayerMove:var, Float:dest[3]);
+	*/
+	pm_movedir,
+
+	/*
+	* Description:		-
+	* Member type:		vec3_t
+	* Get params:		get_pmove(const PlayerMove:var, Float:output[3]);
+	* Set params:		set_pmove(const PlayerMove:var, Float:dest[3]);
+	*/
+	pm_basevelocity,
+
+	/*
+	* Description:		-
+	* Member type:		vec3_t
+	* Get params:		get_pmove(const PlayerMove:var, Float:output[3]);
+	* Set params:		set_pmove(const PlayerMove:var, Float:dest[3]);
+	*/
+	pm_view_ofs,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, Float:value);
+	*/
+	pm_flDuckTime,
+
+	/*
+	* Description:		-
+	* Member type:		qboolean
+	* Get params:		get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, value);
+	*/
+	pm_bInDuck,
+
+	/*
+	* Description:		-
+	* Member type:		bool
+	* Get params:		get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, value);
+	*/
+	pm_flTimeStepSound,
+
+	/*
+	* Description:		-
+	* Member type:		bool
+	* Get params:		get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, value);
+	*/
+	pm_iStepLeft,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, Float:value);
+	*/
+	pm_flFallVelocity,
+
+	/*
+	* Description:		-
+	* Member type:		vec3_t
+	* Get params:		get_pmove(const PlayerMove:var, Float:output[3]);
+	* Set params:		set_pmove(const PlayerMove:var, Float:dest[3]);
+	*/
+	pm_punchangle,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, Float:value);
+	*/
+	pm_flSwimTime,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, Float:value);
+	*/
+	pm_flNextPrimaryAttack,
+	
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, value);
+	*/
+	pm_effects,
+	
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, value);
+	*/
+	pm_flags,
+	
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, value);
+	*/
+	pm_usehull,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, Float:value);
+	*/
+	pm_gravity,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, Float:value);
+	*/
+	pm_friction,
+	
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, value);
+	*/
+	pm_oldbuttons,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, Float:value);
+	*/
+	pm_waterjumptime,
+	
+	/*
+	* Description:		-
+	* Member type:		qboolean
+	* Get params:		get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, value);
+	*/
+	pm_dead,
+	
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, value);
+	*/
+	pm_deadflag,
+	
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, value);
+	*/
+	pm_spectator,
+	
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, value);
+	*/
+	pm_movetype,
+	
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, value);
+	*/
+	pm_onground,
+	
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, value);
+	*/
+	pm_waterlevel,
+	
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, value);
+	*/
+	pm_watertype,
+	
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, value);
+	*/
+	pm_oldwaterlevel,
+
+	/*
+	* Description:		-
+	* Member type:		char [256]
+	* Get params:		get_member(const PlayerMove:var, dest[], const lenght);
+	* Set params:		set_member(const PlayerMove:var, const source[]);
+	*/
+	pm_sztexturename,
+
+	/*
+	* Description:		-
+	* Member type:		char
+	* Get params:		get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, value);
+	*/
+	pm_chtexturetype,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, Float:value);
+	*/
+	pm_maxspeed,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, Float:value);
+	*/
+	pm_clientmaxspeed,
+	
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, value);
+	*/
+	pm_iuser1,
+	
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, value);
+	*/
+	pm_iuser2,
+	
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, value);
+	*/
+	pm_iuser3,
+	
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, value);
+	*/
+	pm_iuser4,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, Float:value);
+	*/
+	pm_fuser1,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, Float:value);
+	*/
+	pm_fuser2,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, Float:value);
+	*/
+	pm_fuser3,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, Float:value);
+	*/
+	pm_fuser4,
+
+	/*
+	* Description:		-
+	* Member type:		vec3_t
+	* Get params:		get_pmove(const PlayerMove:var, Float:output[3]);
+	* Set params:		set_pmove(const PlayerMove:var, Float:dest[3]);
+	*/
+	pm_vuser1,
+
+	/*
+	* Description:		-
+	* Member type:		vec3_t
+	* Get params:		get_pmove(const PlayerMove:var, Float:output[3]);
+	* Set params:		set_pmove(const PlayerMove:var, Float:dest[3]);
+	*/
+	pm_vuser2,
+
+	/*
+	* Description:		-
+	* Member type:		vec3_t
+	* Get params:		get_pmove(const PlayerMove:var, Float:output[3]);
+	* Set params:		set_pmove(const PlayerMove:var, Float:dest[3]);
+	*/
+	pm_vuser3,
+
+	/*
+	* Description:		-
+	* Member type:		vec3_t
+	* Get params:		get_pmove(const PlayerMove:var, Float:output[3]);
+	* Set params:		set_pmove(const PlayerMove:var, Float:dest[3]);
+	*/
+	pm_vuser4,
+	
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, value);
+	*/
+	pm_numphysent,
+	
+	/*
+	* Description:		-
+	* Member type:		struct usercmd_s *
+	* Get params:		get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, value);
+	*/
+	pm_cmd,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_pmove(member);
+	* Set params:		set_pmove(const PlayerMove:var, value);
+	*/
+	pm_numtouch,
+
+	/*
+	* Description:		-
+	* Member type:		char [256]
+	* Get params:		get_member(const PlayerMove:var, dest[], const lenght);
+	* Set params:		set_member(const PlayerMove:var, const source[]);
+	*/
+	pm_physinfo,
+
+	/*
+	* Description:		-
+	* Member type:		vec3_t [4]
+	* Get params:		get_pmove(const PlayerMove:var, Float:output[3], index);
+	* Set params:		set_pmove(const PlayerMove:var, Float:dest[3], index);
+	*/
+	pm_player_mins,
+
+	/*
+	* Description:		-
+	* Member type:		vec3_t [4]
+	* Get params:		get_pmove(const PlayerMove:var, Float:output[3], index);
+	* Set params:		set_pmove(const PlayerMove:var, Float:dest[3], index);
+	*/
+	pm_player_maxs
+};
+
 enum MoveVars
 {
 	/*
@@ -3079,7 +3562,7 @@ enum MoveVars
 	* Get params:		Float:get_mvar(const MoveVars:var);
 	* Set params:		set_mvar(const MoveVars:var, Float:value);
 	*/
-	mv_gravity = 6144,
+	mv_gravity = 5 * 1024,
 
 	/*
 	* Description:		-
@@ -3280,4 +3763,79 @@ enum MoveVars
 	* Set params:		set_mvar(const MoveVars:var, Float:value);
 	*/
 	mv_skyvec_z
+};
+
+enum PMTrace
+{
+	/*
+	* Description:		-
+	* Member type:		qboolean
+	* Get params:		get_pmtrace(const tr, const PMTrace:var);
+	* Set params:		set_pmtrace(const tr, const PMTrace:var, value);
+	*/
+	pmt_allsolid = 8 * 1024,
+
+	/*
+	* Description:		-
+	* Member type:		qboolean
+	* Get params:		get_pmtrace(const tr, const PMTrace:var);
+	* Set params:		set_pmtrace(const tr, const PMTrace:var, value);
+	*/
+	pmt_startsolid,
+
+	/*
+	* Description:		-
+	* Member type:		qboolean
+	* Get params:		get_pmtrace(const tr, const PMTrace:var);
+	* Set params:		set_pmtrace(const tr, const PMTrace:var, value);
+	*/
+	pmt_inopen,
+
+	/*
+	* Description:		-
+	* Member type:		qboolean
+	* Get params:		get_pmtrace(const tr, const PMTrace:var);
+	* Set params:		set_pmtrace(const tr, const PMTrace:var, value);
+	*/
+	pmt_inwater,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_pmtrace(const tr, const PMTrace:var);
+	* Set params:		set_pmtrace(const tr, const PMTrace:var, Float:value);
+	*/
+	pmt_fraction,
+
+	/*
+	* Description:		-
+	* Member type:		vec3_t
+	* Get params:		get_pmtrace(const tr, const PMTrace:var, Float:output[3]);
+	* Set params:		set_pmtrace(const tr, const PMTrace:var, Float:dest[3]);
+	*/
+	pmt_endpos,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_pmtrace(const tr, const PMTrace:var);
+	* Set params:		set_pmtrace(const tr, const PMTrace:var, value);
+	*/
+	pmt_ent,
+
+	/*
+	* Description:		-
+	* Member type:		vec3_t
+	* Get params:		get_pmtrace(const tr, const PMTrace:var, Float:output[3]);
+	* Set params:		set_pmtrace(const tr, const PMTrace:var, Float:dest[3]);
+	*/
+	pmt_deltavelocity,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_pmtrace(const tr, const PMTrace:var);
+	* Set params:		set_pmtrace(const tr, const PMTrace:var, value);
+	*/
+	pmt_hitgroup
 };

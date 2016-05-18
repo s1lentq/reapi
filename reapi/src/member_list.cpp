@@ -1,15 +1,17 @@
 #include "precompiled.h"
 
-#define CLASS_MEMBERS(cx, enmx, mx) ((!(enmx & (MAX_REGION_RANGE - 1)) ? regmember::current_cell = 1, true : false) || (enmx & (MAX_REGION_RANGE - 1)) == regmember::current_cell++) ? regmember([](member_t* ptr){ decltype(##cx::##mx) f = {};ptr->size = getTypeSize(f);ptr->max_size = sizeof(f);ptr->offset = offsetof(##cx, ##mx);ptr->type = getMemberType(f);}) : regmember(#enmx)
-#define CLASS_MEMBERS_DEF(cx, mx) CLASS_MEMBERS(cx, mx, mx)
+#define CLASS_MEMBERS(cx, mx, pref) ((!(pref##mx & (MAX_REGION_RANGE - 1)) ? regmember::current_cell = 1, true : false) || (pref##mx & (MAX_REGION_RANGE - 1)) == regmember::current_cell++) ? regmember([](member_t* ptr){ decltype(##cx::##mx) f = {};ptr->size = getTypeSize(f);ptr->max_size = sizeof(f);ptr->offset = offsetof(##cx, ##mx);ptr->type = getMemberType(f);}) : regmember(#mx)
 
-#define GM_MEMBERS(mx) CLASS_MEMBERS_DEF(CHalfLifeMultiplay, mx)
-#define GM_VOICE_MEMBERS(mx) CLASS_MEMBERS_DEF(CVoiceGameMgr, mx)
-#define BASE_MEMBERS(mx) CLASS_MEMBERS_DEF(CBaseEntity, mx)
-#define ANIM_MEMBERS(mx) CLASS_MEMBERS_DEF(CBaseAnimating, mx)
-#define PL_MEMBERS(mx) CLASS_MEMBERS_DEF(CBasePlayer, mx)
-#define EVAR_MEMBERS(mx) CLASS_MEMBERS_DEF(com_entvars, mx)
-#define MOVEVAR_MEMBERS(mx) CLASS_MEMBERS(movevars_t, MoveVars::##mx, mx)
+#define GM_MEMBERS(mx)			CLASS_MEMBERS(CHalfLifeMultiplay, mx,)
+#define GM_VOICE_MEMBERS(mx)	CLASS_MEMBERS(CVoiceGameMgr, mx,)
+#define BASE_MEMBERS(mx)		CLASS_MEMBERS(CBaseEntity, mx,)
+#define ANIM_MEMBERS(mx)		CLASS_MEMBERS(CBaseAnimating, mx,)
+#define PL_MEMBERS(mx)			CLASS_MEMBERS(CBasePlayer, mx,)
+#define EVAR_MEMBERS(mx)		CLASS_MEMBERS(com_entvars, mx, var_)
+#define PMOVE_MEMBERS(mx)		CLASS_MEMBERS(com_playermove, mx, pm_)
+#define MOVEVAR_MEMBERS(mx)		CLASS_MEMBERS(movevars_t, mx, mv_)
+#define UCMD_MEMBERS(mx)		CLASS_MEMBERS(usercmd_s, mx, ucmd_)
+#define PMTRACE_MEMBERS(mx)		CLASS_MEMBERS(pmtrace_s, mx, pmt_)
 
 inline MType getMemberType(float*)			{ return MEMBER_FLOAT; }
 inline MType getMemberType(float)			{ return MEMBER_FLOAT; }
@@ -53,6 +55,9 @@ inline MType getMemberType(unsigned short)		{ return MEMBER_SHORT; }
 inline MType getMemberType(bool)			{ return MEMBER_BOOL; }
 inline MType getMemberType(CUnifiedSignals)		{ return MEMBER_SIGNALS; }
 inline MType getMemberType(RebuyStruct)			{ return MEBMER_REBUYSTRUCT; }
+
+inline MType getMemberType(pmtrace_t)			{ return MEMBER_PMTRACE; }
+inline MType getMemberType(usercmd_s)			{ return MEBMER_USERCMD; }
 
 template<typename T>
 inline MType getMemberType(T) { static_assert(false, "Not implemented overload"); }
@@ -533,6 +538,69 @@ member_t memberlist_entvars[] = {
 	EVAR_MEMBERS(euser4)
 };
 
+member_t memberlist_playermove[] = {
+	PMOVE_MEMBERS(player_index),
+	PMOVE_MEMBERS(server),
+	PMOVE_MEMBERS(multiplayer),
+	PMOVE_MEMBERS(time),
+	PMOVE_MEMBERS(frametime),
+	PMOVE_MEMBERS(forward),
+	PMOVE_MEMBERS(right),
+	PMOVE_MEMBERS(up),
+	PMOVE_MEMBERS(origin),
+	PMOVE_MEMBERS(angles),
+	PMOVE_MEMBERS(oldangles),
+	PMOVE_MEMBERS(velocity),
+	PMOVE_MEMBERS(movedir),
+	PMOVE_MEMBERS(basevelocity),
+	PMOVE_MEMBERS(view_ofs),
+	PMOVE_MEMBERS(flDuckTime),
+	PMOVE_MEMBERS(bInDuck),
+	PMOVE_MEMBERS(flTimeStepSound),
+	PMOVE_MEMBERS(iStepLeft),
+	PMOVE_MEMBERS(flFallVelocity),
+	PMOVE_MEMBERS(punchangle),
+	PMOVE_MEMBERS(flSwimTime),
+	PMOVE_MEMBERS(flNextPrimaryAttack),
+	PMOVE_MEMBERS(effects),
+	PMOVE_MEMBERS(flags),
+	PMOVE_MEMBERS(usehull),
+	PMOVE_MEMBERS(gravity),
+	PMOVE_MEMBERS(friction),
+	PMOVE_MEMBERS(oldbuttons),
+	PMOVE_MEMBERS(waterjumptime),
+	PMOVE_MEMBERS(dead),
+	PMOVE_MEMBERS(deadflag),
+	PMOVE_MEMBERS(spectator),
+	PMOVE_MEMBERS(movetype),
+	PMOVE_MEMBERS(onground),
+	PMOVE_MEMBERS(waterlevel),
+	PMOVE_MEMBERS(watertype),
+	PMOVE_MEMBERS(oldwaterlevel),
+	PMOVE_MEMBERS(sztexturename),
+	PMOVE_MEMBERS(chtexturetype),
+	PMOVE_MEMBERS(maxspeed),
+	PMOVE_MEMBERS(clientmaxspeed),
+	PMOVE_MEMBERS(iuser1),
+	PMOVE_MEMBERS(iuser2),
+	PMOVE_MEMBERS(iuser3),
+	PMOVE_MEMBERS(iuser4),
+	PMOVE_MEMBERS(fuser1),
+	PMOVE_MEMBERS(fuser2),
+	PMOVE_MEMBERS(fuser3),
+	PMOVE_MEMBERS(fuser4),
+	PMOVE_MEMBERS(vuser1),
+	PMOVE_MEMBERS(vuser2),
+	PMOVE_MEMBERS(vuser3),
+	PMOVE_MEMBERS(vuser4),
+	PMOVE_MEMBERS(numphysent),
+	PMOVE_MEMBERS(cmd),
+	PMOVE_MEMBERS(numtouch),
+	PMOVE_MEMBERS(physinfo),
+	PMOVE_MEMBERS(player_mins),
+	PMOVE_MEMBERS(player_maxs),
+};
+
 member_t memberlist_movevars[] = {
 	MOVEVAR_MEMBERS(gravity),
 	MOVEVAR_MEMBERS(stopspeed),
@@ -562,6 +630,34 @@ member_t memberlist_movevars[] = {
 	MOVEVAR_MEMBERS(skyvec_z),
 };
 
+member_t memberlist_usercmd[] = {
+	UCMD_MEMBERS(lerp_msec),
+	UCMD_MEMBERS(msec),
+	UCMD_MEMBERS(viewangles),
+	UCMD_MEMBERS(forwardmove),
+	UCMD_MEMBERS(sidemove),
+	UCMD_MEMBERS(upmove),
+	UCMD_MEMBERS(lightlevel),
+	UCMD_MEMBERS(buttons),
+	UCMD_MEMBERS(impulse),
+	UCMD_MEMBERS(weaponselect),
+	UCMD_MEMBERS(impact_index),
+	UCMD_MEMBERS(impact_position)
+};
+
+member_t memberlist_pmtrace[] = {
+	PMTRACE_MEMBERS(allsolid),
+	PMTRACE_MEMBERS(startsolid),
+	PMTRACE_MEMBERS(inopen),
+	PMTRACE_MEMBERS(inwater),
+	PMTRACE_MEMBERS(fraction),
+	PMTRACE_MEMBERS(endpos),
+	PMTRACE_MEMBERS(ent),
+	PMTRACE_MEMBERS(deltavelocity),
+	PMTRACE_MEMBERS(hitgroup)
+};
+
+
 memberlist_t memberlist;
 
 member_t *memberlist_t::operator[](size_t members) const
@@ -578,7 +674,10 @@ member_t *memberlist_t::operator[](size_t members) const
 		CASE(basemonster)
 		CASE(player)
 		CASE(entvars)
+		CASE(playermove)
 		CASE(movevars)
+		CASE(usercmd)
+		CASE(pmtrace)
 	}
 
 	return nullptr;
