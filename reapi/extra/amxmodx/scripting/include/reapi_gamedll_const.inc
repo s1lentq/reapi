@@ -41,6 +41,19 @@ enum GiveType
 	GT_DROP_AND_REPLACE	// drop all weapons on the ground
 };
 
+enum HitBoxGroup
+{
+	HITGROUP_GENERIC = 0,
+	HITGROUP_HEAD,
+	HITGROUP_CHEST,
+	HITGROUP_STOMACH,
+	HITGROUP_LEFTARM,
+	HITGROUP_RIGHTARM,
+	HITGROUP_LEFTLEG,
+	HITGROUP_RIGHTLEG,
+	HITGROUP_SHIELD
+};
+
 enum ArmorType
 {
 	ARMOR_NONE,	// no armor
@@ -99,6 +112,125 @@ enum WeaponIdType
 	WEAPON_KNIFE,
 	WEAPON_P90,
 	WEAPON_SHIELDGUN = 99
+};
+
+// for member CBaseMonster::m_rgbTimeBasedDamage
+enum TimeBasedDamage
+{
+	ITDB_PRALYZE,
+	ITDB_NERVEGAS,
+	ITDB_POISON,
+	ITDB_RADIATION,
+	ITDB_DROWNRECOVER,
+	ITDB_ACID,
+	ITDB_SLOWBURN,
+	ITDB_SLOWFREEZE
+};
+
+enum Activity
+{
+	ACT_INVALID = -1,
+	ACT_RESET,			// Set m_Activity to this invalid value to force a reset to m_IdealActivity
+	ACT_IDLE,
+	ACT_GUARD,
+	ACT_WALK,
+	ACT_RUN,
+	ACT_FLY,
+	ACT_SWIM,
+	ACT_HOP,
+	ACT_LEAP,
+	ACT_FALL,
+	ACT_LAND,
+	ACT_STRAFE_LEFT,
+	ACT_STRAFE_RIGHT,
+	ACT_ROLL_LEFT,
+	ACT_ROLL_RIGHT,
+	ACT_TURN_LEFT,
+	ACT_TURN_RIGHT,
+	ACT_CROUCH,
+	ACT_CROUCHIDLE,
+	ACT_STAND,
+	ACT_USE,
+	ACT_SIGNAL1,
+	ACT_SIGNAL2,
+	ACT_SIGNAL3,
+	ACT_TWITCH,
+	ACT_COWER,
+	ACT_SMALL_FLINCH,
+	ACT_BIG_FLINCH,
+	ACT_RANGE_ATTACK1,
+	ACT_RANGE_ATTACK2,
+	ACT_MELEE_ATTACK1,
+	ACT_MELEE_ATTACK2,
+	ACT_RELOAD,
+	ACT_ARM,
+	ACT_DISARM,
+	ACT_EAT,
+	ACT_DIESIMPLE,
+	ACT_DIEBACKWARD,
+	ACT_DIEFORWARD,
+	ACT_DIEVIOLENT,
+	ACT_BARNACLE_HIT,
+	ACT_BARNACLE_PULL,
+	ACT_BARNACLE_CHOMP,
+	ACT_BARNACLE_CHEW,
+	ACT_SLEEP,
+	ACT_INSPECT_FLOOR,
+	ACT_INSPECT_WALL,
+	ACT_IDLE_ANGRY,
+	ACT_WALK_HURT,
+	ACT_RUN_HURT,
+	ACT_HOVER,
+	ACT_GLIDE,
+	ACT_FLY_LEFT,
+	ACT_FLY_RIGHT,
+	ACT_DETECT_SCENT,
+	ACT_SNIFF,
+	ACT_BITE,
+	ACT_THREAT_DISPLAY,
+	ACT_FEAR_DISPLAY,
+	ACT_EXCITED,
+	ACT_SPECIAL_ATTACK1,
+	ACT_SPECIAL_ATTACK2,
+	ACT_COMBAT_IDLE,
+	ACT_WALK_SCARED,
+	ACT_RUN_SCARED,
+	ACT_VICTORY_DANCE,
+	ACT_DIE_HEADSHOT,
+	ACT_DIE_CHESTSHOT,
+	ACT_DIE_GUTSHOT,
+	ACT_DIE_BACKSHOT,
+	ACT_FLINCH_HEAD,
+	ACT_FLINCH_CHEST,
+	ACT_FLINCH_STOMACH,
+	ACT_FLINCH_LEFTARM,
+	ACT_FLINCH_RIGHTARM,
+	ACT_FLINCH_LEFTLEG,
+	ACT_FLINCH_RIGHTLEG,
+	ACT_FLINCH,
+	ACT_LARGE_FLINCH,
+	ACT_HOLDBOMB,
+	ACT_IDLE_FIDGET,
+	ACT_IDLE_SCARED,
+	ACT_IDLE_SCARED_FIDGET,
+	ACT_FOLLOW_IDLE,
+	ACT_FOLLOW_IDLE_FIDGET,
+	ACT_FOLLOW_IDLE_SCARED,
+	ACT_FOLLOW_IDLE_SCARED_FIDGET,
+	ACT_CROUCH_IDLE,
+	ACT_CROUCH_IDLE_FIDGET,
+	ACT_CROUCH_IDLE_SCARED,
+	ACT_CROUCH_IDLE_SCARED_FIDGET,
+	ACT_CROUCH_WALK,
+	ACT_CROUCH_WALK_SCARED,
+	ACT_CROUCH_DIE,
+	ACT_WALK_BACK,
+	ACT_IDLE_SNEAKY,
+	ACT_IDLE_SNEAKY_FIDGET,
+	ACT_WALK_SNEAKY,
+	ACT_WAVE,
+	ACT_YES,
+	ACT_NO
 };
 
 // Weapon info types for use with rg_get_weapon_info()
@@ -364,6 +496,36 @@ enum GamedllFunc_CBasePlayer
 	* Params:		(const this, iPlayerIndex, bool:bSameTeam)
 	*/
 	RG_CBasePlayer_Observer_IsValidTarget,
+
+	/*
+	* Description:		-
+	* Params:		(const this, PLAYER_ANIM:playerAnim)
+	*/
+	RG_CBasePlayer_SetAnimation,
+
+	/*
+	* Description:		-
+	* Params:		(const this)
+	*/
+	RG_CBasePlayer_GiveDefaultItems,
+
+	/*
+	* Description:		-
+	* Params:		(const this, const pszName[])
+	*/
+	RG_CBasePlayer_GiveNamedItem,
+
+	/*
+	* Description:		-
+	* Params:		(const this, amount, bool:bTrackChange)
+	*/
+	RG_CBasePlayer_AddAccount,
+
+	/*
+	* Description:		-
+	* Params:		(const this, bool:bDeploy)
+	*/
+	RG_CBasePlayer_GiveShield,
 
 	// [...]
 	RG_CBasePlayer_End
@@ -1400,6 +1562,138 @@ enum CBaseAnimating_Members
 	m_fSequenceLoops,
 };
 
+// CBaseMonster
+enum CBaseMonster_Members
+{
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_Activity = 3072,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_IdealActivity,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_LastHitGroup,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_bitsDamageType,
+
+	/*
+	* Description:		-
+	* Member type:		usigned char [5]
+	* Get params:		get_member_game(member);
+	* Set params:		set_member_game(member, value, element);
+	*/
+	m_rgbTimeBasedDamage,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_MonsterState,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_IdealMonsterState,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_afConditions,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_afMemory,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_member(index, member);
+	* Set params:		set_member(index, member, Float:value);
+	*/
+	m_flNextAttack,
+
+	/*
+	* Description:		-
+	* Member type:		class EHANDLE
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_hEnemy,
+
+	/*
+	* Description:		-
+	* Member type:		class EHANDLE
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_hTargetEnt,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_member(index, member);
+	* Set params:		set_member(index, member, Float:value);
+	*/
+	m_flFieldOfView,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_bloodColor,
+
+	/*
+	* Description:		-
+	* Member type:		class Vector
+	* Get params:		get_member(index, member, Float:output[3]);
+	* Set params:		set_member(index, member, Float:dest[3]);
+	*/
+	m_HackedGunPos,
+
+	/*
+	* Description:		-
+	* Member type:		class Vector
+	* Get params:		get_member(index, member, Float:output[3]);
+	* Set params:		set_member(index, member, Float:dest[3]);
+	*/
+	m_vecEnemyLKP,
+};
+
 // CBasePlayer
 enum CBasePlayer_Members
 {
@@ -1409,7 +1703,7 @@ enum CBasePlayer_Members
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);
 	*/
-	random_seed = 3072,
+	random_seed = 4096,
 
 	/*
 	* Description:		-
@@ -2908,7 +3202,7 @@ enum MoveVars
 	* Get params:		Float:get_mvar(const MoveVars:var);
 	* Set params:		set_mvar(const MoveVars:var, Float:value);
 	*/
-	mv_gravity = 5120,
+	mv_gravity = 6144,
 
 	/*
 	* Description:		-

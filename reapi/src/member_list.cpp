@@ -7,6 +7,7 @@
 #define GM_VOICE_MEMBERS(mx) CLASS_MEMBERS_DEF(CVoiceGameMgr, mx)
 #define BASE_MEMBERS(mx) CLASS_MEMBERS_DEF(CBaseEntity, mx)
 #define ANIM_MEMBERS(mx) CLASS_MEMBERS_DEF(CBaseAnimating, mx)
+#define MONST_MEMBERS(mx) CLASS_MEMBERS_DEF(CBaseMonster, mx)
 #define PL_MEMBERS(mx) CLASS_MEMBERS_DEF(CBasePlayer, mx)
 #define EVAR_MEMBERS(mx) CLASS_MEMBERS_DEF(com_entvars, mx)
 #define MOVEVAR_MEMBERS(mx) CLASS_MEMBERS(movevars_t, MoveVars::##mx, mx)
@@ -44,6 +45,8 @@ inline MType getMemberType(JoinState)			{ return MEMBER_INTEGER; }
 inline MType getMemberType(ModelName)			{ return MEMBER_INTEGER; }
 inline MType getMemberType(_Menu)			{ return MEMBER_INTEGER; }
 inline MType getMemberType(MusicState)			{ return MEMBER_INTEGER; }
+inline MType getMemberType(Activity)			{ return MEMBER_INTEGER; }
+inline MType getMemberType(MONSTERSTATE)		{ return MEMBER_INTEGER; }
 
 inline MType getMemberType(short)			{ return MEMBER_SHORT; }
 inline MType getMemberType(unsigned short)		{ return MEMBER_SHORT; }
@@ -193,6 +196,25 @@ member_t memberlist_animating[] = {
 	ANIM_MEMBERS(m_flLastEventCheck),
 	ANIM_MEMBERS(m_fSequenceFinished),
 	ANIM_MEMBERS(m_fSequenceLoops),
+};
+
+member_t memberlist_basemonster[] = {
+	MONST_MEMBERS(m_Activity),
+	MONST_MEMBERS(m_IdealActivity),
+	MONST_MEMBERS(m_LastHitGroup),
+	MONST_MEMBERS(m_bitsDamageType),
+	MONST_MEMBERS(m_rgbTimeBasedDamage),
+	MONST_MEMBERS(m_MonsterState),
+	MONST_MEMBERS(m_IdealMonsterState),
+	MONST_MEMBERS(m_afConditions),
+	MONST_MEMBERS(m_afMemory),
+	MONST_MEMBERS(m_flNextAttack),
+	MONST_MEMBERS(m_hEnemy),
+	MONST_MEMBERS(m_hTargetEnt),
+	MONST_MEMBERS(m_flFieldOfView),
+	MONST_MEMBERS(m_bloodColor),
+	MONST_MEMBERS(m_HackedGunPos),
+	MONST_MEMBERS(m_vecEnemyLKP),
 };
 
 member_t memberlist_player[] = {
@@ -554,6 +576,7 @@ member_t *memberlist_t::operator[](size_t members) const
 		CASE(gamerules)
 		CASE(base)
 		CASE(animating)
+		CASE(basemonster)
 		CASE(player)
 		CASE(entvars)
 		CASE(movevars)

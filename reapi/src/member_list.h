@@ -41,6 +41,7 @@ struct memberlist_t
 		ht_gamerules,
 		ht_base,
 		ht_animating,
+		ht_basemonster,
 		ht_player,
 		ht_entvars,
 		ht_movevars
@@ -176,6 +177,27 @@ enum CBaseAnimating_Members
 	m_flLastEventCheck,
 	m_fSequenceFinished,
 	m_fSequenceLoops,
+};
+
+// CBaseMonster
+enum CBaseMonster_Members
+{
+	m_Activity = BEGIN_MEMBER_REGION(basemonster),
+	m_IdealActivity,
+	m_LastHitGroup,
+	m_bitsDamageType,
+	m_rgbTimeBasedDamage,
+	m_MonsterState,
+	m_IdealMonsterState,
+	m_afConditions,
+	m_afMemory,
+	m_flNextAttack,
+	m_hEnemy,
+	m_hTargetEnt,
+	m_flFieldOfView,
+	m_bloodColor,
+	m_HackedGunPos,
+	m_vecEnemyLKP,
 };
 
 // CBasePlayer

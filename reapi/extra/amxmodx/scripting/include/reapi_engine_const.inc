@@ -42,7 +42,7 @@ enum EntVars
 	* Get params:		get_entvar(index, EntVars:var, dest[], const lenght);
 	* Set params:		set_entvar(index, EntVars:var, const source[]);
 	*/
-	var_classname = 4096,
+	var_classname = 5120,
 
 	/*
 	* Description:		-
