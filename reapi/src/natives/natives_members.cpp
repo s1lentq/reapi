@@ -51,7 +51,7 @@ cell AMX_NATIVE_CALL get_member(AMX *amx, cell *params)
 		cell* arg3 = getAmxAddr(amx, params[arg_3]);
 
 		if (isTypeReturnable(member->type)) {
-			dest = nullptr;
+			dest = (member->type != MEMBER_FLOAT) ? nullptr : arg3;
 			element = *arg3;
 		}
 		else {
@@ -116,7 +116,7 @@ cell AMX_NATIVE_CALL get_member_game(AMX *amx, cell *params)
 		cell* arg3 = getAmxAddr(amx, params[arg_3]);
 
 		if (isTypeReturnable(member->type)) {
-			dest = nullptr;
+			dest = (member->type != MEMBER_FLOAT) ? nullptr : arg3;
 			element = *arg3;
 		}
 		else {
@@ -194,7 +194,7 @@ cell AMX_NATIVE_CALL get_entvar(AMX *amx, cell *params)
 		cell* arg3 = getAmxAddr(amx, params[arg_3]);
 
 		if (isTypeReturnable(member->type)) {
-			dest = nullptr;
+			dest = (member->type != MEMBER_FLOAT) ? nullptr : arg3;
 			element = *arg3;
 		}
 		else {
@@ -256,7 +256,7 @@ cell AMX_NATIVE_CALL get_movevar(AMX *amx, cell *params)
 		element = *getAmxAddr(amx, params[arg_3]);
 	}
 	else {
-		dest = nullptr;
+		dest = (member->type != MEMBER_FLOAT) ? nullptr : getAmxAddr(amx, params[arg_3]);
 		element = 0;
 	}
 
@@ -474,8 +474,13 @@ cell get_member(void* pdata, const member_t *member, size_t element, cell* dest)
 		}
 	case MEMBER_FLOAT:
 	case MEMBER_INTEGER:
-		// native any:get_member(_index, any:_member, element);
-		return get_member<int>(pdata, member->offset, element);
+		{
+			auto& ret = get_member<int>(pdata, member->offset, element);
+			if (dest != nullptr) {
+				*dest = ret;
+			}
+			return ret;
+		}
 	case MEMBER_SHORT:
 		// native any:get_member(_index, any:_member, element);
 		return get_member<short>(pdata, member->offset, element);
