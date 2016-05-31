@@ -357,17 +357,19 @@ native rg_set_user_armor(const index, armorvalue, ArmorType:armortype);
 
 /*
 * Sets the client's team without killing the player, and sets the client model.
+* @note To obtain of TeamName use the following:
+*	new TeamName:team = get_member(id, m_iTeam);
 *
 * @param index		Client index
 * @param team		Team id
-* @param model		Internal model
+* @param model		Internal model, use MODEL_AUTO for a random appearance or if MODEL_UNASSIGNED not update it.
 *
 * @param send_teaminfo	If true, a TeamInfo message will be sent
 *
-* @noreturn
+* @return		1 if successfully, 0 otherwise
 *
 */
-native rg_set_user_team(const index, {TeamName,_}:team, {ModelName,_}:model = MODEL_UNASSIGNED, bool:send_teaminfo = true);
+native rg_set_user_team(const index, {TeamName,_}:team, {ModelName,_}:model = MODEL_AUTO, bool:send_teaminfo = true);
 
 /*
 * Sets the client's player model.
@@ -376,7 +378,7 @@ native rg_set_user_team(const index, {TeamName,_}:team, {ModelName,_}:model = MO
 * @param model		Model name
 * @param update_index	If true, the modelindex is updated as well
 *
-* @noreturn
+* @return		1 if successfully, 0 otherwise
 *
 */
 native rg_set_user_model(const index, const model[], bool:update_index = false);
@@ -386,7 +388,18 @@ native rg_set_user_model(const index, const model[], bool:update_index = false);
 *
 * @param index		Client index
 *
-* @noreturn
+* @return		1 if successfully, 0 otherwise
 *
 */
 native rg_reset_user_model(const index);
+
+/*
+* Transfer C4 to player
+*
+* @param index		Client index
+* @param receiver	Receiver index, if 0 so will transfer a random to player
+*
+* @return		1 if successfully, 0 otherwise
+*
+*/
+native rg_transfer_c4(const index, const receiver = 0);

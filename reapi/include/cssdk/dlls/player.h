@@ -148,7 +148,7 @@ enum RewardType
 	RT_VIP_RESCUED_MYSELF
 };
 
-typedef enum
+enum PLAYER_ANIM
 {
 	PLAYER_IDLE,
 	PLAYER_WALK,
@@ -161,10 +161,9 @@ typedef enum
 	PLAYER_LARGE_FLINCH,
 	PLAYER_RELOAD,
 	PLAYER_HOLDBOMB
+};
 
-} PLAYER_ANIM;
-
-typedef enum
+enum _Menu
 {
 	Menu_OFF,
 	Menu_ChooseTeam,
@@ -181,19 +180,17 @@ typedef enum
 	Menu_Radio2,
 	Menu_Radio3,
 	Menu_ClientBuy
+};
 
-} _Menu;
-
-typedef enum
+enum TeamName
 {
 	UNASSIGNED,
 	TERRORIST,
 	CT,
 	SPECTATOR,
+};
 
-} TeamName;
-
-typedef enum
+enum ModelName
 {
 	MODEL_UNASSIGNED,
 	MODEL_URBAN,
@@ -206,11 +203,11 @@ typedef enum
 	MODEL_GUERILLA,
 	MODEL_VIP,
 	MODEL_MILITIA,
-	MODEL_SPETSNAZ
+	MODEL_SPETSNAZ,
+	MODEL_AUTO
+};
 
-} ModelName;
-
-typedef enum
+enum JoinState
 {
 	JOINED,
 	SHOWLTEXT,
@@ -219,9 +216,9 @@ typedef enum
 	PICKINGTEAM,
 	GETINTOGAME
 
-} JoinState;
+};
 
-typedef enum
+enum TrackCommands
 {
 	CMD_SAY = 0,
 	CMD_SAYTEAM,
@@ -233,9 +230,9 @@ typedef enum
 	CMD_NIGHTVISION,
 	COMMANDS_TO_TRACK,
 
-} TrackCommands;
+};
 
-typedef struct
+struct RebuyStruct
 {
 	int m_primaryWeapon;
 	int m_primaryAmmo;
@@ -248,9 +245,9 @@ typedef struct
 	int m_nightVision;
 	int m_armor;
 
-} RebuyStruct;
+};
 
-typedef enum
+enum ThrowDirection
 {
 	THROW_NONE,
 	THROW_FORWARD,
@@ -260,7 +257,7 @@ typedef enum
 	THROW_GRENADE,
 	THROW_HITVEL_MINUS_AIRVEL
 
-} ThrowDirection;
+};
 
 enum sbar_data
 {
@@ -270,13 +267,7 @@ enum sbar_data
 	SBAR_END
 };
 
-typedef enum
-{
-	SILENT,
-	CALM,
-	INTENSE
-
-} MusicState;
+enum MusicState { SILENT, CALM, INTENSE };
 
 class CCSPlayer;
 

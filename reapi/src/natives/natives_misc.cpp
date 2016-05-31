@@ -928,16 +928,18 @@ cell AMX_NATIVE_CALL rg_set_user_armor(AMX *amx, cell *params)
 
 /*
 * Sets the client's team without killing the player, and sets the client model.
+* @note To obtain of TeamName use the following:
+*	new TeamName:team = get_member(id, m_iTeam);
 *
 * @param index		Client index
 * @param team		Team id
-* @param model		Internal model
+* @param model		Internal model, use MODEL_AUTO for a random appearance or if MODEL_UNASSIGNED not update it.
 *
 * @param send_teaminfo	If true, a TeamInfo message will be sent
 *
-* @noreturn
+* @return		1 if successfully, 0 otherwise
 *
-* native rg_set_user_team(const index, {TeamName,_}:team, {ModelName,_}:model = MODEL_UNASSIGNED, bool:send_teaminfo = true);
+* native rg_set_user_team(const index, {TeamName,_}:team, {ModelName,_}:model = MODEL_AUTO, bool:send_teaminfo = true);
 */
 cell AMX_NATIVE_CALL rg_set_user_team(AMX *amx, cell *params)
 {
@@ -973,7 +975,7 @@ cell AMX_NATIVE_CALL rg_set_user_team(AMX *amx, cell *params)
 			CSGameRules()->m_iNumTerrorist--;
 			if (pPlayer->m_bHasC4 && !CSGameRules()->m_fTeamCount && CSGameRules()->m_bMapHasBombTarget)
 			{
-				if (RemovePlayerItem(pPlayer, "weapon_c4")) {
+				if (CSGameRules()->m_iNumTerrorist > 0 && RemovePlayerItem(pPlayer, "weapon_c4")) {
 					pPlayer->m_bHasC4 = false;
 					pPlayer->pev->body = 0;
 
@@ -983,6 +985,8 @@ cell AMX_NATIVE_CALL rg_set_user_team(AMX *amx, cell *params)
 					MESSAGE_END();
 
 					CSGameRules()->GiveC4();
+				} else if (pPlayer->IsAlive()) {// are still alive
+					pPlayer->CSPlayer()->DropPlayerItem("weapon_c4");
 				}
 			}
 			break;
@@ -1003,11 +1007,15 @@ cell AMX_NATIVE_CALL rg_set_user_team(AMX *amx, cell *params)
 		}
 	}
 
-	if (args[arg_model] != MODEL_UNASSIGNED) {
-		pPlayer->m_iModelName = args[arg_model];
-	}
+	if (args[arg_model] > MODEL_UNASSIGNED) {
+		if (args[arg_model] != MODEL_AUTO) {
+			pPlayer->m_iModelName = args[arg_model];
+		} else {
+			pPlayer->m_iModelName = GetModelAuto(pPlayer->m_iTeam);
+		}
 
-	pPlayer->CSPlayer()->SetPlayerModel(pPlayer->m_bHasC4);
+		pPlayer->CSPlayer()->SetPlayerModel(pPlayer->m_bHasC4);
+	}
 
 	if (params[arg_sendinfo] != 0) {
 		MESSAGE_BEGIN(MSG_ALL, gmsgTeamInfo);
@@ -1027,7 +1035,7 @@ cell AMX_NATIVE_CALL rg_set_user_team(AMX *amx, cell *params)
 * @param model		Model name
 * @param update_index	If true, the modelindex is updated as well
 *
-* @noreturn
+* @return		1 if successfully, 0 otherwise
 *
 * native rg_set_user_model(const index, const model[], bool:update_index = false);
 */
@@ -1067,7 +1075,7 @@ cell AMX_NATIVE_CALL rg_set_user_model(AMX *amx, cell *params)
 *
 * @param index		Client index
 *
-* @noreturn
+* @return		1 if successfully, 0 otherwise
 *
 * native rg_reset_user_model(const index);
 */
@@ -1085,6 +1093,66 @@ cell AMX_NATIVE_CALL rg_reset_user_model(AMX *amx, cell *params)
 
 	pPlayer->CSPlayer()->SetPlayerModelEx("");
 	pPlayer->CSPlayer()->SetPlayerModel(pPlayer->m_bHasC4);
+	return TRUE;
+}
+
+/*
+* Transfer C4 to player
+*
+* @param index		Client index
+* @param receiver	Receiver index, if 0 so will transfer a random to player
+*
+* @return		1 if successfully, 0 otherwise
+*
+* native rg_transfer_c4(const index, const receiver = 0);
+*/
+cell AMX_NATIVE_CALL rg_transfer_c4(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_receiver };
+
+	CHECK_ISPLAYER(arg_index);
+
+	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
+	if (pPlayer == nullptr || pPlayer->has_disconnected) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
+		return FALSE;
+	}
+
+	if (!pPlayer->m_bHasC4 || !RemovePlayerItem(pPlayer, "weapon_c4"))
+		return FALSE;
+
+	pPlayer->m_bHasC4 = false;
+	pPlayer->pev->body = 0;
+
+	MESSAGE_BEGIN(MSG_ONE, gmsgStatusIcon, NULL, pPlayer->pev);
+		WRITE_BYTE(STATUSICON_HIDE);
+		WRITE_STRING("c4");
+	MESSAGE_END();
+
+	if (params[arg_receiver] != 0 && params[arg_receiver] <= gpGlobals->maxClients) {
+		CBasePlayer *pReceiver = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_receiver]);
+		if (pReceiver == nullptr || pReceiver->has_disconnected) {
+			MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_receiver]);
+			return FALSE;
+		}
+
+		pReceiver->m_bHasC4 = true;
+		pReceiver->pev->body = 1;
+		pReceiver->CSPlayer()->GiveNamedItemEx("weapon_c4");
+
+		MESSAGE_BEGIN(MSG_ONE, gmsgStatusIcon, NULL, pReceiver->pev);
+			WRITE_BYTE(STATUSICON_SHOW);
+			WRITE_STRING("c4");
+			WRITE_BYTE(0);
+			WRITE_BYTE(160);
+			WRITE_BYTE(0);
+		MESSAGE_END();
+	} else {
+		auto flags = pPlayer->pev->flags;
+		pPlayer->pev->flags |= FL_DORMANT;
+		CSGameRules()->GiveC4();
+		pPlayer->pev->flags = flags;
+	}
 
 	return TRUE;
 }
@@ -1130,6 +1198,8 @@ AMX_NATIVE_INFO Misc_Natives_RG[] =
 
 	{ "rg_set_user_model", rg_set_user_model },
 	{ "rg_reset_user_model", rg_reset_user_model },
+
+	{ "rg_transfer_c4", rg_transfer_c4 },
 
 	{ nullptr, nullptr }
 };
