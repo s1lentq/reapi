@@ -433,7 +433,7 @@ cell get_member(void* pdata, const member_t *member, size_t element, cell* dest)
 			if (!dest)
 				return 0;
 
-			dest = (cell *)get_member_direct<Vector>(pdata, member->offset, element);
+			*((Vector *)dest) = *(Vector *)get_member_direct<Vector>(pdata, member->offset, element);
 			return 1;
 		}
 	case MEMBER_STRING:
