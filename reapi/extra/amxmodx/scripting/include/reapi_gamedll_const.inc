@@ -61,6 +61,49 @@ enum ArmorType
 	ARMOR_VESTHELM,	// vest and helmet
 };
 
+enum AccountSet { AS_SET, AS_ADD };
+
+enum RewardType
+{
+	RT_NONE,
+	RT_ROUND_BONUS,
+	RT_PLAYER_RESET,
+	RT_PLAYER_BOUGHT_SOMETHING,
+	RT_HOSTAGE_TOOK,
+	RT_HOSTAGE_RESCUED,
+	RT_HOSTAGE_DAMAGED,
+	RT_HOSTAGE_KILLED,
+	RT_TEAMMATES_KILLED,
+	RT_ENEMY_KILLED,
+	RT_INTO_GAME,
+	RT_VIP_KILLED,
+	RT_VIP_RESCUED_MYSELF
+};
+
+enum TeamName
+{
+	TEAM_UNASSIGNED,
+	TEAM_TERRORIST,
+	TEAM_CT,
+	TEAM_SPECTATOR
+};
+
+enum ModelName
+{
+	MODEL_UNASSIGNED,
+	MODEL_CT_URBAN,
+	MODEL_T_TERROR,
+	MODEL_T_LEET,
+	MODEL_T_ARCTIC,
+	MODEL_CT_GSG9,
+	MODEL_CT_GIGN,
+	MODEL_CT_SAS,
+	MODEL_T_GUERILLA,
+	MODEL_CT_VIP,
+	MODEL_T_MILITIA,
+	MODEL_CT_SPETSNAZ
+};
+
 enum
 {
 	GR_NONE = 0,
@@ -517,7 +560,7 @@ enum GamedllFunc_CBasePlayer
 
 	/*
 	* Description:		-
-	* Params:		(const this, amount, bool:bTrackChange)
+	* Params:		(const this, amount, RewardType:type, bool:bTrackChange)
 	*/
 	RG_CBasePlayer_AddAccount,
 

@@ -82,7 +82,7 @@ native rg_set_animation(const index, PLAYER_ANIM:playerAnim);
 *
 * @noreturn
 */
-native rg_add_account(const index, amount, bool:bTrackChange = true);
+native rg_add_account(const index, amount, AccountSet:typeSet = AS_ADD, bool:bTrackChange = true);
 
 /*
 * Gives item to player
@@ -354,3 +354,39 @@ native rg_get_user_armor(const index, &ArmorType:armortype);
 *
 */
 native rg_set_user_armor(const index, armorvalue, ArmorType:armortype);
+
+/*
+* Sets the client's team without killing the player, and sets the client model.
+*
+* @param index		Client index
+* @param team		Team id
+* @param model		Internal model
+*
+* @param send_teaminfo	If true, a TeamInfo message will be sent
+*
+* @noreturn
+*
+*/
+native rg_set_user_team(const index, {TeamName,_}:team, {ModelName,_}:model = MODEL_UNASSIGNED, bool:send_teaminfo = true);
+
+/*
+* Sets the client's player model.
+*
+* @param index		Client index
+* @param model		Model name
+* @param update_index	If true, the modelindex is updated as well
+*
+* @noreturn
+*
+*/
+native rg_set_user_model(const index, const model[], bool:update_index = false);
+
+/*
+* Reset model user
+*
+* @param index		Client index
+*
+* @noreturn
+*
+*/
+native rg_reset_user_model(const index);

@@ -42,16 +42,11 @@ public:
 	{
 		if (m_value < 0)
 			return nullptr;
-		return static_cast<CBasePlayer *>(g_ReGameFuncs->UTIL_PlayerByIndex(m_value));
+		return g_ReGameFuncs->UTIL_PlayerByIndex(m_value);
 	}
-	operator PLAYER_ANIM() const
-	{
-		return static_cast<PLAYER_ANIM>(m_value);
-	}
-	operator ICSEntity*() const
-	{
-		return g_ReGameFuncs->INDEX_TO_CSENTITY(m_value);
-	}
+	operator TeamName() const { return static_cast<TeamName>(m_value); }
+	operator ModelName() const { return static_cast<ModelName>(m_value); }
+	operator PLAYER_ANIM() const { return static_cast<PLAYER_ANIM>(m_value); }
 	Vector& vector() const
 	{
 		return operator Vector&();

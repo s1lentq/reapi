@@ -19,6 +19,7 @@
 #include <reapi_gamedll.inc>	// NOTE: only for gamedll Counter-Strike (ReGameDLL_CS)
 #include <reapi_addons.inc>	// NOTE: 3-rd party addons
 #include <reapi_version.inc>
+#include <hlsdk_const.inc>
 
 // hookchain return type
 enum

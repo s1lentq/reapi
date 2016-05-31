@@ -1,7 +1,20 @@
 #include "precompiled.h"
 
 edict_t* g_pEdicts;
-int gmsgSendAudio, gmsgTeamScore, gmsgStatusIcon, gmsgArmorType;
+int gmsgSendAudio, gmsgTeamScore, gmsgStatusIcon, gmsgArmorType, gmsgTeamInfo, gmsgItemStatus;
+
+struct
+{
+	const char* pszName;
+	int& id;
+} g_RegUserMsg[] = {
+	{ "SendAudio",  gmsgSendAudio },
+	{ "TeamScore",  gmsgTeamScore },
+	{ "StatusIcon", gmsgStatusIcon },
+	{ "ArmorType",  gmsgArmorType },
+	{ "TeamInfo",   gmsgTeamInfo },
+	{ "ItemStatus", gmsgItemStatus },
+};
 
 void OnAmxxAttach()
 {
@@ -31,10 +44,9 @@ void OnMetaDetach()
 
 void ServerActivate_Post(edict_t *pEdictList, int edictCount, int clientMax)
 {
-	gmsgSendAudio = GET_USER_MSG_ID(PLID, "SendAudio", NULL);
-	gmsgTeamScore = GET_USER_MSG_ID(PLID, "TeamScore", NULL);
-	gmsgStatusIcon = GET_USER_MSG_ID(PLID, "StatusIcon", NULL);
-	gmsgArmorType = GET_USER_MSG_ID(PLID, "ArmorType", NULL);
+	for (auto& msg : g_RegUserMsg) {
+		msg.id = GET_USER_MSG_ID(PLID, msg.pszName, NULL);
+	}
 
 	SET_META_RESULT(MRES_IGNORED);
 }
@@ -43,7 +55,7 @@ void ServerDeactivate_Post()
 {
 	api_cfg.ServerDeactivate();
 	g_hookManager.clearHandlers();
-	g_pFunctionTable->pfnSpawn = Spawn;
+	g_pFunctionTable->pfnSpawn = DispatchSpawn;
 
 	SET_META_RESULT(MRES_IGNORED);
 }
@@ -53,7 +65,7 @@ CGameRules *InstallGameRules(IReGameHook_InstallGameRules *chain)
 	return g_pGameRules = chain->callNext();
 }
 
-int Spawn(edict_t* pEntity)
+int DispatchSpawn(edict_t* pEntity)
 {
 	g_pEdicts = g_engfuncs.pfnPEntityOfEntIndex(0);
 	g_pFunctionTable->pfnSpawn = nullptr;

@@ -270,14 +270,14 @@ void CBasePlayer_Blind(IReGameHook_CBasePlayer_Blind *chain, CBasePlayer *pthis,
 	callVoidForward(RG_CBasePlayer_Blind, original, indexOfEdict(pthis->pev), flUntilTime, flHoldTime, flFadeTime, iAlpha);
 }
 
-CBaseEntity *CBasePlayer_Observer_IsValidTarget(IReGameHook_CBasePlayer_Observer_IsValidTarget *chain, CBasePlayer *pthis, int iPlayerIndex, bool bSameTeam)
+CBasePlayer *CBasePlayer_Observer_IsValidTarget(IReGameHook_CBasePlayer_Observer_IsValidTarget *chain, CBasePlayer *pthis, int iPlayerIndex, bool bSameTeam)
 {
 	auto original = [chain](int _pthis, int _iPlayerIndex, bool _bSameTeam)
 	{
 		return chain->callNext(_iPlayerIndex, _bSameTeam);
 	};
 
-	return callForward<CBaseEntity *>(RG_CBasePlayer_Observer_IsValidTarget, original, indexOfEdict(pthis->pev), iPlayerIndex, bSameTeam);
+	return callForward<CBasePlayer *>(RG_CBasePlayer_Observer_IsValidTarget, original, indexOfEdict(pthis->pev), iPlayerIndex, bSameTeam);
 }
 
 void CBasePlayer_SetAnimation(IReGameHook_CBasePlayer_SetAnimation *chain, CBasePlayer *pthis, PLAYER_ANIM playerAnim)
@@ -310,14 +310,14 @@ void CBasePlayer_GiveNamedItem(IReGameHook_CBasePlayer_GiveNamedItem *chain, CBa
 	callVoidForward(RG_CBasePlayer_GiveNamedItem, original, indexOfEdict(pthis->pev), pszName);
 }
 
-void CBasePlayer_AddAccount(IReGameHook_CBasePlayer_AddAccount *chain, CBasePlayer *pthis, int amount, bool bTrackChange)
+void CBasePlayer_AddAccount(IReGameHook_CBasePlayer_AddAccount *chain, CBasePlayer *pthis, int amount, RewardType type, bool bTrackChange)
 {
-	auto original = [chain](int _pthis, int _amount, bool _bTrackChange)
+	auto original = [chain](int _pthis, int _amount, RewardType _type, bool _bTrackChange)
 	{
-		chain->callNext(_amount, _bTrackChange);
+		chain->callNext(_amount, _type, _bTrackChange);
 	};
 
-	callVoidForward(RG_CBasePlayer_AddAccount, original, indexOfEdict(pthis->pev), amount, bTrackChange);
+	callVoidForward(RG_CBasePlayer_AddAccount, original, indexOfEdict(pthis->pev), amount, type, bTrackChange);
 }
 
 void CBasePlayer_GiveShield(IReGameHook_CBasePlayer_GiveShield *chain, CBasePlayer *pthis, bool bDeploy)
@@ -501,7 +501,7 @@ void CSGameRules_PlayerKilled(IReGameHook_CSGameRules_PlayerKilled *chain, CBase
 		chain->callNext(getPrivate<CBasePlayer>(_pVictim), PEV(_pKiller), PEV(_pInflictor));
 	};
 
-	callVoidForward(RG_CSGameRules_ClientUserInfoChanged, original, indexOfEdict(pVictim->pev), indexOfEdict(pKiller), indexOfEdict(pInflictor));
+	callVoidForward(RG_CSGameRules_PlayerKilled, original, indexOfEdict(pVictim->pev), indexOfEdict(pKiller), indexOfEdict(pInflictor));
 }
 
 void CSGameRules_DeathNotice(IReGameHook_CSGameRules_DeathNotice *chain, CBasePlayer *pVictim, entvars_t *pKiller, entvars_t *pevInflictor)

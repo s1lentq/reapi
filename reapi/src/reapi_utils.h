@@ -102,7 +102,24 @@ inline bool GetWeaponInfoRange(WeaponIdType wpnid)
 	return false;
 }
 
+inline const char *GetTeamName(TeamName team)
+{
+	switch (team)
+	{
+	case CT:
+		return "CT";
+	case TERRORIST:
+		return "TERRORIST";
+	case SPECTATOR:
+		return "SPECTATOR";
+	default:
+		return "UNASSIGNED";
+	}
+}
+
 void Broadcast(const char *sentence);
 void UpdateTeamScores();
+bool RemovePlayerItem(CBasePlayer *pPlayer, const char* szItemName);
+void SendItemStatus(CBasePlayer *pPlayer);
 
 extern void __declspec(noreturn) UTIL_SysError(const char *fmt, ...);

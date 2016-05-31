@@ -105,7 +105,7 @@ static struct funcreq_t
 	//DECLARE_REQ(RegisterFunction),
 	//DECLARE_REQ(RequestFunction),
 	//DECLARE_REQ(amx_Push),
-	//DECLARE_REQ(SetTeamInfo),
+	DECLARE_REQ(SetPlayerTeamInfo),
 	//DECLARE_REQ(PlayerPropAddr),
 	//DECLARE_REQ(RegAuthFunc),
 	//DECLARE_REQ(UnregAuthFunc),

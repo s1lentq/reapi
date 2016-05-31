@@ -476,7 +476,7 @@ struct amxxapi_t
 	PFN_REGISTERFUNCTION		RegisterFunction;
 	PFN_REQ_FNPTR			RequestFunction;
 	PFN_AMX_PUSH			amx_Push;
-	PFN_SET_TEAM_INFO		SetTeamInfo;
+	PFN_SET_TEAM_INFO		SetPlayerTeamInfo;
 	PFN_PLAYER_PROP_ADDR		PlayerPropAddr;
 	PFN_REG_AUTH_FUNC		RegAuthFunc;
 	PFN_UNREG_AUTH_FUNC		UnregAuthFunc;

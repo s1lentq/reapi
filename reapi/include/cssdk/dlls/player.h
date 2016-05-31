@@ -27,8 +27,6 @@
 */
 #pragma once
 
-//#include "weapons.h"
-
 #include "pm_materials.h"
 #include "hintmessage.h"
 #include "unisignals.h"
@@ -131,6 +129,24 @@
 
 #define SOUND_FLASHLIGHT_ON		"items/flashlight1.wav"
 #define SOUND_FLASHLIGHT_OFF		"items/flashlight1.wav"
+
+// custom enum
+enum RewardType
+{
+	RT_NONE,
+	RT_ROUND_BONUS,
+	RT_PLAYER_RESET,
+	RT_PLAYER_BOUGHT_SOMETHING,
+	RT_HOSTAGE_TOOK,
+	RT_HOSTAGE_RESCUED,
+	RT_HOSTAGE_DAMAGED,
+	RT_HOSTAGE_KILLED,
+	RT_TEAMMATES_KILLED,
+	RT_ENEMY_KILLED,
+	RT_INTO_GAME,
+	RT_VIP_KILLED,
+	RT_VIP_RESCUED_MYSELF
+};
 
 typedef enum
 {
@@ -262,6 +278,8 @@ typedef enum
 
 } MusicState;
 
+class CCSPlayer;
+
 class CStripWeapons: public CPointEntity {
 public:
 	virtual void Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value) = 0;
@@ -338,21 +356,14 @@ public:
 	int IsObserver() { return pev->iuser1; }
 	void SetWeaponAnimType(const char *szExtention) { strcpy(m_szAnimExtention, szExtention); }
 	bool IsProtectedByShield() { return m_bOwnsShield && m_bShieldDrawn; }
-	bool IsReloading()
-	{
-		CBasePlayerWeapon *weapon = static_cast<CBasePlayerWeapon *>(m_pActiveItem);
-
-		if (weapon != NULL && weapon->m_fInReload)
-			return true;
-
-		return false;
-	}
+	bool IsReloading() const;
 	bool IsBlind() const { return (m_blindUntilTime > gpGlobals->time); }
 	bool IsAutoFollowAllowed() const { return (gpGlobals->time > m_allowAutoFollowTime); }
 	void InhibitAutoFollow(float duration) { m_allowAutoFollowTime = gpGlobals->time + duration; }
 	void AllowAutoFollow() { m_allowAutoFollowTime = 0; }
 	void SetObserverAutoDirector(bool val) { m_bObserverAutoDirector = val; }
 	bool CanSwitchObserverModes() const { return m_canSwitchObserverModes; }
+	CCSPlayer *CSPlayer() const;
 public:
 	enum { MaxLocationLen = 32 };
 
@@ -556,3 +567,17 @@ public:
 	EHANDLE m_hEntToIgnoreTouchesFrom;
 	float m_flTimeToIgnoreTouches;
 };
+
+inline bool CBasePlayer::IsReloading() const
+{
+	CBasePlayerWeapon *weapon = static_cast<CBasePlayerWeapon *>(m_pActiveItem);
+
+	if (weapon != NULL && weapon->m_fInReload)
+		return true;
+
+	return false;
+}
+
+inline CCSPlayer *CBasePlayer::CSPlayer() const {
+	return reinterpret_cast<CCSPlayer *>(this->m_pEntity);
+}
