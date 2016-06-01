@@ -13,13 +13,12 @@
 	#pragma library reapi
 #endif
 
-#define NULLENT -1
+#include <cssdk_const>
 
-#include <reapi_engine.inc>	// NOTE: only for ReHLDS
-#include <reapi_gamedll.inc>	// NOTE: only for gamedll Counter-Strike (ReGameDLL_CS)
-#include <reapi_addons.inc>	// NOTE: 3-rd party addons
-#include <reapi_version.inc>
-#include <hlsdk_const.inc>
+#include <reapi_engine>		// NOTE: only for ReHLDS
+#include <reapi_gamedll>	// NOTE: only for gamedll Counter-Strike (ReGameDLL_CS)
+#include <reapi_addons>		// NOTE: 3-rd party addons
+#include <reapi_version>
 
 // hookchain return type
 enum

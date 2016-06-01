@@ -4,7 +4,7 @@
 
 #define _reapi_gamedll_included
 
-#include <reapi_gamedll_const.inc>
+#include <reapi_gamedll_const>
 
 /*
 * Sets a value to an CSGameRules_Members members
@@ -167,13 +167,13 @@ native rg_multidmg_add(const inflictor, const victim, const Float:flDamage, cons
 * @param vecDirShooting		Direction shooting
 * @param vecSpread		Spread
 * @param flDistance		Max shot distance
-* @param iBulletType		Bullet type
+* @param iBulletType		Bullet type, look at the enum's with name Bullet cssdk_const.inc
 * @param iTracerFreq		Tracer frequancy
 * @param iDamage		Damage amount
 *
 * @noreturn
 */
-native rg_fire_bullets(const inflictor, const attacker, const shots, Float:vecSrc[3], Float:vecDirShooting[3], Float:vecSpread[3], const Float:flDistance, const iBulletType, const iTracerFreq, const iDamage);
+native rg_fire_bullets(const inflictor, const attacker, const shots, Float:vecSrc[3], Float:vecDirShooting[3], Float:vecSpread[3], const Float:flDistance, const Bullet:iBulletType, const iTracerFreq, const iDamage);
 
 /*
 * Fire bullets from player's weapon
@@ -185,7 +185,7 @@ native rg_fire_bullets(const inflictor, const attacker, const shots, Float:vecSr
 * @param vecSpread		Spread
 * @param flDistance		Max shot distance
 * @param iPenetration		The number of penetration
-* @param iBulletType		Bullet type
+* @param iBulletType		Bullet type, look at the enum's with name Bullet cssdk_const.inc
 * @param iDamage		Damage amount
 * @param flRangeModifier	Damage range modifier
 * @param bPistol		Pistol shot
@@ -193,7 +193,7 @@ native rg_fire_bullets(const inflictor, const attacker, const shots, Float:vecSr
 *
 * @return Float:[3]		The result spread
 */
-native Float:[3] rg_fire_bullets3(const inflictor, const attacker, Float:vecSrc[3], Float:vecDirShooting[3], const Float:vecSpread, const Float:flDistance, const iPenetration, const iBulletType, const iDamage, const Float:flRangeModifier, const bool:bPistol, const shared_rand);
+native Float:[3] rg_fire_bullets3(const inflictor, const attacker, Float:vecSrc[3], Float:vecDirShooting[3], const Float:vecSpread, const Float:flDistance, const iPenetration, const Bullet:iBulletType, const iDamage, const Float:flRangeModifier, const bool:bPistol, const shared_rand);
 
 /*
 * Complete the round

@@ -4,7 +4,7 @@
 
 #define _reapi_engine_included
 
-#include <reapi_engine_const.inc>
+#include <reapi_engine_const>
 
 /*
 * Sets entvars data for an entity.
