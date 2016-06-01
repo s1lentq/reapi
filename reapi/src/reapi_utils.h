@@ -119,8 +119,6 @@ inline const char *GetTeamName(TeamName team)
 
 void Broadcast(const char *sentence);
 void UpdateTeamScores();
-bool RemovePlayerItem(CBasePlayer *pPlayer, const char* szItemName);
-void SendItemStatus(CBasePlayer *pPlayer);
 ModelName GetModelAuto(TeamName team);
 
 extern void __declspec(noreturn) UTIL_SysError(const char *fmt, ...);

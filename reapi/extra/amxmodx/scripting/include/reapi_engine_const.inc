@@ -4,6 +4,9 @@
 
 #define _reapi_engine_const_included
 
+// for natives rh_get_mapname
+enum MapNameType { MNT_TRUE, MNT_SET };
+
 enum EngineFunc
 {
 	/*

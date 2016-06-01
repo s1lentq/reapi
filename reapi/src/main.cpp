@@ -1,6 +1,7 @@
 #include "precompiled.h"
 
 edict_t* g_pEdicts;
+char g_szMapName[32];
 int gmsgSendAudio, gmsgTeamScore, gmsgStatusIcon, gmsgArmorType, gmsgTeamInfo, gmsgItemStatus;
 
 struct
@@ -67,8 +68,22 @@ CGameRules *InstallGameRules(IReGameHook_InstallGameRules *chain)
 
 int DispatchSpawn(edict_t* pEntity)
 {
+	// save true mapname
+	strncpy(g_szMapName, STRING(gpGlobals->mapname), sizeof(g_szMapName) - 1);
+	g_szMapName[sizeof(g_szMapName) - 1] = '\0';
+
 	g_pEdicts = g_engfuncs.pfnPEntityOfEntIndex(0);
 	g_pFunctionTable->pfnSpawn = nullptr;
-
 	RETURN_META_VALUE(MRES_IGNORED, 0);
+}
+
+void ResetGlobalState()
+{
+	// restore mapname
+	if (strcmp(g_RehldsData->GetName(), g_szMapName) != 0) {
+		g_RehldsData->SetName(g_szMapName);
+		g_pFunctionTable->pfnResetGlobalState = nullptr;
+	}
+
+	SET_META_RESULT(MRES_IGNORED);
 }

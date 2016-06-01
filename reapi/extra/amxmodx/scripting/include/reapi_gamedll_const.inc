@@ -30,13 +30,68 @@ enum AccountSet { AS_SET, AS_ADD };
 // Weapon info types for use with rg_get_weapon_info()
 enum WpnInfo
 {
+	/*
+	* Description:		-
+	* Return type:		enum WeaponIdType
+	* Get params:		rg_get_weapon_info(const weapon_name[], WI_ID);
+	* Set params:		-
+	*/
 	WI_ID,
+
+	/*
+	* Description:		-
+	* Return type:		int
+	* Get params:		rg_get_weapon_info(const weapon_id, WI_COST);
+	* Set params:		rg_set_weapon_info(const weapon_id, WI_COST, const value);
+	*/
 	WI_COST,
+
+	/*
+	* Description:		-
+	* Return type:		int
+	* Get params:		rg_get_weapon_info(const weapon_id, WI_CLIP_COST);
+	* Set params:		rg_set_weapon_info(const weapon_id, WI_CLIP_COST, const value);
+	*/
 	WI_CLIP_COST,
+
+	/*
+	* Description:		-
+	* Return type:		int
+	* Get params:		rg_get_weapon_info(const weapon_id, WI_BUY_CLIP_SIZE);
+	* Set params:		-
+	*/
 	WI_BUY_CLIP_SIZE,
+
+	/*
+	* Description:		-
+	* Return type:		int
+	* Get params:		rg_get_weapon_info(const weapon_id, WI_GUN_CLIP_SIZE);
+	* Set params:		-
+	*/
 	WI_GUN_CLIP_SIZE,
+
+	/*
+	* Description:		-
+	* Return type:		int
+	* Get params:		rg_get_weapon_info(const weapon_id, WI_MAX_ROUNDS);
+	* Set params:		-
+	*/
 	WI_MAX_ROUNDS,
+
+	/*
+	* Description:		-
+	* Return type:		int
+	* Get params:		rg_get_weapon_info(const weapon_id, WI_AMMO_TYPE);
+	* Set params:		-
+	*/
 	WI_AMMO_TYPE,
+
+	/*
+	* Description:		-
+	* Return type:		-
+	* Get params:		rg_get_weapon_info(const weapon_id, WI_NAME, const output[], maxlenght);
+	* Set params:		-
+	*/
 	WI_NAME
 };
 

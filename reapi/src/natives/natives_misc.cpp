@@ -595,7 +595,7 @@ cell AMX_NATIVE_CALL rg_get_weapon_info(AMX *amx, cell *params)
 				return -1;
 			}
 
-			// native rg_get_weapon_info(id, WPINFO_NAME, output[], maxlength);
+			// native rg_get_weapon_info(id, WI_NAME, output[], maxlength);
 			cell* dest = getAmxAddr(amx, params[arg_3]);
 			size_t length = *getAmxAddr(amx, params[arg_4]);
 
@@ -709,7 +709,7 @@ cell AMX_NATIVE_CALL rg_remove_item(AMX *amx, cell *params)
 	}
 
 	const char* szItemName = getAmxString(amx, params[arg_item_name]);
-	if (RemovePlayerItem(pPlayer, szItemName)) {
+	if (pPlayer->CSPlayer()->RemovePlayerItem(szItemName)) {
 		return TRUE;
 	}
 
@@ -975,7 +975,7 @@ cell AMX_NATIVE_CALL rg_set_user_team(AMX *amx, cell *params)
 			CSGameRules()->m_iNumTerrorist--;
 			if (pPlayer->m_bHasC4 && !CSGameRules()->m_fTeamCount && CSGameRules()->m_bMapHasBombTarget)
 			{
-				if (CSGameRules()->m_iNumTerrorist > 0 && RemovePlayerItem(pPlayer, "weapon_c4")) {
+				if (CSGameRules()->m_iNumTerrorist > 0 && pPlayer->CSPlayer()->RemovePlayerItem("weapon_c4")) {
 					pPlayer->m_bHasC4 = false;
 					pPlayer->pev->body = 0;
 
@@ -1001,7 +1001,7 @@ cell AMX_NATIVE_CALL rg_set_user_team(AMX *amx, cell *params)
 					WRITE_STRING("defuser");
 				MESSAGE_END();
 
-				SendItemStatus(pPlayer);
+				pPlayer->CSPlayer()->SendItemStatus();
 			}
 			break;
 		}
@@ -1118,7 +1118,7 @@ cell AMX_NATIVE_CALL rg_transfer_c4(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	if (!pPlayer->m_bHasC4 || !RemovePlayerItem(pPlayer, "weapon_c4"))
+	if (!pPlayer->m_bHasC4 || !pPlayer->CSPlayer()->RemovePlayerItem("weapon_c4"))
 		return FALSE;
 
 	pPlayer->m_bHasC4 = false;
@@ -1204,8 +1204,87 @@ AMX_NATIVE_INFO Misc_Natives_RG[] =
 	{ nullptr, nullptr }
 };
 
+/*
+* Set name of the map
+*
+* @param mapname	Change the name of the map.
+*
+* @noreturn
+*
+* native rh_set_mapname(const mapname[]);
+*/
+cell AMX_NATIVE_CALL rh_set_mapname(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_mapname };
+
+	const char *mapname = getAmxString(amx, params[arg_mapname]);
+	g_RehldsData->SetName(mapname);
+	g_pFunctionTable->pfnResetGlobalState = ResetGlobalState;
+	return TRUE;
+}
+
+enum MapNameType { MNT_TRUE, MNT_SET };
+
+/*
+* Get name of the map
+*
+* @param output		Buffer to copy mapname to
+* @param len		Maximum buffer size
+* @param type		MNT_SET return the name of the current map
+*			MNT_TRUE return true the name of the current map independently of the set via rh_set_mapname
+*
+* @noreturn
+*
+* native rh_get_mapname(output[], len, MapNameType:type = MNT_SET);
+*/
+cell AMX_NATIVE_CALL rh_get_mapname(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_output, arg_len, arg_type };
+
+	cell* dest = getAmxAddr(amx, params[arg_output]);
+	size_t length = *getAmxAddr(amx, params[arg_len]);
+
+	switch ((MapNameType)params[arg_type])
+	{
+	case MNT_TRUE:
+		setAmxString(dest, g_szMapName, length);
+		break;
+	case MNT_SET:
+		setAmxString(dest, g_RehldsData->GetName(), length);
+		break;
+	}
+
+	return TRUE;
+}
+
+/*
+* Reset to true map name
+*
+* @noreturn
+*
+* native rh_reset_mapname();
+*/
+cell AMX_NATIVE_CALL rh_reset_mapname(AMX *amx, cell *params)
+{
+	g_RehldsData->SetName(g_szMapName);
+	g_pFunctionTable->pfnResetGlobalState = nullptr;
+	return TRUE;
+}
+
+AMX_NATIVE_INFO Misc_Natives_RH[] =
+{
+	{ "rh_set_mapname", rh_set_mapname },
+	{ "rh_get_mapname", rh_get_mapname },
+	{ "rh_reset_mapname", rh_reset_mapname },
+
+	{ nullptr, nullptr }
+};
+
 void RegisterNatives_Misc()
 {
 	if (api_cfg.hasReGameDLL())
 		g_amxxapi.AddNatives(Misc_Natives_RG);
+
+	if (api_cfg.hasReHLDS())
+		g_amxxapi.AddNatives(Misc_Natives_RH);
 }

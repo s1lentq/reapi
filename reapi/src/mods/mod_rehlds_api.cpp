@@ -2,6 +2,7 @@
 
 IRehldsApi* g_RehldsApi;
 const RehldsFuncs_t* g_RehldsFuncs;
+IRehldsServerData* g_RehldsData;
 IRehldsHookchains* g_RehldsHookchains;
 IRehldsServerStatic* g_RehldsSvs;
 
@@ -48,6 +49,7 @@ bool RehldsApi_Init()
 	}
 
 	g_RehldsFuncs = g_RehldsApi->GetFuncs();
+	g_RehldsData = g_RehldsApi->GetServerData();
 	g_RehldsHookchains = g_RehldsApi->GetHookchains();
 	g_RehldsSvs = g_RehldsApi->GetServerStatic();
 
