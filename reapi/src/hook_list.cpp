@@ -79,6 +79,10 @@ hook_t hooklist_gamedll[] = {
 	DLL(CanBuyThis),
 	DLL(PM_Move),
 	DLL(PM_AirMove),
+	DLL(HandleMenu_ChooseAppearance),
+	DLL(HandleMenu_ChooseTeam),
+	DLL(ShowMenu),
+	DLL(ShowVGUIMenu),
 };
 
 hook_t hooklist_animating[] = {
@@ -108,6 +112,7 @@ hook_t hooklist_player[] = {
 	DLL(CBasePlayer_ImpulseCommands),
 	DLL(CBasePlayer_RoundRespawn),
 	DLL(CBasePlayer_Blind),
+	DLL(CBasePlayer_SetClientUserInfoModel),
 
 	DLL(CBasePlayer_Observer_IsValidTarget),
 	DLL(CBasePlayer_SetAnimation),

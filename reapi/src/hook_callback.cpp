@@ -634,6 +634,56 @@ void CSGameRules_BalanceTeams(IReGameHook_CSGameRules_BalanceTeams *chain)
 	callVoidForward(RG_CSGameRules_BalanceTeams, original);
 }
 
+void CBasePlayer_SetClientUserInfoModel(IReGameHook_CBasePlayer_SetClientUserInfoModel *chain, CBasePlayer *pthis, char *infobuffer, char *szNewModel)
+{
+	auto original = [chain](int _pthis, char *_infobuffer, char *_szNewModel)
+	{
+		chain->callNext(_infobuffer, _szNewModel);
+	};
+
+	callVoidForward(RG_CBasePlayer_SetClientUserInfoModel, original, indexOfEdict(pthis->pev), infobuffer, szNewModel);
+}
+
+void HandleMenu_ChooseAppearance(IReGameHook_HandleMenu_ChooseAppearance *chain, CBasePlayer *pPlayer, int slot)
+{
+	auto original = [chain](int _pPlayer, int _slot)
+	{
+		chain->callNext(getPrivate<CBasePlayer>(_pPlayer), _slot);
+	};
+
+	callVoidForward(RG_HandleMenu_ChooseAppearance, original, indexOfEdict(pPlayer->pev), slot);
+}
+
+BOOL HandleMenu_ChooseTeam(IReGameHook_HandleMenu_ChooseTeam *chain, CBasePlayer *pPlayer, int slot)
+{
+	auto original = [chain](int _pPlayer, int _slot)
+	{
+		return chain->callNext(getPrivate<CBasePlayer>(_pPlayer), _slot);
+	};
+
+	return callForward<BOOL>(RG_HandleMenu_ChooseTeam, original, indexOfEdict(pPlayer->pev), slot);
+}
+
+void ShowMenu(IReGameHook_ShowMenu *chain, CBasePlayer *pPlayer, int bitsValidSlots, int nDisplayTime, BOOL fNeedMore, char *pszText)
+{
+	auto original = [chain](int _pPlayer, int _bitsValidSlots, int _nDisplayTime, BOOL _fNeedMore, char *_pszText)
+	{
+		chain->callNext(getPrivate<CBasePlayer>(_pPlayer), _bitsValidSlots, _nDisplayTime, _fNeedMore, _pszText);
+	};
+
+	callVoidForward(RG_ShowMenu, original, indexOfEdict(pPlayer->pev), bitsValidSlots, nDisplayTime, fNeedMore, pszText);
+}
+
+void ShowVGUIMenu(IReGameHook_ShowVGUIMenu *chain, CBasePlayer *pPlayer, int MenuType, int BitMask, char *szOldMenu)
+{
+	auto original = [chain](int _pPlayer, int _MenuType, int _BitMask, char *_szOldMenu)
+	{
+		chain->callNext(getPrivate<CBasePlayer>(_pPlayer), _MenuType, _BitMask, _szOldMenu);
+	};
+
+	callVoidForward(RG_ShowVGUIMenu, original, indexOfEdict(pPlayer->pev), MenuType, BitMask, szOldMenu);
+}
+
 int g_iClientStartSpeak, g_iClientStopSpeak;
 
 void ClientStartSpeak(size_t clientIndex)

@@ -40,6 +40,7 @@ inline AType getApiType(int)			{ return ATYPE_INTEGER; }
 inline AType getApiType(unsigned)		{ return ATYPE_INTEGER; }
 inline AType getApiType(float)			{ return ATYPE_FLOAT; }
 inline AType getApiType(const char *)	{ return ATYPE_STRING; }
+inline AType getApiType(char [])	{ return ATYPE_STRING; }
 inline AType getApiType(CBaseEntity *)	{ return ATYPE_CLASSPTR; }
 inline AType getApiType(edict_t *)	{ return ATYPE_CLASSPTR; }
 inline AType getApiType(entvars_t *)	{ return ATYPE_EVARS; }
@@ -268,6 +269,12 @@ void CSGameRules_GiveC4(IReGameHook_CSGameRules_GiveC4 *chain);
 void CSGameRules_ChangeLevel(IReGameHook_CSGameRules_ChangeLevel *chain);
 void CSGameRules_GoToIntermission(IReGameHook_CSGameRules_GoToIntermission *chain);
 void CSGameRules_BalanceTeams(IReGameHook_CSGameRules_BalanceTeams *chain);
+
+void CBasePlayer_SetClientUserInfoModel(IReGameHook_CBasePlayer_SetClientUserInfoModel *chain, CBasePlayer *pthis, char *infobuffer, char *szNewModel);
+void HandleMenu_ChooseAppearance(IReGameHook_HandleMenu_ChooseAppearance *chain, CBasePlayer *pPlayer, int slot);
+BOOL HandleMenu_ChooseTeam(IReGameHook_HandleMenu_ChooseTeam *chain, CBasePlayer *pPlayer, int slot);
+void ShowMenu(IReGameHook_ShowMenu *chain, CBasePlayer *pPlayer, int bitsValidSlots, int nDisplayTime, BOOL fNeedMore, char *pszText);
+void ShowVGUIMenu(IReGameHook_ShowVGUIMenu *chain, CBasePlayer *pPlayer, int MenuType, int BitMask, char *szOldMenu);
 
 extern int g_iClientStartSpeak;
 extern int g_iClientStopSpeak;

@@ -23,6 +23,7 @@
 	#define RG_CSGameRules_DeadPlayerWeapons RG_CSGameRules_DeadPlayerWpn
 	#define RG_CSGameRules_CheckMapConditions RG_CSGameRules_CheckMapCond
 	#define RG_CSGameRules_CheckWinConditions RG_CSGameRules_CheckWinCond
+	#define RG_CBasePlayer_SetClientUserInfoModel RG_CBasePlayer_SetUserInfoModel
 #endif
 
 enum AccountSet { AS_SET, AS_ADD };
@@ -103,6 +104,32 @@ enum GiveType
 	GT_DROP_AND_REPLACE	// drop all weapons on the ground
 };
 
+enum MenuChooseTeam
+{
+	MenuChoose_T = 1,
+	MenuChoose_CT,
+	MenuChoose_VIP,
+
+	MenuChoose_AutoSelect = 5,
+	MenuChoose_Spec,
+};
+
+enum VGUIMenu
+{
+	VGUI_Menu_Team = 2,
+	VGUI_Menu_MapBriefing = 4,
+
+	VGUI_Menu_Class_T = 26,
+	VGUI_Menu_Class_CT,
+	VGUI_Menu_Buy,
+	VGUI_Menu_Buy_Pistol,
+	VGUI_Menu_Buy_ShotGun,
+	VGUI_Menu_Buy_Rifle,
+	VGUI_Menu_Buy_SubMachineGun,
+	VGUI_Menu_Buy_MachineGun,
+	VGUI_Menu_Buy_Item,
+};
+
 enum GamedllFunc
 {
 	/*
@@ -147,6 +174,30 @@ enum GamedllFunc
 	* Params:		(const playerIndex)
 	*/
 	RG_PM_AirMove,
+
+	/*
+	* Description:		-
+	* Params:		(const index, const slot)
+	*/
+	RG_HandleMenu_ChooseAppearance,
+
+	/*
+	* Description:		-
+	* Params:		(const index, const MenuChooseTeam:slot)
+	*/
+	RG_HandleMenu_ChooseTeam,
+
+	/*
+	* Description:		-
+	* Params:		(const index, const bitsSlots, const iDisplayTime, const iNeedMore, pszText[])
+	*/
+	RG_ShowMenu,
+
+	/*
+	* Description:		-
+	* Params:		(const index, VGUIMenu:menuType, const bitsSlots, szOldMenu[])
+	*/
+	RG_ShowVGUIMenu,
 
 	// [...]
 	RG_End
@@ -303,6 +354,12 @@ enum GamedllFunc_CBasePlayer
 	* Params:		(const this, Float:flUntilTime, Float:flHoldTime, Float:flFadeTime, iAlpha)
 	*/
 	RG_CBasePlayer_Blind,
+
+	/*
+	* Description:		-
+	* Params:		(const this, infobuffer[], szNewModel[])
+	*/
+	RG_CBasePlayer_SetClientUserInfoModel,
 
 	/*
 	* Description:		-

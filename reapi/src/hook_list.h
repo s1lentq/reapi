@@ -87,6 +87,10 @@ enum GamedllFunc
 
 	RG_PM_Move,
 	RG_PM_AirMove,
+	RG_HandleMenu_ChooseAppearance,
+	RG_HandleMenu_ChooseTeam,
+	RG_ShowMenu,
+	RG_ShowVGUIMenu,
 
 	// [...]
 	RG_End
@@ -126,6 +130,7 @@ enum GamedllFunc_CBasePlayer
 	RG_CBasePlayer_RoundRespawn,
 	RG_CBasePlayer_Blind,
 
+	RG_CBasePlayer_SetClientUserInfoModel,
 	RG_CBasePlayer_Observer_IsValidTarget,
 	RG_CBasePlayer_SetAnimation,
 	RG_CBasePlayer_GiveDefaultItems,
