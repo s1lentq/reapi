@@ -131,6 +131,7 @@ enum GamedllFunc_CBasePlayer
 	RG_CBasePlayer_Blind,
 
 	RG_CBasePlayer_SetClientUserInfoModel,
+	RG_CBasePlayer_SetClientUserInfoName,
 	RG_CBasePlayer_Observer_IsValidTarget,
 	RG_CBasePlayer_SetAnimation,
 	RG_CBasePlayer_GiveDefaultItems,

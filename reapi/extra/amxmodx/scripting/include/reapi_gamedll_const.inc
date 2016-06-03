@@ -24,6 +24,7 @@
 	#define RG_CSGameRules_CheckMapConditions RG_CSGameRules_CheckMapCond
 	#define RG_CSGameRules_CheckWinConditions RG_CSGameRules_CheckWinCond
 	#define RG_CBasePlayer_SetClientUserInfoModel RG_CBasePlayer_SetUserInfoModel
+	#define RG_CBasePlayer_SetClientUserInfoName RG_CBasePlayer_SetUserInfoName
 #endif
 
 enum AccountSet { AS_SET, AS_ADD };
@@ -360,6 +361,12 @@ enum GamedllFunc_CBasePlayer
 	* Params:		(const this, infobuffer[], szNewModel[])
 	*/
 	RG_CBasePlayer_SetClientUserInfoModel,
+
+	/*
+	* Description:		-
+	* Params:		(const this, infobuffer[], szNewName[])
+	*/
+	RG_CBasePlayer_SetClientUserInfoName,
 
 	/*
 	* Description:		-

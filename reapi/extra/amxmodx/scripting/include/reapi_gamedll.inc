@@ -403,3 +403,14 @@ native rg_reset_user_model(const index);
 *
 */
 native rg_transfer_c4(const index, const receiver = 0);
+
+/*
+* Instant reload weapons
+*
+* @param index		Client index
+* @param weapon		Entity weapons, if 0 then all the weapons
+*
+* @return		1 if successfully, 0 otherwise
+*
+*/
+native rg_instant_reload_weapons(const index, const weapon = 0);

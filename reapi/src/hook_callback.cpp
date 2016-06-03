@@ -644,6 +644,16 @@ void CBasePlayer_SetClientUserInfoModel(IReGameHook_CBasePlayer_SetClientUserInf
 	callVoidForward(RG_CBasePlayer_SetClientUserInfoModel, original, indexOfEdict(pthis->pev), infobuffer, szNewModel);
 }
 
+void CBasePlayer_SetClientUserInfoName(IReGameHook_CBasePlayer_SetClientUserInfoName *chain, CBasePlayer *pthis, char *infobuffer, char *szNewName)
+{
+	auto original = [chain](int _pthis, char *_infobuffer, char *_szNewName)
+	{
+		chain->callNext(_infobuffer, _szNewName);
+	};
+
+	callVoidForward(RG_CBasePlayer_SetClientUserInfoName, original, indexOfEdict(pthis->pev), infobuffer, szNewName);
+}
+
 void HandleMenu_ChooseAppearance(IReGameHook_HandleMenu_ChooseAppearance *chain, CBasePlayer *pPlayer, int slot)
 {
 	auto original = [chain](int _pPlayer, int _slot)

@@ -30,6 +30,8 @@
 #include "regamedll_interfaces.h"
 #include "hookchains.h"
 #include "interface.h"
+#include "player.h"
+#include "gamerules.h"
 
 #define REGAMEDLL_API_VERSION_MAJOR 2
 #define REGAMEDLL_API_VERSION_MINOR 1
@@ -140,8 +142,8 @@ typedef IVoidHookChain<const char *> IReGameHook_CBasePlayer_GiveNamedItem;
 typedef IVoidHookChainRegistryClass<class CBasePlayer, const char *> IReGameHookRegistry_CBasePlayer_GiveNamedItem;
 
 // CBasePlayer::AddAccount hook
-typedef IVoidHookChain<int, enum RewardType, bool> IReGameHook_CBasePlayer_AddAccount;
-typedef IVoidHookChainRegistryClass<class CBasePlayer, int, enum RewardType, bool> IReGameHookRegistry_CBasePlayer_AddAccount;
+typedef IVoidHookChain<int, RewardType, bool> IReGameHook_CBasePlayer_AddAccount;
+typedef IVoidHookChainRegistryClass<class CBasePlayer, int, RewardType, bool> IReGameHookRegistry_CBasePlayer_AddAccount;
 
 // CBasePlayer::GiveShield hook
 typedef IVoidHookChain<bool> IReGameHook_CBasePlayer_GiveShield;
@@ -151,6 +153,9 @@ typedef IVoidHookChainRegistryClass<class CBasePlayer, bool> IReGameHookRegistry
 typedef IVoidHookChain<char *, char *> IReGameHook_CBasePlayer_SetClientUserInfoModel;
 typedef IVoidHookChainRegistryClass<class CBasePlayer, char *, char *> IReGameHookRegistry_CBasePlayer_SetClientUserInfoModel;
 
+// CBasePlayer:SetClientUserInfoName hook
+typedef IVoidHookChain<char *, char *> IReGameHook_CBasePlayer_SetClientUserInfoName;
+typedef IVoidHookChainRegistryClass<class CBasePlayer, char *, char *> IReGameHookRegistry_CBasePlayer_SetClientUserInfoName;
 
 // CBaseAnimating::ResetSequenceInfo hook
 typedef IVoidHookChain<> IReGameHook_CBaseAnimating_ResetSequenceInfo;
@@ -173,8 +178,8 @@ typedef IVoidHookChain<class CBasePlayer *, struct entvars_s *, struct entvars_s
 typedef IVoidHookChainRegistry<class CBasePlayer *, struct entvars_s *, struct entvars_s *, Vector &, Vector &, struct TraceResult *> IReGameHookRegistry_RadiusFlash_TraceLine;
 
 // RoundEnd hook
-typedef IHookChain<bool, int, enum ScenarioEventEndRound, float> IReGameHook_RoundEnd;
-typedef IHookChainRegistry<bool, int, enum ScenarioEventEndRound, float> IReGameHookRegistry_RoundEnd;
+typedef IHookChain<bool, int, ScenarioEventEndRound, float> IReGameHook_RoundEnd;
+typedef IHookChainRegistry<bool, int, ScenarioEventEndRound, float> IReGameHookRegistry_RoundEnd;
 
 // CanBuyThis hook
 typedef IHookChain<bool, class CBasePlayer *, int> IReGameHook_CanBuyThis;
@@ -373,6 +378,8 @@ public:
 	virtual IReGameHookRegistry_CSGameRules_GoToIntermission* CSGameRules_GoToIntermission() = 0;
 	virtual IReGameHookRegistry_CSGameRules_BalanceTeams* CSGameRules_BalanceTeams() = 0;
 
+	// later sort them on the positions and change the major version
+	virtual IReGameHookRegistry_CBasePlayer_SetClientUserInfoName* CBasePlayer_SetClientUserInfoName() = 0;
 };
 
 struct ReGameFuncs_t {

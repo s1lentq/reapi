@@ -978,12 +978,8 @@ cell AMX_NATIVE_CALL rg_set_user_team(AMX *amx, cell *params)
 				if (CSGameRules()->m_iNumTerrorist > 0 && pPlayer->CSPlayer()->RemovePlayerItem("weapon_c4")) {
 					pPlayer->m_bHasC4 = false;
 					pPlayer->pev->body = 0;
-
-					MESSAGE_BEGIN(MSG_ONE, gmsgStatusIcon, NULL, pPlayer->pev);
-						WRITE_BYTE(STATUSICON_HIDE);
-						WRITE_STRING("c4");
-					MESSAGE_END();
-
+					pPlayer->CSPlayer()->SetBombIcon();
+					pPlayer->CSPlayer()->SetProgressBarTime(0);
 					CSGameRules()->GiveC4();
 				} else if (pPlayer->IsAlive()) {// are still alive
 					pPlayer->CSPlayer()->DropPlayerItem("weapon_c4");
@@ -1121,13 +1117,10 @@ cell AMX_NATIVE_CALL rg_transfer_c4(AMX *amx, cell *params)
 	if (!pPlayer->m_bHasC4 || !pPlayer->CSPlayer()->RemovePlayerItem("weapon_c4"))
 		return FALSE;
 
-	pPlayer->m_bHasC4 = false;
 	pPlayer->pev->body = 0;
-
-	MESSAGE_BEGIN(MSG_ONE, gmsgStatusIcon, NULL, pPlayer->pev);
-		WRITE_BYTE(STATUSICON_HIDE);
-		WRITE_STRING("c4");
-	MESSAGE_END();
+	pPlayer->m_bHasC4 = false;
+	pPlayer->CSPlayer()->SetBombIcon();
+	pPlayer->CSPlayer()->SetProgressBarTime(0);
 
 	if (params[arg_receiver] != 0 && params[arg_receiver] <= gpGlobals->maxClients) {
 		CBasePlayer *pReceiver = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_receiver]);
@@ -1137,16 +1130,9 @@ cell AMX_NATIVE_CALL rg_transfer_c4(AMX *amx, cell *params)
 		}
 
 		pReceiver->m_bHasC4 = true;
-		pReceiver->pev->body = 1;
 		pReceiver->CSPlayer()->GiveNamedItemEx("weapon_c4");
-
-		MESSAGE_BEGIN(MSG_ONE, gmsgStatusIcon, NULL, pReceiver->pev);
-			WRITE_BYTE(STATUSICON_SHOW);
-			WRITE_STRING("c4");
-			WRITE_BYTE(0);
-			WRITE_BYTE(160);
-			WRITE_BYTE(0);
-		MESSAGE_END();
+		pReceiver->CSPlayer()->SetBombIcon();
+		pReceiver->pev->body = 1;
 	} else {
 		auto flags = pPlayer->pev->flags;
 		pPlayer->pev->flags |= FL_DORMANT;
@@ -1154,6 +1140,38 @@ cell AMX_NATIVE_CALL rg_transfer_c4(AMX *amx, cell *params)
 		pPlayer->pev->flags = flags;
 	}
 
+	return TRUE;
+}
+
+/*
+* Instant reload weapons
+*
+* @param index		Client index
+* @param weapon		Entity weapons, if 0 then all the weapons
+*
+* @return		1 if successfully, 0 otherwise
+*
+* native rg_instant_reload_weapons(const index, const weapon = 0);
+*/
+cell AMX_NATIVE_CALL rg_instant_reload_weapons(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_weapon };
+
+	CHECK_ISPLAYER(arg_index);
+
+	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
+	if (pPlayer == nullptr || pPlayer->has_disconnected) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
+		return FALSE;
+	}
+
+	auto pWeapon = getPrivate<CBasePlayerWeapon>(params[arg_weapon]);
+	if (params[arg_weapon] != 0 && pWeapon == nullptr) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: Invalid entity weapon", __FUNCTION__);
+		return FALSE;
+	}
+
+	pPlayer->CSPlayer()->ReloadWeapons(pWeapon);
 	return TRUE;
 }
 
@@ -1200,6 +1218,7 @@ AMX_NATIVE_INFO Misc_Natives_RG[] =
 	{ "rg_reset_user_model", rg_reset_user_model },
 
 	{ "rg_transfer_c4", rg_transfer_c4 },
+	{ "rg_instant_reload_weapons", rg_instant_reload_weapons },
 
 	{ nullptr, nullptr }
 };

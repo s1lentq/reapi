@@ -73,7 +73,10 @@ public:
 	virtual void SetProgressBarTime(int time);
 	virtual void SetProgressBarTime2(int time, float timeElapsed);
 	virtual struct edict_s *EntSelectSpawnPoint();
+	virtual void SetBombIcon(bool bFlash = false);
+	virtual void SetScoreAttrib(CBasePlayer *dest);
 	virtual void SendItemStatus();
+	virtual void ReloadWeapons(CBasePlayerItem *pWeapon = nullptr);
 
 	CBasePlayer *BasePlayer() const;
 public:

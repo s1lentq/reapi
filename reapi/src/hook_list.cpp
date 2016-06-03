@@ -113,6 +113,7 @@ hook_t hooklist_player[] = {
 	DLL(CBasePlayer_RoundRespawn),
 	DLL(CBasePlayer_Blind),
 	DLL(CBasePlayer_SetClientUserInfoModel),
+	DLL(CBasePlayer_SetClientUserInfoName),
 
 	DLL(CBasePlayer_Observer_IsValidTarget),
 	DLL(CBasePlayer_SetAnimation),
