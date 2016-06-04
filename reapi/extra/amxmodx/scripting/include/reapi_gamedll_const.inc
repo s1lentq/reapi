@@ -555,7 +555,7 @@ enum CSGameRules_Members
 	* Get params:		get_member_game(member);
 	* Set params:		set_member_game(member, value);
 	*/
-	m_bFreezePeriod = 0,
+	m_bFreezePeriod = 0 * 1024,
 
 	/*
 	* Description:		-
@@ -1448,7 +1448,7 @@ enum CBaseMonster_Members
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);
 	*/
-	m_Activity = 3072,
+	m_Activity = 3 * 1024,
 
 	/*
 	* Description:		-
@@ -1580,7 +1580,7 @@ enum CBasePlayer_Members
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);
 	*/
-	random_seed = 3 * 1024,
+	random_seed = 4 * 1024,
 
 	/*
 	* Description:		-
@@ -3079,7 +3079,7 @@ enum PlayerMove
 	* Get params:		get_pmove(member);
 	* Set params:		set_pmove(const PlayerMove:var, value);
 	*/
-	pm_player_index = 5 * 1024,
+	pm_player_index = 6 * 1024,
 
 	/*
 	* Description:		-
@@ -3562,7 +3562,7 @@ enum MoveVars
 	* Get params:		Float:get_mvar(const MoveVars:var);
 	* Set params:		set_mvar(const MoveVars:var, Float:value);
 	*/
-	mv_gravity = 5 * 1024,
+	mv_gravity = 7 * 1024,
 
 	/*
 	* Description:		-
@@ -3773,7 +3773,7 @@ enum PMTrace
 	* Get params:		get_pmtrace(const tr, const PMTrace:var);
 	* Set params:		set_pmtrace(const tr, const PMTrace:var, value);
 	*/
-	pmt_allsolid = 8 * 1024,
+	pmt_allsolid = 9 * 1024,
 
 	/*
 	* Description:		-

@@ -45,7 +45,7 @@ enum EntVars
 	* Get params:		get_entvar(index, EntVars:var, dest[], const lenght);
 	* Set params:		set_entvar(index, EntVars:var, const source[]);
 	*/
-	var_classname = 4 * 1024,
+	var_classname = 5 * 1024,
 
 	/*
 	* Description:		-
@@ -1032,7 +1032,7 @@ enum UserCmd
 	* Get params:		get_ucmd(const ucmd, UserCmd:var);
 	* Set params:		set_ucmd(const ucmd, UserCmd:var, value);
 	*/
-	ucmd_lerp_msec = 7 * 1024,
+	ucmd_lerp_msec = 8 * 1024,
 
 	/*
 	* Description:		-
