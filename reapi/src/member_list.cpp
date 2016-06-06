@@ -3,7 +3,7 @@
 #define CLASS_MEMBERS(cx, mx, pref) ((!(pref##mx & (MAX_REGION_RANGE - 1)) ? regmember::current_cell = 1, true : false) || (pref##mx & (MAX_REGION_RANGE - 1)) == regmember::current_cell++) ? regmember([](member_t* ptr){ decltype(##cx::##mx) f = {};ptr->size = getTypeSize(f);ptr->max_size = sizeof(f);ptr->offset = offsetof(##cx, ##mx);ptr->type = getMemberType(f);}) : regmember(#mx)
 
 #define GM_MEMBERS(mx)			CLASS_MEMBERS(CHalfLifeMultiplay, mx,)
-#define GM_VOICE_MEMBERS(mx)	CLASS_MEMBERS(CVoiceGameMgr, mx,)
+#define GM_VOICE_MEMBERS(mx)		CLASS_MEMBERS(CVoiceGameMgr, mx,)
 #define BASE_MEMBERS(mx)		CLASS_MEMBERS(CBaseEntity, mx,)
 #define ANIM_MEMBERS(mx)		CLASS_MEMBERS(CBaseAnimating, mx,)
 #define MONST_MEMBERS(mx)		CLASS_MEMBERS(CBaseMonster, mx,)

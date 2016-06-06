@@ -1330,7 +1330,7 @@ cell AMX_NATIVE_CALL is_regamedll(AMX *amx, cell *params)
 *
 * native is_has_reunion();
 */
-cell AMX_NATIVE_CALL is_has_reunion(AMX *amx, cell *params)
+cell AMX_NATIVE_CALL has_reunion(AMX *amx, cell *params)
 {
 	return (cell)api_cfg.hasReunion();
 }
@@ -1342,7 +1342,7 @@ cell AMX_NATIVE_CALL is_has_reunion(AMX *amx, cell *params)
 *
 * native is_has_vtc();
 */
-cell AMX_NATIVE_CALL is_has_vtc(AMX *amx, cell *params)
+cell AMX_NATIVE_CALL has_vtc(AMX *amx, cell *params)
 {
 	return (cell)api_cfg.hasVTC();
 }
@@ -1351,8 +1351,8 @@ AMX_NATIVE_INFO Misc_Natives_Checks[] =
 {
 	{ "is_rehlds", is_rehlds },
 	{ "is_regamedll", is_regamedll },
-	{ "is_has_reunion", is_has_reunion },
-	{ "is_has_vtc", is_has_vtc }
+	{ "has_reunion", has_reunion },
+	{ "has_vtc", has_vtc }
 };
 
 void RegisterNatives_Misc()

@@ -113,7 +113,7 @@ native SetHookChainArg(number, AType:type, any:...);
 * @return			1/0
 *
 */
-native is_rehlds();
+native bool:is_rehlds();
 
 /*
 * Check if the regamedll is available
@@ -121,7 +121,7 @@ native is_rehlds();
 * @return			1/0
 *
 */
-native is_regamedll();
+native bool:is_regamedll();
 
 /*
 * Check if the reunion is available
@@ -129,7 +129,7 @@ native is_regamedll();
 * @return			1/0
 *
 */
-native is_has_reunion();
+native bool:has_reunion();
 
 /*
 * Check if the vtc is available
@@ -137,7 +137,7 @@ native is_has_reunion();
 * @return			1/0
 *
 */
-native is_has_vtc();
+native bool:has_vtc();
 
 /*
 * This is the callback from the module that gives major/minor versions for verifying compatibility reapi API versions

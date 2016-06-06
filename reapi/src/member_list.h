@@ -5,7 +5,7 @@
 // member types
 enum MType
 {
-	MEMBER_FLOAT = 0,		// Any floating popm_value
+	MEMBER_FLOAT = 0,		// Any floating point value
 	MEMBER_DOUBLE,			// double value
 	MEMBER_ENTITY,			// An entity offset (EOFFSET)
 	MEMBER_CLASSPTR,		// CBaseEntity *
@@ -13,7 +13,7 @@ enum MType
 	MEMBER_EVARS,			// EVARS *
 	MEMBER_EDICT,			// edict_t *, or edict_t *  (same thing)
 	MEMBER_VECTOR,			// Any vector
-	MEMBER_STRING,			// pm_*, pm_[]
+	MEMBER_STRING,			// char *, char []
 	MEMBER_QSTRING,			// quake string, like string_t
 	MEMBER_RSTRING,			// reverse of qstring to string
 	MEMBER_INTEGER,			// Any integer or enum

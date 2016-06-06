@@ -1024,7 +1024,7 @@ enum EntVars
 	var_euser4
 };
 
-enum UserCmd
+enum UCmd
 {
 	/*
 	* Description:		-

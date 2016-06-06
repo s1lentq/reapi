@@ -50,23 +50,41 @@ inline AType getApiType(T *) { return ATYPE_INTEGER; }
 
 #define MAX_ARGS 12u
 
+template<size_t current = 0, typename T1, typename T2, typename T3, typename T4, typename ...t_args>
+void setupArgTypes(AType args_type[MAX_ARGS], T1, T2, T3, T4, t_args... args)
+{
+	*(uint32 *)&args_type[current] = getApiType(T1()) | (getApiType(T2()) << 8) | (getApiType(T3()) << 16) | (getApiType(T4()) << 24);
+	if (sizeof...(args) && current + 1 < MAX_ARGS)
+		setupArgTypes<current + 4>(args_type, args...);
+}
+
+template<size_t current = 0, typename T1, typename T2, typename T3>
+void setupArgTypes(AType args_type[MAX_ARGS], T1, T2, T3)
+{
+	*(uint32 *)&args_type[current] = getApiType(T1()) | (getApiType(T2()) << 8) | (getApiType(T3()) << 16);
+}
+
+template<size_t current = 0, typename T1, typename T2>
+void setupArgTypes(AType args_type[MAX_ARGS], T1, T2)
+{
+	*(uint16 *)&args_type[current] = getApiType(T1()) | (getApiType(T2()) << 8);
+}
+
+template<size_t current = 0, typename T>
+void setupArgTypes(AType args_type[MAX_ARGS], T)
+{
+	args_type[current] = getApiType(T());
+}
+
 template<size_t current = 0>
 void setupArgTypes(AType args_type[MAX_ARGS])
 {
 }
 
-template<size_t current = 0, typename T, typename ...t_args>
-void setupArgTypes(AType args_type[MAX_ARGS], T, t_args... args)
-{
-	args_type[current] = getApiType(T());
-	if (sizeof...(args) && current + 1 < MAX_ARGS)
-		setupArgTypes<current + 1>(args_type, args...);
-}
-
 struct hookctx_t
 {
 	template<typename ...t_args>
-	hookctx_t(size_t arg_count, t_args... args) : args_ptr()
+	hookctx_t(size_t arg_count, t_args... args)
 	{
 		args_count = min(arg_count, MAX_ARGS);
 		setupArgTypes(args_type, args...);
@@ -128,9 +146,6 @@ NOINLINE void DLLEXPORT _callVoidForward(const hook_t* hook, original_t original
 template <typename original_t, typename ...f_args>
 void callVoidForward(size_t func, original_t original, f_args... args)
 {
-#ifndef _WIN32
-	static
-#endif
 	hookctx_t hookCtx(sizeof...(args), args...);
 
 	g_hookCtx = &hookCtx;
@@ -193,9 +208,6 @@ NOINLINE R DLLEXPORT _callForward(const hook_t* hook, original_t original, volat
 template <typename R, typename original_t, typename ...f_args>
 R callForward(size_t func, original_t original, f_args... args)
 {
-#ifndef _WIN32
-	static
-#endif
 	hookctx_t hookCtx(sizeof...(args), args...);
 
 	g_hookCtx = &hookCtx;
