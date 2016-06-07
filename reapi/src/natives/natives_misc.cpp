@@ -1299,6 +1299,62 @@ AMX_NATIVE_INFO Misc_Natives_RH[] =
 	{ nullptr, nullptr }
 };
 
+/*
+* Check if the rehlds is available
+*
+* @return			1/0
+*
+* native is_rehlds();
+*/
+cell AMX_NATIVE_CALL is_rehlds(AMX *amx, cell *params)
+{
+	return (cell)api_cfg.hasReHLDS();
+}
+
+/*
+* Check if the regamedll is available
+*
+* @return			1/0
+*
+* native is_regamedll();
+*/
+cell AMX_NATIVE_CALL is_regamedll(AMX *amx, cell *params)
+{
+	return (cell)api_cfg.hasReGameDLL();
+}
+
+/*
+* Check if the reunion is available
+*
+* @return			1/0
+*
+* native is_has_reunion();
+*/
+cell AMX_NATIVE_CALL has_reunion(AMX *amx, cell *params)
+{
+	return (cell)api_cfg.hasReunion();
+}
+
+/*
+* Check if the vtc is available
+*
+* @return			1/0
+*
+* native is_has_vtc();
+*/
+cell AMX_NATIVE_CALL has_vtc(AMX *amx, cell *params)
+{
+	return (cell)api_cfg.hasVTC();
+}
+
+AMX_NATIVE_INFO Misc_Natives_Checks[] =
+{
+	{ "is_rehlds", is_rehlds },
+	{ "is_regamedll", is_regamedll },
+	{ "has_reunion", has_reunion },
+	{ "has_vtc", has_vtc }
+};
+
 void RegisterNatives_Misc()
 {
 	if (api_cfg.hasReGameDLL())
@@ -1306,4 +1362,5 @@ void RegisterNatives_Misc()
 
 	if (api_cfg.hasReHLDS())
 		g_amxxapi.AddNatives(Misc_Natives_RH);
-}
+
+	g_amxxapi.AddNatives(Misc_Natives_Checks);}

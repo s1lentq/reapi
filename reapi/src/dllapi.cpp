@@ -4,7 +4,7 @@ DLL_FUNCTIONS *g_pFunctionTable;
 DLL_FUNCTIONS gFunctionTable =
 {
 	NULL,					// pfnGameInit
-	&DispatchSpawn,					// pfnSpawn
+	&DispatchSpawn,			// pfnSpawn
 	NULL,					// pfnThink
 	NULL,					// pfnUse
 	NULL,					// pfnTouch

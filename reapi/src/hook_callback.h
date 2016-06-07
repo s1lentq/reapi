@@ -29,8 +29,8 @@ struct retval_t
 	{
 		char*			_string;
 		float			_float;
-		int				_interger;
-		CBaseEntity*	_classptr;
+		int			_integer;
+		CBaseEntity*		_classptr;
 		edict_t*		_edict;
 		entvars_t*		_pev;
 	};
@@ -39,36 +39,62 @@ struct retval_t
 inline AType getApiType(int)			{ return ATYPE_INTEGER; }
 inline AType getApiType(unsigned)		{ return ATYPE_INTEGER; }
 inline AType getApiType(float)			{ return ATYPE_FLOAT; }
-inline AType getApiType(const char *)	{ return ATYPE_STRING; }
-inline AType getApiType(char [])	{ return ATYPE_STRING; }
-inline AType getApiType(CBaseEntity *)	{ return ATYPE_CLASSPTR; }
-inline AType getApiType(edict_t *)	{ return ATYPE_CLASSPTR; }
-inline AType getApiType(entvars_t *)	{ return ATYPE_EVARS; }
+inline AType getApiType(const char *)		{ return ATYPE_STRING; }
+inline AType getApiType(char [])		{ return ATYPE_STRING; }
+inline AType getApiType(CBaseEntity *)		{ return ATYPE_CLASSPTR; }
+inline AType getApiType(edict_t *)		{ return ATYPE_CLASSPTR; }
+inline AType getApiType(entvars_t *)		{ return ATYPE_EVARS; }
 
 template<typename T>
 inline AType getApiType(T *) { return ATYPE_INTEGER; }
 
-#define MAX_ARGS 12u
+#define MAX_HOOKCHAIN_ARGS 12u
 
-template<size_t current = 0>
-void setupArgTypes(AType args_type[MAX_ARGS])
+template<size_t current = 0, typename T1, typename T2, typename T3, typename T4, typename ...t_args>
+void setupArgTypes(AType args_type[], T1, T2, T3, T4, t_args... args)
 {
+	if (current + 4 <= MAX_HOOKCHAIN_ARGS)
+		*(uint32 *)&args_type[current] = getApiType(T1()) | (getApiType(T2()) << 8) | (getApiType(T3()) << 16) | (getApiType(T4()) << 24);
+	if (sizeof...(args) && current + 4 < MAX_HOOKCHAIN_ARGS)
+		setupArgTypes<current + 4>(args_type, args...);
 }
 
-template<size_t current = 0, typename T, typename ...t_args>
-void setupArgTypes(AType args_type[MAX_ARGS], T, t_args... args)
+template<size_t current = 0, typename T1, typename T2, typename T3>
+void setupArgTypes(AType args_type[], T1, T2, T3)
 {
-	args_type[current] = getApiType(T());
-	if (sizeof...(args) && current + 1 < MAX_ARGS)
-		setupArgTypes<current + 1>(args_type, args...);
+	if (current + 3 <= MAX_HOOKCHAIN_ARGS)
+		*(uint32 *)&args_type[current] = getApiType(T1()) | (getApiType(T2()) << 8) | (getApiType(T3()) << 16);
+	else
+		setupArgTypes(args_type, T1(), T2());
+}
+
+template<size_t current = 0, typename T1, typename T2>
+void setupArgTypes(AType args_type[], T1, T2)
+{
+	if (current + 2 <= MAX_HOOKCHAIN_ARGS)
+		*(uint16 *)&args_type[current] = getApiType(T1()) | (getApiType(T2()) << 8);
+	else
+		setupArgTypes(args_type, T1());
+}
+
+template<size_t current = 0, typename T>
+void setupArgTypes(AType args_type[], T)
+{
+	if (current + 1 <= MAX_HOOKCHAIN_ARGS)
+		args_type[current] = getApiType(T());
+}
+
+template<size_t current = 0>
+void setupArgTypes(AType args_type[])
+{
 }
 
 struct hookctx_t
 {
 	template<typename ...t_args>
-	hookctx_t(size_t arg_count, t_args... args) : args_ptr()
+	hookctx_t(size_t arg_count, t_args... args)
 	{
-		args_count = min(arg_count, MAX_ARGS);
+		args_count = min(arg_count, MAX_HOOKCHAIN_ARGS);
 		setupArgTypes(args_type, args...);
 	}
 
@@ -82,7 +108,7 @@ struct hookctx_t
 	retval_t retVal;
 	size_t args_count;
 	size_t args_ptr;
-	AType args_type[MAX_ARGS];
+	AType args_type[MAX_HOOKCHAIN_ARGS];
 };
 
 extern hookctx_t* g_hookCtx;
@@ -90,10 +116,11 @@ extern hookctx_t* g_hookCtx;
 template <typename original_t, typename ...f_args>
 NOINLINE void DLLEXPORT _callVoidForward(const hook_t* hook, original_t original, volatile f_args... args)
 {
-	g_hookCtx->reset(size_t(&original) + sizeof(original));
+	auto hookCtx = g_hookCtx;
+	hookCtx->reset(size_t(&original) + sizeof(original));
 	int hc_state = HC_CONTINUE;
 
-	for (auto& fwd : hook->pre)
+	for (auto fwd : hook->pre)
 	{
 		if (fwd->GetState() == FSTATE_ENABLED)
 		{
@@ -108,10 +135,13 @@ NOINLINE void DLLEXPORT _callVoidForward(const hook_t* hook, original_t original
 		}
 	}
 
-	if (hc_state != HC_SUPERCEDE)
+	if (hc_state != HC_SUPERCEDE) {
+		g_hookCtx = nullptr;
 		original(args...);
+		g_hookCtx = hookCtx;
+	}
 
-	for (auto& fwd : hook->post) {
+	for (auto fwd : hook->post) {
 		if (fwd->GetState() == FSTATE_ENABLED) {
 			auto ret = g_amxxapi.ExecuteForward(fwd->GetIndex(), args...);
 
@@ -124,9 +154,6 @@ NOINLINE void DLLEXPORT _callVoidForward(const hook_t* hook, original_t original
 template <typename original_t, typename ...f_args>
 void callVoidForward(size_t func, original_t original, f_args... args)
 {
-#ifndef _WIN32
-	static
-#endif
 	hookctx_t hookCtx(sizeof...(args), args...);
 
 	g_hookCtx = &hookCtx;
@@ -137,26 +164,27 @@ void callVoidForward(size_t func, original_t original, f_args... args)
 template <typename R, typename original_t, typename ...f_args>
 NOINLINE R DLLEXPORT _callForward(const hook_t* hook, original_t original, volatile f_args... args)
 {
-	auto& hookCtx = *g_hookCtx;
-	hookCtx.reset(size_t(&original) + sizeof(original), getApiType(R()));
+	auto hookCtx = g_hookCtx;
+	hookCtx->reset(size_t(&original) + sizeof(original), getApiType(R()));
 	int hc_state = HC_CONTINUE;
 
-	for (auto& fwd : hook->pre)
+	for (auto fwd : hook->pre)
 	{
 		if (fwd->GetState() == FSTATE_ENABLED)
 		{
 			auto ret = g_amxxapi.ExecuteForward(fwd->GetIndex(), args...);
 
-			if (ret == HC_CONTINUE)
+			if (ret == HC_CONTINUE) {
 				continue;
+			}
 
-			if (!hookCtx.retVal.set) {
+			if (!hookCtx->retVal.set) {
 				g_amxxapi.LogError(fwd->GetAmx(), AMX_ERR_CALLBACK, "%s", "can't suppress original function call without new return value set");
 				continue;
 			}
 
 			if (ret == HC_BREAK) {
-				return *(R *)&hookCtx.retVal._interger;
+				return *(R *)&hookCtx->retVal._integer;
 			}
 
 			if (ret > hc_state)
@@ -166,12 +194,17 @@ NOINLINE R DLLEXPORT _callForward(const hook_t* hook, original_t original, volat
 
 	if (hc_state != HC_SUPERCEDE)
 	{
+		g_hookCtx = nullptr;
 		auto retVal = original(args...);
+		g_hookCtx = hookCtx;
+
 		if (hc_state != HC_OVERRIDE)
-			hookCtx.retVal._interger = *(int *)&retVal;
+			hookCtx->retVal._integer = *(int *)&retVal;
+
+		hookCtx->retVal.set = true;
 	}
 
-	for (auto& fwd : hook->post) {
+	for (auto fwd : hook->post) {
 		if (fwd->GetState() == FSTATE_ENABLED) {
 			auto ret = g_amxxapi.ExecuteForward(fwd->GetIndex(), args...);
 
@@ -180,15 +213,12 @@ NOINLINE R DLLEXPORT _callForward(const hook_t* hook, original_t original, volat
 		}
 	}
 
-	return *(R *)&hookCtx.retVal._interger;
+	return *(R *)&hookCtx->retVal._integer;
 }
 
 template <typename R, typename original_t, typename ...f_args>
 R callForward(size_t func, original_t original, f_args... args)
 {
-#ifndef _WIN32
-	static
-#endif
 	hookctx_t hookCtx(sizeof...(args), args...);
 
 	g_hookCtx = &hookCtx;

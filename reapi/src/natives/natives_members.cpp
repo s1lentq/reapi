@@ -210,6 +210,49 @@ cell AMX_NATIVE_CALL get_entvar(AMX *amx, cell *params)
 	return get_member(&pEdict->v, member, element, dest);
 }
 
+// native set_pmove(const PlayerMove:pmove, any:...);
+cell AMX_NATIVE_CALL set_pmove(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_var, arg_value, arg_elem };
+	member_t *member = memberlist[params[arg_var]];
+
+	if (member == nullptr) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_var]);
+		return FALSE;
+	}
+
+	cell* value = getAmxAddr(amx, params[arg_value]);
+	size_t element = (PARAMS_COUNT == 4) ? *getAmxAddr(amx, params[arg_elem]) : 0;
+
+	return set_member(g_pMove, member, element, value);
+}
+
+// native any:get_pmove(const PlayerMove:pmove, any:...);
+cell AMX_NATIVE_CALL get_pmove(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_var, arg_2, arg_3 };
+	member_t *member = memberlist[params[arg_var]];
+
+	if (member == nullptr) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_var]);
+		return FALSE;
+	}
+
+	cell* dest;
+	size_t element;
+
+	if (PARAMS_COUNT == 3) {
+		dest = getAmxAddr(amx, params[arg_2]);
+		element = *getAmxAddr(amx, params[arg_3]);
+	}
+	else {
+		dest = nullptr;
+		element = 0;
+	}
+
+	return get_member(g_pMove, member, element, dest);
+}
+
 // native set_movevar(const MoveVars:var, any:...);
 cell AMX_NATIVE_CALL set_movevar(AMX *amx, cell *params)
 {
@@ -221,14 +264,8 @@ cell AMX_NATIVE_CALL set_movevar(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	auto& movevars = g_ReGameApi->GetPlayerMove()->movevars;
-	if (movevars == nullptr) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: movevars not initialized", __FUNCTION__);
-		return FALSE;
-	}
-
 	cell* value = getAmxAddr(amx, params[arg_value]);
-	return set_member(movevars, member, 0, value);
+	return set_member(g_pMove->movevars, member, 0, value);
 }
 
 // native any:get_movevar(const MoveVars:var, any:...);
@@ -245,33 +282,116 @@ cell AMX_NATIVE_CALL get_movevar(AMX *amx, cell *params)
 	cell* dest;
 	size_t element;
 
-	auto& movevars = g_ReGameApi->GetPlayerMove()->movevars;
-	if (movevars == nullptr) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: movevars not initialized", __FUNCTION__);
-		return FALSE;
-	}
-
 	if (PARAMS_COUNT == 3) {
 		dest = getAmxAddr(amx, params[arg_2]);
 		element = *getAmxAddr(amx, params[arg_3]);
+	}
+	else {
+		dest = nullptr;
+		element = 0;
+	}
+
+	return get_member(g_pMove->movevars, member, element, dest);
+}
+
+// native set_ucmd(const cmd, const UserCmd:var, any:...);
+cell AMX_NATIVE_CALL set_ucmd(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_cmd, arg_var, arg_value };
+	member_t *member = memberlist[params[arg_var]];
+
+	if (member == nullptr) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_var]);
+		return FALSE;
+	}
+
+	cell* cmd = (cell *)params[arg_cmd];
+	cell* value = getAmxAddr(amx, params[arg_value]);
+	return set_member(cmd, member, 0, value);
+}
+
+// native any:get_ucmd(const cmd, const UserCmd:var, any:...);
+cell AMX_NATIVE_CALL get_ucmd(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_cmd, arg_var, arg_3, arg_4 };
+	member_t *member = memberlist[params[arg_var]];
+
+	if (member == nullptr) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_var]);
+		return FALSE;
+	}
+
+	cell* dest;
+	size_t element;
+
+	if (PARAMS_COUNT == 3) {
+		dest = getAmxAddr(amx, params[arg_3]);
+		element = *getAmxAddr(amx, params[arg_4]);
 	}
 	else {
 		dest = (member->type != MEMBER_FLOAT) ? nullptr : getAmxAddr(amx, params[arg_3]);
 		element = 0;
 	}
 
-	return get_member(movevars, member, element, dest);
+	cell* cmd = (cell *)params[arg_cmd];
+	return get_member(cmd, member, element, dest);
 }
 
-AMX_NATIVE_INFO EntVars_Natives[] =
+// native set_pmtrace(const tr, const PMTrace:var, any:...);
+cell AMX_NATIVE_CALL set_pmtrace(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_tr, arg_var, arg_value };
+	member_t *member = memberlist[params[arg_var]];
+
+	if (member == nullptr) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_var]);
+		return FALSE;
+	}
+
+	cell* tr = (cell *)params[arg_tr];
+	cell* value = getAmxAddr(amx, params[arg_value]);
+	return set_member(tr, member, 0, value);
+}
+
+// native any:get_pmtrace(const tr, const PMTrace:var, any:...);
+cell AMX_NATIVE_CALL get_pmtrace(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_tr, arg_var, arg_3, arg_4 };
+	member_t *member = memberlist[params[arg_var]];
+
+	if (member == nullptr) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_var]);
+		return FALSE;
+	}
+
+	cell* dest;
+	size_t element;
+
+	if (PARAMS_COUNT == 3) {
+		dest = getAmxAddr(amx, params[arg_3]);
+		element = *getAmxAddr(amx, params[arg_4]);
+	}
+	else {
+		dest = nullptr;
+		element = 0;
+	}
+
+	cell* tr = (cell *)params[arg_tr];
+	return get_member(tr, member, element, dest);
+}
+
+AMX_NATIVE_INFO EngineVars_Natives[] =
 {
 	{ "set_entvar", set_entvar },
 	{ "get_entvar", get_entvar },
 
+	{ "set_ucmd", set_ucmd },
+	{ "get_ucmd", get_ucmd },
+
 	{ nullptr, nullptr }
 };
 
-AMX_NATIVE_INFO Member_Natives[] =
+AMX_NATIVE_INFO ReGameVars_Natives[] =
 {
 	{ "set_member", set_member },
 	{ "get_member", get_member },
@@ -279,8 +399,14 @@ AMX_NATIVE_INFO Member_Natives[] =
 	{ "set_member_game", set_member_game },
 	{ "get_member_game", get_member_game },
 
+	{ "set_pmove", set_pmove },
+	{ "get_pmove", get_pmove },
+
 	{ "set_movevar", set_movevar },
 	{ "get_movevar", get_movevar },
+
+	{ "set_pmtrace", set_pmtrace },
+	{ "get_pmtrace", get_pmtrace },
 
 	{ nullptr, nullptr }
 };
@@ -288,9 +414,9 @@ AMX_NATIVE_INFO Member_Natives[] =
 void RegisterNatives_Members()
 {
 	if (api_cfg.hasReGameDLL())
-		g_amxxapi.AddNatives(Member_Natives);
+		g_amxxapi.AddNatives(ReGameVars_Natives);
 
-	g_amxxapi.AddNatives(EntVars_Natives);
+	g_amxxapi.AddNatives(EngineVars_Natives);
 }
 
 BOOL set_member(void* pdata, const member_t *member, size_t element, cell* value)
@@ -321,8 +447,8 @@ BOOL set_member(void* pdata, const member_t *member, size_t element, cell* value
 	case MEMBER_VECTOR:
 		{
 			// native set_member(_index, any:_member, Float:_value[3], _elem);
-			Vector *pSource = (Vector *)value;
-			set_member<Vector>(pdata, member->offset, *pSource, element);
+			Vector& pSource = *(Vector *)value;
+			set_member<Vector>(pdata, member->offset, pSource, element);
 			return TRUE;
 		}
 	case MEMBER_STRING:
@@ -349,7 +475,6 @@ BOOL set_member(void* pdata, const member_t *member, size_t element, cell* value
 			char *source = getAmxString(value);
 			string_t newstr = ALLOC_STRING(source);
 			set_member<string_t>(pdata, member->offset, newstr, element);
-
 			return TRUE;
 		}
 	case MEMBER_FLOAT:
@@ -394,7 +519,11 @@ BOOL set_member(void* pdata, const member_t *member, size_t element, cell* value
 	case MEMBER_ENTITY:
 	case MEMBER_EVARS:
 	case MEBMER_REBUYSTRUCT:
+	case MEMBER_PMTRACE:
+	case MEBMER_USERCMD:
 		return FALSE;
+
+	default: break;
 	}
 
 	return FALSE;
@@ -433,7 +562,7 @@ cell get_member(void* pdata, const member_t *member, size_t element, cell* dest)
 			if (!dest)
 				return 0;
 
-			*((Vector *)dest) = *(Vector *)get_member_direct<Vector>(pdata, member->offset, element);
+			*(Vector *)dest = get_member<Vector>(pdata, member->offset, element);
 			return 1;
 		}
 	case MEMBER_STRING:
@@ -513,6 +642,15 @@ cell get_member(void* pdata, const member_t *member, size_t element, cell* dest)
 	case MEMBER_EVARS:
 	case MEBMER_REBUYSTRUCT:
 		return 0;
+
+	case MEMBER_PMTRACE:
+		// native any:get_member(_index, any:_member, element);
+		return (cell)get_member_direct<pmtrace_s>(pdata, member->offset, element);
+	case MEBMER_USERCMD:
+		// native any:get_member(_index, any:_member, element);
+		return (cell)get_member_direct<usercmd_s>(pdata, member->offset, element);
+
+	default: break;
 	}
 
 	return 0;
@@ -530,6 +668,9 @@ bool isTypeReturnable(MType type)
 	case MEMBER_SHORT:
 	case MEMBER_BYTE:
 	case MEMBER_BOOL:
+	case MEMBER_EVARS:
+	case MEMBER_PMTRACE:
+	case MEBMER_USERCMD:
 		return true;
 
 	default:

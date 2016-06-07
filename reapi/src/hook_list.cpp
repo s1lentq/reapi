@@ -47,7 +47,7 @@ struct regfunc
 	regfunc(R (*)(T, f_args...))
 	{
 		func = [](AMX *amx, const char *name) {
-			void(*func)(f_args...) = nullptr;
+			void (*func)(f_args...) = nullptr;
 			regargs<f_args...> args(func);
 			return g_amxxapi.RegisterSPForwardByName(amx, name, args);
 		};
