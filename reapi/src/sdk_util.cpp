@@ -3,7 +3,7 @@
 void __declspec(noreturn) UTIL_SysError(const char *fmt, ...)
 {
 	va_list argptr;
-	static char string[8192];
+	char string[8192];
 
 	va_start(argptr, fmt);
 	vsnprintf(string, sizeof(string), fmt, argptr);
@@ -32,7 +32,7 @@ char *UTIL_VarArgs(char *format, ...)
 void UTIL_LogPrintf(const char *fmt, ...)
 {
 	va_list argptr;
-	static char string[1024];
+	char string[1024];
 
 	va_start(argptr, fmt);
 	vsprintf(string, fmt, argptr);

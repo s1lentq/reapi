@@ -27,7 +27,7 @@ cell AMX_NATIVE_CALL RegisterHookChain(AMX *amx, cell *params)
 
 	if (!hook->checkRequirements())
 	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: function (%s) is not available, %s required", __FUNCTION__, hook->func_name, hook->depend_name);
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: function (%s) is not available, %s required.", __FUNCTION__, hook->func_name, hook->depend_name);
 		return 0;
 	}
 
@@ -130,7 +130,7 @@ cell AMX_NATIVE_CALL SetHookChainReturn(AMX *amx, cell *params)
 	{
 	case ATYPE_INTEGER:
 	case ATYPE_FLOAT:
-		retVal._interger = *srcAddr;
+		retVal._integer = *srcAddr;
 		break;
 
 	case ATYPE_STRING:
@@ -178,15 +178,21 @@ cell AMX_NATIVE_CALL GetHookChainReturn(AMX *amx, cell *params)
 	}
 
 	enum args_e { arg_count, arg_value, arg_maxlen };
-
 	auto& retVal = g_hookCtx->retVal;
+
+	if (!retVal.set)
+	{
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: return value isn't set.", __FUNCTION__);
+		return FALSE;
+	}
+
 	cell* dstAddr = getAmxAddr(amx, params[arg_value]);
 
 	switch (retVal.type)
 	{
 	case ATYPE_INTEGER:
 	case ATYPE_FLOAT:
-		return retVal._interger;
+		return retVal._integer;
 	case ATYPE_STRING:
 	{
 		if (PARAMS_COUNT != 2)
@@ -244,7 +250,7 @@ cell AMX_NATIVE_CALL SetHookChainArg(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	static char temp_strings[MAX_ARGS][1024];
+	static char temp_strings[MAX_HOOKCHAIN_ARGS][1024];
 
 	cell* srcAddr = getAmxAddr(amx, params[arg_value]);
 	size_t destAddr = g_hookCtx->args_ptr + number * sizeof(int);
