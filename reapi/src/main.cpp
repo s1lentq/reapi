@@ -74,7 +74,10 @@ int DispatchSpawn(edict_t* pEntity)
 	g_szMapName[sizeof(g_szMapName) - 1] = '\0';
 
 	g_pEdicts = g_engfuncs.pfnPEntityOfEntIndex(0);
-	g_pMove = g_ReGameApi->GetPlayerMove();
+	if (api_cfg.hasReGameDLL()) {
+		g_pMove = g_ReGameApi->GetPlayerMove();
+	}
+
 	g_pFunctionTable->pfnSpawn = nullptr;
 	RETURN_META_VALUE(MRES_IGNORED, 0);
 }

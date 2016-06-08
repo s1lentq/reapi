@@ -153,7 +153,7 @@ member_t memberlist_gamerules[] = {
 	GM_MEMBERS(m_flForceChaseCamValue),
 	GM_MEMBERS(m_flFadeToBlackValue),
 	GM_MEMBERS(m_pVIP),
-	GM_MEMBERS(VIPQueue),
+	GM_MEMBERS(m_pVIPQueue),
 	GM_MEMBERS(m_flIntermissionEndTime),
 	GM_MEMBERS(m_flIntermissionStartTime),
 	GM_MEMBERS(m_iEndIntermissionButtonHit),

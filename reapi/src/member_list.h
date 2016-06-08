@@ -130,7 +130,7 @@ enum CSGameRules_Members
 	m_flForceChaseCamValue,
 	m_flFadeToBlackValue,
 	m_pVIP,
-	VIPQueue,
+	m_pVIPQueue,
 	m_flIntermissionEndTime,
 	m_flIntermissionStartTime,
 	m_iEndIntermissionButtonHit,

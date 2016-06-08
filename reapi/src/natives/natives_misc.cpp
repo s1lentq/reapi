@@ -420,7 +420,7 @@ cell AMX_NATIVE_CALL rg_round_end(AMX *amx, cell *params)
 		Broadcast(_sentence);
 
 	if (_message[0])
-		g_ReGameFuncs->EndRoundMessage(_message, event);
+		CSGameRules()->EndRoundMessage(_message, event);
 
 	CSGameRules()->TerminateRound(CAmxArg(amx, params[arg_delay]), winstatus);
 	return TRUE;

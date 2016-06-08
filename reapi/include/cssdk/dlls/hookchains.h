@@ -37,6 +37,16 @@ public:
 	virtual t_ret callOriginal(t_args... args) = 0;
 };
 
+template<typename t_ret, typename t_class, typename ...t_args>
+class IHookChainClass {
+protected:
+	virtual ~IHookChainClass() {}
+
+public:
+	virtual t_ret callNext(t_class *, t_args... args) = 0;
+	virtual t_ret callOriginal(t_class *, t_args... args) = 0;
+};
+
 template<typename ...t_args>
 class IVoidHookChain
 {
@@ -46,6 +56,17 @@ protected:
 public:
 	virtual void callNext(t_args... args) = 0;
 	virtual void callOriginal(t_args... args) = 0;
+};
+
+template<typename t_class, typename ...t_args>
+class IVoidHookChainClass
+{
+protected:
+	virtual ~IVoidHookChainClass() {}
+
+public:
+	virtual void callNext(t_class *, t_args... args) = 0;
+	virtual void callOriginal(t_class *, t_args... args) = 0;
 };
 
 // Hook chain registry(for hooks [un]registration)
@@ -62,7 +83,7 @@ public:
 template<typename t_ret, typename t_class, typename ...t_args>
 class IHookChainRegistryClass {
 public:
-	typedef t_ret(*hookfunc_t)(IHookChain<t_ret, t_args...>*, t_class *, t_args...);
+	typedef t_ret(*hookfunc_t)(IHookChainClass<t_ret, t_class, t_args...>*, t_class *, t_args...);
 
 	virtual void registerHook(hookfunc_t hook) = 0;
 	virtual void unregisterHook(hookfunc_t hook) = 0;
@@ -82,7 +103,7 @@ public:
 template<typename t_class, typename ...t_args>
 class IVoidHookChainRegistryClass {
 public:
-	typedef void(*hookfunc_t)(IVoidHookChain<t_args...>*, t_class *, t_args...);
+	typedef void(*hookfunc_t)(IVoidHookChainClass<t_class, t_args...>*, t_class *, t_args...);
 
 	virtual void registerHook(hookfunc_t hook) = 0;
 	virtual void unregisterHook(hookfunc_t hook) = 0;
