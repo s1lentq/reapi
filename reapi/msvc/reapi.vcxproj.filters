@@ -764,6 +764,9 @@
     <None Include="..\src\reapi_version.inc">
       <Filter>src</Filter>
     </None>
+    <None Include="..\extra\amxmodx\scripting\include\cssdk_const.inc">
+      <Filter>amxmodx\scripting\include</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="reapi.rc" />

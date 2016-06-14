@@ -86,6 +86,7 @@ int regmember::current_cell = 1;
 member_t memberlist_gamerules[] = {
 	GM_MEMBERS(m_bFreezePeriod),
 	GM_MEMBERS(m_bBombDropped),
+	GM_MEMBERS(m_GameDesc),
 	// m_VoiceGameMgr ->
 		GM_VOICE_MEMBERS(m_msgPlayerVoiceMask),
 		GM_VOICE_MEMBERS(m_msgRequestState),
@@ -663,7 +664,7 @@ memberlist_t memberlist;
 
 member_t *memberlist_t::operator[](size_t members) const
 {
-	#define CASE(h)	case ht_##h: if (index < arraysize(memberlist_##h)) return &memberlist_##h[index]; else break;
+	#define CASE(h)	case mt_##h: if (index < arraysize(memberlist_##h)) return &memberlist_##h[index]; else break;
 
 	const auto table = members_tables_e(members / MAX_REGION_RANGE);
 	const auto index = members & (MAX_REGION_RANGE - 1);

@@ -263,6 +263,7 @@
     <ResourceCompile Include="reapi.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\extra\amxmodx\scripting\include\cssdk_const.inc" />
     <None Include="..\extra\amxmodx\scripting\include\reapi.inc" />
     <None Include="..\extra\amxmodx\scripting\include\reapi_engine.inc" />
     <None Include="..\extra\amxmodx\scripting\include\reapi_engine_const.inc" />

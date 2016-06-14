@@ -1,6 +1,6 @@
 #pragma once
 
-#define BEGIN_MEMBER_REGION(x)			(MAX_REGION_RANGE * memberlist_t::members_tables_e::ht_##x)
+#define BEGIN_MEMBER_REGION(x)			(MAX_REGION_RANGE * memberlist_t::members_tables_e::mt_##x)
 
 // member types
 enum MType
@@ -40,16 +40,16 @@ struct memberlist_t
 
 	enum members_tables_e
 	{
-		ht_gamerules,
-		ht_base,
-		ht_animating,
-		ht_basemonster,
-		ht_player,
-		ht_entvars,
-		ht_playermove,
-		ht_movevars,
-		ht_usercmd,
-		ht_pmtrace
+		mt_gamerules,
+		mt_base,
+		mt_animating,
+		mt_basemonster,
+		mt_player,
+		mt_entvars,
+		mt_playermove,
+		mt_movevars,
+		mt_usercmd,
+		mt_pmtrace
 	};
 };
 
@@ -60,6 +60,7 @@ enum CSGameRules_Members
 {
 	m_bFreezePeriod = BEGIN_MEMBER_REGION(gamerules),
 	m_bBombDropped,
+	m_GameDesc,
 
 	// m_VoiceGameMgr -> CVoiceGameMgr
 	m_msgPlayerVoiceMask,

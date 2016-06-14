@@ -684,14 +684,14 @@ void ShowMenu(IReGameHook_ShowMenu *chain, CBasePlayer *pPlayer, int bitsValidSl
 	callVoidForward(RG_ShowMenu, original, indexOfEdict(pPlayer->pev), bitsValidSlots, nDisplayTime, fNeedMore, pszText);
 }
 
-void ShowVGUIMenu(IReGameHook_ShowVGUIMenu *chain, CBasePlayer *pPlayer, int MenuType, int BitMask, char *szOldMenu)
+void ShowVGUIMenu(IReGameHook_ShowVGUIMenu *chain, CBasePlayer *pPlayer, int MenuType, int BitMask, char *szOldMenu, bool bForceOldMenu)
 {
-	auto original = [chain](int _pPlayer, int _MenuType, int _BitMask, char *_szOldMenu)
+	auto original = [chain](int _pPlayer, int _MenuType, int _BitMask, char *_szOldMenu, bool _bForceOldMenu)
 	{
-		chain->callNext(getPrivate<CBasePlayer>(_pPlayer), _MenuType, _BitMask, _szOldMenu);
+		chain->callNext(getPrivate<CBasePlayer>(_pPlayer), _MenuType, _BitMask, _szOldMenu, _bForceOldMenu);
 	};
 
-	callVoidForward(RG_ShowVGUIMenu, original, indexOfEdict(pPlayer->pev), MenuType, BitMask, szOldMenu);
+	callVoidForward(RG_ShowVGUIMenu, original, indexOfEdict(pPlayer->pev), MenuType, BitMask, szOldMenu, bForceOldMenu);
 }
 
 int g_iClientStartSpeak, g_iClientStopSpeak;

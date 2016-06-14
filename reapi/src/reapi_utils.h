@@ -120,5 +120,6 @@ inline const char *GetTeamName(TeamName team)
 void Broadcast(const char *sentence);
 void UpdateTeamScores();
 ModelName GetModelAuto(TeamName team);
+void UTIL_ServerPrint(const char *fmt, ...);
 
 extern void __declspec(noreturn) UTIL_SysError(const char *fmt, ...);

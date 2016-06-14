@@ -8,24 +8,16 @@ CGameRules *g_pGameRules = nullptr;
 bool RegamedllApi_Init()
 {
 	const char *szGameDLLModule = GET_GAME_INFO(PLID, GINFO_REALDLL_FULLPATH);
-
-	if (szGameDLLModule == NULL)
-	{
+	if (!szGameDLLModule)
 		return false;
-	}
 
 	CSysModule *gameModule = Sys_LoadModule(szGameDLLModule);
-
 	if (!gameModule)
-	{
 		return false;
-	}
 
 	CreateInterfaceFn ifaceFactory = Sys_GetFactory(gameModule);
 	if (!ifaceFactory)
-	{
 		return false;
-	}
 
 	int retCode = 0;
 	g_ReGameApi = (IReGameApi *)ifaceFactory(VRE_GAMEDLL_API_VERSION, &retCode);
@@ -40,13 +32,13 @@ bool RegamedllApi_Init()
 
 	if (majorVersion != REGAMEDLL_API_VERSION_MAJOR)
 	{
-		UTIL_LogPrintf("[%s]: ReGameDLL Api major version mismatch; expected %d, real %d\n", Plugin_info.logtag, REGAMEDLL_API_VERSION_MAJOR, majorVersion);
+		UTIL_ServerPrint("[%s]: ReGameDLL Api major version mismatch; expected %d, real %d\n", Plugin_info.logtag, REGAMEDLL_API_VERSION_MAJOR, majorVersion);
 		return false;
 	}
 
 	if (minorVersion < REGAMEDLL_API_VERSION_MINOR)
 	{
-		UTIL_LogPrintf("[%s]: ReGameDLL Api minor version mismatch; expected at least %d, real %d\n", Plugin_info.logtag, REGAMEDLL_API_VERSION_MINOR, minorVersion);
+		UTIL_ServerPrint("[%s]: ReGameDLL Api minor version mismatch; expected at least %d, real %d\n", Plugin_info.logtag, REGAMEDLL_API_VERSION_MINOR, minorVersion);
 		return false;
 	}
 

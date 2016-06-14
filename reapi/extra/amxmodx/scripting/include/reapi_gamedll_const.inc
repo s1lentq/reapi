@@ -138,7 +138,7 @@ enum GamedllFunc
 	* Return type:		int
 	* Params:		(const pObserver)
 	*/
-	RG_GetForceCamera = 1 * 1024,
+	RG_GetForceCamera = BEGIN_FUNC_REGION(gamedll),
 
 	/*
 	* Description:		-
@@ -196,12 +196,9 @@ enum GamedllFunc
 
 	/*
 	* Description:		-
-	* Params:		(const index, VGUIMenu:menuType, const bitsSlots, szOldMenu[])
+	* Params:		(const index, VGUIMenu:menuType, const bitsSlots, szOldMenu[], bool:bForceOldMenu)
 	*/
-	RG_ShowVGUIMenu,
-
-	// [...]
-	RG_End
+	RG_ShowVGUIMenu
 };
 
 enum GamedllFunc_CBaseAnimating
@@ -210,10 +207,7 @@ enum GamedllFunc_CBaseAnimating
 	* Description:		-
 	* Params:		(const this)
 	*/
-	RG_CBaseAnimating_ResetSequenceInfo = 2 * 1024,
-
-	// [...]
-	RG_CBaseAnimating_End
+	RG_CBaseAnimating_ResetSequenceInfo = BEGIN_FUNC_REGION(animating)
 };
 
 enum GamedllFunc_CBasePlayer
@@ -222,7 +216,7 @@ enum GamedllFunc_CBasePlayer
 	* Description:		-
 	* Params:		(const this)
 	*/
-	RG_CBasePlayer_Spawn = 3 * 1024,
+	RG_CBasePlayer_Spawn = BEGIN_FUNC_REGION(player),
 
 	/*
 	* Description:		-
@@ -402,10 +396,7 @@ enum GamedllFunc_CBasePlayer
 	* Description:		-
 	* Params:		(const this, bool:bDeploy)
 	*/
-	RG_CBasePlayer_GiveShield,
-
-	// [...]
-	RG_CBasePlayer_End
+	RG_CBasePlayer_GiveShield
 };
 
 enum GamedllFunc_CSGameRules
@@ -414,7 +405,7 @@ enum GamedllFunc_CSGameRules
 	* Description:		-
 	* Params:		(const index, const weapon)
 	*/
-	RG_CSGameRules_FShouldSwitchWeapon = 4 * 1024,
+	RG_CSGameRules_FShouldSwitchWeapon = BEGIN_FUNC_REGION(gamerules),
 
 	/*
 	* Description:		-
@@ -540,10 +531,7 @@ enum GamedllFunc_CSGameRules
 	* Description:		-
 	* Params:		()
 	*/
-	RG_CSGameRules_BalanceTeams,
-
-	// [...]
-	RG_CSGameRules_End
+	RG_CSGameRules_BalanceTeams
 };
 
 // CSGameRules
@@ -555,7 +543,7 @@ enum CSGameRules_Members
 	* Get params:		get_member_game(member);
 	* Set params:		set_member_game(member, value);
 	*/
-	m_bFreezePeriod = 0 * 1024,
+	m_bFreezePeriod = BEGIN_MEMBER_REGION(gamerules),
 
 	/*
 	* Description:		-
@@ -564,6 +552,14 @@ enum CSGameRules_Members
 	* Set params:		set_member_game(member, value);
 	*/
 	m_bBombDropped,
+
+	/*
+	* Description:		-
+	* Member type:		char *
+	* Get params:		get_member_game(member, dest[], const lenght);
+	* Set params:		set_member_game(member, const source[]);
+	*/
+	m_GameDesc,
 
 	/*
 	* Description:		-
@@ -1200,7 +1196,7 @@ enum CBaseEntity_Members
 	* Get params:		Float:get_member(index, member);
 	* Set params:		set_member(index, member, Float:value);
 	*/
-	currentammo = 1 * 1024,
+	currentammo = BEGIN_MEMBER_REGION(base),
 
 	/*
 	* Description:		-
@@ -1404,7 +1400,7 @@ enum CBaseAnimating_Members
 	* Get params:		Float:get_member(index, member);
 	* Set params:		set_member(index, member, Float:value);
 	*/
-	m_flFrameRate = 2 * 1024,
+	m_flFrameRate = BEGIN_MEMBER_REGION(animating),
 
 	/*
 	* Description:		-
@@ -1448,7 +1444,7 @@ enum CBaseMonster_Members
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);
 	*/
-	m_Activity = 3 * 1024,
+	m_Activity = BEGIN_MEMBER_REGION(basemonster),
 
 	/*
 	* Description:		-
@@ -1580,7 +1576,7 @@ enum CBasePlayer_Members
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);
 	*/
-	random_seed = 4 * 1024,
+	random_seed = BEGIN_MEMBER_REGION(player),
 
 	/*
 	* Description:		-
@@ -3079,7 +3075,7 @@ enum PlayerMove
 	* Get params:		get_pmove(member);
 	* Set params:		set_pmove(const PlayerMove:var, value);
 	*/
-	pm_player_index = 6 * 1024,
+	pm_player_index = BEGIN_MEMBER_REGION(playermove),
 
 	/*
 	* Description:		-
@@ -3562,7 +3558,7 @@ enum MoveVars
 	* Get params:		Float:get_mvar(const MoveVars:var);
 	* Set params:		set_mvar(const MoveVars:var, Float:value);
 	*/
-	mv_gravity = 7 * 1024,
+	mv_gravity = BEGIN_MEMBER_REGION(movevars),
 
 	/*
 	* Description:		-
@@ -3773,7 +3769,7 @@ enum PMTrace
 	* Get params:		get_pmtrace(const tr, const PMTrace:var);
 	* Set params:		set_pmtrace(const tr, const PMTrace:var, value);
 	*/
-	pmt_allsolid = 9 * 1024,
+	pmt_allsolid = BEGIN_MEMBER_REGION(pmtrace),
 
 	/*
 	* Description:		-

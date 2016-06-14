@@ -66,8 +66,9 @@ enum GiveType { GT_APPEND, GT_REPLACE, GT_DROP_AND_REPLACE };
 *
 * @param index		Client index
 * @param pszName	Classname item
+* @param type		Look at the enum's with name GiveType
 *
-* @noreturn
+* @return		1 if successfully, 0 otherwise
 *
 * native rg_give_item(index, const pszName[], GiveType:type = GT_APPEND);
 */
@@ -443,7 +444,7 @@ cell AMX_NATIVE_CALL rg_update_teamscores(AMX *amx, cell *params)
 
 	CSGameRules()->m_iNumCTWins = ((params[arg_add] != 0) ? CSGameRules()->m_iNumCTWins : 0) + params[arg_cts];
 	CSGameRules()->m_iNumTerroristWins = ((params[arg_add] != 0) ? CSGameRules()->m_iNumTerroristWins : 0) + params[arg_ts];
-	UpdateTeamScores();
+	CSGameRules()->UpdateTeamScores();
 
 	return TRUE;
 }
@@ -1147,13 +1148,197 @@ cell AMX_NATIVE_CALL rg_transfer_c4(AMX *amx, cell *params)
 * Instant reload weapons
 *
 * @param index		Client index
-* @param weapon		Entity weapons, if 0 then all the weapons
+* @param weapon		Weapon entity-index, if 0 then all the weapons
 *
 * @return		1 if successfully, 0 otherwise
 *
 * native rg_instant_reload_weapons(const index, const weapon = 0);
 */
 cell AMX_NATIVE_CALL rg_instant_reload_weapons(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_weapon, arg_force_reload, arg_force_refill };
+
+	CHECK_ISPLAYER(arg_index);
+
+	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
+	if (pPlayer == nullptr || pPlayer->has_disconnected) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
+		return FALSE;
+	}
+
+	CBasePlayerWeapon *pWeapon = nullptr;
+	if (params[arg_weapon] != 0)
+	{
+		pWeapon = getPrivate<CBasePlayerWeapon>(params[arg_weapon]);
+		if (pWeapon == nullptr || !pWeapon->IsWeapon()) {
+			MF_LogError(amx, AMX_ERR_NATIVE, "%s: Invalid entity weapon", __FUNCTION__);
+			return FALSE;
+		}
+	}
+
+	pPlayer->CSPlayer()->ReloadWeapons(pWeapon, true, true);
+	return TRUE;
+}
+
+/*
+* Sets the amount of reward in the game account for all players.
+*
+* @param rules_index	Look at the enum's with name RewardRules
+* @param amount		The amount money
+*
+* @noreturn
+*
+* native rg_set_account_rules(const RewardRules:rules_index, const amount);
+*/
+cell AMX_NATIVE_CALL rg_set_account_rules(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_rules_index, arg_amount };
+
+	if (g_pGameRules == nullptr) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: gamerules not initialized", __FUNCTION__);
+		return FALSE;
+	}
+
+	CSGameRules()->SetAccountRules(static_cast<RewardRules>(params[arg_rules_index]), params[arg_amount]);
+	return TRUE;
+}
+
+/*
+* Get the amount of reward from account
+*
+* @param rules_index	Look at the enum's with name RewardRules
+*
+* @return		The amount of reward from account
+*
+* native rg_get_account_rules(const RewardRules:rules_index);
+*/
+cell AMX_NATIVE_CALL rg_get_account_rules(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_rules_index };
+
+	if (g_pGameRules == nullptr) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: gamerules not initialized", __FUNCTION__);
+		return FALSE;
+	}
+
+	return (cell)CSGameRules()->GetAccountRules(static_cast<RewardRules>(params[arg_rules_index]));
+}
+
+/*
+* If the bomb is planted
+*
+* @return		1 if successfully, 0 otherwise
+*
+* native bool:rg_is_bomb_planted();
+*/
+cell AMX_NATIVE_CALL rg_is_bomb_planted(AMX *amx, cell *params)
+{
+	if (g_pGameRules == nullptr) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: gamerules not initialized", __FUNCTION__);
+		return FALSE;
+	}
+
+	return (cell)CSGameRules()->IsBombPlanted();
+}
+
+/*
+* Join team
+*
+* @param index		Client index
+* @param team		Team id
+*
+* @return		1 if successfully joined the team, 0 otherwise
+*
+* native rg_join_team(const index, const TeamName:team);
+*/
+cell AMX_NATIVE_CALL rg_join_team(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_team };
+
+	CHECK_ISPLAYER(arg_index);
+
+	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
+	if (pPlayer == nullptr || pPlayer->has_disconnected) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
+		return FALSE;
+	}
+
+	return (cell)pPlayer->CSPlayer()->JoinTeam(static_cast<TeamName>(params[arg_team]));
+}
+
+/*
+* Instantly balances the team.
+*
+* @noreturn
+*
+* native rg_balance_teams();
+*/
+cell AMX_NATIVE_CALL rg_balance_teams(AMX *amx, cell *params)
+{
+	if (g_pGameRules == nullptr) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: gamerules not initialized", __FUNCTION__);
+		return FALSE;
+	}
+
+	CSGameRules()->BalanceTeams();
+	return TRUE;
+}
+
+/*
+* To swap players, without reset frags/deaths and the amount wins.
+*
+* @noreturn
+*
+* native rg_swap_all_players();
+*/
+cell AMX_NATIVE_CALL rg_swap_all_players(AMX *amx, cell *params)
+{
+	if (g_pGameRules == nullptr) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: gamerules not initialized", __FUNCTION__);
+		return FALSE;
+	}
+
+	CSGameRules()->SwapAllPlayers();
+	return TRUE;
+}
+
+/*
+* Instantly switches to the opposite team for one player.
+* @note Switch from CT to TERRORIST also opposite.
+*
+* @param index		Client index
+*
+* @noreturn
+*
+* native rg_switch_team(const index);
+*/
+cell AMX_NATIVE_CALL rg_switch_team(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index };
+
+	CHECK_ISPLAYER(arg_index);
+
+	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
+	if (pPlayer == nullptr || pPlayer->has_disconnected) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
+		return FALSE;
+	}
+
+	pPlayer->CSPlayer()->SwitchTeam();
+	return TRUE;
+}
+
+/*
+* Switch to specific weapon
+*
+* @param index		Client index
+* @param weapon		Weapon entity-index
+*
+* @return		1 if successfully switched, 0 otherwise
+*
+* native rg_switch_weapon(const index, const weapon);
+*/
+cell AMX_NATIVE_CALL rg_switch_weapon(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_index, arg_weapon };
 
@@ -1166,13 +1351,12 @@ cell AMX_NATIVE_CALL rg_instant_reload_weapons(AMX *amx, cell *params)
 	}
 
 	auto pWeapon = getPrivate<CBasePlayerWeapon>(params[arg_weapon]);
-	if (params[arg_weapon] != 0 && pWeapon == nullptr) {
+	if (pWeapon == nullptr || !pWeapon->IsWeapon()) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: Invalid entity weapon", __FUNCTION__);
 		return FALSE;
 	}
 
-	pPlayer->CSPlayer()->ReloadWeapons(pWeapon);
-	return TRUE;
+	return (cell)pPlayer->CSPlayer()->SwitchWeapon(pWeapon);
 }
 
 AMX_NATIVE_INFO Misc_Natives_RG[] =
@@ -1219,6 +1403,16 @@ AMX_NATIVE_INFO Misc_Natives_RG[] =
 
 	{ "rg_transfer_c4", rg_transfer_c4 },
 	{ "rg_instant_reload_weapons", rg_instant_reload_weapons },
+
+	{ "rg_set_account_rules", rg_set_account_rules },
+	{ "rg_get_account_rules", rg_get_account_rules },
+
+	{ "rg_is_bomb_planted", rg_is_bomb_planted },
+	{ "rg_join_team", rg_join_team },
+	{ "rg_balance_teams", rg_balance_teams },
+	{ "rg_swap_all_players", rg_swap_all_players },
+	{ "rg_switch_team", rg_switch_team },
+	{ "rg_switch_weapon", rg_switch_weapon },
 
 	{ nullptr, nullptr }
 };
@@ -1290,11 +1484,62 @@ cell AMX_NATIVE_CALL rh_reset_mapname(AMX *amx, cell *params)
 	return TRUE;
 }
 
+/*
+* Emits a sound from an entity from the engine.
+*
+* @param entity		Entity index or use 0 to emit from worldspawn at the specified position
+* @param recipients	Recipient index or use 0 to heard for all clients
+* @param channel	Channel to emit from
+* @param sample		Sound file to emit
+* @param vol		Volume in percent
+* @param attn		Sound attenuation
+* @param flags		Emit flags
+* @param pitch		Sound pitch
+* @param emitFlags	Additional Emit2 flags, look at the defines like SND_EMIT2_*
+
+* @return		1 if successfully sounds are emitted, 0 otherwise
+*
+* native rh_emit_sound2(const entity, const recipient, const channel, const sample[], Float:vol = VOL_NORM, Float:attn = ATTN_NORM, const flags = 0, const pitch = PITCH_NORM, emitFlags = 0, const Float:origin[3] = {0.0,0.0,0.0});
+*/
+cell AMX_NATIVE_CALL rh_emit_sound2(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_entity, arg_recipient, arg_channel, arg_sample, arg_vol, arg_attn, arg_flags, arg_pitch, arg_emitFlags, arg_origin };
+
+	CBasePlayer *pRecipient = getPrivate<CBasePlayer>(params[arg_recipient]);
+	if (pRecipient != nullptr && pRecipient->has_disconnected) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_recipient]);
+		return FALSE;
+	}
+
+	// ignore bots
+	if ((pRecipient != nullptr && pRecipient->IsBot()) || !pRecipient->IsNetClient()) {
+		return FALSE;
+	}
+
+	CAmxArgs args(amx, params);
+	const char *sample = getAmxString(amx, params[arg_sample]);
+
+	return g_RehldsFuncs->SV_EmitSound2
+	(
+		args[arg_entity],	// entity
+		args[arg_recipient],	// recipient
+		args[arg_channel],	// channel
+		sample,			// sample
+		args[arg_vol],		// volume
+		args[arg_attn],		// attn
+		args[arg_flags],	// flags
+		args[arg_pitch],	// pitch
+		args[arg_emitFlags],	// emitFlags
+		args[arg_origin]	// pOrigin
+	);
+}
+
 AMX_NATIVE_INFO Misc_Natives_RH[] =
 {
 	{ "rh_set_mapname", rh_set_mapname },
 	{ "rh_get_mapname", rh_get_mapname },
 	{ "rh_reset_mapname", rh_reset_mapname },
+	{ "rh_emit_sound2", rh_emit_sound2 },
 
 	{ nullptr, nullptr }
 };
@@ -1363,4 +1608,5 @@ void RegisterNatives_Misc()
 	if (api_cfg.hasReHLDS())
 		g_amxxapi.AddNatives(Misc_Natives_RH);
 
-	g_amxxapi.AddNatives(Misc_Natives_Checks);}
+	g_amxxapi.AddNatives(Misc_Natives_Checks);
+}

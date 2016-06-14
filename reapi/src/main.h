@@ -4,7 +4,6 @@ extern char g_szMapName[32];
 extern edict_t* g_pEdicts;
 extern playermove_t* g_pMove;
 extern int gmsgSendAudio;
-extern int gmsgTeamScore;
 extern int gmsgStatusIcon;
 extern int gmsgArmorType;
 extern int gmsgTeamInfo;

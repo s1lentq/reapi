@@ -13,6 +13,34 @@
 	#pragma library reapi
 #endif
 
+enum hooks_tables_e
+{
+	ht_engine,
+	ht_gamedll,
+	ht_animating,
+	ht_player,
+	ht_gamerules
+};
+
+enum members_tables_e
+{
+	mt_gamerules,
+	mt_base,
+	mt_animating,
+	mt_basemonster,
+	mt_player,
+	mt_entvars,
+	mt_playermove,
+	mt_movevars,
+	mt_usercmd,
+	mt_pmtrace
+};
+
+#define MAX_REGION_RANGE		1024
+
+#define BEGIN_FUNC_REGION(%0)		(any:MAX_REGION_RANGE * hooks_tables_e:ht_%0)
+#define BEGIN_MEMBER_REGION(%0)		(any:MAX_REGION_RANGE * members_tables_e:mt_%0)
+
 #include <cssdk_const>
 
 #include <reapi_engine>		// NOTE: only for ReHLDS

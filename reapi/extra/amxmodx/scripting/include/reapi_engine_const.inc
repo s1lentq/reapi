@@ -7,13 +7,17 @@
 // for natives rh_get_mapname
 enum MapNameType { MNT_TRUE, MNT_SET };
 
+// rh_emit_sound2 flags
+#define SND_EMIT2_NOPAS		(1<<0)	// never to do check PAS
+#define SND_EMIT2_INVOKER	(1<<1)	// do not send to the client invoker
+
 enum EngineFunc
 {
 	/*
 	* Description:		-
 	* Params:		(const recipients, const entity, const channel, const sample[], const volume, Float:attenuation, const fFlags, const pitch)
 	*/
-	RH_SV_StartSound = 0 * 1024,
+	RH_SV_StartSound = BEGIN_FUNC_REGION(engine),
 
 	/*
 	* Description:		-
@@ -32,9 +36,6 @@ enum EngineFunc
 	* Params:		(pcvar, const value[])
 	*/
 	RH_Cvar_DirectSet,
-
-	// [...]
-	RH_EngineFunc_End
 };
 
 enum EntVars
@@ -45,7 +46,7 @@ enum EntVars
 	* Get params:		get_entvar(index, EntVars:var, dest[], const lenght);
 	* Set params:		set_entvar(index, EntVars:var, const source[]);
 	*/
-	var_classname = 5 * 1024,
+	var_classname = BEGIN_MEMBER_REGION(entvars),
 
 	/*
 	* Description:		-
@@ -1032,7 +1033,7 @@ enum UCmd
 	* Get params:		get_ucmd(const ucmd, UserCmd:var);
 	* Set params:		set_ucmd(const ucmd, UserCmd:var, value);
 	*/
-	ucmd_lerp_msec = 8 * 1024,
+	ucmd_lerp_msec = BEGIN_MEMBER_REGION(usercmd),
 
 	/*
 	* Description:		-

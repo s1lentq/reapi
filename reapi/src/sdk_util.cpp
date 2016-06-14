@@ -40,3 +40,15 @@ void UTIL_LogPrintf(const char *fmt, ...)
 
 	ALERT(at_logged, "%s", string);
 }
+
+void UTIL_ServerPrint(const char *fmt, ...)
+{
+	va_list argptr;
+	char string[1024];
+
+	va_start(argptr, fmt);
+	vsprintf(string, fmt, argptr);
+	va_end(argptr);
+
+	SERVER_PRINT(string);
+}

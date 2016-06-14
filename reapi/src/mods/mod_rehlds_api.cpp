@@ -15,36 +15,30 @@ bool RehldsApi_Init()
 #endif
 
 	if (!engineModule)
-	{
 		return false;
-	}
 
 	CreateInterfaceFn ifaceFactory = Sys_GetFactory(engineModule);
 	if (!ifaceFactory)
-	{
 		return false;
-	}
 
 	int retCode = 0;
 	g_RehldsApi = (IRehldsApi*)ifaceFactory(VREHLDS_HLDS_API_VERSION, &retCode);
 
 	if (!g_RehldsApi)
-	{
 		return false;
-	}
 
 	int majorVersion = g_RehldsApi->GetMajorVersion();
 	int minorVersion = g_RehldsApi->GetMinorVersion();
 
 	if (majorVersion != REHLDS_API_VERSION_MAJOR)
 	{
-		UTIL_LogPrintf("[%s]: ReHLDS Api major version mismatch; expected %d, real %d\n", Plugin_info.logtag, REHLDS_API_VERSION_MAJOR, majorVersion);
+		UTIL_ServerPrint("[%s]: ReHLDS Api major version mismatch; expected %d, real %d\n", Plugin_info.logtag, REHLDS_API_VERSION_MAJOR, majorVersion);
 		return false;
 	}
 
 	if (minorVersion < REHLDS_API_VERSION_MINOR)
 	{
-		UTIL_LogPrintf("[%s]: ReHLDS Api minor version mismatch; expected at least %d, real %d\n", Plugin_info.logtag, REHLDS_API_VERSION_MINOR, minorVersion);
+		UTIL_ServerPrint("[%s]: ReHLDS Api minor version mismatch; expected at least %d, real %d\n", Plugin_info.logtag, REHLDS_API_VERSION_MINOR, minorVersion);
 		return false;
 	}
 

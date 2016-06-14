@@ -60,3 +60,21 @@ native rh_get_mapname(output[], len, MapNameType:type = MNT_SET);
 *
 */
 native rh_reset_mapname();
+
+/*
+* Emits a sound from an entity from the engine.
+*
+* @param entity		Entity index or use 0 to emit from worldspawn at the specified position
+* @param recipient	Recipient index or use 0 to heard for all clients
+* @param channel	Channel to emit from
+* @param sample		Sound file to emit
+* @param vol		Volume in percent
+* @param attn		Sound attenuation
+* @param flags		Emit flags
+* @param pitch		Sound pitch
+* @param emitFlags	Additional Emit2 flags, look at the defines like SND_EMIT2_*
+
+* @return		1 if successfully sounds are emitted, 0 otherwise
+*
+*/
+native rh_emit_sound2(const entity, const recipient, const channel, const sample[], Float:vol = VOL_NORM, Float:attn = ATTN_NORM, const flags = 0, const pitch = PITCH_NORM, emitFlags = 0, const Float:origin[3] = {0.0,0.0,0.0});

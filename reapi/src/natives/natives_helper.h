@@ -9,7 +9,7 @@ public:
 	CAmxArg(AMX* amx, cell value) : m_amx(amx), m_value(value) {}
 	operator float() const
 	{
-		return *(float *)m_value;
+		return *(float *)&m_value;
 	}
 	operator Vector&() const
 	{
@@ -44,9 +44,32 @@ public:
 			return nullptr;
 		return g_ReGameFuncs->UTIL_PlayerByIndex(m_value);
 	}
-	operator TeamName() const { return static_cast<TeamName>(m_value); }
-	operator ModelName() const { return static_cast<ModelName>(m_value); }
-	operator PLAYER_ANIM() const { return static_cast<PLAYER_ANIM>(m_value); }
+	operator IGameClient *() const
+	{
+		if (m_value <= 0)
+			return nullptr;
+		return g_RehldsSvs->GetClient(m_value - 1); // id: 0 - 31
+	}
+	operator edict_t *() const
+	{
+		return edictByIndexAmx(m_value);
+	}
+	operator const float *() const
+	{
+		return (float *)getAmxAddr(m_amx, m_value);
+	}
+	operator TeamName() const
+	{
+		return static_cast<TeamName>(m_value);
+	}
+	operator ModelName() const
+	{
+		return static_cast<ModelName>(m_value);
+	}
+	operator PLAYER_ANIM() const
+	{
+		return static_cast<PLAYER_ANIM>(m_value);
+	}
 	Vector& vector() const
 	{
 		return operator Vector&();

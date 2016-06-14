@@ -3,7 +3,7 @@
 edict_t* g_pEdicts;
 playermove_t* g_pMove;
 char g_szMapName[32];
-int gmsgSendAudio, gmsgTeamScore, gmsgStatusIcon, gmsgArmorType, gmsgTeamInfo, gmsgItemStatus;
+int gmsgSendAudio, gmsgStatusIcon, gmsgArmorType, gmsgTeamInfo, gmsgItemStatus;
 
 struct
 {
@@ -11,7 +11,6 @@ struct
 	int& id;
 } g_RegUserMsg[] = {
 	{ "SendAudio",  gmsgSendAudio },
-	{ "TeamScore",  gmsgTeamScore },
 	{ "StatusIcon", gmsgStatusIcon },
 	{ "ArmorType",  gmsgArmorType },
 	{ "TeamInfo",   gmsgTeamInfo },

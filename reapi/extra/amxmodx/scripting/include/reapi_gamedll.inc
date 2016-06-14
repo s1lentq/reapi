@@ -125,10 +125,11 @@ native rg_add_account(const index, amount, AccountSet:typeSet = AS_ADD, bool:bTr
 *
 * @param index		Client index
 * @param pszName	Classname item
+* @param type		Look at the enum's with name GiveType
 *
-* @noreturn
+* @return		1 if successfully, 0 otherwise
 */
-native rg_give_item(index, const pszName[], GiveType:type = GT_APPEND);
+native rg_give_item(const index, const pszName[], GiveType:type = GT_APPEND);
 
 /*
 * Give the player default items
@@ -318,7 +319,7 @@ native rg_set_weapon_info(const {WeaponIdType,_}:weapon_id, WpnInfo:type, any:..
 * @noreturn
 *
 */
-native rg_remove_all_items(const index, bool:bRemoveSuit);
+native rg_remove_all_items(const index, bool:bRemoveSuit = false);
 
 /*
 * Remove specifed the player's item by class name
@@ -444,9 +445,87 @@ native rg_transfer_c4(const index, const receiver = 0);
 * Instant reload weapons
 *
 * @param index		Client index
-* @param weapon		Entity weapons, if 0 then all the weapons
+* @param weapon		Weapon entity-index, if 0 then all the weapons
 *
 * @return		1 if successfully, 0 otherwise
 *
 */
 native rg_instant_reload_weapons(const index, const weapon = 0);
+
+/*
+* Sets the amount of reward in the game account for all players.
+*
+* @param rules_index	Look at the enum's with name RewardRules
+* @param amount		The amount money
+*
+* @noreturn
+*
+*/
+native rg_set_account_rules(const RewardRules:rules_index, const amount);
+
+/*
+* Get the amount of reward from account
+*
+* @param rules_index	Look at the enum's with name RewardRules
+*
+* @return		The amount of reward from account
+*
+*/
+native rg_get_account_rules(const RewardRules:rules_index);
+
+/*
+* If the bomb is planted
+*
+* @return		1 if successfully, 0 otherwise
+*
+*/
+native bool:rg_is_bomb_planted();
+
+/*
+* Join team
+*
+* @param index		Client index
+* @param team		Team id
+*
+* @return		1 if successfully joined the team, 0 otherwise
+*
+*/
+native rg_join_team(const index, const TeamName:team);
+
+/*
+* Instantly balances the team.
+*
+* @noreturn
+*
+*/
+native rg_balance_teams();
+
+/*
+* To swap players, without reset frags/deaths and the amount wins.
+*
+* @noreturn
+*
+*/
+native rg_swap_all_players();
+
+/*
+* Instantly switches to the opposite team for one player.
+* @note Switch from CT to TERRORIST also opposite.
+*
+* @param index		Client index
+*
+* @noreturn
+*
+*/
+native rg_switch_team(const index);
+
+/*
+* Switch to specific weapon
+*
+* @param index		Client index
+* @param weapon		Weapon entity-index
+*
+* @return		1 if successfully switched, 0 otherwise
+*
+*/
+native rg_switch_weapon(const index, const weapon);

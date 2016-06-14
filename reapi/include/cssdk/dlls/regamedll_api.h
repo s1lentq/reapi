@@ -210,8 +210,8 @@ typedef IVoidHookChain<class CBasePlayer *, int, int, BOOL, char *> IReGameHook_
 typedef IVoidHookChainRegistry<class CBasePlayer *, int, int, BOOL, char *> IReGameHookRegistry_ShowMenu;
 
 // ShowVGUIMenu hook
-typedef IVoidHookChain<class CBasePlayer *, int, int, char *> IReGameHook_ShowVGUIMenu;
-typedef IVoidHookChainRegistry<class CBasePlayer *, int, int, char *> IReGameHookRegistry_ShowVGUIMenu;
+typedef IVoidHookChain<class CBasePlayer *, int, int, char *, bool> IReGameHook_ShowVGUIMenu;
+typedef IVoidHookChainRegistry<class CBasePlayer *, int, int, char *, bool> IReGameHookRegistry_ShowVGUIMenu;
 
 // CHalfLifeMultiplay::FShouldSwitchWeapon hook
 typedef IHookChain<BOOL, class CBasePlayer *, class CBasePlayerItem *> IReGameHook_CSGameRules_FShouldSwitchWeapon;
@@ -379,20 +379,17 @@ public:
 struct ReGameFuncs_t {
 	class CBasePlayer *(*UTIL_PlayerByIndex)(int playerIndex);
 	struct edict_s *(*CREATE_NAMED_ENTITY2)(string_t iClass);
-
 	void (*ChangeString)(char *&dest, const char *source);
-
 	void (*RadiusDamage)(Vector vecSrc, entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, float flRadius, int iClassIgnore, int bitsDamageType);
 	void (*ClearMultiDamage)();
 	void (*ApplyMultiDamage)(entvars_t *pevInflictor, entvars_t *pevAttacker);
 	void (*AddMultiDamage)(entvars_t *pevInflictor, CBaseEntity *pEntity, float flDamage, int bitsDamageType);
-
 	class CBaseEntity *(*UTIL_FindEntityByString)(class CBaseEntity *pStartEntity, const char *szKeyword, const char *szValue);
 };
 
 class IReGameApi {
 public:
-	virtual ~IReGameApi() {	}
+	virtual ~IReGameApi() {}
 
 	virtual int GetMajorVersion() = 0;
 	virtual int GetMinorVersion() = 0;
@@ -405,7 +402,6 @@ public:
 	virtual struct playermove_s* GetPlayerMove() = 0;
 	virtual struct WeaponSlotInfo* GetWeaponSlot(WeaponIdType weaponID) = 0;
 	virtual struct WeaponSlotInfo* GetWeaponSlot(const char* weaponName) = 0;
-
 };
 
 #define VRE_GAMEDLL_API_VERSION "VRE_GAMEDLL_API_VERSION001"
