@@ -5,4 +5,4 @@
 
 // reapi version
 #define REAPI_VERSION_MAJOR 3
-#define REAPI_VERSION_MINOR 0
+#define REAPI_VERSION_MINOR 1

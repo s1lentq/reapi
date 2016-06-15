@@ -73,8 +73,17 @@ native rh_reset_mapname();
 * @param flags		Emit flags
 * @param pitch		Sound pitch
 * @param emitFlags	Additional Emit2 flags, look at the defines like SND_EMIT2_*
-
+*
 * @return		1 if successfully sounds are emitted, 0 otherwise
 *
 */
 native rh_emit_sound2(const entity, const recipient, const channel, const sample[], Float:vol = VOL_NORM, Float:attn = ATTN_NORM, const flags = 0, const pitch = PITCH_NORM, emitFlags = 0, const Float:origin[3] = {0.0,0.0,0.0});
+
+/*
+* Forces an userinfo update
+*
+* @param playerEntIndex    Player entity index (starts from 1)
+*
+* @noreturn
+*/
+native rh_update_user_info(playerEntIndex);

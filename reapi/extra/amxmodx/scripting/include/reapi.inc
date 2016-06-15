@@ -85,7 +85,7 @@ enum HookChain
 * @return 		Returns a handle to the hook. Use EnableHookChain/DisableHookChain to toggle the forward on or off.
 *
 */
-native HookChain:RegisterHookChain(any:function_id, const callback[], post = 0);
+native HookChain:RegisterHookChain({EngineFunc, GamedllFunc, GamedllFunc_CBaseAnimating, GamedllFunc_CBasePlayer, GamedllFunc_CSGameRules}:function_id, const callback[], post = 0);
 
 /*
 * Stops a hook from triggering.

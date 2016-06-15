@@ -993,7 +993,7 @@ cell AMX_NATIVE_CALL rg_set_user_team(AMX *amx, cell *params)
 				pPlayer->m_bHasDefuser = false;
 				pPlayer->pev->body = 0;
 
-				MESSAGE_BEGIN(MSG_ONE, gmsgStatusIcon, NULL, pPlayer->pev);
+				MESSAGE_BEGIN(MSG_ONE, gmsgStatusIcon, nullptr, pPlayer->pev);
 					WRITE_BYTE(STATUSICON_HIDE);
 					WRITE_STRING("defuser");
 				MESSAGE_END();
@@ -1552,12 +1552,30 @@ cell AMX_NATIVE_CALL rh_emit_sound2(AMX *amx, cell *params)
 	);
 }
 
+// TODO: should we duplicate documentation for native here and in include?
+cell AMX_NATIVE_CALL rh_update_user_info(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_playerEntIndex };
+
+	CBasePlayer *pPlayer = getPrivate<CBasePlayer>(params[arg_playerEntIndex]);
+	if (pPlayer != nullptr && pPlayer->has_disconnected) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_playerEntIndex]);
+		return FALSE;
+	}
+
+	CAmxArgs args(amx, params);
+	g_RehldsFuncs->SV_UpdateUserInfo(args[arg_playerEntIndex]);
+
+	return TRUE;
+}
+
 AMX_NATIVE_INFO Misc_Natives_RH[] =
 {
 	{ "rh_set_mapname", rh_set_mapname },
 	{ "rh_get_mapname", rh_get_mapname },
 	{ "rh_reset_mapname", rh_reset_mapname },
 	{ "rh_emit_sound2", rh_emit_sound2 },
+	{ "rh_update_user_info", rh_update_user_info },
 
 	{ nullptr, nullptr }
 };
