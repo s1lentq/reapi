@@ -3879,3 +3879,291 @@ enum CCSPlayer_Members
 	*/
 	m_bForceShowMenu,
 };
+
+// CBasePlayerItem
+enum CBasePlayerItem_Members
+{
+	/*
+	* Description:		-
+	* Member type:		class CBasePlayer *
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_pPlayer = BEGIN_MEMBER_REGION(baseitem),
+
+	/*
+	* Description:		-
+	* Member type:		class CBasePlayerItem *
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_pNext,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_iId,
+};
+
+// CBasePlayerWeapon
+enum CBasePlayerWeapon_Members
+{
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_iPlayEmptySound = BEGIN_MEMBER_REGION(baseweapon),
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_fFireOnEmpty,
+
+	/*
+	* Description:		soonest time ItemPostFrame will call PrimaryAttack
+	* Member type:		float
+	* Get params:		Float:get_member(index, member);
+	* Set params:		set_member(index, member, Float:value);
+	*/
+	m_flNextPrimaryAttack,
+
+	/*
+	* Description:		soonest time ItemPostFrame will call SecondaryAttack
+	* Member type:		float
+	* Get params:		Float:get_member(index, member);
+	* Set params:		set_member(index, member, Float:value);
+	*/
+	m_flNextSecondaryAttack,
+
+	/*
+	* Description:		"primary" ammo index into players m_rgAmmo[]
+	* Member type:		int
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_iPrimaryAmmoType,
+
+	/*
+	* Description:		"secondary" ammo index into players m_rgAmmo[]
+	* Member type:		int
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_iSecondaryAmmoType,
+
+	/*
+	* Description:		number of shots left in the primary weapon clip, -1 it not used
+	* Member type:		int
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_iClip,
+
+	/*
+	* Description:		the last version of m_iClip sent to hud dll
+	* Member type:		int
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_iClientClip,
+
+	/*
+	* Description:		the last version of the weapon state sent to hud dll (is current weapon, is on target)
+	* Member type:		int
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_iClientWeaponState,
+
+	/*
+	* Description:		Are we in the middle of a reload
+	* Member type:		int
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_fInReload,
+
+	/*
+	* Description:		Are we in the middle of a reload for the shotguns
+	* Member type:		int
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_fInSpecialReload,
+
+	/*
+	* Description:		how much ammo you get when you pick up this weapon as placed by a level designer
+	* Member type:		int
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_iDefaultAmmo,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_iShellId,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_member(index, member);
+	* Set params:		set_member(index, member, Float:value);
+	*/
+	m_fMaxSpeed,
+
+	/*
+	* Description:		-
+	* Member type:		bool
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_bDelayFire,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_iDirection,
+
+	/*
+	* Description:		-
+	* Member type:		bool
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_bSecondarySilencerOn,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_member(index, member);
+	* Set params:		set_member(index, member, Float:value);
+	*/
+	m_flAccuracy,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_member(index, member);
+	* Set params:		set_member(index, member, Float:value);
+	*/
+	m_flLastFire,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_iShotsFired,
+
+	/*
+	* Description:		time to shoot the remaining bullets of the glock18 burst fire
+	* Member type:		float
+	* Get params:		Float:get_member(index, member);
+	* Set params:		set_member(index, member, Float:value);
+	*/
+	m_flGlock18Shoot,
+
+	/*
+	* Description:		used to keep track of the shots fired during the Glock18 burst fire mode
+	* Member type:		int
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_iGlock18ShotsFired,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_member(index, member);
+	* Set params:		set_member(index, member, Float:value);
+	*/
+	m_flFamasShoot,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_iFamasShotsFired,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_member(index, member);
+	* Set params:		set_member(index, member, Float:value);
+	*/
+	m_fBurstSpread,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_iWeaponState,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_member(index, member);
+	* Set params:		set_member(index, member, Float:value);
+	*/
+	m_flNextReload,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_member(index, member);
+	* Set params:		set_member(index, member, Float:value);
+	*/
+	m_flDecreaseShotsFired,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_usFireGlock18,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_usFireFamas,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_member(index, member);
+	* Set params:		set_member(index, member, Float:value);
+	*/
+	m_flPrevPrimaryAttack,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_member(index, member);
+	* Set params:		set_member(index, member, Float:value);
+	*/
+	m_flLastFireTime
+};

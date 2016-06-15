@@ -14,6 +14,8 @@
 #define UCMD_MEMBERS(mx)		CLASS_MEMBERS(usercmd_s, mx, ucmd_)
 #define PMTRACE_MEMBERS(mx)		CLASS_MEMBERS(pmtrace_s, mx, pmt_)
 #define CSPL_MEMBERS(mx)		CLASS_MEMBERS(CCSPlayer, mx,)
+#define BASEITEM_MEMBERS(mx)		CLASS_MEMBERS(CBasePlayerItem, mx,)
+#define BASEWPN_MEMBERS(mx)		CLASS_MEMBERS(CBasePlayerWeapon, mx,)
 
 inline MType getMemberType(float*)			{ return MEMBER_FLOAT; }
 inline MType getMemberType(float)			{ return MEMBER_FLOAT; }
@@ -668,6 +670,50 @@ member_t memberlist_csplayer[] = {
 	CSPL_MEMBERS(m_bForceShowMenu),
 };
 
+member_t memberlist_baseitem[] = {
+	BASEITEM_MEMBERS(m_pPlayer),
+	BASEITEM_MEMBERS(m_pNext),
+	BASEITEM_MEMBERS(m_iId),
+};
+
+member_t memberlist_baseweapon[] = {
+	BASEWPN_MEMBERS(m_iPlayEmptySound),
+	BASEWPN_MEMBERS(m_fFireOnEmpty),
+	BASEWPN_MEMBERS(m_flNextPrimaryAttack),
+	BASEWPN_MEMBERS(m_flNextSecondaryAttack),
+	//BASEWPN_MEMBERS(m_flTimeWeaponIdle),		// FIXME: conflict with CBasePlayer::m_flTimeWeaponIdle
+	BASEWPN_MEMBERS(m_iPrimaryAmmoType),
+	BASEWPN_MEMBERS(m_iSecondaryAmmoType),
+	BASEWPN_MEMBERS(m_iClip),
+	BASEWPN_MEMBERS(m_iClientClip),
+	BASEWPN_MEMBERS(m_iClientWeaponState),
+	BASEWPN_MEMBERS(m_fInReload),
+	BASEWPN_MEMBERS(m_fInSpecialReload),
+	BASEWPN_MEMBERS(m_iDefaultAmmo),
+	BASEWPN_MEMBERS(m_iShellId),
+	BASEWPN_MEMBERS(m_fMaxSpeed),
+	BASEWPN_MEMBERS(m_bDelayFire),
+	BASEWPN_MEMBERS(m_iDirection),
+	BASEWPN_MEMBERS(m_bSecondarySilencerOn),
+	BASEWPN_MEMBERS(m_flAccuracy),
+	BASEWPN_MEMBERS(m_flLastFire),
+	BASEWPN_MEMBERS(m_iShotsFired),
+	//BASEWPN_MEMBERS(m_vVecAiming),
+	//BASEWPN_MEMBERS(model_name),
+	BASEWPN_MEMBERS(m_flGlock18Shoot),
+	BASEWPN_MEMBERS(m_iGlock18ShotsFired),
+	BASEWPN_MEMBERS(m_flFamasShoot),
+	BASEWPN_MEMBERS(m_iFamasShotsFired),
+	BASEWPN_MEMBERS(m_fBurstSpread),
+	BASEWPN_MEMBERS(m_iWeaponState),
+	BASEWPN_MEMBERS(m_flNextReload),
+	BASEWPN_MEMBERS(m_flDecreaseShotsFired),
+	BASEWPN_MEMBERS(m_usFireGlock18),
+	BASEWPN_MEMBERS(m_usFireFamas),
+	BASEWPN_MEMBERS(m_flPrevPrimaryAttack),
+	BASEWPN_MEMBERS(m_flLastFireTime),
+};
+
 memberlist_t memberlist;
 
 member_t *memberlist_t::operator[](size_t members) const
@@ -689,6 +735,8 @@ member_t *memberlist_t::operator[](size_t members) const
 		CASE(usercmd)
 		CASE(pmtrace)
 		CASE(csplayer)
+		CASE(baseitem)
+		CASE(baseweapon)
 	}
 
 	return nullptr;

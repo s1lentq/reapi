@@ -50,7 +50,9 @@ struct memberlist_t
 		mt_movevars,
 		mt_usercmd,
 		mt_pmtrace,
-		mt_csplayer
+		mt_csplayer,
+		mt_baseitem,
+		mt_baseweapon
 	};
 };
 
@@ -668,4 +670,50 @@ enum CSPlayer_Members
 {
 	m_szModel = BEGIN_MEMBER_REGION(csplayer),
 	m_bForceShowMenu,
+};
+
+enum CBasePlayerItem_Members
+{
+	m_pPlayer = BEGIN_MEMBER_REGION(baseitem),
+	m_pNext,
+	m_iId,
+};
+
+enum CBasePlayerWeapon_Members
+{
+	m_iPlayEmptySound = BEGIN_MEMBER_REGION(baseweapon),
+	m_fFireOnEmpty,
+	m_flNextPrimaryAttack,
+	m_flNextSecondaryAttack,
+	//m_flTimeWeaponIdle,
+	m_iPrimaryAmmoType,
+	m_iSecondaryAmmoType,
+	m_iClip,
+	m_iClientClip,
+	m_iClientWeaponState,
+	m_fInReload,
+	m_fInSpecialReload,
+	m_iDefaultAmmo,
+	m_iShellId,
+	m_fMaxSpeed,
+	m_bDelayFire,
+	m_iDirection,
+	m_bSecondarySilencerOn,
+	m_flAccuracy,
+	m_flLastFire,
+	m_iShotsFired,
+	//m_vVecAiming,
+	//model_name,
+	m_flGlock18Shoot,
+	m_iGlock18ShotsFired,
+	m_flFamasShoot,
+	m_iFamasShotsFired,
+	m_fBurstSpread,
+	m_iWeaponState,
+	m_flNextReload,
+	m_flDecreaseShotsFired,
+	m_usFireGlock18,
+	m_usFireFamas,
+	m_flPrevPrimaryAttack,
+	m_flLastFireTime
 };
