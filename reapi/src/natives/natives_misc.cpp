@@ -1359,6 +1359,23 @@ cell AMX_NATIVE_CALL rg_switch_weapon(AMX *amx, cell *params)
 	return (cell)pPlayer->CSPlayer()->SwitchWeapon(pWeapon);
 }
 
+/*
+* To priority autoselect join to team
+*
+* @return		Returns the Team Name
+*
+* native TeamName:rg_select_default_team();
+*/
+cell AMX_NATIVE_CALL rg_select_default_team(AMX *amx, cell *params)
+{
+	if (g_pGameRules == nullptr) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: gamerules not initialized", __FUNCTION__);
+		return FALSE;
+	}
+
+	return CSGameRules()->SelectDefaultTeam();
+}
+
 AMX_NATIVE_INFO Misc_Natives_RG[] =
 {
 	{ "rg_set_animation", rg_set_animation },
@@ -1413,6 +1430,7 @@ AMX_NATIVE_INFO Misc_Natives_RG[] =
 	{ "rg_swap_all_players", rg_swap_all_players },
 	{ "rg_switch_team", rg_switch_team },
 	{ "rg_switch_weapon", rg_switch_weapon },
+	{ "rg_select_default_team", rg_select_default_team },
 
 	{ nullptr, nullptr }
 };

@@ -529,3 +529,11 @@ native rg_switch_team(const index);
 *
 */
 native rg_switch_weapon(const index, const weapon);
+
+/*
+* To priority autoselect join to team
+*
+* @return		Returns the Team Name
+*
+*/
+native TeamName:rg_select_default_team();
