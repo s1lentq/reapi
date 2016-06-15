@@ -1184,7 +1184,31 @@ enum CSGameRules_Members
 	* Get params:		get_member_game(member);
 	* Set params:		set_member_game(member, value);
 	*/
-	m_bSkipSpawn
+	m_bSkipSpawn,
+
+	/*
+	* Description:		-
+	* Member type:		bool
+	* Get params:		get_member_game(member);
+	* Set params:		set_member_game(member, value);
+	*/
+	m_bSkipShowMenu,
+
+	/*
+	* Description:		-
+	* Member type:		bool
+	* Get params:		get_member_game(member);
+	* Set params:		set_member_game(member, value);
+	*/
+	m_bNeededPlayers,
+
+	/*
+	* Description:		-
+	* Member type:		float
+	* Get params:		Float:get_member(index, member);
+	* Set params:		set_member(index, member, Float:value);
+	*/
+	m_flEscapeRatio
 };
 
 // CBaseEntity
@@ -3834,4 +3858,24 @@ enum PMTrace
 	* Set params:		set_pmtrace(const tr, const PMTrace:var, value);
 	*/
 	pmt_hitgroup
+};
+
+// CCSPlayer
+enum CCSPlayer_Members
+{
+	/*
+	* Description:		-
+	* Member type:		char [32]
+	* Get params:		get_member(index, member, dest[], const lenght);
+	* Set params:		set_member(index, member, const source[]);
+	*/
+	m_szModel = BEGIN_MEMBER_REGION(csplayer),
+
+	/*
+	* Description:		-
+	* Member type:		bool
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_bForceShowMenu,
 };

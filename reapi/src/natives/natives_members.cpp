@@ -20,6 +20,16 @@ cell AMX_NATIVE_CALL set_member(AMX *amx, cell *params)
 	cell* value = getAmxAddr(amx, params[arg_value]);
 	size_t element = (PARAMS_COUNT == 4) ? *getAmxAddr(amx, params[arg_elem]) : 0;
 
+	const auto table = memberlist_t::members_tables_e(params[arg_member] / MAX_REGION_RANGE);
+	if (table == memberlist_t::mt_csplayer) {
+		CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(indexOfEdict(pEdict));
+		if (!pPlayer || !pPlayer->CSPlayer()) {
+			return FALSE;
+		}
+
+		return set_member(pPlayer->CSPlayer(), member, element, value);
+	}
+
 	return set_member(pEdict->pvPrivateData, member, element, value);
 }
 
@@ -62,6 +72,16 @@ cell AMX_NATIVE_CALL get_member(AMX *amx, cell *params)
 	else {
 		dest = nullptr;
 		element = 0;
+	}
+
+	const auto table = memberlist_t::members_tables_e(params[arg_member] / MAX_REGION_RANGE);
+	if (table == memberlist_t::mt_csplayer) {
+		CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(indexOfEdict(pEdict));
+		if (!pPlayer || !pPlayer->CSPlayer()) {
+			return FALSE;
+		}
+
+		return get_member(pPlayer->CSPlayer(), member, element, dest);
 	}
 
 	return get_member(pEdict->pvPrivateData, member, element, dest);

@@ -33,7 +33,8 @@ enum members_tables_e
 	mt_playermove,
 	mt_movevars,
 	mt_usercmd,
-	mt_pmtrace
+	mt_pmtrace,
+	mt_csplayer
 };
 
 #define MAX_REGION_RANGE		1024

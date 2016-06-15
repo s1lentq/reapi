@@ -49,7 +49,8 @@ struct memberlist_t
 		mt_playermove,
 		mt_movevars,
 		mt_usercmd,
-		mt_pmtrace
+		mt_pmtrace,
+		mt_csplayer
 	};
 };
 
@@ -142,7 +143,10 @@ enum CSGameRules_Members
 	m_iCareerMatchWins,
 	m_iRoundWinDifference,
 	m_fCareerMatchMenuTime,
-	m_bSkipSpawn
+	m_bSkipSpawn,
+	m_bSkipShowMenu,
+	m_bNeededPlayers,
+	m_flEscapeRatio,
 };
 
 // CBaseEntity
@@ -657,4 +661,11 @@ enum PMTrace
 	pmt_ent,
 	pmt_deltavelocity,
 	pmt_hitgroup
+};
+
+// CCSPlayer
+enum CSPlayer_Members
+{
+	m_szModel = BEGIN_MEMBER_REGION(csplayer),
+	m_bForceShowMenu,
 };

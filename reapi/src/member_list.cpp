@@ -13,6 +13,7 @@
 #define MOVEVAR_MEMBERS(mx)		CLASS_MEMBERS(movevars_t, mx, mv_)
 #define UCMD_MEMBERS(mx)		CLASS_MEMBERS(usercmd_s, mx, ucmd_)
 #define PMTRACE_MEMBERS(mx)		CLASS_MEMBERS(pmtrace_s, mx, pmt_)
+#define CSPL_MEMBERS(mx)		CLASS_MEMBERS(CCSPlayer, mx,)
 
 inline MType getMemberType(float*)			{ return MEMBER_FLOAT; }
 inline MType getMemberType(float)			{ return MEMBER_FLOAT; }
@@ -166,6 +167,9 @@ member_t memberlist_gamerules[] = {
 	GM_MEMBERS(m_iRoundWinDifference),
 	GM_MEMBERS(m_fCareerMatchMenuTime),
 	GM_MEMBERS(m_bSkipSpawn),
+	GM_MEMBERS(m_bSkipShowMenu),
+	GM_MEMBERS(m_bNeededPlayers),
+	GM_MEMBERS(m_flEscapeRatio),
 };
 
 member_t memberlist_base[] = {
@@ -659,6 +663,10 @@ member_t memberlist_pmtrace[] = {
 	PMTRACE_MEMBERS(hitgroup)
 };
 
+member_t memberlist_csplayer[] = {
+	CSPL_MEMBERS(m_szModel),
+	CSPL_MEMBERS(m_bForceShowMenu),
+};
 
 memberlist_t memberlist;
 
@@ -680,6 +688,7 @@ member_t *memberlist_t::operator[](size_t members) const
 		CASE(movevars)
 		CASE(usercmd)
 		CASE(pmtrace)
+		CASE(csplayer)
 	}
 
 	return nullptr;
