@@ -511,7 +511,7 @@ void CSGameRules_DeathNotice(IReGameHook_CSGameRules_DeathNotice *chain, CBasePl
 		chain->callNext(getPrivate<CBasePlayer>(_pVictim), PEV(_pKiller), PEV(_pevInflictor));
 	};
 
-	callVoidForward(RG_CSGameRules_DeathNotice, original, indexOfEdict(pVictim->pev), indexOfEdict(pKiller), indexOfEdict(pevInflictor));
+	callVoidForward(RG_CSGameRules_DeathNotice, original, indexOfEdict(pVictim->pev), indexOfEdict(pKiller), pevInflictor ? indexOfEdict(pevInflictor) : -1);
 }
 
 int CSGameRules_CanHavePlayerItem(IReGameHook_CSGameRules_CanHavePlayerItem *chain, CBasePlayer *pPlayer, CBasePlayerItem *pItem)
