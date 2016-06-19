@@ -624,6 +624,12 @@
 // UNDONE: This will ignore transition volumes (trigger_transition), but not the PVS!!!
 #define FCAP_FORCE_TRANSITION		0x00000080	// ALWAYS goes across transitions
 
+// All monsters need this data
+#define DONT_BLEED			-1
+#define BLOOD_COLOR_RED			247
+#define BLOOD_COLOR_YELLOW		195
+#define BLOOD_COLOR_GREEN		BLOOD_COLOR_YELLOW
+
 // CBasePlayer::m_iIgnoreGlobalChat
 enum
 {

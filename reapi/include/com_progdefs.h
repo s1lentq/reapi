@@ -303,3 +303,20 @@ struct com_playermove
 	const char *(*PM_TraceTexture)(int ground, float *vstart, float *vend);
 	void(*PM_PlaybackEventFull)(int flags, int clientindex, unsigned short eventindex, float delay, float *origin, float *angles, float fparam1, float fparam2, int iparam1, int iparam2, int bparam1, int bparam2);
 };
+
+class CWeaponBox_COM: public CBaseEntity {
+public:
+	virtual void Spawn() = 0;
+	virtual void Precache() = 0;
+	virtual void KeyValue(KeyValueData *pkvd) = 0;
+	virtual int Save(CSave &save) = 0;
+	virtual int Restore(CRestore &restore) = 0;
+	virtual void SetObjectCollisionBox() = 0;
+	virtual void Touch(CBaseEntity *pOther) = 0;
+public:
+	CBasePlayerItem *m_rgpPlayerItems[MAX_ITEM_TYPES];
+	qstring_t m_rgiszAmmo[MAX_AMMO_SLOTS];
+	int m_rgAmmo[MAX_AMMO_SLOTS];
+	int m_cAmmoTypes;
+	bool m_bIsBomb;
+};

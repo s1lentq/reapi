@@ -3,7 +3,7 @@
 edict_t* g_pEdicts;
 playermove_t* g_pMove;
 char g_szMapName[32];
-int gmsgSendAudio, gmsgStatusIcon, gmsgArmorType, gmsgTeamInfo, gmsgItemStatus;
+int gmsgSendAudio, gmsgStatusIcon, gmsgArmorType, gmsgItemStatus;
 
 struct
 {
@@ -13,7 +13,6 @@ struct
 	{ "SendAudio",  gmsgSendAudio },
 	{ "StatusIcon", gmsgStatusIcon },
 	{ "ArmorType",  gmsgArmorType },
-	{ "TeamInfo",   gmsgTeamInfo },
 	{ "ItemStatus", gmsgItemStatus },
 };
 

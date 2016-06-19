@@ -554,27 +554,23 @@ cell get_member(void* pdata, const member_t *member, size_t element, cell* dest)
 	switch (member->type)
 	{
 	case MEMBER_CLASSPTR:
-		// native any:get_member(_index, any:_member, element);
-		return indexOfEdict(get_member<CBaseEntity *>(pdata, member->offset, element)->pev);
+		{
+			// native any:get_member(_index, any:_member, element);
+			auto& pEntity = get_member<CBaseEntity *>(pdata, member->offset, element);
+			return pEntity ? indexOfEdict(pEntity->pev) : -1;
+		}
 	case MEMBER_EHANDLE:
 		{
 			// native any:get_member(_index, any:_member, element);
 			EHANDLE ehandle = get_member<EHANDLE>(pdata, member->offset, element);
 			edict_t *pEntity = ehandle.Get();
-			if (pEntity != nullptr) {
-				return indexOfEdict(pEntity);
-			}
-			return -1;
+			return pEntity ? indexOfEdict(pEntity) : -1;
 		}
 	case MEMBER_EDICT:
 		{
 			// native any:get_member(_index, any:_member, element);
 			edict_t *pEntity = get_member<edict_t *>(pdata, member->offset, element);
-			if (pEntity != nullptr) {
-				return indexOfEdict(pEntity);
-			}
-
-			return -1;
+			return pEntity ? indexOfEdict(pEntity) : -1;
 		}
 	case MEMBER_VECTOR:
 		{

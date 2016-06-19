@@ -402,13 +402,13 @@ enum GamedllFunc_CBasePlayer
 enum GamedllFunc_CSGameRules
 {
 	/*
-	* Description:		-
+	* Description:		should the player switch to this weapon?
 	* Params:		(const index, const weapon)
 	*/
 	RG_CSGameRules_FShouldSwitchWeapon = BEGIN_FUNC_REGION(gamerules),
 
 	/*
-	* Description:		-
+	* Description:		I can't use this weapon anymore, get me the next best one.
 	* Params:		(const index, const currentWeapon)
 	*/
 	RG_CSGameRules_GetNextBestWeapon,
@@ -420,55 +420,55 @@ enum GamedllFunc_CSGameRules
 	RG_CSGameRules_FlPlayerFallDamage,
 
 	/*
-	* Description:		-
+	* Description:		can this player take damage from this attacker?
 	* Params:		(const index, const attacker)
 	*/
 	RG_CSGameRules_FPlayerCanTakeDamage,
 
 	/*
-	* Description:		-
+	* Description:		called by CBasePlayer::Spawn just before releasing player into the game
 	* Params:		(const index)
 	*/
 	RG_CSGameRules_PlayerSpawn,
 
 	/*
-	* Description:		-
+	* Description:		is this player allowed to respawn now?
 	* Params:		(const index)
 	*/
 	RG_CSGameRules_FPlayerCanRespawn,
 
 	/*
-	* Description:		-
+	* Description:		Place this player on their spawnspot and face them the proper direction.
 	* Params:		(const index)
 	*/
 	RG_CSGameRules_GetPlayerSpawnSpot,
 
 	/*
-	* Description:		-
+	* Description:		the player has changed userinfo;  can change it now
 	* Params:		(const index, infobuffer[])
 	*/
 	RG_CSGameRules_ClientUserInfoChanged,
 
 	/*
-	* Description:		-
+	* Description:		Called each time a player dies
 	* Params:		(const victim, const killer, const inflictor)
 	*/
 	RG_CSGameRules_PlayerKilled,
 
 	/*
-	* Description:		-
+	* Description:		Call this from within a GameRules class to report an obituary.
 	* Params:		(const victim, const killer, const inflictor)
 	*/
 	RG_CSGameRules_DeathNotice,
 
 	/*
-	* Description:		-
+	* Description:		The player is touching an CBasePlayerItem, do I give it to him?
 	* Params:		(const index, const item)
 	*/
 	RG_CSGameRules_CanHavePlayerItem,
 
 	/*
-	* Description:		-
+	* Description:		what do I do with a player's weapons when he's killed?
 	* Params:		(const index)
 	*/
 	RG_CSGameRules_DeadPlayerWeapons,
@@ -486,19 +486,21 @@ enum GamedllFunc_CSGameRules
 	RG_CSGameRules_CheckMapConditions,
 
 	/*
-	* Description:		-
+	* Description:		Recreate all the map entities from the map data (preserving their indices),
+	*			then remove everything else except the players.
+	*			Also get rid of all world decals.
 	* Params:		()
 	*/
 	RG_CSGameRules_CleanUpMap,
 
 	/*
-	* Description:		-
+	* Description:		Call this on new round or restart round with member m_bCompleteReset is TRUE
 	* Params:		()
 	*/
 	RG_CSGameRules_RestartRound,
 
 	/*
-	* Description:		-
+	* Description:		check if the scenario has been won/lost
 	* Params:		()
 	*/
 	RG_CSGameRules_CheckWinConditions,
@@ -3917,7 +3919,7 @@ enum CBasePlayerWeapon_Members
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);
 	*/
-	m_iPlayEmptySound = BEGIN_MEMBER_REGION(baseweapon),
+	m_Weapon_iPlayEmptySound = BEGIN_MEMBER_REGION(baseweapon),
 
 	/*
 	* Description:		-
@@ -3925,7 +3927,7 @@ enum CBasePlayerWeapon_Members
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);
 	*/
-	m_fFireOnEmpty,
+	m_Weapon_fFireOnEmpty,
 
 	/*
 	* Description:		soonest time ItemPostFrame will call PrimaryAttack
@@ -3933,7 +3935,7 @@ enum CBasePlayerWeapon_Members
 	* Get params:		Float:get_member(index, member);
 	* Set params:		set_member(index, member, Float:value);
 	*/
-	m_flNextPrimaryAttack,
+	m_Weapon_flNextPrimaryAttack,
 
 	/*
 	* Description:		soonest time ItemPostFrame will call SecondaryAttack
@@ -3941,7 +3943,15 @@ enum CBasePlayerWeapon_Members
 	* Get params:		Float:get_member(index, member);
 	* Set params:		set_member(index, member, Float:value);
 	*/
-	m_flNextSecondaryAttack,
+	m_Weapon_flNextSecondaryAttack,
+
+	/*
+	* Description:		soonest time ItemPostFrame will call WeaponIdle
+	* Member type:		float
+	* Get params:		Float:get_member(index, member);
+	* Set params:		set_member(index, member, Float:value);
+	*/
+	m_Weapon_flTimeWeaponIdle,
 
 	/*
 	* Description:		"primary" ammo index into players m_rgAmmo[]
@@ -3949,7 +3959,7 @@ enum CBasePlayerWeapon_Members
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);
 	*/
-	m_iPrimaryAmmoType,
+	m_Weapon_iPrimaryAmmoType,
 
 	/*
 	* Description:		"secondary" ammo index into players m_rgAmmo[]
@@ -3957,7 +3967,7 @@ enum CBasePlayerWeapon_Members
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);
 	*/
-	m_iSecondaryAmmoType,
+	m_Weapon_iSecondaryAmmoType,
 
 	/*
 	* Description:		number of shots left in the primary weapon clip, -1 it not used
@@ -3965,15 +3975,15 @@ enum CBasePlayerWeapon_Members
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);
 	*/
-	m_iClip,
+	m_Weapon_iClip,
 
 	/*
-	* Description:		the last version of m_iClip sent to hud dll
+	* Description:		the last version of m_Weapon_iClip sent to hud dll
 	* Member type:		int
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);
 	*/
-	m_iClientClip,
+	m_Weapon_iClientClip,
 
 	/*
 	* Description:		the last version of the weapon state sent to hud dll (is current weapon, is on target)
@@ -3981,7 +3991,7 @@ enum CBasePlayerWeapon_Members
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);
 	*/
-	m_iClientWeaponState,
+	m_Weapon_iClientWeaponState,
 
 	/*
 	* Description:		Are we in the middle of a reload
@@ -3989,7 +3999,7 @@ enum CBasePlayerWeapon_Members
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);
 	*/
-	m_fInReload,
+	m_Weapon_fInReload,
 
 	/*
 	* Description:		Are we in the middle of a reload for the shotguns
@@ -3997,7 +4007,7 @@ enum CBasePlayerWeapon_Members
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);
 	*/
-	m_fInSpecialReload,
+	m_Weapon_fInSpecialReload,
 
 	/*
 	* Description:		how much ammo you get when you pick up this weapon as placed by a level designer
@@ -4005,7 +4015,7 @@ enum CBasePlayerWeapon_Members
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);
 	*/
-	m_iDefaultAmmo,
+	m_Weapon_iDefaultAmmo,
 
 	/*
 	* Description:		-
@@ -4013,7 +4023,7 @@ enum CBasePlayerWeapon_Members
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);
 	*/
-	m_iShellId,
+	m_Weapon_iShellId,
 
 	/*
 	* Description:		-
@@ -4021,7 +4031,7 @@ enum CBasePlayerWeapon_Members
 	* Get params:		Float:get_member(index, member);
 	* Set params:		set_member(index, member, Float:value);
 	*/
-	m_fMaxSpeed,
+	m_Weapon_fMaxSpeed,
 
 	/*
 	* Description:		-
@@ -4029,7 +4039,7 @@ enum CBasePlayerWeapon_Members
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);
 	*/
-	m_bDelayFire,
+	m_Weapon_bDelayFire,
 
 	/*
 	* Description:		-
@@ -4037,7 +4047,7 @@ enum CBasePlayerWeapon_Members
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);
 	*/
-	m_iDirection,
+	m_Weapon_iDirection,
 
 	/*
 	* Description:		-
@@ -4045,7 +4055,7 @@ enum CBasePlayerWeapon_Members
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);
 	*/
-	m_bSecondarySilencerOn,
+	m_Weapon_bSecondarySilencerOn,
 
 	/*
 	* Description:		-
@@ -4053,7 +4063,7 @@ enum CBasePlayerWeapon_Members
 	* Get params:		Float:get_member(index, member);
 	* Set params:		set_member(index, member, Float:value);
 	*/
-	m_flAccuracy,
+	m_Weapon_flAccuracy,
 
 	/*
 	* Description:		-
@@ -4061,7 +4071,7 @@ enum CBasePlayerWeapon_Members
 	* Get params:		Float:get_member(index, member);
 	* Set params:		set_member(index, member, Float:value);
 	*/
-	m_flLastFire,
+	m_Weapon_flLastFire,
 
 	/*
 	* Description:		-
@@ -4069,7 +4079,7 @@ enum CBasePlayerWeapon_Members
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);
 	*/
-	m_iShotsFired,
+	m_Weapon_iShotsFired,
 
 	/*
 	* Description:		time to shoot the remaining bullets of the glock18 burst fire
@@ -4077,7 +4087,7 @@ enum CBasePlayerWeapon_Members
 	* Get params:		Float:get_member(index, member);
 	* Set params:		set_member(index, member, Float:value);
 	*/
-	m_flGlock18Shoot,
+	m_Weapon_flGlock18Shoot,
 
 	/*
 	* Description:		used to keep track of the shots fired during the Glock18 burst fire mode
@@ -4085,7 +4095,7 @@ enum CBasePlayerWeapon_Members
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);
 	*/
-	m_iGlock18ShotsFired,
+	m_Weapon_iGlock18ShotsFired,
 
 	/*
 	* Description:		-
@@ -4093,7 +4103,7 @@ enum CBasePlayerWeapon_Members
 	* Get params:		Float:get_member(index, member);
 	* Set params:		set_member(index, member, Float:value);
 	*/
-	m_flFamasShoot,
+	m_Weapon_flFamasShoot,
 
 	/*
 	* Description:		-
@@ -4101,7 +4111,7 @@ enum CBasePlayerWeapon_Members
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);
 	*/
-	m_iFamasShotsFired,
+	m_Weapon_iFamasShotsFired,
 
 	/*
 	* Description:		-
@@ -4109,7 +4119,7 @@ enum CBasePlayerWeapon_Members
 	* Get params:		Float:get_member(index, member);
 	* Set params:		set_member(index, member, Float:value);
 	*/
-	m_fBurstSpread,
+	m_Weapon_fBurstSpread,
 
 	/*
 	* Description:		-
@@ -4117,7 +4127,7 @@ enum CBasePlayerWeapon_Members
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);
 	*/
-	m_iWeaponState,
+	m_Weapon_iWeaponState,
 
 	/*
 	* Description:		-
@@ -4125,7 +4135,7 @@ enum CBasePlayerWeapon_Members
 	* Get params:		Float:get_member(index, member);
 	* Set params:		set_member(index, member, Float:value);
 	*/
-	m_flNextReload,
+	m_Weapon_flNextReload,
 
 	/*
 	* Description:		-
@@ -4133,7 +4143,7 @@ enum CBasePlayerWeapon_Members
 	* Get params:		Float:get_member(index, member);
 	* Set params:		set_member(index, member, Float:value);
 	*/
-	m_flDecreaseShotsFired,
+	m_Weapon_flDecreaseShotsFired,
 
 	/*
 	* Description:		-
@@ -4141,7 +4151,7 @@ enum CBasePlayerWeapon_Members
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);
 	*/
-	m_usFireGlock18,
+	m_Weapon_usFireGlock18,
 
 	/*
 	* Description:		-
@@ -4149,7 +4159,7 @@ enum CBasePlayerWeapon_Members
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);
 	*/
-	m_usFireFamas,
+	m_Weapon_usFireFamas,
 
 	/*
 	* Description:		-
@@ -4157,7 +4167,7 @@ enum CBasePlayerWeapon_Members
 	* Get params:		Float:get_member(index, member);
 	* Set params:		set_member(index, member, Float:value);
 	*/
-	m_flPrevPrimaryAttack,
+	m_Weapon_flPrevPrimaryAttack,
 
 	/*
 	* Description:		-
@@ -4165,5 +4175,49 @@ enum CBasePlayerWeapon_Members
 	* Get params:		Float:get_member(index, member);
 	* Set params:		set_member(index, member, Float:value);
 	*/
-	m_flLastFireTime
+	m_Weapon_flLastFireTime
+};
+
+// CWeaponBox
+enum CWeaponBox_Members
+{
+	/*
+	* Description:		-
+	* Member type:		class CBasePlayerItem *[6]
+	* Get params:		get_member(index, member, element);
+	* Set params:		set_member(index, member, value, element);
+	*/
+	m_WeaponBox_rgpPlayerItems = BEGIN_MEMBER_REGION(weaponbox),
+
+	/*
+	* Description:		-
+	* Member type:		string_t [32]
+	* Get params:		get_member(index, member, dest[], const lenght);
+	* Set params:		set_member(index, member, const source[]);
+	*/
+	m_WeaponBox_rgiszAmmo,
+
+	/*
+	* Description:		-
+	* Member type:		int [32]
+	* Get params:		get_member(member);
+	* Set params:		set_member(member, value, element);
+	*/
+	m_WeaponBox_rgAmmo,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_WeaponBox_cAmmoTypes,
+
+	/*
+	* Description:		-
+	* Member type:		bool
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_WeaponBox_bIsBomb,
 };

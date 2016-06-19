@@ -289,6 +289,17 @@ native rg_find_ent_by_class(start_index, const classname[]);
 native rg_find_ent_by_owner(&start_index, const classname[], owner);
 
 /*
+* Find the item by name in the player's inventory.
+*
+* @param index			Client index
+* @param item			Item name
+*
+* @return			Entity-index of item, 0 otherwise
+*
+*/
+native rg_find_bpack_item_by_name(const index, const item[]);
+
+/*
 * Returns some information about a weapon.
 *
 * @param weapon name or id	Weapon id, see WEAPON_* constants WeaponIdType or weapon_* name
@@ -531,9 +542,30 @@ native rg_switch_team(const index);
 native rg_switch_weapon(const index, const weapon);
 
 /*
-* To priority autoselect join to team
+* To get which team has a high priority to join.
 *
 * @return		Returns the Team Name
 *
 */
-native TeamName:rg_select_default_team();
+native TeamName:rg_get_join_team_priority();
+
+/*
+* Can this player take damage from this attacker?
+*
+* @param index		Client index
+* @param attacker	Attacker index
+*
+* @return		1 if successfully then can take a damage, 0 otherwise
+*
+*/
+native bool:rg_is_player_can_takedamage(const index, const attacker);
+
+/*
+* To get WeaponIdType from weaponbox
+*
+* @param entity		Weaponbox entity
+*
+* @return		return enum's of WeaponIdType
+*
+*/
+native WeaponIdType:rg_get_weaponbox_id(const entity);

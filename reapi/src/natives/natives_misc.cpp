@@ -540,6 +540,43 @@ cell AMX_NATIVE_CALL rg_find_ent_by_owner(AMX *amx, cell *params)
 }
 
 /*
+* Find the item by name in the player's inventory.
+*
+* @param index			Client index
+* @param item			Item name
+*
+* @return			Entity-index of item, 0 otherwise
+*
+* native rg_find_bpack_item_by_name(const index, const item[]);
+*/
+cell AMX_NATIVE_CALL rg_find_item_bpack_by_name(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_item };
+
+	CHECK_ISPLAYER(arg_index);
+
+	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
+	if (pPlayer == nullptr || pPlayer->has_disconnected) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
+		return FALSE;
+	}
+
+	const char *itemName = getAmxString(amx, params[arg_item]);
+	auto pInfo = g_ReGameApi->GetWeaponSlot(itemName);
+	auto pItem = pPlayer->m_rgpPlayerItems[ pInfo->slot ];
+
+	while (pItem) {
+		if (FClassnameIs(pItem->pev, itemName)) {
+			return indexOfEdict(pItem->pev);
+		}
+
+		pItem = pItem->m_pNext;
+	}
+
+	return 0;
+}
+
+/*
 * Returns some information about a weapon.
 *
 * @param weapon name or id	Weapon id, see WEAPON_* constants or weapon_* name
@@ -1015,10 +1052,7 @@ cell AMX_NATIVE_CALL rg_set_user_team(AMX *amx, cell *params)
 	}
 
 	if (params[arg_sendinfo] != 0) {
-		MESSAGE_BEGIN(MSG_ALL, gmsgTeamInfo);
-			WRITE_BYTE(args[arg_index]);
-			WRITE_STRING(GetTeamName(args[arg_team]));
-		MESSAGE_END();
+		pPlayer->CSPlayer()->TeamChangeUpdate();
 	}
 
 	g_amxxapi.SetPlayerTeamInfo(args[arg_index], args[arg_team], GetTeamName(args[arg_team]));
@@ -1360,13 +1394,13 @@ cell AMX_NATIVE_CALL rg_switch_weapon(AMX *amx, cell *params)
 }
 
 /*
-* To priority autoselect join to team
+* To get which team has a high priority to join.
 *
 * @return		Returns the Team Name
 *
-* native TeamName:rg_select_default_team();
+* native TeamName:rg_get_join_team_priority();
 */
-cell AMX_NATIVE_CALL rg_select_default_team(AMX *amx, cell *params)
+cell AMX_NATIVE_CALL rg_get_join_team_priority(AMX *amx, cell *params)
 {
 	if (g_pGameRules == nullptr) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: gamerules not initialized", __FUNCTION__);
@@ -1374,6 +1408,67 @@ cell AMX_NATIVE_CALL rg_select_default_team(AMX *amx, cell *params)
 	}
 
 	return CSGameRules()->SelectDefaultTeam();
+}
+
+/*
+* Can this player take damage from this attacker?
+*
+* @param index		Client index
+* @param attacker	Attacker index
+*
+* @return		1 if successfully then can take a damage, 0 otherwise
+*
+* native bool:rg_is_player_can_takedamage(const index, const attacker);
+*/
+cell AMX_NATIVE_CALL rg_is_player_can_takedamage(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_attacker };
+
+	CHECK_ISPLAYER(arg_index);
+
+	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
+	if (pPlayer == nullptr || pPlayer->has_disconnected) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
+		return FALSE;
+	}
+
+	CBaseEntity *pAttacker = getPrivate<CBaseEntity>(params[arg_attacker]);
+	if (!pAttacker) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: Invalid entity attacker", __FUNCTION__);
+		return FALSE;
+	}
+
+	return CSGameRules()->FPlayerCanTakeDamage(pPlayer, pAttacker);
+}
+
+/*
+* To get WeaponIdType from weaponbox
+*
+* @param entity		Weaponbox entity
+*
+* @return		return enum's of WeaponIdType
+*
+* native WeaponIdType:rg_get_weaponbox_id(const entity);
+*/
+cell AMX_NATIVE_CALL rg_get_weaponbox_id(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_entity };
+
+	CHECK_ISENTITY(arg_entity);
+
+	CWeaponBox *pEntityBox = getPrivate<CWeaponBox>(params[arg_entity]);
+	if (pEntityBox == nullptr) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: Invalid entity weaponbox", __FUNCTION__);
+		return FALSE;
+	}
+
+	for (auto item : pEntityBox->m_rgpPlayerItems) {
+		if (item) {
+			return item->m_iId;
+		}
+	}
+
+	return WEAPON_NONE;
 }
 
 AMX_NATIVE_INFO Misc_Natives_RG[] =
@@ -1398,6 +1493,7 @@ AMX_NATIVE_INFO Misc_Natives_RG[] =
 	{ "rg_create_entity", rg_create_entity },
 	{ "rg_find_ent_by_class", rg_find_ent_by_class },
 	{ "rg_find_ent_by_owner", rg_find_ent_by_owner },
+	{ "rg_find_item_bpack_by_name", rg_find_item_bpack_by_name },
 
 	{ "rg_get_weapon_info", rg_get_weapon_info },
 	{ "rg_set_weapon_info", rg_set_weapon_info },
@@ -1430,7 +1526,9 @@ AMX_NATIVE_INFO Misc_Natives_RG[] =
 	{ "rg_swap_all_players", rg_swap_all_players },
 	{ "rg_switch_team", rg_switch_team },
 	{ "rg_switch_weapon", rg_switch_weapon },
-	{ "rg_select_default_team", rg_select_default_team },
+	{ "rg_get_join_team_priority", rg_get_join_team_priority },
+	{ "rg_is_player_can_takedamage", rg_is_player_can_takedamage },
+	{ "rg_get_weaponbox_id", rg_get_weaponbox_id },
 
 	{ nullptr, nullptr }
 };

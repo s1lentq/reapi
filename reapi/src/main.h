@@ -6,7 +6,6 @@ extern playermove_t* g_pMove;
 extern int gmsgSendAudio;
 extern int gmsgStatusIcon;
 extern int gmsgArmorType;
-extern int gmsgTeamInfo;
 extern int gmsgItemStatus;
 
 void OnAmxxAttach();

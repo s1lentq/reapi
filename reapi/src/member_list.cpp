@@ -1,21 +1,22 @@
 #include "precompiled.h"
 
-#define CLASS_MEMBERS(cx, mx, pref) ((!(pref##mx & (MAX_REGION_RANGE - 1)) ? regmember::current_cell = 1, true : false) || (pref##mx & (MAX_REGION_RANGE - 1)) == regmember::current_cell++) ? regmember([](member_t* ptr){ decltype(##cx::##mx) f = {};ptr->size = getTypeSize(f);ptr->max_size = sizeof(f);ptr->offset = offsetof(##cx, ##mx);ptr->type = getMemberType(f);}) : regmember(#mx)
+#define CLASS_MEMBERS(cx, mx, postf, pref) ((!(postf & (MAX_REGION_RANGE - 1)) ? regmember::current_cell = 1, true : false) || (postf & (MAX_REGION_RANGE - 1)) == regmember::current_cell++) ? regmember([](member_t* ptr){ decltype(##cx::##pref##mx) f = {};ptr->size = getTypeSize(f);ptr->max_size = sizeof(f);ptr->offset = offsetof(##cx, ##pref##mx);ptr->type = getMemberType(f);}) : regmember(#pref#mx)
 
-#define GM_MEMBERS(mx)			CLASS_MEMBERS(CHalfLifeMultiplay, mx,)
-#define GM_VOICE_MEMBERS(mx)		CLASS_MEMBERS(CVoiceGameMgr, mx,)
-#define BASE_MEMBERS(mx)		CLASS_MEMBERS(CBaseEntity, mx,)
-#define ANIM_MEMBERS(mx)		CLASS_MEMBERS(CBaseAnimating, mx,)
-#define MONST_MEMBERS(mx)		CLASS_MEMBERS(CBaseMonster, mx,)
-#define PL_MEMBERS(mx)			CLASS_MEMBERS(CBasePlayer, mx,)
-#define EVAR_MEMBERS(mx)		CLASS_MEMBERS(com_entvars, mx, var_)
-#define PMOVE_MEMBERS(mx)		CLASS_MEMBERS(com_playermove, mx, pm_)
-#define MOVEVAR_MEMBERS(mx)		CLASS_MEMBERS(movevars_t, mx, mv_)
-#define UCMD_MEMBERS(mx)		CLASS_MEMBERS(usercmd_s, mx, ucmd_)
-#define PMTRACE_MEMBERS(mx)		CLASS_MEMBERS(pmtrace_s, mx, pmt_)
-#define CSPL_MEMBERS(mx)		CLASS_MEMBERS(CCSPlayer, mx,)
-#define BASEITEM_MEMBERS(mx)		CLASS_MEMBERS(CBasePlayerItem, mx,)
-#define BASEWPN_MEMBERS(mx)		CLASS_MEMBERS(CBasePlayerWeapon, mx,)
+#define GM_MEMBERS(mx)			CLASS_MEMBERS(CHalfLifeMultiplay, mx, mx,)
+#define GM_VOICE_MEMBERS(mx)		CLASS_MEMBERS(CVoiceGameMgr, mx, mx,)
+#define BASE_MEMBERS(mx)		CLASS_MEMBERS(CBaseEntity, mx, mx,)
+#define ANIM_MEMBERS(mx)		CLASS_MEMBERS(CBaseAnimating, mx, mx,)
+#define MONST_MEMBERS(mx)		CLASS_MEMBERS(CBaseMonster, mx, mx,)
+#define PL_MEMBERS(mx)			CLASS_MEMBERS(CBasePlayer, mx, mx,)
+#define EVAR_MEMBERS(mx)		CLASS_MEMBERS(com_entvars, mx, var_##mx,)
+#define PMOVE_MEMBERS(mx)		CLASS_MEMBERS(com_playermove, mx, pm_##mx,)
+#define MOVEVAR_MEMBERS(mx)		CLASS_MEMBERS(movevars_t, mx, mv_##mx,)
+#define UCMD_MEMBERS(mx)		CLASS_MEMBERS(usercmd_s, mx, ucmd_##mx,)
+#define PMTRACE_MEMBERS(mx)		CLASS_MEMBERS(pmtrace_s, mx, pmt_##mx,)
+#define CSPL_MEMBERS(mx)		CLASS_MEMBERS(CCSPlayer, mx, mx,)
+#define BASEITEM_MEMBERS(mx)		CLASS_MEMBERS(CBasePlayerItem, mx, mx,)
+#define BASEWPN_MEMBERS(mx)		CLASS_MEMBERS(CBasePlayerWeapon, mx, m_Weapon_##mx, m_)
+#define WPNBOX_MEMBERS(mx)		CLASS_MEMBERS(CWeaponBox_COM, mx, m_WeaponBox_##mx, m_)
 
 inline MType getMemberType(float*)			{ return MEMBER_FLOAT; }
 inline MType getMemberType(float)			{ return MEMBER_FLOAT; }
@@ -37,6 +38,7 @@ inline MType getMemberType(Vector)			{ return MEMBER_VECTOR; }
 
 inline MType getMemberType(char*)			{ return MEMBER_STRING; }
 inline MType getMemberType(qstring_t)		{ return MEMBER_QSTRING; }
+inline MType getMemberType(qstring_t*)		{ return MEMBER_QSTRING; }
 
 inline MType getMemberType(char)			{ return MEMBER_BYTE; }
 inline MType getMemberType(byte)			{ return MEMBER_BYTE; }
@@ -677,41 +679,49 @@ member_t memberlist_baseitem[] = {
 };
 
 member_t memberlist_baseweapon[] = {
-	BASEWPN_MEMBERS(m_iPlayEmptySound),
-	BASEWPN_MEMBERS(m_fFireOnEmpty),
-	BASEWPN_MEMBERS(m_flNextPrimaryAttack),
-	BASEWPN_MEMBERS(m_flNextSecondaryAttack),
-	//BASEWPN_MEMBERS(m_flTimeWeaponIdle),		// FIXME: conflict with CBasePlayer::m_flTimeWeaponIdle
-	BASEWPN_MEMBERS(m_iPrimaryAmmoType),
-	BASEWPN_MEMBERS(m_iSecondaryAmmoType),
-	BASEWPN_MEMBERS(m_iClip),
-	BASEWPN_MEMBERS(m_iClientClip),
-	BASEWPN_MEMBERS(m_iClientWeaponState),
-	BASEWPN_MEMBERS(m_fInReload),
-	BASEWPN_MEMBERS(m_fInSpecialReload),
-	BASEWPN_MEMBERS(m_iDefaultAmmo),
-	BASEWPN_MEMBERS(m_iShellId),
-	BASEWPN_MEMBERS(m_fMaxSpeed),
-	BASEWPN_MEMBERS(m_bDelayFire),
-	BASEWPN_MEMBERS(m_iDirection),
-	BASEWPN_MEMBERS(m_bSecondarySilencerOn),
-	BASEWPN_MEMBERS(m_flAccuracy),
-	BASEWPN_MEMBERS(m_flLastFire),
-	BASEWPN_MEMBERS(m_iShotsFired),
-	//BASEWPN_MEMBERS(m_vVecAiming),
+	BASEWPN_MEMBERS(iPlayEmptySound),
+	BASEWPN_MEMBERS(fFireOnEmpty),
+	BASEWPN_MEMBERS(flNextPrimaryAttack),
+	BASEWPN_MEMBERS(flNextSecondaryAttack),
+	BASEWPN_MEMBERS(flTimeWeaponIdle),		// FIXME: conflict with CBasePlayer::m_flTimeWeaponIdle
+	BASEWPN_MEMBERS(iPrimaryAmmoType),
+	BASEWPN_MEMBERS(iSecondaryAmmoType),
+	BASEWPN_MEMBERS(iClip),
+	BASEWPN_MEMBERS(iClientClip),
+	BASEWPN_MEMBERS(iClientWeaponState),
+	BASEWPN_MEMBERS(fInReload),
+	BASEWPN_MEMBERS(fInSpecialReload),
+	BASEWPN_MEMBERS(iDefaultAmmo),
+	BASEWPN_MEMBERS(iShellId),
+	BASEWPN_MEMBERS(fMaxSpeed),
+	BASEWPN_MEMBERS(bDelayFire),
+	BASEWPN_MEMBERS(iDirection),
+	BASEWPN_MEMBERS(bSecondarySilencerOn),
+	BASEWPN_MEMBERS(flAccuracy),
+	BASEWPN_MEMBERS(flLastFire),
+	BASEWPN_MEMBERS(iShotsFired),
+	//BASEWPN_MEMBERS(vVecAiming),
 	//BASEWPN_MEMBERS(model_name),
-	BASEWPN_MEMBERS(m_flGlock18Shoot),
-	BASEWPN_MEMBERS(m_iGlock18ShotsFired),
-	BASEWPN_MEMBERS(m_flFamasShoot),
-	BASEWPN_MEMBERS(m_iFamasShotsFired),
-	BASEWPN_MEMBERS(m_fBurstSpread),
-	BASEWPN_MEMBERS(m_iWeaponState),
-	BASEWPN_MEMBERS(m_flNextReload),
-	BASEWPN_MEMBERS(m_flDecreaseShotsFired),
-	BASEWPN_MEMBERS(m_usFireGlock18),
-	BASEWPN_MEMBERS(m_usFireFamas),
-	BASEWPN_MEMBERS(m_flPrevPrimaryAttack),
-	BASEWPN_MEMBERS(m_flLastFireTime),
+	BASEWPN_MEMBERS(flGlock18Shoot),
+	BASEWPN_MEMBERS(iGlock18ShotsFired),
+	BASEWPN_MEMBERS(flFamasShoot),
+	BASEWPN_MEMBERS(iFamasShotsFired),
+	BASEWPN_MEMBERS(fBurstSpread),
+	BASEWPN_MEMBERS(iWeaponState),
+	BASEWPN_MEMBERS(flNextReload),
+	BASEWPN_MEMBERS(flDecreaseShotsFired),
+	BASEWPN_MEMBERS(usFireGlock18),
+	BASEWPN_MEMBERS(usFireFamas),
+	BASEWPN_MEMBERS(flPrevPrimaryAttack),
+	BASEWPN_MEMBERS(flLastFireTime),
+};
+
+member_t memberlist_weaponbox[] = {
+	WPNBOX_MEMBERS(rgpPlayerItems),
+	WPNBOX_MEMBERS(rgiszAmmo),
+	WPNBOX_MEMBERS(rgAmmo),
+	WPNBOX_MEMBERS(cAmmoTypes),
+	WPNBOX_MEMBERS(bIsBomb),
 };
 
 memberlist_t memberlist;
@@ -737,6 +747,7 @@ member_t *memberlist_t::operator[](size_t members) const
 		CASE(csplayer)
 		CASE(baseitem)
 		CASE(baseweapon)
+		CASE(weaponbox)
 	}
 
 	return nullptr;
