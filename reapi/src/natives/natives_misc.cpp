@@ -211,7 +211,7 @@ cell AMX_NATIVE_CALL rg_multidmg_clear(AMX *amx, cell *params)
 }
 
 /*
-* inflicts contents of global multi damage register on victim
+* Inflicts contents of global multi damage register on victim
 *
 * @param inflictor	Inflictor is the entity that caused the damage (such as a gun)
 * @param attacker	Attacker is the entity that tirggered the damage (such as the gun's owner).
@@ -1621,14 +1621,14 @@ cell AMX_NATIVE_CALL rh_emit_sound2(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_entity, arg_recipient, arg_channel, arg_sample, arg_vol, arg_attn, arg_flags, arg_pitch, arg_emitFlags, arg_origin };
 
-	CBasePlayer *pRecipient = getPrivate<CBasePlayer>(params[arg_recipient]);
+	CBaseEntity *pRecipient = getPrivate<CBaseEntity>(params[arg_recipient]);
 	if (pRecipient != nullptr && pRecipient->has_disconnected) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_recipient]);
 		return FALSE;
 	}
 
-	// ignore bots
-	if ((pRecipient != nullptr && pRecipient->IsBot()) || !pRecipient->IsNetClient()) {
+	// ignore recipient of non-player
+	if (params[arg_recipient] != 0 && pRecipient && !pRecipient->IsNetClient()) {
 		return FALSE;
 	}
 
