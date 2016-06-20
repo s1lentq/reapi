@@ -6,7 +6,8 @@ inline size_t getFwdParamType(void(*)(Vector&))			{ return FP_ARRAY; }
 inline size_t getFwdParamType(void(*)(PLAYER_ANIM))		{ return FP_CELL; }
 inline size_t getFwdParamType(void(*)(RewardType))		{ return FP_CELL; }
 inline size_t getFwdParamType(void(*)(ScenarioEventEndRound))	{ return FP_CELL; }
-inline size_t getFwdParamType(void(*)(BuyItemID))		{ return FP_CELL; }
+inline size_t getFwdParamType(void(*)(ItemID))			{ return FP_CELL; }
+inline size_t getFwdParamType(void(*)(ItemRestType))		{ return FP_CELL; }
 inline size_t getFwdParamType(void(*)(float))			{ return FP_FLOAT; }
 inline size_t getFwdParamType(void(*)(float&))			{ return FP_FLOAT; }
 inline size_t getFwdParamType(void(*)(const char *))		{ return FP_STRING; }
@@ -77,14 +78,12 @@ hook_t hooklist_gamedll[] = {
 	DLL(PlayerBlind),
 	DLL(RadiusFlash_TraceLine),
 	DLL(RoundEnd),
-	DLL(CanBuyThis),
 	DLL(PM_Move),
 	DLL(PM_AirMove),
 	DLL(HandleMenu_ChooseAppearance),
 	DLL(HandleMenu_ChooseTeam),
 	DLL(ShowMenu),
 	DLL(ShowVGUIMenu),
-	DLL(CanBuyThisItem),
 };
 
 hook_t hooklist_animating[] = {
@@ -124,6 +123,7 @@ hook_t hooklist_player[] = {
 	DLL(CBasePlayer_AddAccount),
 	DLL(CBasePlayer_GiveShield),
 	DLL(CBasePlayer_DropPlayerItem),
+	DLL(CBasePlayer_HasRestrictItem),
 };
 
 hook_t hooklist_gamerules[] = {

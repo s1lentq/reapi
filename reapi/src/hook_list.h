@@ -74,7 +74,6 @@ enum EngineFunc
 	RH_Cvar_DirectSet,
 
 	// [...]
-	RH_EngineFunc_End
 };
 
 enum GamedllFunc
@@ -83,7 +82,6 @@ enum GamedllFunc
 	RG_PlayerBlind,
 	RG_RadiusFlash_TraceLine,
 	RG_RoundEnd,
-	RG_CanBuyThis,
 
 	RG_PM_Move,
 	RG_PM_AirMove,
@@ -91,10 +89,8 @@ enum GamedllFunc
 	RG_HandleMenu_ChooseTeam,
 	RG_ShowMenu,
 	RG_ShowVGUIMenu,
-	RG_CanBuyThisItem,
 
 	// [...]
-	RG_End
 };
 
 enum GamedllFunc_CBaseAnimating
@@ -102,7 +98,6 @@ enum GamedllFunc_CBaseAnimating
 	RG_CBaseAnimating_ResetSequenceInfo = BEGIN_FUNC_REGION(animating),
 
 	// [...]
-	RG_CBaseAnimating_End
 };
 
 enum GamedllFunc_CBasePlayer
@@ -140,9 +135,9 @@ enum GamedllFunc_CBasePlayer
 	RG_CBasePlayer_AddAccount,
 	RG_CBasePlayer_GiveShield,
 	RG_CBasePlayer_DropPlayerItem,
+	RG_CBasePlayer_HasRestrictItem,
 
 	// [...]
-	RG_CBasePlayer_End
 };
 
 enum GamedllFunc_CSGameRules
@@ -173,5 +168,4 @@ enum GamedllFunc_CSGameRules
 	RG_CSGameRules_BalanceTeams,
 
 	// [...]
-	RG_CSGameRules_End
 };

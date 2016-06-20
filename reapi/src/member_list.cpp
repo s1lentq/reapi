@@ -55,6 +55,8 @@ inline MType getMemberType(_Menu)			{ return MEMBER_INTEGER; }
 inline MType getMemberType(MusicState)			{ return MEMBER_INTEGER; }
 inline MType getMemberType(Activity)			{ return MEMBER_INTEGER; }
 inline MType getMemberType(MONSTERSTATE)		{ return MEMBER_INTEGER; }
+inline MType getMemberType(ArmorType)			{ return MEMBER_INTEGER; }
+inline MType getMemberType(ArmouryItemPack)		{ return MEMBER_INTEGER; }
 
 inline MType getMemberType(short)			{ return MEMBER_SHORT; }
 inline MType getMemberType(unsigned short)		{ return MEMBER_SHORT; }

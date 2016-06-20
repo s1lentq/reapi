@@ -42,7 +42,7 @@ inline AType getApiType(float)			{ return ATYPE_FLOAT; }
 inline AType getApiType(const char *)		{ return ATYPE_STRING; }
 inline AType getApiType(char [])		{ return ATYPE_STRING; }
 inline AType getApiType(CBaseEntity *)		{ return ATYPE_CLASSPTR; }
-inline AType getApiType(edict_t *)		{ return ATYPE_CLASSPTR; }
+inline AType getApiType(edict_t *)		{ return ATYPE_EDICT; }
 inline AType getApiType(entvars_t *)		{ return ATYPE_EVARS; }
 
 template<typename T>
@@ -239,8 +239,6 @@ int GetForceCamera(IReGameHook_GetForceCamera *chain, CBasePlayer *pObserver);
 void PlayerBlind(IReGameHook_PlayerBlind *chain, CBasePlayer *pPlayer, entvars_t *pevInflictor, entvars_t *pevAttacker, float fadeTime, float fadeHold, int alpha, Vector& color);
 void RadiusFlash_TraceLine(IReGameHook_RadiusFlash_TraceLine *chain, CBasePlayer *pPlayer, entvars_t *pevInflictor, entvars_t *pevAttacker, Vector& vecSrc, Vector& vecSpot, TraceResult *ptr);
 bool RoundEnd(IReGameHook_RoundEnd *chain, int winStatus, ScenarioEventEndRound event, float tmDelay);
-bool CanBuyThis(IReGameHook_CanBuyThis *chain, CBasePlayer *pPlayer, int iWeapon);
-bool CanBuyThisItem(IReGameHook_CanBuyThisItem *chain, CBasePlayer *pPlayer, BuyItemID item);
 void PM_Move(IReGameHook_PM_Move *chain, playermove_t *ppmove, int server);
 void PM_AirMove(IReGameHook_PM_AirMove *chain, int playerIndex);
 void HandleMenu_ChooseAppearance(IReGameHook_HandleMenu_ChooseAppearance *chain, CBasePlayer *pPlayer, int slot);
@@ -278,6 +276,9 @@ void CBasePlayer_GiveDefaultItems(IReGameHook_CBasePlayer_GiveDefaultItems *chai
 void CBasePlayer_GiveNamedItem(IReGameHook_CBasePlayer_GiveNamedItem *chain, CBasePlayer *pthis, const char *pszName);
 void CBasePlayer_AddAccount(IReGameHook_CBasePlayer_AddAccount *chain, CBasePlayer *pthis, int amount, RewardType type, bool bTrackChange);
 void CBasePlayer_GiveShield(IReGameHook_CBasePlayer_GiveShield *chain, CBasePlayer *pthis, bool bDeploy);
+void CBasePlayer_SetClientUserInfoModel(IReGameHook_CBasePlayer_SetClientUserInfoModel *chain, CBasePlayer *pthis, char *infobuffer, char *szNewModel);
+void CBasePlayer_SetClientUserInfoName(IReGameHook_CBasePlayer_SetClientUserInfoName *chain, CBasePlayer *pthis, char *infobuffer, char *szNewName);
+bool CBasePlayer_HasRestrictItem(IReGameHook_CBasePlayer_HasRestrictItem *chain, CBasePlayer *pthis, ItemID item, ItemRestType type);
 void CBasePlayer_DropPlayerItem(IReGameHook_CBasePlayer_DropPlayerItem *chain, CBasePlayer *pthis, const char *pszItemName);
 
 void CBaseAnimating_ResetSequenceInfo(IReGameHook_CBaseAnimating_ResetSequenceInfo *chain, CBaseAnimating *pthis);
@@ -304,9 +305,6 @@ void CSGameRules_GiveC4(IReGameHook_CSGameRules_GiveC4 *chain);
 void CSGameRules_ChangeLevel(IReGameHook_CSGameRules_ChangeLevel *chain);
 void CSGameRules_GoToIntermission(IReGameHook_CSGameRules_GoToIntermission *chain);
 void CSGameRules_BalanceTeams(IReGameHook_CSGameRules_BalanceTeams *chain);
-
-void CBasePlayer_SetClientUserInfoModel(IReGameHook_CBasePlayer_SetClientUserInfoModel *chain, CBasePlayer *pthis, char *infobuffer, char *szNewModel);
-void CBasePlayer_SetClientUserInfoName(IReGameHook_CBasePlayer_SetClientUserInfoName *chain, CBasePlayer *pthis, char *infobuffer, char *szNewName);
 
 extern int g_iClientStartSpeak;
 extern int g_iClientStopSpeak;

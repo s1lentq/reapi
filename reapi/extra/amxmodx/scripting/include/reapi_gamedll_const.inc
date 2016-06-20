@@ -160,12 +160,6 @@ enum GamedllFunc
 
 	/*
 	* Description:		-
-	* Params:		(const index, const WeaponIdType:iWeapon)
-	*/
-	RG_CanBuyThis,
-
-	/*
-	* Description:		-
 	* Params:		(const PlayerMove:ppmove, const server)
 	*/
 	RG_PM_Move,
@@ -198,13 +192,7 @@ enum GamedllFunc
 	* Description:		-
 	* Params:		(const index, VGUIMenu:menuType, const bitsSlots, szOldMenu[], bool:bForceOldMenu)
 	*/
-	RG_ShowVGUIMenu,
-
-	/*
-	* Description:		-
-	* Params:		(const index, BuyItemID:item)
-	*/
-	RG_CanBuyThisItem
+	RG_ShowVGUIMenu
 };
 
 enum GamedllFunc_CBaseAnimating
@@ -408,7 +396,14 @@ enum GamedllFunc_CBasePlayer
 	* Description:		-
 	* Params:		(const this, const pszItemName[])
 	*/
-	RG_CBasePlayer_DropPlayerItem
+	RG_CBasePlayer_DropPlayerItem,
+
+	/*
+	* Description:		-
+	* Params:		(const this, ItemID:item, ItemRestType:type)
+	*/
+	RG_CBasePlayer_HasRestrictItem
+
 };
 
 enum GamedllFunc_CSGameRules
@@ -1730,7 +1725,7 @@ enum CBasePlayer_Members
 
 	/*
 	* Description:		-
-	* Member type:		int
+	* Member type:		enum ArmorType
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);
 	*/
@@ -4239,7 +4234,7 @@ enum CArmoury_Members
 {
 	/*
 	* Description:		-
-	* Member type:		int (or enum's ArmouryItemPack)
+	* Member type:		enum ArmouryItemPack
 	* Get params:		ArmouryItemPack:get_member(index, member);
 	* Set params:		set_member(index, member, ArmouryItemPack:value);
 	*/

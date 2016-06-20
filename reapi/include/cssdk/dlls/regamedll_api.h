@@ -33,8 +33,9 @@
 #include "player.h"
 #include "gamerules.h"
 #include "client.h"
+#include "items.h"
 
-#define REGAMEDLL_API_VERSION_MAJOR 3
+#define REGAMEDLL_API_VERSION_MAJOR 4
 #define REGAMEDLL_API_VERSION_MINOR 1
 
 // CBasePlayer::Spawn hook
@@ -157,6 +158,14 @@ typedef IVoidHookChainRegistryClass<class CBasePlayer, char *, char *> IReGameHo
 typedef IVoidHookChainClass<class CBasePlayer, char *, char *> IReGameHook_CBasePlayer_SetClientUserInfoName;
 typedef IVoidHookChainRegistryClass<class CBasePlayer, char *, char *> IReGameHookRegistry_CBasePlayer_SetClientUserInfoName;
 
+// CBasePlayer::HasRestrictItem hook
+typedef IHookChainClass<bool, class CBasePlayer, ItemID, ItemRestType> IReGameHook_CBasePlayer_HasRestrictItem;
+typedef IHookChainRegistryClass<bool, class CBasePlayer, ItemID, ItemRestType> IReGameHookRegistry_CBasePlayer_HasRestrictItem;
+
+// CBasePlayer::DropPlayerItem hook
+typedef IVoidHookChainClass<class CBasePlayer, const char *> IReGameHook_CBasePlayer_DropPlayerItem;
+typedef IVoidHookChainRegistryClass<class CBasePlayer, const char *> IReGameHookRegistry_CBasePlayer_DropPlayerItem;
+
 // CBaseAnimating::ResetSequenceInfo hook
 typedef IVoidHookChainClass<class CBaseAnimating> IReGameHook_CBaseAnimating_ResetSequenceInfo;
 typedef IVoidHookChainRegistryClass<class CBaseAnimating> IReGameHookRegistry_CBaseAnimating_ResetSequenceInfo;
@@ -176,10 +185,6 @@ typedef IVoidHookChainRegistry<class CBasePlayer *, struct entvars_s *, struct e
 // RoundEnd hook
 typedef IHookChain<bool, int, ScenarioEventEndRound, float> IReGameHook_RoundEnd;
 typedef IHookChainRegistry<bool, int, ScenarioEventEndRound, float> IReGameHookRegistry_RoundEnd;
-
-// CanBuyThis hook
-typedef IHookChain<bool, class CBasePlayer *, int> IReGameHook_CanBuyThis;
-typedef IHookChainRegistry<bool, class CBasePlayer *, int> IReGameHookRegistry_CanBuyThis;
 
 // InstallGameRules hook
 typedef IHookChain<class CGameRules *> IReGameHook_InstallGameRules;
@@ -301,14 +306,6 @@ typedef IVoidHookChainRegistry<> IReGameHookRegistry_CSGameRules_GoToIntermissio
 typedef IVoidHookChain<> IReGameHook_CSGameRules_BalanceTeams;
 typedef IVoidHookChainRegistry<> IReGameHookRegistry_CSGameRules_BalanceTeams;
 
-// CanBuyThisItem hook
-typedef IHookChain<bool, class CBasePlayer *, BuyItemID> IReGameHook_CanBuyThisItem;
-typedef IHookChainRegistry<bool, class CBasePlayer *, BuyItemID> IReGameHookRegistry_CanBuyThisItem;
-
-// CBasePlayer::DropPlayerItem hook
-typedef IVoidHookChainClass<class CBasePlayer, const char *> IReGameHook_CBasePlayer_DropPlayerItem;
-typedef IVoidHookChainRegistryClass<class CBasePlayer, const char *> IReGameHookRegistry_CBasePlayer_DropPlayerItem;
-
 class IReGameHookchains {
 public:
 	virtual ~IReGameHookchains() {}
@@ -344,13 +341,14 @@ public:
 	virtual IReGameHookRegistry_CBasePlayer_GiveShield* CBasePlayer_GiveShield() = 0;
 	virtual IReGameHookRegistry_CBasePlayer_SetClientUserInfoModel* CBasePlayer_SetClientUserInfoModel() = 0;
 	virtual IReGameHookRegistry_CBasePlayer_SetClientUserInfoName* CBasePlayer_SetClientUserInfoName() = 0;
+	virtual IReGameHookRegistry_CBasePlayer_HasRestrictItem* CBasePlayer_HasRestrictItem() = 0;
+	virtual IReGameHookRegistry_CBasePlayer_DropPlayerItem* CBasePlayer_DropPlayerItem() = 0;
 	virtual IReGameHookRegistry_CBaseAnimating_ResetSequenceInfo* CBaseAnimating_ResetSequenceInfo() = 0;
 
 	virtual IReGameHookRegistry_GetForceCamera* GetForceCamera() = 0;
 	virtual IReGameHookRegistry_PlayerBlind* PlayerBlind() = 0;
 	virtual IReGameHookRegistry_RadiusFlash_TraceLine* RadiusFlash_TraceLine() = 0;
 	virtual IReGameHookRegistry_RoundEnd* RoundEnd() = 0;
-	virtual IReGameHookRegistry_CanBuyThis* CanBuyThis() = 0;
 	virtual IReGameHookRegistry_InstallGameRules* InstallGameRules() = 0;
 	virtual IReGameHookRegistry_PM_Init* PM_Init() = 0;
 	virtual IReGameHookRegistry_PM_Move* PM_Move() = 0;
@@ -382,9 +380,6 @@ public:
 	virtual IReGameHookRegistry_CSGameRules_ChangeLevel* CSGameRules_ChangeLevel() = 0;
 	virtual IReGameHookRegistry_CSGameRules_GoToIntermission* CSGameRules_GoToIntermission() = 0;
 	virtual IReGameHookRegistry_CSGameRules_BalanceTeams* CSGameRules_BalanceTeams() = 0;
-
-	virtual IReGameHookRegistry_CanBuyThisItem* CanBuyThisItem() = 0;
-	virtual IReGameHookRegistry_CBasePlayer_DropPlayerItem* CBasePlayer_DropPlayerItem() = 0;
 };
 
 struct ReGameFuncs_t {

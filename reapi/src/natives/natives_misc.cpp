@@ -950,7 +950,7 @@ cell AMX_NATIVE_CALL rg_set_user_armor(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	int armorType = params[arg_armortype];
+	ArmorType armorType = static_cast<ArmorType>(params[arg_armortype]);
 
 	pPlayer->pev->armorvalue = params[arg_armorvalue];
 	pPlayer->m_iKevlar = armorType;

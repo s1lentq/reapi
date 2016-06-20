@@ -274,7 +274,8 @@ CBasePlayer *CBasePlayer_Observer_IsValidTarget(IReGameHook_CBasePlayer_Observer
 {
 	auto original = [chain](int _pthis, int _iPlayerIndex, bool _bSameTeam)
 	{
-		return indexOfEdict(chain->callNext(getPrivate<CBasePlayer>(_pthis), _iPlayerIndex, _bSameTeam)->pev);
+		auto pPlayer = chain->callNext(getPrivate<CBasePlayer>(_pthis), _iPlayerIndex, _bSameTeam);
+		return pPlayer ? indexOfEdict(pPlayer->pev) : 0;
 	};
 
 	return getPrivate<CBasePlayer>(callForward<size_t>(RG_CBasePlayer_Observer_IsValidTarget, original, indexOfEdict(pthis->pev), iPlayerIndex, bSameTeam));
@@ -328,6 +329,36 @@ void CBasePlayer_GiveShield(IReGameHook_CBasePlayer_GiveShield *chain, CBasePlay
 	};
 
 	callVoidForward(RG_CBasePlayer_GiveShield, original, indexOfEdict(pthis->pev), bDeploy);
+}
+
+void CBasePlayer_SetClientUserInfoModel(IReGameHook_CBasePlayer_SetClientUserInfoModel *chain, CBasePlayer *pthis, char *infobuffer, char *szNewModel)
+{
+	auto original = [chain](int _pthis, char *_infobuffer, char *_szNewModel)
+	{
+		chain->callNext(getPrivate<CBasePlayer>(_pthis), _infobuffer, _szNewModel);
+	};
+
+	callVoidForward(RG_CBasePlayer_SetClientUserInfoModel, original, indexOfEdict(pthis->pev), infobuffer, szNewModel);
+}
+
+void CBasePlayer_SetClientUserInfoName(IReGameHook_CBasePlayer_SetClientUserInfoName *chain, CBasePlayer *pthis, char *infobuffer, char *szNewName)
+{
+	auto original = [chain](int _pthis, char *_infobuffer, char *_szNewName)
+	{
+		chain->callNext(getPrivate<CBasePlayer>(_pthis), _infobuffer, _szNewName);
+	};
+
+	callVoidForward(RG_CBasePlayer_SetClientUserInfoName, original, indexOfEdict(pthis->pev), infobuffer, szNewName);
+}
+
+bool CBasePlayer_HasRestrictItem(IReGameHook_CBasePlayer_HasRestrictItem *chain, CBasePlayer *pthis, ItemID item, ItemRestType type)
+{
+	auto original = [chain](int _pthis, ItemID _item, ItemRestType _type)
+	{
+		return chain->callNext(getPrivate<CBasePlayer>(_pthis), _item, _type);
+	};
+
+	return callForward<bool>(RG_CBasePlayer_HasRestrictItem, original, indexOfEdict(pthis->pev), item, type);
 }
 
 void CBasePlayer_DropPlayerItem(IReGameHook_CBasePlayer_DropPlayerItem *chain, CBasePlayer *pthis, const char *pszItemName)
@@ -392,26 +423,6 @@ bool RoundEnd(IReGameHook_RoundEnd *chain, int winStatus, ScenarioEventEndRound 
 	};
 
 	return callForward<bool>(RG_RoundEnd, original, winStatus, event, tmDelay);
-}
-
-bool CanBuyThis(IReGameHook_CanBuyThis *chain, CBasePlayer *pPlayer, int iWeapon)
-{
-	auto original = [chain](int _pPlayer, int _iWeapon)
-	{
-		return chain->callNext(getPrivate<CBasePlayer>(_pPlayer), _iWeapon);
-	};
-
-	return callForward<bool>(RG_CanBuyThis, original, indexOfEdict(pPlayer->pev), iWeapon);
-}
-
-bool CanBuyThisItem(IReGameHook_CanBuyThisItem *chain, CBasePlayer *pPlayer, BuyItemID item)
-{
-	auto original = [chain](int _pPlayer, BuyItemID _item)
-	{
-		return chain->callNext(getPrivate<CBasePlayer>(_pPlayer), _item);
-	};
-
-	return callForward<bool>(RG_CanBuyThisItem, original, indexOfEdict(pPlayer->pev), item);
 }
 
 void PM_Move(IReGameHook_PM_Move *chain, playermove_t *ppmove, int server)
@@ -652,26 +663,6 @@ void CSGameRules_BalanceTeams(IReGameHook_CSGameRules_BalanceTeams *chain)
 	};
 
 	callVoidForward(RG_CSGameRules_BalanceTeams, original);
-}
-
-void CBasePlayer_SetClientUserInfoModel(IReGameHook_CBasePlayer_SetClientUserInfoModel *chain, CBasePlayer *pthis, char *infobuffer, char *szNewModel)
-{
-	auto original = [chain](int _pthis, char *_infobuffer, char *_szNewModel)
-	{
-		chain->callNext(getPrivate<CBasePlayer>(_pthis), _infobuffer, _szNewModel);
-	};
-
-	callVoidForward(RG_CBasePlayer_SetClientUserInfoModel, original, indexOfEdict(pthis->pev), infobuffer, szNewModel);
-}
-
-void CBasePlayer_SetClientUserInfoName(IReGameHook_CBasePlayer_SetClientUserInfoName *chain, CBasePlayer *pthis, char *infobuffer, char *szNewName)
-{
-	auto original = [chain](int _pthis, char *_infobuffer, char *_szNewName)
-	{
-		chain->callNext(getPrivate<CBasePlayer>(_pthis), _infobuffer, _szNewName);
-	};
-
-	callVoidForward(RG_CBasePlayer_SetClientUserInfoName, original, indexOfEdict(pthis->pev), infobuffer, szNewName);
 }
 
 void HandleMenu_ChooseAppearance(IReGameHook_HandleMenu_ChooseAppearance *chain, CBasePlayer *pPlayer, int slot)
