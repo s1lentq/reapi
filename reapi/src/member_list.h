@@ -53,7 +53,8 @@ struct memberlist_t
 		mt_csplayer,
 		mt_baseitem,
 		mt_baseweapon,
-		mt_weaponbox
+		mt_weaponbox,
+		mt_armoury
 	};
 };
 
@@ -726,4 +727,12 @@ enum CWeaponBox_Members
 	m_WeaponBox_rgAmmo,
 	m_WeaponBox_cAmmoTypes,
 	m_WeaponBox_bIsBomb,
+};
+
+enum CArmoury_Members
+{
+	m_Armoury_iItem = BEGIN_MEMBER_REGION(armoury),
+	m_Armoury_iCount,
+	m_Armoury_iInitialCount,
+	m_Armoury_bAlreadyCounted,
 };

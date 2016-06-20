@@ -160,7 +160,7 @@ enum GamedllFunc
 
 	/*
 	* Description:		-
-	* Params:		(const index, const iWeapon)
+	* Params:		(const index, const WeaponIdType:iWeapon)
 	*/
 	RG_CanBuyThis,
 
@@ -198,7 +198,13 @@ enum GamedllFunc
 	* Description:		-
 	* Params:		(const index, VGUIMenu:menuType, const bitsSlots, szOldMenu[], bool:bForceOldMenu)
 	*/
-	RG_ShowVGUIMenu
+	RG_ShowVGUIMenu,
+
+	/*
+	* Description:		-
+	* Params:		(const index, BuyItemID:item)
+	*/
+	RG_CanBuyThisItem
 };
 
 enum GamedllFunc_CBaseAnimating
@@ -396,7 +402,13 @@ enum GamedllFunc_CBasePlayer
 	* Description:		-
 	* Params:		(const this, bool:bDeploy)
 	*/
-	RG_CBasePlayer_GiveShield
+	RG_CBasePlayer_GiveShield,
+
+	/*
+	* Description:		-
+	* Params:		(const this, const pszItemName[])
+	*/
+	RG_CBasePlayer_DropPlayerItem
 };
 
 enum GamedllFunc_CSGameRules
@@ -4220,4 +4232,40 @@ enum CWeaponBox_Members
 	* Set params:		set_member(index, member, value);
 	*/
 	m_WeaponBox_bIsBomb,
+};
+
+// CArmoury
+enum CArmoury_Members
+{
+	/*
+	* Description:		-
+	* Member type:		int (or enum's ArmouryItemPack)
+	* Get params:		ArmouryItemPack:get_member(index, member);
+	* Set params:		set_member(index, member, ArmouryItemPack:value);
+	*/
+	m_Armoury_iItem = BEGIN_MEMBER_REGION(armoury),
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_Armoury_iCount,
+
+	/*
+	* Description:		-
+	* Member type:		int
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_Armoury_iInitialCount,
+
+	/*
+	* Description:		-
+	* Member type:		bool
+	* Get params:		get_member(index, member);
+	* Set params:		set_member(index, member, value);
+	*/
+	m_Armoury_bAlreadyCounted,
 };

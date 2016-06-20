@@ -17,6 +17,7 @@
 #define BASEITEM_MEMBERS(mx)		CLASS_MEMBERS(CBasePlayerItem, mx, mx,)
 #define BASEWPN_MEMBERS(mx)		CLASS_MEMBERS(CBasePlayerWeapon, mx, m_Weapon_##mx, m_)
 #define WPNBOX_MEMBERS(mx)		CLASS_MEMBERS(CWeaponBox_COM, mx, m_WeaponBox_##mx, m_)
+#define ARMOURY_MEMBERS(mx)		CLASS_MEMBERS(CArmoury, mx, m_Armoury_##mx, m_)
 
 inline MType getMemberType(float*)			{ return MEMBER_FLOAT; }
 inline MType getMemberType(float)			{ return MEMBER_FLOAT; }
@@ -724,6 +725,13 @@ member_t memberlist_weaponbox[] = {
 	WPNBOX_MEMBERS(bIsBomb),
 };
 
+member_t memberlist_armoury[] = {
+	ARMOURY_MEMBERS(iItem),
+	ARMOURY_MEMBERS(iCount),
+	ARMOURY_MEMBERS(iInitialCount),
+	ARMOURY_MEMBERS(bAlreadyCounted),
+};
+
 memberlist_t memberlist;
 
 member_t *memberlist_t::operator[](size_t members) const
@@ -748,6 +756,7 @@ member_t *memberlist_t::operator[](size_t members) const
 		CASE(baseitem)
 		CASE(baseweapon)
 		CASE(weaponbox)
+		CASE(armoury)
 	}
 
 	return nullptr;

@@ -330,6 +330,16 @@ void CBasePlayer_GiveShield(IReGameHook_CBasePlayer_GiveShield *chain, CBasePlay
 	callVoidForward(RG_CBasePlayer_GiveShield, original, indexOfEdict(pthis->pev), bDeploy);
 }
 
+void CBasePlayer_DropPlayerItem(IReGameHook_CBasePlayer_DropPlayerItem *chain, CBasePlayer *pthis, const char *pszItemName)
+{
+	auto original = [chain](int _pthis, const char *_pszItemName)
+	{
+		chain->callNext(getPrivate<CBasePlayer>(_pthis), _pszItemName);
+	};
+
+	callVoidForward(RG_CBasePlayer_DropPlayerItem, original, indexOfEdict(pthis->pev), pszItemName);
+}
+
 void CBaseAnimating_ResetSequenceInfo(IReGameHook_CBaseAnimating_ResetSequenceInfo *chain, CBaseAnimating *pthis)
 {
 	auto original = [chain](int _pthis)
@@ -392,6 +402,16 @@ bool CanBuyThis(IReGameHook_CanBuyThis *chain, CBasePlayer *pPlayer, int iWeapon
 	};
 
 	return callForward<bool>(RG_CanBuyThis, original, indexOfEdict(pPlayer->pev), iWeapon);
+}
+
+bool CanBuyThisItem(IReGameHook_CanBuyThisItem *chain, CBasePlayer *pPlayer, BuyItemID item)
+{
+	auto original = [chain](int _pPlayer, BuyItemID _item)
+	{
+		return chain->callNext(getPrivate<CBasePlayer>(_pPlayer), _item);
+	};
+
+	return callForward<bool>(RG_CanBuyThisItem, original, indexOfEdict(pPlayer->pev), item);
 }
 
 void PM_Move(IReGameHook_PM_Move *chain, playermove_t *ppmove, int server)

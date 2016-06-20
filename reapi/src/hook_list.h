@@ -91,6 +91,7 @@ enum GamedllFunc
 	RG_HandleMenu_ChooseTeam,
 	RG_ShowMenu,
 	RG_ShowVGUIMenu,
+	RG_CanBuyThisItem,
 
 	// [...]
 	RG_End
@@ -138,6 +139,7 @@ enum GamedllFunc_CBasePlayer
 	RG_CBasePlayer_GiveNamedItem,
 	RG_CBasePlayer_AddAccount,
 	RG_CBasePlayer_GiveShield,
+	RG_CBasePlayer_DropPlayerItem,
 
 	// [...]
 	RG_CBasePlayer_End

@@ -37,7 +37,8 @@ enum members_tables_e
 	mt_csplayer,
 	mt_baseitem,
 	mt_baseweapon,
-	mt_weaponbox
+	mt_weaponbox,
+	mt_armoury
 };
 
 #define MAX_REGION_RANGE		1024

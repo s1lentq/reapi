@@ -73,6 +73,7 @@ native rh_reset_mapname();
 * @param flags		Emit flags
 * @param pitch		Sound pitch
 * @param emitFlags	Additional Emit2 flags, look at the defines like SND_EMIT2_*
+* @param origin		Specify origin and only on "param" entity worldspawn that is 0
 *
 * @return		1 if successfully sounds are emitted, 0 otherwise
 *

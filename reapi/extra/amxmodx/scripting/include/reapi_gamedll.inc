@@ -173,7 +173,7 @@ native rg_dmg_radius(Float:vecSrc[3], const inflictor, const attacker, const Flo
 native rg_multidmg_clear();
 
 /*
-* inflicts contents of global multi damage register on victim
+* Inflicts contents of global multi damage register on victim
 *
 * @param inflictor	Inflictor is the entity that caused the damage (such as a gun)
 * @param attacker	Attacker is the entity that tirggered the damage (such as the gun's owner).
