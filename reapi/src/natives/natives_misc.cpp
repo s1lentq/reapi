@@ -594,7 +594,7 @@ cell AMX_NATIVE_CALL rg_get_weapon_info(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_weapon_id, arg_type, arg_3, arg_4 };
 
-	WeaponIdType weaponID = static_cast<WeaponIdType>(params[arg_weapon_id]);
+	WeaponIdType weaponID = static_cast<WeaponIdType>(*getAmxAddr(amx, params[arg_weapon_id]));
 	WpnInfo info_type = static_cast<WpnInfo>(*getAmxAddr(amx, params[arg_type]));
 
 	if (!GetWeaponInfoRange(weaponID) && info_type != WI_ID)
