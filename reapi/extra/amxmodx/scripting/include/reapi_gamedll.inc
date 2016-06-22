@@ -297,7 +297,7 @@ native rg_find_ent_by_owner(&start_index, const classname[], owner);
 * @return			Entity-index of item, 0 otherwise
 *
 */
-native rg_find_bpack_item_by_name(const index, const item[]);
+native rg_find_item_bpack_by_name(const index, const item[]);
 
 /*
 * Returns some information about a weapon.

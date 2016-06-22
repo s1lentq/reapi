@@ -547,7 +547,7 @@ cell AMX_NATIVE_CALL rg_find_ent_by_owner(AMX *amx, cell *params)
 *
 * @return			Entity-index of item, 0 otherwise
 *
-* native rg_find_bpack_item_by_name(const index, const item[]);
+* native rg_find_item_bpack_by_name(const index, const item[]);
 */
 cell AMX_NATIVE_CALL rg_find_item_bpack_by_name(AMX *amx, cell *params)
 {
@@ -563,8 +563,11 @@ cell AMX_NATIVE_CALL rg_find_item_bpack_by_name(AMX *amx, cell *params)
 
 	const char *itemName = getAmxString(amx, params[arg_item]);
 	auto pInfo = g_ReGameApi->GetWeaponSlot(itemName);
-	auto pItem = pPlayer->m_rgpPlayerItems[ pInfo->slot ];
+	if (pInfo == nullptr) {
+		return 0;
+	}
 
+	auto pItem = pPlayer->m_rgpPlayerItems[ pInfo->slot ];
 	while (pItem) {
 		if (FClassnameIs(pItem->pev, itemName)) {
 			return indexOfEdict(pItem->pev);
@@ -626,6 +629,25 @@ cell AMX_NATIVE_CALL rg_get_weapon_info(AMX *amx, cell *params)
 		return info->maxRounds;
 	case WI_AMMO_TYPE:
 		return info->ammoType;
+	case WI_AMMO_NAME:
+		{
+			if (PARAMS_COUNT != arg_4) {
+				MF_LogError(amx, AMX_ERR_NATIVE, "%s: bad parameter count, got %i, expected %i", __FUNCTION__, PARAMS_COUNT, arg_4);
+				return -1;
+			}
+
+			// native rg_get_weapon_info(id, WI_AMMO_NAME, output[], maxlength);
+			cell* dest = getAmxAddr(amx, params[arg_3]);
+			size_t length = *getAmxAddr(amx, params[arg_4]);
+
+			if (info->ammoName == nullptr) {
+				setAmxString(dest, "", 1);
+				return 0;
+			}
+
+			setAmxString(dest, info->ammoName, length);
+			return 1;
+		}
 	case WI_NAME:
 		{
 			if (PARAMS_COUNT != arg_4) {
@@ -688,8 +710,9 @@ cell AMX_NATIVE_CALL rg_set_weapon_info(AMX *amx, cell *params)
 	case WI_GUN_CLIP_SIZE:
 	case WI_MAX_ROUNDS:
 	case WI_AMMO_TYPE:
+	case WI_AMMO_NAME:
 	case WI_NAME:
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: this change will have no effect", __FUNCTION__);
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: this change will have no effect, type statement %i", __FUNCTION__, info_type);
 		return 0;
 	default:
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown type statement %i, params count %i", __FUNCTION__, info_type, PARAMS_COUNT);

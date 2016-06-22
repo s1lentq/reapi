@@ -91,6 +91,14 @@ enum WpnInfo
 	/*
 	* Description:		-
 	* Return type:		-
+	* Get params:		rg_get_weapon_info(const weapon_id, WI_AMMO_NAME, const output[], maxlenght);
+	* Set params:		-
+	*/
+	WI_AMMO_NAME,
+
+	/*
+	* Description:		-
+	* Return type:		-
 	* Get params:		rg_get_weapon_info(const weapon_id, WI_NAME, const output[], maxlenght);
 	* Set params:		-
 	*/

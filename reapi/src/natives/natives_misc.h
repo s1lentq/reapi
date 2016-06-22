@@ -9,7 +9,8 @@ enum WpnInfo
 	WI_GUN_CLIP_SIZE,
 	WI_MAX_ROUNDS,
 	WI_AMMO_TYPE,
-	WI_NAME
+	WI_AMMO_NAME,
+	WI_NAME,
 };
 
 void RegisterNatives_Misc();
