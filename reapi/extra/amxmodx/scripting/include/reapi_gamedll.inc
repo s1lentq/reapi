@@ -88,7 +88,7 @@ native any:get_movevar(const MoveVars:var, any:...);
 *
 * @return		1 on success.
 */
-native set_pmtrace(const PMTrace:var, any:...);
+native set_pmtrace(const tracehandle, const PMTrace:var, any:...);
 
 /*
 * Returns a pmtrace vars
@@ -97,7 +97,7 @@ native set_pmtrace(const PMTrace:var, any:...);
 *
 * @return		If an integer or boolean or one byte, array or everything else is passed via 3rd argument and more, look at argument list for specified mvar
 */
-native any:get_pmtrace(const PMTrace:var, any:...);
+native any:get_pmtrace(const tracehandle, const PMTrace:var, any:...);
 
 /*
 * Assign the number of the player animations.

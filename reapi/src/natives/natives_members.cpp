@@ -433,9 +433,10 @@ AMX_NATIVE_INFO ReGameVars_Natives[] =
 
 void RegisterNatives_Members()
 {
-	if (api_cfg.hasReGameDLL())
-		g_amxxapi.AddNatives(ReGameVars_Natives);
-
+	if (!api_cfg.hasReGameDLL())
+		fillNatives(ReGameVars_Natives, [](AMX *amx, cell *params) -> cell { MF_LogError(amx, AMX_ERR_NATIVE, "%s: isn't available", "ReGameDll"); return FALSE; });
+	
+	g_amxxapi.AddNatives(ReGameVars_Natives);
 	g_amxxapi.AddNatives(EngineVars_Natives);
 }
 

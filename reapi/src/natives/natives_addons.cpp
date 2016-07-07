@@ -108,9 +108,12 @@ AMX_NATIVE_INFO Reunion_Natives[] =
 
 void RegisterNatives_Addons()
 {
-	if (api_cfg.hasVTC())
-		g_amxxapi.AddNatives(Vtc_Natives);
+	if (!api_cfg.hasVTC())
+		fillNatives(Vtc_Natives, [](AMX *amx, cell *params) -> cell { MF_LogError(amx, AMX_ERR_NATIVE, "%s: isn't available", "VTC"); return FALSE; });
 
-	if (api_cfg.hasReunion())
-		g_amxxapi.AddNatives(Reunion_Natives);
+	if (!api_cfg.hasReunion())
+		fillNatives(Reunion_Natives, [](AMX *amx, cell *params) -> cell { MF_LogError(amx, AMX_ERR_NATIVE, "%s: isn't available", "Reunion"); return FALSE; });
+
+	g_amxxapi.AddNatives(Vtc_Natives);
+	g_amxxapi.AddNatives(Reunion_Natives);
 }

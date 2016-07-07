@@ -1760,11 +1760,13 @@ AMX_NATIVE_INFO Misc_Natives_Checks[] =
 
 void RegisterNatives_Misc()
 {
-	if (api_cfg.hasReGameDLL())
-		g_amxxapi.AddNatives(Misc_Natives_RG);
+	if (!api_cfg.hasReGameDLL())
+		fillNatives(Misc_Natives_RG, [](AMX *amx, cell *params) -> cell { MF_LogError(amx, AMX_ERR_NATIVE, "%s: isn't available", "ReGameDll"); return FALSE; });
+		
+	if (!api_cfg.hasReHLDS())
+		fillNatives(Misc_Natives_RH, [](AMX *amx, cell *params) -> cell { MF_LogError(amx, AMX_ERR_NATIVE, "%s: isn't available", "ReHlds"); return FALSE; });
 
-	if (api_cfg.hasReHLDS())
-		g_amxxapi.AddNatives(Misc_Natives_RH);
-
+	g_amxxapi.AddNatives(Misc_Natives_RG);
+	g_amxxapi.AddNatives(Misc_Natives_RH);
 	g_amxxapi.AddNatives(Misc_Natives_Checks);
 }
