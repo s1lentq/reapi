@@ -19,10 +19,10 @@ void SV_DropClient(IRehldsHook_SV_DropClient *chain, IGameClient *cl, bool crash
 {
 	auto original = [chain](int _cl, bool _crash, const char *_fmt)
 	{
-		chain->callNext(g_RehldsSvs->GetClient(_cl), _crash, _fmt);
+		chain->callNext(g_RehldsSvs->GetClient(_cl - 1), _crash, _fmt);
 	};
 
-	callVoidForward(RH_SV_DropClient, original, cl->GetId(), crash, fmt);
+	callVoidForward(RH_SV_DropClient, original, cl->GetId() + 1, crash, fmt);
 }
 
 void SV_ActivateServer(IRehldsHook_SV_ActivateServer *chain, int runPhysics)
