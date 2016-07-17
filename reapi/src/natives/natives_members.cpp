@@ -91,15 +91,12 @@ cell AMX_NATIVE_CALL get_member(AMX *amx, cell *params)
 cell AMX_NATIVE_CALL set_member_game(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_member, arg_value, arg_elem };
-	member_t *member = memberlist[params[arg_member]];
 
+	CHECK_GAMERULES();
+
+	member_t *member = memberlist[params[arg_member]];
 	if (member == nullptr) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_member]);
-		return FALSE;
-	}
-
-	if (g_pGameRules == nullptr) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: gamerules not initialized", __FUNCTION__);
 		return FALSE;
 	}
 
@@ -113,15 +110,12 @@ cell AMX_NATIVE_CALL set_member_game(AMX *amx, cell *params)
 cell AMX_NATIVE_CALL get_member_game(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_member, arg_3, arg_4 };
-	member_t *member = memberlist[params[arg_member]];
 
+	CHECK_GAMERULES();
+
+	member_t *member = memberlist[params[arg_member]];
 	if (member == nullptr) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_member]);
-		return FALSE;
-	}
-
-	if (g_pGameRules == nullptr) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: gamerules not initialized", __FUNCTION__);
 		return FALSE;
 	}
 

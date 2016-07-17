@@ -55,10 +55,10 @@ void setupToolchain(NativeBinarySpec b) {
 		)
 		cfg.compilerOptions.languageStandard = 'c++0x'
 		cfg.defines([
-				'_stricmp': 'strcasecmp',
-				'_strnicmp': 'strncasecmp',
-				'_vsnprintf': 'vsnprintf',
-				'_snprintf': 'snprintf'
+			'_stricmp': 'strcasecmp',
+			'_strnicmp': 'strncasecmp',
+			'_vsnprintf': 'vsnprintf',
+			'_snprintf': 'snprintf'
 		])
 
 		cfg.compilerOptions.args '-Qoption,cpp,--treat_func_as_string_literal_cpp', '-msse2', '-fomit-frame-pointer', '-inline-forceinline', '-fvisibility=default', '-fvisibility-inlines-hidden', '-fno-rtti', '-g0', '-s'
@@ -112,7 +112,7 @@ model {
 						include "**/*.cpp"
 
 						exclude "precompiled.cpp"
-						exclude "engine_api.cpp"
+						exclude "engine_api.cpp", "tier0/dbg.cpp"
 					}
 
 					exportedHeaders {

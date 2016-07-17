@@ -90,27 +90,29 @@ cell AMX_NATIVE_CALL rg_give_item(AMX *amx, cell *params)
 	if (type > GT_APPEND) {
 
 		auto pInfo = g_ReGameApi->GetWeaponSlot(itemName);
-		auto pItem = pPlayer->m_rgpPlayerItems[ pInfo->slot ];
+		if (pInfo != nullptr)
+		{
+			auto pItem = pPlayer->m_rgpPlayerItems[ pInfo->slot ];
+			while (pItem != nullptr) {
+				if (pItem->m_iId == pInfo->id) {
+					pItem = pItem->m_pNext;
+					continue;
+				}
 
-		while (pItem != nullptr) {
-			if (pItem->m_iId == pInfo->id) {
+				switch (type)
+				{
+				case GT_DROP_AND_REPLACE:
+					pPlayer->CSPlayer()->DropPlayerItem(STRING(pItem->pev->classname));
+					break;
+				case GT_REPLACE:
+					pPlayer->pev->weapons &= ~(1 << pItem->m_iId);
+					pPlayer->RemovePlayerItem(pItem);
+					pItem->Kill();
+					break;
+				}
+
 				pItem = pItem->m_pNext;
-				continue;
 			}
-
-			switch (type)
-			{
-			case GT_DROP_AND_REPLACE:
-				pPlayer->CSPlayer()->DropPlayerItem(STRING(pItem->pev->classname));
-				break;
-			case GT_REPLACE:
-				pPlayer->pev->weapons &= ~(1 << pItem->m_iId);
-				pPlayer->RemovePlayerItem(pItem);
-				pItem->Kill();
-				break;
-			}
-
-			pItem = pItem->m_pNext;
 		}
 	}
 
@@ -397,6 +399,8 @@ cell AMX_NATIVE_CALL rg_round_end(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_delay, arg_win, arg_event, arg_message, arg_sentence, arg_silent };
 
+	CHECK_GAMERULES();
+
 	size_t winstatus = params[arg_win];
 	if (winstatus <= 0) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown win status %i", __FUNCTION__, winstatus);
@@ -441,6 +445,8 @@ cell AMX_NATIVE_CALL rg_round_end(AMX *amx, cell *params)
 cell AMX_NATIVE_CALL rg_update_teamscores(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_cts, arg_ts, arg_add };
+
+	CHECK_GAMERULES();
 
 	CSGameRules()->m_iNumCTWins = ((params[arg_add] != 0) ? CSGameRules()->m_iNumCTWins : 0) + params[arg_cts];
 	CSGameRules()->m_iNumTerroristWins = ((params[arg_add] != 0) ? CSGameRules()->m_iNumTerroristWins : 0) + params[arg_ts];
@@ -529,7 +535,7 @@ cell AMX_NATIVE_CALL rg_find_ent_by_owner(AMX *amx, cell *params)
 		if (!pEntity->pvPrivateData || pEntity->free)
 			continue;
 
-		if (!strcmp(STRING(pEntity->v.classname), value))
+		if (FClassnameIs(pEntity, value))
 		{
 			startIndex = i;
 			return TRUE;
@@ -540,16 +546,67 @@ cell AMX_NATIVE_CALL rg_find_ent_by_owner(AMX *amx, cell *params)
 }
 
 /*
-* Find the item by name in the player's inventory.
+* Find the weapon by name in the player's inventory.
+*
+* @param index			Client index
+* @param weapon			Weapon name
+*
+* @return			Entity-index of weapon, 0 otherwise
+*
+* native rg_find_weapon_bpack_by_name(const index, const weapon[]);
+*/
+cell AMX_NATIVE_CALL rg_find_weapon_bpack_by_name(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_weapon };
+
+	CHECK_ISPLAYER(arg_index);
+
+	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
+	if (pPlayer == nullptr || pPlayer->has_disconnected) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
+		return FALSE;
+	}
+
+	const char *pszWeaponName = getAmxString(amx, params[arg_weapon]);
+	auto pInfo = g_ReGameApi->GetWeaponSlot(pszWeaponName);
+	if (pInfo != nullptr)
+	{
+		auto pItem = pPlayer->m_rgpPlayerItems[ pInfo->slot ];
+		while (pItem)
+		{
+			if (FClassnameIs(pItem->pev, pszWeaponName)) {
+				return indexOfEdict(pItem->pev);
+			}
+
+			pItem = pItem->m_pNext;
+		}
+	}
+
+	return FALSE;
+}
+
+struct {
+	const char* pszItemName;
+	bool(*hasItem)(CBasePlayer* pl);
+} itemInfoStruct[] = {
+	{ "item_thighpack",		[](CBasePlayer* pl) -> bool { return pl->m_bHasDefuser; } },
+	{ "item_longjump",		[](CBasePlayer* pl) -> bool { return pl->m_fLongJump == TRUE; } },
+	{ "item_assaultsuit",		[](CBasePlayer* pl) -> bool { return pl->m_iKevlar == ARMOR_VESTHELM; } },
+	{ "item_kevlar",		[](CBasePlayer* pl) -> bool { return pl->m_iKevlar == ARMOR_KEVLAR; } },
+	{ "weapon_shield",		[](CBasePlayer* pl) -> bool { return pl->m_bOwnsShield; } },
+};
+
+/*
+* Check if the player already have this item.
 *
 * @param index			Client index
 * @param item			Item name
 *
-* @return			Entity-index of item, 0 otherwise
+* @return			1 if successfully, 0 otherwise
 *
-* native rg_find_item_bpack_by_name(const index, const item[]);
+* native bool:rg_has_item_by_name(const index, const item[]);
 */
-cell AMX_NATIVE_CALL rg_find_item_bpack_by_name(AMX *amx, cell *params)
+cell AMX_NATIVE_CALL rg_has_item_by_name(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_index, arg_item };
 
@@ -561,22 +618,30 @@ cell AMX_NATIVE_CALL rg_find_item_bpack_by_name(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	const char *itemName = getAmxString(amx, params[arg_item]);
-	auto pInfo = g_ReGameApi->GetWeaponSlot(itemName);
-	if (pInfo == nullptr) {
-		return 0;
-	}
-
-	auto pItem = pPlayer->m_rgpPlayerItems[ pInfo->slot ];
-	while (pItem) {
-		if (FClassnameIs(pItem->pev, itemName)) {
-			return indexOfEdict(pItem->pev);
+	const char *pszItemName = getAmxString(amx, params[arg_item]);
+	// item_* and weapon_shield
+	for (auto& inf : itemInfoStruct) {
+		if (FStrEq(inf.pszItemName, pszItemName)) {
+			return (cell)inf.hasItem(pPlayer);
 		}
-
-		pItem = pItem->m_pNext;
 	}
 
-	return 0;
+	// weapon_*
+	auto pInfo = g_ReGameApi->GetWeaponSlot(pszItemName);
+	if (pInfo != nullptr)
+	{
+		auto pItem = pPlayer->m_rgpPlayerItems[ pInfo->slot ];
+		while (pItem)
+		{
+			if (FClassnameIs(pItem->pev, pszItemName)) {
+				return TRUE;
+			}
+
+			pItem = pItem->m_pNext;
+		}
+	}
+
+	return FALSE;
 }
 
 /*
@@ -884,6 +949,7 @@ cell AMX_NATIVE_CALL rg_give_defusekit(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_index, arg_def, arg_color, arg_icon, arg_flash };
 
+	CHECK_GAMERULES();
 	CHECK_ISPLAYER(arg_index);
 
 	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
@@ -1006,6 +1072,7 @@ cell AMX_NATIVE_CALL rg_set_user_team(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_index, arg_team, arg_model, arg_sendinfo };
 
+	CHECK_GAMERULES();
 	CHECK_ISPLAYER(arg_index);
 
 	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
@@ -1164,6 +1231,7 @@ cell AMX_NATIVE_CALL rg_transfer_c4(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_index, arg_receiver };
 
+	CHECK_GAMERULES();
 	CHECK_ISPLAYER(arg_index);
 
 	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
@@ -1251,10 +1319,7 @@ cell AMX_NATIVE_CALL rg_set_account_rules(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_rules_index, arg_amount };
 
-	if (g_pGameRules == nullptr) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: gamerules not initialized", __FUNCTION__);
-		return FALSE;
-	}
+	CHECK_GAMERULES();
 
 	CSGameRules()->SetAccountRules(static_cast<RewardRules>(params[arg_rules_index]), params[arg_amount]);
 	return TRUE;
@@ -1273,10 +1338,7 @@ cell AMX_NATIVE_CALL rg_get_account_rules(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_rules_index };
 
-	if (g_pGameRules == nullptr) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: gamerules not initialized", __FUNCTION__);
-		return FALSE;
-	}
+	CHECK_GAMERULES();
 
 	return (cell)CSGameRules()->GetAccountRules(static_cast<RewardRules>(params[arg_rules_index]));
 }
@@ -1290,10 +1352,7 @@ cell AMX_NATIVE_CALL rg_get_account_rules(AMX *amx, cell *params)
 */
 cell AMX_NATIVE_CALL rg_is_bomb_planted(AMX *amx, cell *params)
 {
-	if (g_pGameRules == nullptr) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: gamerules not initialized", __FUNCTION__);
-		return FALSE;
-	}
+	CHECK_GAMERULES();
 
 	return (cell)CSGameRules()->IsBombPlanted();
 }
@@ -1332,10 +1391,7 @@ cell AMX_NATIVE_CALL rg_join_team(AMX *amx, cell *params)
 */
 cell AMX_NATIVE_CALL rg_balance_teams(AMX *amx, cell *params)
 {
-	if (g_pGameRules == nullptr) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: gamerules not initialized", __FUNCTION__);
-		return FALSE;
-	}
+	CHECK_GAMERULES();
 
 	CSGameRules()->BalanceTeams();
 	return TRUE;
@@ -1350,10 +1406,7 @@ cell AMX_NATIVE_CALL rg_balance_teams(AMX *amx, cell *params)
 */
 cell AMX_NATIVE_CALL rg_swap_all_players(AMX *amx, cell *params)
 {
-	if (g_pGameRules == nullptr) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: gamerules not initialized", __FUNCTION__);
-		return FALSE;
-	}
+	CHECK_GAMERULES();
 
 	CSGameRules()->SwapAllPlayers();
 	return TRUE;
@@ -1425,10 +1478,7 @@ cell AMX_NATIVE_CALL rg_switch_weapon(AMX *amx, cell *params)
 */
 cell AMX_NATIVE_CALL rg_get_join_team_priority(AMX *amx, cell *params)
 {
-	if (g_pGameRules == nullptr) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: gamerules not initialized", __FUNCTION__);
-		return FALSE;
-	}
+	CHECK_GAMERULES();
 
 	return CSGameRules()->SelectDefaultTeam();
 }
@@ -1447,6 +1497,7 @@ cell AMX_NATIVE_CALL rg_is_player_can_takedamage(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_index, arg_attacker };
 
+	CHECK_GAMERULES();
 	CHECK_ISPLAYER(arg_index);
 
 	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
@@ -1516,7 +1567,8 @@ AMX_NATIVE_INFO Misc_Natives_RG[] =
 	{ "rg_create_entity", rg_create_entity },
 	{ "rg_find_ent_by_class", rg_find_ent_by_class },
 	{ "rg_find_ent_by_owner", rg_find_ent_by_owner },
-	{ "rg_find_item_bpack_by_name", rg_find_item_bpack_by_name },
+	{ "rg_find_weapon_bpack_by_name", rg_find_weapon_bpack_by_name },
+	{ "rg_has_item_by_name", rg_has_item_by_name },
 
 	{ "rg_get_weapon_info", rg_get_weapon_info },
 	{ "rg_set_weapon_info", rg_set_weapon_info },
@@ -1762,7 +1814,7 @@ void RegisterNatives_Misc()
 {
 	if (!api_cfg.hasReGameDLL())
 		fillNatives(Misc_Natives_RG, [](AMX *amx, cell *params) -> cell { MF_LogError(amx, AMX_ERR_NATIVE, "%s: isn't available", "ReGameDll"); return FALSE; });
-		
+
 	if (!api_cfg.hasReHLDS())
 		fillNatives(Misc_Natives_RH, [](AMX *amx, cell *params) -> cell { MF_LogError(amx, AMX_ERR_NATIVE, "%s: isn't available", "ReHlds"); return FALSE; });
 

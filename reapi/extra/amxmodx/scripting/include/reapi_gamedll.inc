@@ -289,15 +289,26 @@ native rg_find_ent_by_class(start_index, const classname[]);
 native rg_find_ent_by_owner(&start_index, const classname[], owner);
 
 /*
-* Find the item by name in the player's inventory.
+* Find the weapon by name in the player's inventory.
+*
+* @param index			Client index
+* @param weapon			Weapon name
+*
+* @return			Entity-index of weapon, 0 otherwise
+*
+*/
+native rg_find_weapon_bpack_by_name(const index, const weapon[]);
+
+/*
+* Check if the player already have this item.
 *
 * @param index			Client index
 * @param item			Item name
 *
-* @return			Entity-index of item, 0 otherwise
+* @return			1 if successfully, 0 otherwise
 *
 */
-native rg_find_item_bpack_by_name(const index, const item[]);
+native bool:rg_has_item_by_name(const index, const item[]);
 
 /*
 * Returns some information about a weapon.

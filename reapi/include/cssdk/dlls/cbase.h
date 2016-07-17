@@ -136,7 +136,7 @@ public:
 	EOFFSET eoffset() { return OFFSET(pev); }
 	int entindex() { return ENTINDEX(edict()); }
 public:
-	CCSEntity *m_pEntity;
+	CCSEntity *m_pEntity;						// NOTE: it was replaced on member "int *current_ammo" because it is useless.
 
 	// We use this variables to store each ammo count.
 	float currentammo;

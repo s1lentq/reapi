@@ -5,7 +5,11 @@
 #define _reapi_engine_const_included
 
 // for natives rh_get_mapname
-enum MapNameType { MNT_TRUE, MNT_SET };
+enum MapNameType
+{
+	MNT_TRUE,	// return true the name of the current map independently of the set via rh_set_mapname
+	MNT_SET		// return the name of the current map
+};
 
 // rh_emit_sound2 flags
 #define SND_EMIT2_NOPAS		(1<<0)	// never to do check PAS
