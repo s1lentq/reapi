@@ -28,8 +28,8 @@ struct amxx_module_info_s
 	const char *name;
 	const char *author;
 	const char *version;
-	int reload;				// reload on mapchange when nonzero
-	const char *logtag;		// added in version 2
+	int reload;		// reload on mapchange when nonzero
+	const char *logtag;	// added in version 2
 	const char *library;	// added in version 4
 	const char *libclass;	// added in version 4
 };
@@ -38,7 +38,7 @@ struct amxx_module_info_s
 #define AMXX_OK					0			/* no error */
 #define AMXX_IFVERS				1			/* interface version */
 #define AMXX_PARAM				2			/* Invalid parameter */
-#define AMXX_FUNC_NOT_PRESENT	3			/* Function not present */
+#define AMXX_FUNC_NOT_PRESENT			3			/* Function not present */
 
 #define AMXX_GAME_OK			0			/* This module can load on the current game mod. */
 #define AMXX_GAME_BAD			1			/* This module can not load on the current game mod. */
@@ -75,28 +75,27 @@ struct amxx_module_info_s
 #define PAWN_CELL_SIZE 32     /* by default, use 32-bit cells */
 #endif
 #if PAWN_CELL_SIZE==16
-typedef uint16_t  ucell;
-typedef int16_t   cell;
+typedef uint16  ucell;
+typedef int16   cell;
 #elif PAWN_CELL_SIZE==32
-typedef uint32_t  ucell;
-typedef int32_t   cell;
+typedef uint32  ucell;
+typedef int32   cell;
 #define REAL	float
 #elif PAWN_CELL_SIZE==64
-typedef uint64_t  ucell;
-typedef int64_t   cell;
+typedef uint64  ucell;
+typedef int64   cell;
 #define REAL	double
 #else
 #error Unsupported cell size (PAWN_CELL_SIZE)
 #endif
 
-#define UNPACKEDMAX   ((1 << (sizeof(cell)-1)*8) - 1)
-#define UNLIMITED     (~1u >> 1)
+#define UNPACKEDMAX	((1 << (sizeof(cell) - 1) * 8) - 1)
+#define UNLIMITED	(~1u >> 1)
 
 struct tagAMX;
-typedef cell(AMX_NATIVE_CALL *AMX_NATIVE)( struct tagAMX *amx, cell *params );
-typedef int ( AMXAPI *AMX_CALLBACK )( struct tagAMX *amx, cell index,
-									 cell *result, cell *params );
-typedef int ( AMXAPI *AMX_DEBUG )( struct tagAMX *amx );
+typedef cell(AMX_NATIVE_CALL *AMX_NATIVE)(struct tagAMX *amx, cell *params);
+typedef int (AMXAPI *AMX_CALLBACK)(struct tagAMX *amx, cell index, cell *result, cell *params);
+typedef int (AMXAPI *AMX_DEBUG)(struct tagAMX *amx);
 #if !defined _FAR
 #define _FAR
 #endif
@@ -124,7 +123,6 @@ typedef int ( AMXAPI *AMX_DEBUG )( struct tagAMX *amx );
 #endif
 #endif
 
-
 /* Some compilers do not support the #pragma align, which should be fine. Some
 * compilers give a warning on unknown #pragmas, which is not so fine...
 */
@@ -133,21 +131,21 @@ typedef int ( AMXAPI *AMX_DEBUG )( struct tagAMX *amx );
 #endif
 
 #if defined __GNUC__
-#define PACKED        __attribute__((packed))
+#define PACKED	__attribute__((packed))
 #else
 #define PACKED
 #endif
 
 #if !defined AMX_NO_ALIGN
 #if defined LINUX || defined __FreeBSD__ || defined __APPLE__
-#pragma pack(1)         /* structures must be packed (byte-aligned) */
+#pragma pack(1)	/* structures must be packed (byte-aligned) */
 #elif defined MACOS && defined __MWERKS__
 #pragma options align=mac68k
 #else
 #pragma pack(push)
-#pragma pack(1)         /* structures must be packed (byte-aligned) */
+#pragma pack(1) /* structures must be packed (byte-aligned) */
 #if defined __TURBOC__
-#pragma option -a-    /* "pack" pragma for older Borland compilers */
+#pragma option -a- /* "pack" pragma for older Borland compilers */
 #endif
 #endif
 #endif
@@ -158,7 +156,7 @@ typedef struct
 	AMX_NATIVE func       PACKED;
 } AMX_NATIVE_INFO;
 
-#define AMX_USERNUM     4
+#define AMX_USERNUM	4
 
 /* The AMX structure is the internal structure for many functions. Not all
 * fields are valid at all times; many fields are cached in local variables.
@@ -193,8 +191,8 @@ typedef struct tagAMX
 	cell reset_hea        PACKED;
 	cell sysreq_d         PACKED; /* relocated address/value for the SYSREQ.D opcode */
 	/* support variables for the JIT */
-	int reloc_size      PACKED; /* required temporary buffer for relocations */
-	long code_size      PACKED; /* estimated memory footprint of the native code */
+	int reloc_size        PACKED; /* required temporary buffer for relocations */
+	long code_size        PACKED; /* estimated memory footprint of the native code */
 } PACKED AMX;
 
 /* The AMX_HEADER structure is both the memory format as the file format. The
@@ -202,23 +200,23 @@ typedef struct tagAMX
 */
 typedef struct tagAMX_HEADER
 {
-	int32_t size          PACKED; /* size of the "file" */
-	uint16_t magic        PACKED; /* signature */
-	char    file_version;         /* file format version */
-	char    amx_version;          /* required version of the AMX */
-	int16_t flags         PACKED;
-	int16_t defsize       PACKED; /* size of a definition record */
-	int32_t cod           PACKED; /* initial value of COD - code block */
-	int32_t dat           PACKED; /* initial value of DAT - data block */
-	int32_t hea           PACKED; /* initial value of HEA - start of the heap */
-	int32_t stp           PACKED; /* initial value of STP - stack top */
-	int32_t cip           PACKED; /* initial value of CIP - the instruction pointer */
-	int32_t publics       PACKED; /* offset to the "public functions" table */
-	int32_t natives       PACKED; /* offset to the "native functions" table */
-	int32_t libraries     PACKED; /* offset to the table of libraries */
-	int32_t pubvars       PACKED; /* the "public variables" table */
-	int32_t tags          PACKED; /* the "public tagnames" table */
-	int32_t nametable     PACKED; /* name table */
+	int32 size          PACKED; /* size of the "file" */
+	uint16 magic        PACKED; /* signature */
+	char file_version;          /* file format version */
+	char amx_version;           /* required version of the AMX */
+	int16 flags         PACKED;
+	int16 defsize       PACKED; /* size of a definition record */
+	int32 cod           PACKED; /* initial value of COD - code block */
+	int32 dat           PACKED; /* initial value of DAT - data block */
+	int32 hea           PACKED; /* initial value of HEA - start of the heap */
+	int32 stp           PACKED; /* initial value of STP - stack top */
+	int32 cip           PACKED; /* initial value of CIP - the instruction pointer */
+	int32 publics       PACKED; /* offset to the "public functions" table */
+	int32 natives       PACKED; /* offset to the "native functions" table */
+	int32 libraries     PACKED; /* offset to the table of libraries */
+	int32 pubvars       PACKED; /* the "public variables" table */
+	int32 tags          PACKED; /* the "public tagnames" table */
+	int32 nametable     PACKED; /* name table */
 } PACKED AMX_HEADER;
 
 enum
@@ -254,14 +252,14 @@ enum
 
 #if !defined AMX_NO_ALIGN
 #if defined(__linux__) || defined(__APPLE__)
-#pragma pack()    /* reset default packing */
+#pragma pack() /* reset default packing */
 #else
 #pragma pack(pop) /* reset previous packing */
 #endif
 #endif
 
 // *** Types ***
-typedef void* ( *PFN_REQ_FNPTR )( const char * /*name*/ );
+typedef void * (*PFN_REQ_FNPTR)(const char *name);
 
 // ***** Module funcs stuff *****
 enum ForwardExecType
@@ -312,99 +310,100 @@ enum LibType
 	LibType_Class
 };
 
-#define STKMARGIN       ((cell)(16*sizeof(cell)))
+#define STKMARGIN	((cell)(16 * sizeof(cell)))
 
 #define MSGBLOCK_SET	0
 #define MSGBLOCK_GET	1
-#define BLOCK_NOT 0
-#define BLOCK_ONCE 1
-#define BLOCK_SET 2
 
-typedef void(*AUTHORIZEFUNC)( int player, const char *authstring );
+#define BLOCK_NOT	0
+#define BLOCK_ONCE	1
+#define BLOCK_SET	2
 
-typedef int(*PFN_ADD_NATIVES)				( const AMX_NATIVE_INFO * /*list*/ );
-typedef int(*PFN_ADD_NEW_NATIVES)			( const AMX_NATIVE_INFO * /*list*/ );
-typedef char *			( *PFN_BUILD_PATHNAME )			( const char * /*format*/, ... );
-typedef char *			( *PFN_BUILD_PATHNAME_R )			( char * /*buffer*/, size_t /* maxlen */, const char * /* format */, ... );
-typedef cell *			( *PFN_GET_AMXADDR )				( AMX * /*amx*/, cell /*offset*/ );
-typedef cell *			( *PFN_GET_AMXVECTOR_NULL )		( AMX * /*amx*/, cell /*offset*/ );
-typedef void(*PFN_PRINT_SRVCONSOLE)			( const char * /*format*/, ... );
-typedef const char *	( *PFN_GET_MODNAME )				( void );
-typedef const char *	( *PFN_GET_AMXSCRIPTNAME )		( int /*id*/ );
-typedef AMX *			( *PFN_GET_AMXSCRIPT )			( int /*id*/ );
-typedef int(*PFN_FIND_AMXSCRIPT_BYAMX)		( const AMX * /*amx*/ );
-typedef int(*PFN_FIND_AMXSCRIPT_BYNAME)	( const char * /*name*/ );
-typedef int(*PFN_SET_AMXSTRING)			( AMX * /*amx*/, cell /*amx_addr*/, const char * /* source */, int /* max */ );
-typedef int(*PFN_SET_AMXSTRING_UTF8_CHAR)	( AMX *amx, cell amx_addr, const char *source, size_t sourcelen, size_t maxlen );
-typedef int(*PFN_SET_AMXSTRING_UTF8_CELL)	( AMX *amx, cell amx_addr, const cell *source, size_t sourcelen, size_t maxlen );
-typedef char *			( *PFN_GET_AMXSTRING )			( AMX * /*amx*/, cell /*amx_addr*/, int /*bufferId*/, int * /*pLen*/ );
-typedef char *			( *PFN_GET_AMXSTRING_NULL )		( AMX * /*amx*/, cell /*amx_addr*/, int /*bufferId*/, int * /*pLen*/ );
-typedef int(*PFN_GET_AMXSTRINGLEN)			( const cell *ptr );
-typedef char *			( *PFN_FORMAT_AMXSTRING )			( AMX * /*amx*/, cell * /*params*/, int /*startParam*/, int * /*pLen*/ );
-typedef void(*PFN_COPY_AMXMEMORY)			( cell * /*dest*/, const cell * /*src*/, int /*len*/ );
-typedef void(*PFN_LOG)						( const char * /*fmt*/, ... );
-typedef void(*PFN_LOG_ERROR)				( AMX * /*amx*/, int /*err*/, const char * /*fmt*/, ... );
-typedef int(*PFN_RAISE_AMXERROR)			( AMX * /*amx*/, int /*error*/ );
-typedef int(*PFN_REGISTER_FORWARD)			( const char * /*funcname*/, ForwardExecType /*exectype*/, ... /*paramtypes terminated by PF_DONE*/ );
-typedef int(*PFN_EXECUTE_FORWARD)			( int /*id*/, ... /*params*/ );
-typedef cell(*PFN_PREPARE_CELLARRAY)		( cell * /*ptr*/, unsigned int /*size*/ );
-typedef cell(*PFN_PREPARE_CHARARRAY)		( char * /*ptr*/, unsigned int /*size*/ );
-typedef cell(*PFN_PREPARE_CELLARRAY_A)		( cell * /*ptr*/, unsigned int /*size*/, bool /*copyBack*/ );
-typedef cell(*PFN_PREPARE_CHARARRAY_A)		( char * /*ptr*/, unsigned int /*size*/, bool /*copyBack*/ );
-typedef int(*PFN_IS_PLAYER_VALID)			( int /*id*/ );
-typedef const char *	( *PFN_GET_PLAYER_NAME )			( int /*id*/ );
-typedef const char *	( *PFN_GET_PLAYER_IP )			( int /*id*/ );
-typedef int(*PFN_IS_PLAYER_INGAME)			( int /*id*/ );
-typedef int(*PFN_IS_PLAYER_BOT)			( int /*id*/ );
-typedef int(*PFN_IS_PLAYER_AUTHORIZED)		( int /*id*/ );
-typedef float(*PFN_GET_PLAYER_TIME)			( int /*id*/ );
-typedef float(*PFN_GET_PLAYER_PLAYTIME)		( int /*id*/ );
-typedef int(*PFN_GETPLAYERFLAGS) 			( int /* id*/ );
-typedef int(*PFN_GET_PLAYER_CURWEAPON)		( int /*id*/ );
-typedef const char *    ( *PFN_GET_PLAYER_TEAM )			( int /*id*/ );
-typedef int(*PFN_GET_PLAYER_TEAMID)		( int /*id*/ );
-typedef int(*PFN_GET_PLAYER_DEATHS)		( int /*id*/ );
-typedef int(*PFN_GET_PLAYER_MENU)			( int /*id*/ );
-typedef int(*PFN_GET_PLAYER_KEYS)			( int /*id*/ );
-typedef int(*PFN_IS_PLAYER_ALIVE)			( int /*id*/ );
-typedef int(*PFN_GET_PLAYER_FRAGS)			( int /*id*/ );
-typedef int(*PFN_IS_PLAYER_CONNECTING)		( int /*id*/ );
-typedef int(*PFN_IS_PLAYER_HLTV)			( int /*id*/ );
-typedef int(*PFN_GET_PLAYER_ARMOR)			( int /*id*/ );
-typedef int(*PFN_GET_PLAYER_HEALTH)		( int /*id*/ );
+typedef void(*AUTHORIZEFUNC)				(int player, const char *authstring);
+
+typedef int(*PFN_ADD_NATIVES)				(const AMX_NATIVE_INFO *list);
+typedef int(*PFN_ADD_NEW_NATIVES)			(const AMX_NATIVE_INFO *list);
+typedef char*(*PFN_BUILD_PATHNAME)			(const char *format, ...);
+typedef char*(*PFN_BUILD_PATHNAME_R)			(char *buffer, size_t maxlen, const char *format, ...);
+typedef cell*(*PFN_GET_AMXADDR)				(AMX *amx, cell offset);
+typedef cell*(*PFN_GET_AMXVECTOR_NULL)			(AMX *amx, cell offset);
+typedef void(*PFN_PRINT_SRVCONSOLE)			(const char *format, ...);
+typedef const char*(*PFN_GET_MODNAME)			(void);
+typedef const char*(*PFN_GET_AMXSCRIPTNAME)		(int id);
+typedef AMX*(*PFN_GET_AMXSCRIPT)			(int id);
+typedef int(*PFN_FIND_AMXSCRIPT_BYAMX)			(const AMX *amx);
+typedef int(*PFN_FIND_AMXSCRIPT_BYNAME)			(const char *name);
+typedef int(*PFN_SET_AMXSTRING)				(AMX *amx, cell amx_addr, const char *source, int max);
+typedef int(*PFN_SET_AMXSTRING_UTF8_CHAR)		(AMX *amx, cell amx_addr, const char *source, size_t sourcelen, size_t maxlen);
+typedef int(*PFN_SET_AMXSTRING_UTF8_CELL)		(AMX *amx, cell amx_addr, const cell *source, size_t sourcelen, size_t maxlen);
+typedef char*(*PFN_GET_AMXSTRING)			(AMX *amx, cell amx_addr, int bufferId, int *pLen);
+typedef char*(*PFN_GET_AMXSTRING_NULL)			(AMX *amx, cell amx_addr, int bufferId, int *pLen);
+typedef int(*PFN_GET_AMXSTRINGLEN)			(const cell *ptr);
+typedef char *(*PFN_FORMAT_AMXSTRING)			(AMX *amx, cell *params, int startParam, int *pLen);
+typedef void(*PFN_COPY_AMXMEMORY)			(cell *dest, const cell *src, int len);
+typedef void(*PFN_LOG)					(const char *fmt, ...);
+typedef void(*PFN_LOG_ERROR)				(AMX *amx, int err, const char *fmt, ...);
+typedef int(*PFN_RAISE_AMXERROR)			(AMX *amx, int error);
+typedef int(*PFN_REGISTER_FORWARD)			(const char *funcname, ForwardExecType exectype, ... /*paramtypes terminated by PF_DONE*/);
+typedef int(*PFN_EXECUTE_FORWARD)			(int id, ... /*params*/);
+typedef cell(*PFN_PREPARE_CELLARRAY)			(cell *ptr, unsigned int size);
+typedef cell(*PFN_PREPARE_CHARARRAY)			(char *ptr, unsigned int size);
+typedef cell(*PFN_PREPARE_CELLARRAY_A)			(cell *ptr, unsigned int size, bool copyBack);
+typedef cell(*PFN_PREPARE_CHARARRAY_A)			(char *ptr, unsigned int size, bool copyBack);
+typedef int(*PFN_IS_PLAYER_VALID)			(int id);
+typedef const char*(*PFN_GET_PLAYER_NAME)			(int id);
+typedef const char*(*PFN_GET_PLAYER_IP)			(int id);
+typedef int(*PFN_IS_PLAYER_INGAME)			(int id);
+typedef int(*PFN_IS_PLAYER_BOT)				(int id);
+typedef int(*PFN_IS_PLAYER_AUTHORIZED)			(int id);
+typedef float(*PFN_GET_PLAYER_TIME)			(int id);
+typedef float(*PFN_GET_PLAYER_PLAYTIME)			(int id);
+typedef int(*PFN_GETPLAYERFLAGS) 			(int id);
+typedef int(*PFN_GET_PLAYER_CURWEAPON)			(int id);
+typedef const char*(*PFN_GET_PLAYER_TEAM)		(int id);
+typedef int(*PFN_GET_PLAYER_TEAMID)			(int id);
+typedef int(*PFN_GET_PLAYER_DEATHS)			(int id);
+typedef int(*PFN_GET_PLAYER_MENU)			(int id);
+typedef int(*PFN_GET_PLAYER_KEYS)			(int id);
+typedef int(*PFN_IS_PLAYER_ALIVE)			(int id);
+typedef int(*PFN_GET_PLAYER_FRAGS)			(int id);
+typedef int(*PFN_IS_PLAYER_CONNECTING)			(int id);
+typedef int(*PFN_IS_PLAYER_HLTV)			(int id);
+typedef int(*PFN_GET_PLAYER_ARMOR)			(int id);
+typedef int(*PFN_GET_PLAYER_HEALTH)			(int id);
 #ifdef USE_METAMOD
-typedef edict_t *		( *PFN_GET_PLAYER_EDICT )			( int /*id*/ );
+typedef edict_t *(*PFN_GET_PLAYER_EDICT)		(int id);
 #else
-typedef void *			( *PFN_GET_PLAYER_EDICT )			( int /*id*/ );
+typedef void *(*PFN_GET_PLAYER_EDICT)			(int id);
 #endif
-typedef void *			( *PFN_PLAYER_PROP_ADDR )			( int /*id*/, int /*prop*/ );
-typedef int(*PFN_AMX_EXEC)					( AMX* /*amx*/, cell* /*return val*/, int /*index*/ );
-typedef int(*PFN_AMX_EXECV)				( AMX* /*amx*/, cell* /*return val*/, int /*index*/, int /*numparams*/, cell[] /*params*/ );
-typedef int(*PFN_AMX_ALLOT)				( AMX* /*amx*/, int /*length*/, cell* /*amx_addr*/, cell** /*phys_addr*/ );
-typedef int(*PFN_AMX_FINDPUBLIC)			( AMX* /*amx*/, const char* /*func name*/, int* /*index*/ );
-typedef int(*PFN_AMX_FINDNATIVE)			( AMX* /*amx*/, const char* /*func name*/, int* /*index*/ );
-typedef int(*PFN_LOAD_AMXSCRIPT)			( AMX* /*amx*/, void** /*code*/, const char* /*path*/, char[64] /*error info*/, int /* debug */ );
-typedef int(*PFN_UNLOAD_AMXSCRIPT)			( AMX* /*amx*/, void** /*code*/ );
-typedef cell(*PFN_REAL_TO_CELL)				( REAL /*x*/ );
-typedef REAL(*PFN_CELL_TO_REAL)				( cell /*x*/ );
-typedef int(*PFN_REGISTER_SPFORWARD)		( AMX * /*amx*/, int /*func*/, ... /*params*/ );
-typedef int(*PFN_REGISTER_SPFORWARD_BYNAME)	( AMX * /*amx*/, const char * /*funcName*/, ... /*params*/ );
-typedef void(*PFN_UNREGISTER_SPFORWARD)		( int /*id*/ );
-typedef	void(*PFN_MERGEDEFINITION_FILE)		( const char * /*filename*/ );
-typedef const char *	( *PFN_FORMAT )					( const char * /*fmt*/, ... /*params*/ );
-typedef void(*PFN_REGISTERFUNCTION)			( void * /*pfn*/, const char * /*desc*/ );
-typedef	int(*PFN_AMX_PUSH)					( AMX * /*amx*/, cell /*value*/ );
-typedef	int(*PFN_SET_TEAM_INFO)			( int /*player */, int /*teamid */, const char * /*name */ );
-typedef void(*PFN_REG_AUTH_FUNC)			( AUTHORIZEFUNC );
-typedef void(*PFN_UNREG_AUTH_FUNC)			( AUTHORIZEFUNC );
-typedef int(*PFN_FINDLIBRARY)				( const char * /*name*/, LibType /*type*/ );
-typedef size_t(*PFN_ADDLIBRARIES)				( const char * /*name*/, LibType /*type*/, void * /*parent*/ );
-typedef size_t(*PFN_REMOVELIBRARIES)			( void * /*parent*/ );
-typedef void(*PFN_OVERRIDENATIVES)			( AMX_NATIVE_INFO * /*natives*/, const char * /*myname*/ );
-typedef const char *	( *PFN_GETLOCALINFO )				( const char * /*name*/, const char * /*def*/ );
-typedef int(*PFN_AMX_REREGISTER)			( AMX * /*amx*/, AMX_NATIVE_INFO * /*list*/, int /*list*/ );
-typedef void *			( *PFN_REGISTERFUNCTIONEX )		( void * /*pfn*/, const char * /*desc*/ );
-typedef void(*PFN_MESSAGE_BLOCK)			( int /* mode */, int /* message */, int * /* opt */ );
+typedef void *(*PFN_PLAYER_PROP_ADDR)			(int id, int prop);
+typedef int(*PFN_AMX_EXEC)				(AMX *amx, cell *returnValue, int index);
+typedef int(*PFN_AMX_EXECV)				(AMX *amx, cell *returnValue, int index, int numparams, cell params[]);
+typedef int(*PFN_AMX_ALLOT)				(AMX *amx, int length, cell *amx_addr, cell **phys_addr);
+typedef int(*PFN_AMX_FINDPUBLIC)			(AMX *amx, const char *funcName, int *index);
+typedef int(*PFN_AMX_FINDNATIVE)			(AMX *amx, const char *funcName, int *index);
+typedef int(*PFN_LOAD_AMXSCRIPT)			(AMX *amx, void **code, const char *path, char errorInfo[64], int debug);
+typedef int(*PFN_UNLOAD_AMXSCRIPT)			(AMX *amx, void **code);
+typedef cell(*PFN_REAL_TO_CELL)				(REAL x);
+typedef REAL(*PFN_CELL_TO_REAL)				(cell x);
+typedef int(*PFN_REGISTER_SPFORWARD)			(AMX *amx, int func, ... /*params*/);
+typedef int(*PFN_REGISTER_SPFORWARD_BYNAME)		(AMX *amx, const char *funcName, ... /*params*/);
+typedef void(*PFN_UNREGISTER_SPFORWARD)			(int id);
+typedef void(*PFN_MERGEDEFINITION_FILE)			(const char *filename);
+typedef const char *(*PFN_FORMAT)			(const char *fmt, ... /*params*/);
+typedef void(*PFN_REGISTERFUNCTION)			(void *pfn, const char *desc);
+typedef int(*PFN_AMX_PUSH)				(AMX *amx, cell value);
+typedef int(*PFN_SET_TEAM_INFO)				(int player, int teamid, const char *name);
+typedef void(*PFN_REG_AUTH_FUNC)			(AUTHORIZEFUNC);
+typedef void(*PFN_UNREG_AUTH_FUNC)			(AUTHORIZEFUNC);
+typedef int(*PFN_FINDLIBRARY)				(const char *name, LibType type);
+typedef size_t(*PFN_ADDLIBRARIES)			(const char *name, LibType type, void *parent);
+typedef size_t(*PFN_REMOVELIBRARIES)			(void *parent);
+typedef void(*PFN_OVERRIDENATIVES)			(AMX_NATIVE_INFO *natives, const char *myname);
+typedef const char *(*PFN_GETLOCALINFO)			(const char *name, const char *def);
+typedef int(*PFN_AMX_REREGISTER)			(AMX *amx, AMX_NATIVE_INFO *list, int list2);
+typedef void *(*PFN_REGISTERFUNCTIONEX)			(void *pfn, const char *desc);
+typedef void(*PFN_MESSAGE_BLOCK)			(int mode, int message, int *opt);
 
 struct amxxapi_t
 {

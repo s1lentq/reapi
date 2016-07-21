@@ -6,7 +6,7 @@
 
 // Returns 1, if round ended by expired time
 // NOTE: Use this for hookchain RG_RoundEnd with the parameter ScenarioEventEndRound:event
-#define HadRoundExpired(event)	(1<<any:event) & (1<<any:ROUND_TARGET_SAVED) | (1<<any:ROUND_HOSTAGE_NOT_RESCUED) | (1<<any:ROUND_TERRORISTS_NOT_ESCAPED) | (1<<any:ROUND_VIP_NOT_ESCAPED)
+#define HadRoundExpired(event)	(1<<_:event) & (1<<_:ROUND_TARGET_SAVED) | (1<<_:ROUND_HOSTAGE_NOT_RESCUED) | (1<<_:ROUND_TERRORISTS_NOT_ESCAPED) | (1<<_:ROUND_VIP_NOT_ESCAPED)
 
 // bypass warning: 200 on amxmodx 1.8.2
 #if AMXX_VERSION_NUM < 183

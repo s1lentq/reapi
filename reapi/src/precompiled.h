@@ -8,10 +8,6 @@
 #include <string.h>			// for strncpy(), etc
 
 #include <vector>				// std::vector
-
-#include "basetypes.h"
-#include "asmlib.h"
-
 #include <extdll.h>
 #include <cbase.h>
 #include <pm_defs.h>
