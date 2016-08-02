@@ -75,7 +75,7 @@ native rh_reset_mapname();
 * @param emitFlags	Additional Emit2 flags, look at the defines like SND_EMIT2_*
 * @param origin		Specify origin and only on "param" entity worldspawn that is 0
 *
-* @return		1 if successfully sounds are emitted, 0 otherwise
+* @return		true if successfully sounds are emitted, false otherwise
 *
 */
 native bool:rh_emit_sound2(const entity, const recipient, const channel, const sample[], Float:vol = VOL_NORM, Float:attn = ATTN_NORM, const flags = 0, const pitch = PITCH_NORM, emitFlags = 0, const Float:origin[3] = {0.0,0.0,0.0});

@@ -47,7 +47,6 @@ void setupToolchain(NativeBinarySpec b) {
 		)
 		cfg.compilerOptions.args '/Ob2', '/Oi', '/GF', '/GR-', '/GS-'
 		cfg.singleDefines('_CRT_SECURE_NO_WARNINGS')
-		cfg.extraLibs 'ws2_32.lib'
 	} else if (cfg instanceof GccToolchainConfig) {
 		cfg.compilerOptions.pchConfig = new GccToolchainConfig.PrecompilerHeaderOptions(
 			enabled: true,
@@ -108,7 +107,7 @@ model {
 				}
 				reapi_src(CppSourceSet) {
 					source {
-						srcDirs "src", "public", "include/cssdk/public"
+						srcDirs "src", "include/cssdk/public"
 						include "**/*.cpp"
 
 						exclude "precompiled.cpp"

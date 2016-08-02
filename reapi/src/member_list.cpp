@@ -1,6 +1,6 @@
 #include "precompiled.h"
 
-#define CLASS_MEMBERS(cx, mx, postf, pref) ((!(postf & (MAX_REGION_RANGE - 1)) ? regmember::current_cell = 1, true : false) || (postf & (MAX_REGION_RANGE - 1)) == regmember::current_cell++) ? regmember([](member_t* ptr){ decltype(##cx::##pref##mx) f = {};ptr->size = getTypeSize(f);ptr->max_size = sizeof(f);ptr->offset = offsetof(##cx, ##pref##mx);ptr->type = getMemberType(f);}) : regmember(#pref#mx)
+#define CLASS_MEMBERS(cx, mx, postf, pref) ((!(postf & (MAX_REGION_RANGE - 1)) ? regmember::current_cell = 1, true : false) || (postf & (MAX_REGION_RANGE - 1)) == regmember::current_cell++) ? regmember([](member_t* ptr){ decltype(##cx::##pref##mx) f = {};ptr->size = getTypeSize(f);ptr->max_size = sizeof(f);ptr->offset = offsetof(##cx, ##pref##mx);ptr->type = getMemberType(f);ptr->name = #postf;}) : regmember(#pref#mx)
 
 #define GM_MEMBERS(mx)			CLASS_MEMBERS(CHalfLifeMultiplay, mx, mx,)
 #define GM_VOICE_MEMBERS(mx)		CLASS_MEMBERS(CVoiceGameMgr, mx, mx,)

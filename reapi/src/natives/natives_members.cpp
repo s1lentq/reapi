@@ -27,16 +27,16 @@ cell AMX_NATIVE_CALL set_member(AMX *amx, cell *params)
 			return FALSE;
 		}
 
-		return set_member(pPlayer->CSPlayer(), member, element, value);
+		return set_member(pPlayer->CSPlayer(), member, value, element);
 	}
 
-	return set_member(pEdict->pvPrivateData, member, element, value);
+	return set_member(pEdict->pvPrivateData, member, value, element);
 }
 
 // native any:get_member(_index, any:_member, any:...);
 cell AMX_NATIVE_CALL get_member(AMX *amx, cell *params)
 {
-	enum args_e { arg_count, arg_index, arg_member, arg_3, arg_4 };
+	enum args_e { arg_count, arg_index, arg_member, arg_3, arg_4, arg_5 };
 	member_t *member = memberlist[params[arg_member]];
 
 	if (member == nullptr) {
@@ -52,12 +52,22 @@ cell AMX_NATIVE_CALL get_member(AMX *amx, cell *params)
 
 	cell* dest;
 	size_t element;
+	size_t length;
 
-	if (PARAMS_COUNT == 4) {
+	switch (PARAMS_COUNT)
+	{
+	case 5:
 		dest = getAmxAddr(amx, params[arg_3]);
-		element = *getAmxAddr(amx, params[arg_4]);
-	}
-	else if (PARAMS_COUNT == 3) {
+		length = *getAmxAddr(amx, params[arg_4]);
+		element = *getAmxAddr(amx, params[arg_5]);
+		break;
+	case 4:
+		dest = getAmxAddr(amx, params[arg_3]);
+		length = *getAmxAddr(amx, params[arg_4]);
+		element = 0;
+		break;
+	case 3:
+	{
 		cell* arg3 = getAmxAddr(amx, params[arg_3]);
 
 		if (isTypeReturnable(member->type)) {
@@ -68,10 +78,14 @@ cell AMX_NATIVE_CALL get_member(AMX *amx, cell *params)
 			dest = arg3;
 			element = 0;
 		}
+		length = 0;
+		break;
 	}
-	else {
+	default:
 		dest = nullptr;
 		element = 0;
+		length = 0;
+		break;
 	}
 
 	const auto table = memberlist_t::members_tables_e(params[arg_member] / MAX_REGION_RANGE);
@@ -81,10 +95,10 @@ cell AMX_NATIVE_CALL get_member(AMX *amx, cell *params)
 			return FALSE;
 		}
 
-		return get_member(pPlayer->CSPlayer(), member, element, dest);
+		return get_member(pPlayer->CSPlayer(), member, dest, element, length);
 	}
 
-	return get_member(pEdict->pvPrivateData, member, element, dest);
+	return get_member(pEdict->pvPrivateData, member, dest, element, length);
 }
 
 // native set_member_game(any:_member, any:...);
@@ -103,7 +117,7 @@ cell AMX_NATIVE_CALL set_member_game(AMX *amx, cell *params)
 	cell* value = getAmxAddr(amx, params[arg_value]);
 	size_t element = (PARAMS_COUNT == 4) ? *getAmxAddr(amx, params[arg_elem]) : 0;
 
-	return set_member(g_pGameRules, member, element, value);
+	return set_member(g_pGameRules, member, value, element);
 }
 
 // native get_member_game(any:_member, any:...);
@@ -121,10 +135,12 @@ cell AMX_NATIVE_CALL get_member_game(AMX *amx, cell *params)
 
 	cell* dest;
 	size_t element;
+	size_t length;
 
 	if (PARAMS_COUNT == 4) {
 		dest = getAmxAddr(amx, params[arg_3]);
-		element = *getAmxAddr(amx, params[arg_4]);
+		length = *getAmxAddr(amx, params[arg_4]);
+		element = 0;
 	}
 	else if (PARAMS_COUNT == 3) {
 		cell* arg3 = getAmxAddr(amx, params[arg_3]);
@@ -137,10 +153,12 @@ cell AMX_NATIVE_CALL get_member_game(AMX *amx, cell *params)
 			dest = arg3;
 			element = 0;
 		}
+		length = 0;
 	}
 	else {
 		dest = nullptr;
 		element = 0;
+		length = 0;
 	}
 
 	void* data;
@@ -151,7 +169,7 @@ cell AMX_NATIVE_CALL get_member_game(AMX *amx, cell *params)
 		data = g_pGameRules;
 	}
 
-	return get_member(data, member, element, dest);
+	return get_member(data, member, dest, element, length);
 }
 
 // native set_entvar(const index, const EntVars:var, any:...);
@@ -175,7 +193,7 @@ cell AMX_NATIVE_CALL set_entvar(AMX *amx, cell *params)
 	cell* value = getAmxAddr(amx, params[arg_value]);
 	size_t element = (PARAMS_COUNT == 4) ? *getAmxAddr(amx, params[arg_elem]) : 0;
 
-	return set_member(&pEdict->v, member, element, value);
+	return set_member(&pEdict->v, member, value, element);
 }
 
 // native any:get_entvar(const index, const EntVars:var, any:...);
@@ -199,10 +217,12 @@ cell AMX_NATIVE_CALL get_entvar(AMX *amx, cell *params)
 
 	cell* dest;
 	size_t element;
+	size_t length;
 
 	if (PARAMS_COUNT == 4) {
 		dest = getAmxAddr(amx, params[arg_3]);
-		element = *getAmxAddr(amx, params[arg_4]);
+		length = *getAmxAddr(amx, params[arg_4]);
+		element = 0;
 	}
 	else if (PARAMS_COUNT == 3) {
 		cell* arg3 = getAmxAddr(amx, params[arg_3]);
@@ -215,13 +235,16 @@ cell AMX_NATIVE_CALL get_entvar(AMX *amx, cell *params)
 			dest = arg3;
 			element = 0;
 		}
+
+		length = 0;
 	}
 	else {
 		dest = nullptr;
 		element = 0;
+		length = 0;
 	}
 
-	return get_member(&pEdict->v, member, element, dest);
+	return get_member(&pEdict->v, member, dest, element, length);
 }
 
 // native set_pmove(const PlayerMove:pmove, any:...);
@@ -238,7 +261,7 @@ cell AMX_NATIVE_CALL set_pmove(AMX *amx, cell *params)
 	cell* value = getAmxAddr(amx, params[arg_value]);
 	size_t element = (PARAMS_COUNT == 4) ? *getAmxAddr(amx, params[arg_elem]) : 0;
 
-	return set_member(g_pMove, member, element, value);
+	return set_member(g_pMove, member, value, element);
 }
 
 // native any:get_pmove(const PlayerMove:pmove, any:...);
@@ -254,17 +277,26 @@ cell AMX_NATIVE_CALL get_pmove(AMX *amx, cell *params)
 
 	cell* dest;
 	size_t element;
+	size_t length;
 
 	if (PARAMS_COUNT == 3) {
-		dest = getAmxAddr(amx, params[arg_2]);
-		element = *getAmxAddr(amx, params[arg_3]);
+		if (member->type == MEMBER_STRING) {
+			dest = getAmxAddr(amx, params[arg_2]);
+			length = *getAmxAddr(amx, params[arg_3]);
+			element = 0;
+		} else {
+			dest = getAmxAddr(amx, params[arg_2]);
+			element = *getAmxAddr(amx, params[arg_3]);
+			length = 0;
+		}
 	}
 	else {
 		dest = nullptr;
 		element = 0;
+		length = 0;
 	}
 
-	return get_member(g_pMove, member, element, dest);
+	return get_member(g_pMove, member, dest, element, length);
 }
 
 // native set_movevar(const MoveVars:var, any:...);
@@ -279,7 +311,7 @@ cell AMX_NATIVE_CALL set_movevar(AMX *amx, cell *params)
 	}
 
 	cell* value = getAmxAddr(amx, params[arg_value]);
-	return set_member(g_pMove->movevars, member, 0, value);
+	return set_member(g_pMove->movevars, member, value, 0);
 }
 
 // native any:get_movevar(const MoveVars:var, any:...);
@@ -295,17 +327,20 @@ cell AMX_NATIVE_CALL get_movevar(AMX *amx, cell *params)
 
 	cell* dest;
 	size_t element;
+	size_t length;
 
 	if (PARAMS_COUNT == 3) {
 		dest = getAmxAddr(amx, params[arg_2]);
-		element = *getAmxAddr(amx, params[arg_3]);
+		length = *getAmxAddr(amx, params[arg_3]);
+		element = 0;
 	}
 	else {
 		dest = nullptr;
 		element = 0;
+		length = 0;
 	}
 
-	return get_member(g_pMove->movevars, member, element, dest);
+	return get_member(g_pMove->movevars, member, dest, element, length);
 }
 
 // native set_ucmd(const cmd, const UserCmd:var, any:...);
@@ -321,7 +356,7 @@ cell AMX_NATIVE_CALL set_ucmd(AMX *amx, cell *params)
 
 	cell* cmd = (cell *)params[arg_cmd];
 	cell* value = getAmxAddr(amx, params[arg_value]);
-	return set_member(cmd, member, 0, value);
+	return set_member(cmd, member, value, 0);
 }
 
 // native any:get_ucmd(const cmd, const UserCmd:var, any:...);
@@ -348,7 +383,7 @@ cell AMX_NATIVE_CALL get_ucmd(AMX *amx, cell *params)
 	}
 
 	cell* cmd = (cell *)params[arg_cmd];
-	return get_member(cmd, member, element, dest);
+	return get_member(cmd, member, dest, element);
 }
 
 // native set_pmtrace(const tr, const PMTrace:var, any:...);
@@ -364,7 +399,7 @@ cell AMX_NATIVE_CALL set_pmtrace(AMX *amx, cell *params)
 
 	cell* tr = (cell *)params[arg_tr];
 	cell* value = getAmxAddr(amx, params[arg_value]);
-	return set_member(tr, member, 0, value);
+	return set_member(tr, member, value, 0);
 }
 
 // native any:get_pmtrace(const tr, const PMTrace:var, any:...);
@@ -391,7 +426,7 @@ cell AMX_NATIVE_CALL get_pmtrace(AMX *amx, cell *params)
 	}
 
 	cell* tr = (cell *)params[arg_tr];
-	return get_member(tr, member, element, dest);
+	return get_member(tr, member, dest, element);
 }
 
 AMX_NATIVE_INFO EngineVars_Natives[] =
@@ -434,7 +469,7 @@ void RegisterNatives_Members()
 	g_amxxapi.AddNatives(EngineVars_Natives);
 }
 
-BOOL set_member(void* pdata, const member_t *member, size_t element, cell* value)
+BOOL set_member(void* pdata, const member_t *member, cell* value, size_t element)
 {
 	switch (member->type) {
 	case MEMBER_CLASSPTR:
@@ -488,7 +523,7 @@ BOOL set_member(void* pdata, const member_t *member, size_t element, cell* value
 	case MEMBER_QSTRING:
 		{
 			char *source = getAmxString(value);
-			string_t newstr = ALLOC_STRING(source);
+			string_t newstr = (source && source[0] != '\0') ? ALLOC_STRING(source) : 0;
 			set_member<string_t>(pdata, member->offset, newstr, element);
 			return TRUE;
 		}
@@ -519,9 +554,15 @@ BOOL set_member(void* pdata, const member_t *member, size_t element, cell* value
 		}
 	case MEMBER_SIGNALS:
 		{
-			// native set_member(_index, any:_member, _value);
+			enum { _Signal, _State };
+
+			// native set_member(_index, any:_member, signals[UnifiedSignals]);
 			CUnifiedSignals& signal = get_member<CUnifiedSignals>(pdata, member->offset, element);
-			signal.Signal(*value);
+
+			int *pSignals = value;
+			signal.m_flSignal = pSignals[_Signal];
+			signal.m_flState = pSignals[_State];
+
 			return TRUE;
 		}
 	case MEMBER_DOUBLE:
@@ -544,7 +585,7 @@ BOOL set_member(void* pdata, const member_t *member, size_t element, cell* value
 	return FALSE;
 }
 
-cell get_member(void* pdata, const member_t *member, size_t element, cell* dest)
+cell get_member(void* pdata, const member_t *member, cell* dest, size_t element, size_t length)
 {
 	switch (member->type)
 	{
@@ -585,7 +626,7 @@ cell get_member(void* pdata, const member_t *member, size_t element, cell* dest)
 			if (member->max_size > sizeof(char*)) {
 				// char []
 				const char *src = get_member_direct<char>(pdata, member->offset);
-				setAmxString(dest, src, element);
+				setAmxString(dest, src, length);
 			} else {
 				// char *
 				const char *src = get_member<const char *>(pdata, member->offset);
@@ -593,7 +634,7 @@ cell get_member(void* pdata, const member_t *member, size_t element, cell* dest)
 					setAmxString(dest, "", 1);
 					return 0;
 				}
-				setAmxString(dest, src, element);
+				setAmxString(dest, src, length);
 			}
 
 			return 1;
@@ -603,22 +644,22 @@ cell get_member(void* pdata, const member_t *member, size_t element, cell* dest)
 			if (!dest)
 				return 0;
 
-			string_t str = get_member<string_t>(pdata, member->offset);
-			if (str == 0) {
+			string_t str = get_member<string_t>(pdata, member->offset, element);
+			if (FStringNull(str)) {
 				setAmxString(dest, "", 1);
 				return 0;
 			}
 
-			setAmxString(dest, STRING(str), element);
+			setAmxString(dest, STRING(str), length);
 			return 1;
 		}
 	case MEMBER_FLOAT:
 	case MEMBER_INTEGER:
 		{
 			auto& ret = get_member<int>(pdata, member->offset, element);
-			if (dest != nullptr) {
+			if (dest)
 				*dest = ret;
-			}
+
 			return ret;
 		}
 	case MEMBER_SHORT:
@@ -635,7 +676,7 @@ cell get_member(void* pdata, const member_t *member, size_t element, cell* dest)
 		return get_member<double>(pdata, member->offset, element);
 	case MEMBER_SIGNALS:
 		{
-			enum {_Signal, _State};
+			enum { _Signal, _State };
 
 			// native any:get_member(_index, any:_member, signals[2]);
 			if (!dest)

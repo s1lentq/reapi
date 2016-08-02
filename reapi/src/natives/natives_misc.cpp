@@ -37,7 +37,7 @@ enum AccountSet { AS_SET, AS_ADD };
 *
 * @noreturn
 *
-* native rg_add_account(index, amount, AccountSet:typeSet = AS_ADD, bool:bTrackChange = true);
+* native rg_add_account(index, amount, AccountSet:typeSet = AS_ADD, const bool:bTrackChange = true);
 */
 cell AMX_NATIVE_CALL rg_add_account(AMX *amx, cell *params)
 {
@@ -153,7 +153,7 @@ cell AMX_NATIVE_CALL rg_give_default_items(AMX *amx, cell *params)
 *
 * @noreturn
 *
-* native rg_give_shield(index, bool:bDeploy = true);
+* native rg_give_shield(index, const bool:bDeploy = true);
 */
 cell AMX_NATIVE_CALL rg_give_shield(AMX *amx, cell *params)
 {
@@ -327,7 +327,7 @@ cell AMX_NATIVE_CALL rg_fire_bullets(AMX *amx, cell *params)
 *
 * @return Float:[3]		The result spread
 *
-* native Float:[3] rg_fire_bullets3(inflictor, attacker, Float:vecSrc[3], Float:vecDirShooting[3], Float:vecSpread, Float:flDistance, iPenetration, iBulletType, iDamage, Float:flRangeModifier, bool:bPistol, shared_rand);
+* native Float:[3] rg_fire_bullets3(const inflictor, const attacker, Float:vecSrc[3], Float:vecDirShooting[3], const Float:vecSpread, const Float:flDistance, const iPenetration, const Bullet:iBulletType, const iDamage, const Float:flRangeModifier, const bool:bPistol, const shared_rand);
 */
 cell AMX_NATIVE_CALL rg_fire_bullets3(AMX *amx, cell *params)
 {
@@ -440,7 +440,7 @@ cell AMX_NATIVE_CALL rg_round_end(AMX *amx, cell *params)
 *
 * @noreturn
 *
-* native rg_update_teamscores(iCtsWins = 0, iTsWins = 0, bool:bAdd = true);
+* native rg_update_teamscores(const iCtsWins = 0, const iTsWins = 0, const bool:bAdd = true);
 */
 cell AMX_NATIVE_CALL rg_update_teamscores(AMX *amx, cell *params)
 {
@@ -459,21 +459,27 @@ cell AMX_NATIVE_CALL rg_update_teamscores(AMX *amx, cell *params)
 * Creates an entity using Counter-Strike's custom CreateNamedEntity wrapper.
 *
 * @param classname		Entity class name
+* @param useHashTable		Use this only for known game entities.
+*				NOTE: Do not use this if you use a custom classname.
 *
 * @return			Index of the created entity or 0 otherwise
 *
-* native rg_create_entity(const classname[]);
+* native rg_create_entity(const classname[], const bool:useHashTable = false);
 */
 cell AMX_NATIVE_CALL rg_create_entity(AMX *amx, cell *params)
 {
-	enum args_e { arg_count, arg_classname };
+	enum args_e { arg_count, arg_classname, arg_hashtable };
 
 	string_t iClass = g_engfuncs.pfnAllocString(getAmxString(amx, params[arg_classname]));
-	edict_t	*pEnt = g_ReGameFuncs->CREATE_NAMED_ENTITY2(iClass);
 
-	if (pEnt != nullptr)
-	{
-		return indexOfEdict(pEnt);
+	edict_t	*pEntity;
+	if (params[arg_hashtable] != 0)
+		pEntity = g_ReGameFuncs->CREATE_NAMED_ENTITY2(iClass);
+	else
+		pEntity = CREATE_NAMED_ENTITY(iClass);
+
+	if (pEntity) {
+		return indexOfEdict(pEntity);
 	}
 
 	return 0;
@@ -484,22 +490,34 @@ cell AMX_NATIVE_CALL rg_create_entity(AMX *amx, cell *params)
 *
 * @param start_index		Entity index to start searching from. -1 to start from the first entity
 * @param classname		Classname to search for
+* @param useHashTable		Use this only for known game entities.
+*				NOTE: Do not use this if you use a custom classname.
 *
 * @return			Entity index > 0 if found, 0 otherwise
 *
-* native rg_find_ent_by_class(start_index, const classname[]);
+* native rg_find_ent_by_class(start_index, const classname[], const bool:useHashTable = false);
 */
 cell AMX_NATIVE_CALL rg_find_ent_by_class(AMX *amx, cell *params)
 {
-	enum args_e { arg_count, arg_start_index, arg_classname };
+	enum args_e { arg_count, arg_start_index, arg_classname, arg_hashtable };
 
-	CBaseEntity *pStartEntity = getPrivate<CBaseEntity>(params[arg_start_index]);
 	const char* value = getAmxString(amx, params[arg_classname]);
-	CBaseEntity *pEntity = g_ReGameFuncs->UTIL_FindEntityByString(pStartEntity, "classname", value);
 
-	if (pEntity != nullptr)
+	if (params[arg_hashtable] != 0)
 	{
-		return indexOfEdict(pEntity->pev);
+		auto pStartEntity = getPrivate<CBaseEntity>(params[arg_start_index]);
+		auto pEntity = g_ReGameFuncs->UTIL_FindEntityByString(pStartEntity, "classname", value);
+		if (pEntity) {
+			return indexOfEdict(pEntity->pev);
+		}
+
+		return 0;
+	}
+
+	auto pStartEntity = edictByIndexAmx(params[arg_start_index]);
+	auto pEdict = FIND_ENTITY_BY_STRING(pStartEntity, "classname", value);
+	if (pEdict) {
+		return indexOfEdict(pEdict);
 	}
 
 	return 0;
@@ -794,7 +812,7 @@ cell AMX_NATIVE_CALL rg_set_weapon_info(AMX *amx, cell *params)
 *
 * @noreturn
 *
-* native rg_remove_all_items(const index, bool:bRemoveSuit);
+* native rg_remove_all_items(const index, const bool:bRemoveSuit);
 */
 cell AMX_NATIVE_CALL rg_remove_all_items(AMX *amx, cell *params)
 {
@@ -943,7 +961,7 @@ cell AMX_NATIVE_CALL rg_set_user_bpammo(AMX *amx, cell *params)
 *
 * @noreturn
 *
-* native rg_give_defusekit(const index, bool:bDefusekit = true, Float:color[] = {0.0, 160.0, 0.0}, const icon[] = "defuser", bool:bFlash = false);
+* native rg_give_defusekit(const index, const bool:bDefusekit = true, const Float:color[] = {0.0, 160.0, 0.0}, const icon[] = "defuser", const bool:bFlash = false);
 */
 cell AMX_NATIVE_CALL rg_give_defusekit(AMX *amx, cell *params)
 {
@@ -1066,7 +1084,7 @@ cell AMX_NATIVE_CALL rg_set_user_armor(AMX *amx, cell *params)
 *
 * @return		1 if successfully, 0 otherwise
 *
-* native rg_set_user_team(const index, {TeamName,_}:team, {ModelName,_}:model = MODEL_AUTO, bool:send_teaminfo = true);
+* native rg_set_user_team(const index, {TeamName,_}:team, {ModelName,_}:model = MODEL_AUTO, const bool:send_teaminfo = true);
 */
 cell AMX_NATIVE_CALL rg_set_user_team(AMX *amx, cell *params)
 {
@@ -1158,7 +1176,7 @@ cell AMX_NATIVE_CALL rg_set_user_team(AMX *amx, cell *params)
 *
 * @return		1 if successfully, 0 otherwise
 *
-* native rg_set_user_model(const index, const model[], bool:update_index = false);
+* native rg_set_user_model(const index, const model[], const bool:update_index = false);
 */
 cell AMX_NATIVE_CALL rg_set_user_model(AMX *amx, cell *params)
 {
@@ -1346,7 +1364,7 @@ cell AMX_NATIVE_CALL rg_get_account_rules(AMX *amx, cell *params)
 /*
 * If the bomb is planted
 *
-* @return		1 if successfully, 0 otherwise
+* @return		true if bomb is planted, false otherwise
 *
 * native bool:rg_is_bomb_planted();
 */
@@ -1489,7 +1507,7 @@ cell AMX_NATIVE_CALL rg_get_join_team_priority(AMX *amx, cell *params)
 * @param index		Client index
 * @param attacker	Attacker index
 *
-* @return		1 if successfully then can take a damage, 0 otherwise
+* @return		true if can take a damage, false otherwise
 *
 * native bool:rg_is_player_can_takedamage(const index, const attacker);
 */
@@ -1543,6 +1561,129 @@ cell AMX_NATIVE_CALL rg_get_weaponbox_id(AMX *amx, cell *params)
 	}
 
 	return WEAPON_NONE;
+}
+
+/*
+* Respawn on round for players/bots
+*
+* @param index		Client index
+*
+* @noreturn
+*
+* native rg_round_respawn(const index);
+*/
+cell AMX_NATIVE_CALL rg_round_respawn(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index };
+
+	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
+	if (pPlayer == nullptr || pPlayer->has_disconnected) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
+		return FALSE;
+	}
+
+	pPlayer->RoundRespawn();
+	return TRUE;
+}
+
+/*
+* Draws a HUD progress bar which is fills from 0% to 100% for the time duration seconds.
+* NOTE: Set Duration to 0 to hide the bar.
+*
+* @param index		Client index
+* @param time		Duration
+* @param observer	Send for everyone observer player
+*
+* @noreturn
+*
+* native rg_send_bartime(const index, const Float:duration, const bool:observer = true);
+*/
+cell AMX_NATIVE_CALL rg_send_bartime(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_time, arg_observer };
+
+	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
+	if (pPlayer == nullptr || pPlayer->has_disconnected) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
+		return FALSE;
+	}
+
+	CAmxArgs args(amx, params);
+	if (!args[arg_observer]) {
+		EMESSAGE_BEGIN(MSG_ONE_UNRELIABLE, gmsgBarTime, nullptr, pPlayer->edict());
+			EWRITE_SHORT(args[arg_time]);
+		EMESSAGE_END();
+		return TRUE;
+	}
+
+	pPlayer->CSPlayer()->SetProgressBarTime(args[arg_time]);
+	return TRUE;
+}
+
+/*
+* Same as BarTime, but StartPercent specifies how much of the bar is (already) filled.
+*
+* @param index		Client index
+* @param time		Duration
+* @param startPercent	Start percent
+* @param observer	Send for everyone observer player
+*
+* @noreturn
+*
+* native rg_send_bartime2(const index, const Float:duration, const Float:startPercent, const bool:observer = true);
+*/
+cell AMX_NATIVE_CALL rg_send_bartime2(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_time, arg_start_percent, arg_observer };
+
+	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
+	if (pPlayer == nullptr || pPlayer->has_disconnected) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
+		return FALSE;
+	}
+
+	CAmxArgs args(amx, params);
+	if (!args[arg_observer]) {
+		EMESSAGE_BEGIN(MSG_ONE_UNRELIABLE, gmsgBarTime2, nullptr, pPlayer->edict());
+			EWRITE_SHORT(args[arg_time]);
+			EWRITE_SHORT(args[arg_start_percent]);
+		EMESSAGE_END();
+		return TRUE;
+	}
+
+	pPlayer->CSPlayer()->SetProgressBarTime2(args[arg_time], args[arg_start_percent]);
+	return TRUE;
+}
+
+/*
+* Sends the message SendAudio - plays the specified audio
+*
+* @param index		Receiver index or use 0 for everyone
+* @param sample		Sound file to play
+* @param pitch		Sound pitch
+*
+* @noreturn
+*
+* native rg_send_audio(const index, const sample[], const pitch = PITCH_NORM);
+*/
+cell AMX_NATIVE_CALL rg_send_audio(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_sample, arg_pitch };
+
+	int nIndex = params[arg_index];
+	if (nIndex < 0)
+		nIndex = 0;
+
+	const char *szSample = getAmxString(amx, params[arg_sample]);
+	auto pEdict = (nIndex == 0) ? nullptr : edictByIndexAmx(nIndex);
+
+	EMESSAGE_BEGIN(nIndex ? MSG_ONE_UNRELIABLE : MSG_BROADCAST, gmsgSendAudio, nullptr, pEdict);
+		EWRITE_BYTE(nIndex);
+		EWRITE_STRING(szSample);
+		EWRITE_SHORT(params[arg_pitch]);
+	EMESSAGE_END();
+
+	return TRUE;
 }
 
 AMX_NATIVE_INFO Misc_Natives_RG[] =
@@ -1604,6 +1745,11 @@ AMX_NATIVE_INFO Misc_Natives_RG[] =
 	{ "rg_get_join_team_priority", rg_get_join_team_priority },
 	{ "rg_is_player_can_takedamage", rg_is_player_can_takedamage },
 	{ "rg_get_weaponbox_id", rg_get_weaponbox_id },
+	{ "rg_round_respawn", rg_round_respawn },
+
+	{ "rg_send_bartime", rg_send_bartime },
+	{ "rg_send_bartime2", rg_send_bartime2 },
+	{ "rg_send_audio", rg_send_audio },
 
 	{ nullptr, nullptr }
 };
@@ -1698,7 +1844,7 @@ cell AMX_NATIVE_CALL rh_emit_sound2(AMX *amx, cell *params)
 	enum args_e { arg_count, arg_entity, arg_recipient, arg_channel, arg_sample, arg_vol, arg_attn, arg_flags, arg_pitch, arg_emitFlags, arg_origin };
 
 	CBaseEntity *pRecipient = getPrivate<CBaseEntity>(params[arg_recipient]);
-	if (pRecipient != nullptr && pRecipient->has_disconnected) {
+	if (pRecipient && pRecipient->has_disconnected) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_recipient]);
 		return FALSE;
 	}
@@ -1711,7 +1857,7 @@ cell AMX_NATIVE_CALL rh_emit_sound2(AMX *amx, cell *params)
 	CAmxArgs args(amx, params);
 	const char *sample = getAmxString(amx, params[arg_sample]);
 
-	return g_RehldsFuncs->SV_EmitSound2
+	return (cell)g_RehldsFuncs->SV_EmitSound2
 	(
 		args[arg_entity],	// entity
 		args[arg_recipient],	// recipient
@@ -1755,11 +1901,40 @@ AMX_NATIVE_INFO Misc_Natives_RH[] =
 };
 
 /*
+* Check if the entity is valid
+*
+* @return		true/false
+*
+* native bool:is_entity(const entityIndex);
+*/
+cell AMX_NATIVE_CALL is_entity(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index };
+
+	int nIndex = params[arg_index];
+	if (nIndex < 0 || nIndex > gpGlobals->maxEntities) {
+		return FALSE;
+	}
+
+	auto pEntity = getPrivate<CBaseEntity>(nIndex);
+	if (!pEntity) {
+		return FALSE;
+	}
+
+	// if it is the index of the player
+	if (pEntity->IsPlayer() && pEntity->has_disconnected) {
+		return FALSE;
+	}
+
+	return TRUE;
+}
+
+/*
 * Check if the rehlds is available
 *
-* @return			1/0
+* @return		true/false
 *
-* native is_rehlds();
+* native bool:is_rehlds();
 */
 cell AMX_NATIVE_CALL is_rehlds(AMX *amx, cell *params)
 {
@@ -1769,9 +1944,9 @@ cell AMX_NATIVE_CALL is_rehlds(AMX *amx, cell *params)
 /*
 * Check if the regamedll is available
 *
-* @return			1/0
+* @return		true/false
 *
-* native is_regamedll();
+* native bool:is_regamedll();
 */
 cell AMX_NATIVE_CALL is_regamedll(AMX *amx, cell *params)
 {
@@ -1781,9 +1956,9 @@ cell AMX_NATIVE_CALL is_regamedll(AMX *amx, cell *params)
 /*
 * Check if the reunion is available
 *
-* @return			1/0
+* @return		true/false
 *
-* native is_has_reunion();
+* native bool:is_has_reunion();
 */
 cell AMX_NATIVE_CALL has_reunion(AMX *amx, cell *params)
 {
@@ -1793,9 +1968,9 @@ cell AMX_NATIVE_CALL has_reunion(AMX *amx, cell *params)
 /*
 * Check if the vtc is available
 *
-* @return			1/0
+* @return		true/false
 *
-* native is_has_vtc();
+* native bool:is_has_vtc();
 */
 cell AMX_NATIVE_CALL has_vtc(AMX *amx, cell *params)
 {
@@ -1804,6 +1979,7 @@ cell AMX_NATIVE_CALL has_vtc(AMX *amx, cell *params)
 
 AMX_NATIVE_INFO Misc_Natives_Checks[] =
 {
+	{ "is_entity", is_entity },
 	{ "is_rehlds", is_rehlds },
 	{ "is_regamedll", is_regamedll },
 	{ "has_reunion", has_reunion },

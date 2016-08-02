@@ -7,6 +7,8 @@ extern int gmsgSendAudio;
 extern int gmsgStatusIcon;
 extern int gmsgArmorType;
 extern int gmsgItemStatus;
+extern int gmsgBarTime;
+extern int gmsgBarTime2;
 
 void OnAmxxAttach();
 bool OnMetaAttach();

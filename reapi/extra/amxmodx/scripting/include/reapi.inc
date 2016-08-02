@@ -41,6 +41,9 @@ enum members_tables_e
 	mt_armoury
 };
 
+// is like FNullEnt
+#define is_nullent(%0)			(is_entity(%0) == false)
+
 #define MAX_REGION_RANGE		1024
 
 #define BEGIN_FUNC_REGION(%0)		(any:MAX_REGION_RANGE * hooks_tables_e:ht_%0)
@@ -141,9 +144,17 @@ native any:GetHookChainReturn(any:...);
 native SetHookChainArg(number, AType:type, any:...);
 
 /*
+* Check if the entity is valid
+*
+* @return		true/false
+*
+*/
+native bool:is_entity(const entityIndex);
+
+/*
 * Check if the rehlds is available
 *
-* @return			1/0
+* @return		true/false
 *
 */
 native bool:is_rehlds();
@@ -151,7 +162,7 @@ native bool:is_rehlds();
 /*
 * Check if the regamedll is available
 *
-* @return			1/0
+* @return		true/false
 *
 */
 native bool:is_regamedll();
@@ -159,7 +170,7 @@ native bool:is_regamedll();
 /*
 * Check if the reunion is available
 *
-* @return			1/0
+* @return		true/false
 *
 */
 native bool:has_reunion();
@@ -167,7 +178,7 @@ native bool:has_reunion();
 /*
 * Check if the vtc is available
 *
-* @return			1/0
+* @return		true/false
 *
 */
 native bool:has_vtc();

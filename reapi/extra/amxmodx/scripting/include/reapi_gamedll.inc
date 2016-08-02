@@ -118,7 +118,7 @@ native rg_set_animation(const index, PLAYER_ANIM:playerAnim);
 *
 * @noreturn
 */
-native rg_add_account(const index, amount, AccountSet:typeSet = AS_ADD, bool:bTrackChange = true);
+native rg_add_account(const index, amount, AccountSet:typeSet = AS_ADD, const bool:bTrackChange = true);
 
 /*
 * Gives item to player
@@ -148,7 +148,7 @@ native rg_give_default_items(const index);
 *
 * @noreturn
 */
-native rg_give_shield(const index, bool:bDeploy = true);
+native rg_give_shield(const index, const bool:bDeploy = true);
 
 /*
 * Inflicts in a radius from the source position.
@@ -260,22 +260,26 @@ native rg_update_teamscores(const iCtsWins = 0, const iTsWins = 0, const bool:bA
 * Creates an entity using Counter-Strike's custom CreateNamedEntity wrapper.
 *
 * @param classname		Entity class name
+* @param useHashTable		Use this only for known game entities.
+*				NOTE: Do not use this if you use a custom classname.
 *
 * @return			Index of the created entity or 0 otherwise
 *
 */
-native rg_create_entity(const classname[]);
+native rg_create_entity(const classname[], const bool:useHashTable = false);
 
 /*
 * Finds an entity in the world using Counter-Strike's custom FindEntityByString wrapper.
 *
 * @param start_index		Entity index to start searching from. -1 to start from the first entity
 * @param classname		Classname to search for
+* @param useHashTable		Use this only for known game entities.
+*				NOTE: Do not use this if you use a custom classname.
 *
 * @return			Entity index > 0 if found, 0 otherwise
 *
 */
-native rg_find_ent_by_class(start_index, const classname[]);
+native rg_find_ent_by_class(start_index, const classname[], const bool:useHashTable = false);
 
 /*
 * Finds an entity in the world using Counter-Strike's custom FindEntityByString wrapper, matching by owner.
@@ -341,7 +345,7 @@ native rg_set_weapon_info(const {WeaponIdType,_}:weapon_id, WpnInfo:type, any:..
 * @noreturn
 *
 */
-native rg_remove_all_items(const index, bool:bRemoveSuit = false);
+native rg_remove_all_items(const index, const bool:bRemoveSuit = false);
 
 /*
 * Remove specifed the player's item by class name
@@ -389,7 +393,7 @@ native rg_set_user_bpammo(const index, WeaponIdType:weapon, amount);
 * @noreturn
 *
 */
-native rg_give_defusekit(const index, bool:bDefusekit = true, Float:color[] = {0.0, 160.0, 0.0}, const icon[] = "defuser", bool:bFlash = false);
+native rg_give_defusekit(const index, const bool:bDefusekit = true, const Float:color[] = {0.0, 160.0, 0.0}, const icon[] = "defuser", const bool:bFlash = false);
 
 /*
 * Returns the client's armor value and retrieves the type of armor.
@@ -428,7 +432,7 @@ native rg_set_user_armor(const index, armorvalue, ArmorType:armortype);
 * @return		1 if successfully, 0 otherwise
 *
 */
-native rg_set_user_team(const index, {TeamName,_}:team, {ModelName,_}:model = MODEL_AUTO, bool:send_teaminfo = true);
+native rg_set_user_team(const index, {TeamName,_}:team, {ModelName,_}:model = MODEL_AUTO, const bool:send_teaminfo = true);
 
 /*
 * Sets the client's player model.
@@ -440,7 +444,7 @@ native rg_set_user_team(const index, {TeamName,_}:team, {ModelName,_}:model = MO
 * @return		1 if successfully, 0 otherwise
 *
 */
-native rg_set_user_model(const index, const model[], bool:update_index = false);
+native rg_set_user_model(const index, const model[], const bool:update_index = false);
 
 /*
 * Reset model user
@@ -498,7 +502,7 @@ native rg_get_account_rules(const RewardRules:rules_index);
 /*
 * If the bomb is planted
 *
-* @return		1 if successfully, 0 otherwise
+* @return		true if bomb is planted, false otherwise
 *
 */
 native bool:rg_is_bomb_planted();
@@ -566,7 +570,7 @@ native TeamName:rg_get_join_team_priority();
 * @param index		Client index
 * @param attacker	Attacker index
 *
-* @return		1 if successfully then can take a damage, 0 otherwise
+* @return		true if can take a damage, false otherwise
 *
 */
 native bool:rg_is_player_can_takedamage(const index, const attacker);
@@ -580,3 +584,51 @@ native bool:rg_is_player_can_takedamage(const index, const attacker);
 *
 */
 native WeaponIdType:rg_get_weaponbox_id(const entity);
+
+/*
+* Respawn on round for players/bots
+*
+* @param index		Client index
+*
+* @noreturn
+*
+*/
+native rg_round_respawn(const index);
+
+/*
+* Draws a HUD progress bar which is fills from 0% to 100% for the time duration seconds.
+* NOTE: Set Duration to 0 to hide the bar.
+*
+* @param index		Client index
+* @param time		Duration
+* @param observer	Send for everyone observer player
+*
+* @noreturn
+*
+*/
+native rg_send_bartime(const index, const Float:duration, const bool:observer = true);
+
+/*
+* Same as BarTime, but StartPercent specifies how much of the bar is (already) filled.
+*
+* @param index		Client index
+* @param time		Duration
+* @param startPercent	Start percent
+* @param observer	Send for everyone observer player
+*
+* @noreturn
+*
+*/
+native rg_send_bartime2(const index, const Float:duration, const Float:startPercent, const bool:observer = true);
+
+/*
+* Sends the message SendAudio - plays the specified audio
+*
+* @param index		Receiver index or use 0 for everyone
+* @param sample		Sound file to play
+* @param pitch		Sound pitch
+*
+* @noreturn
+*
+*/
+native rg_send_audio(const index, const sample[], const pitch = PITCH_NORM);

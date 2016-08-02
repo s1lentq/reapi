@@ -27,6 +27,12 @@
 	#define RG_CBasePlayer_SetClientUserInfoName RG_CBasePlayer_SetUserInfoName
 #endif
 
+enum UnifiedSignals
+{
+	US_Signal,
+	US_State
+};
+
 enum AccountSet
 {
 	AS_SET,	// sets the value of the account
@@ -2184,10 +2190,10 @@ enum CBasePlayer_Members
 	m_tmHandleSignals,
 
 	/*
-	* Description:		-
+	* Description:		(0 - signal, 1 - state)
 	* Member type:		class CUnifiedSignals
-	* Get params:		get_member(index, member, signals[2]); (0 - signal, 1 - state)
-	* Set params:		set_member(index, member, value);
+	* Get params:		get_member(index, member, signals[UnifiedSignals]);
+	* Set params:		set_member(index, member, signals[UnifiedSignals]);
 	*/
 	m_signals,
 
@@ -3581,16 +3587,16 @@ enum PlayerMove
 	/*
 	* Description:		-
 	* Member type:		vec3_t [4]
-	* Get params:		get_pmove(const PlayerMove:var, Float:output[3], index);
-	* Set params:		set_pmove(const PlayerMove:var, Float:dest[3], index);
+	* Get params:		get_pmove(const PlayerMove:var, Float:output[3], element);
+	* Set params:		set_pmove(const PlayerMove:var, Float:dest[3], element);
 	*/
 	pm_player_mins,
 
 	/*
 	* Description:		-
 	* Member type:		vec3_t [4]
-	* Get params:		get_pmove(const PlayerMove:var, Float:output[3], index);
-	* Set params:		set_pmove(const PlayerMove:var, Float:dest[3], index);
+	* Get params:		get_pmove(const PlayerMove:var, Float:output[3], element);
+	* Set params:		set_pmove(const PlayerMove:var, Float:dest[3], element);
 	*/
 	pm_player_maxs
 };
@@ -4219,8 +4225,8 @@ enum CWeaponBox_Members
 	/*
 	* Description:		-
 	* Member type:		int [32]
-	* Get params:		get_member(member);
-	* Set params:		set_member(member, value, element);
+	* Get params:		get_member(index, member, element);
+	* Set params:		set_member(index, member, value, element);
 	*/
 	m_WeaponBox_rgAmmo,
 

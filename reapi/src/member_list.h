@@ -31,6 +31,7 @@ struct member_t
 	uint16 size;
 	uint16 max_size;
 	uint32 offset;
+	const char *name;
 	MType type;
 };
 

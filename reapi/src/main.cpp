@@ -3,7 +3,7 @@
 edict_t* g_pEdicts;
 playermove_t* g_pMove;
 char g_szMapName[32];
-int gmsgSendAudio, gmsgStatusIcon, gmsgArmorType, gmsgItemStatus;
+int gmsgSendAudio, gmsgStatusIcon, gmsgArmorType, gmsgItemStatus, gmsgBarTime, gmsgBarTime2;
 
 struct
 {
@@ -14,6 +14,8 @@ struct
 	{ "StatusIcon", gmsgStatusIcon },
 	{ "ArmorType",  gmsgArmorType },
 	{ "ItemStatus", gmsgItemStatus },
+	{ "BarTime",    gmsgBarTime },
+	{ "BarTime2",   gmsgBarTime2 },
 };
 
 void OnAmxxAttach()
@@ -65,7 +67,7 @@ CGameRules *InstallGameRules(IReGameHook_InstallGameRules *chain)
 	return g_pGameRules = chain->callNext();
 }
 
-int DispatchSpawn(edict_t* pEntity)
+int DispatchSpawn(edict_t *pEntity)
 {
 	// save true mapname
 	strncpy(g_szMapName, STRING(gpGlobals->mapname), sizeof(g_szMapName) - 1);

@@ -5,11 +5,11 @@ void Broadcast(const char *sentence)
 	char text[128];
 	snprintf(text, sizeof text, "%!MRAD_%s", sentence);
 
-	g_pengfuncsTable->pfnMessageBegin(MSG_BROADCAST, gmsgSendAudio, NULL, NULL);
-	g_pengfuncsTable->pfnWriteByte(0);
-	g_pengfuncsTable->pfnWriteString(text);
-	g_pengfuncsTable->pfnWriteShort(100);
-	g_pengfuncsTable->pfnMessageEnd();
+	EMESSAGE_BEGIN(MSG_BROADCAST, gmsgSendAudio);
+		EWRITE_BYTE(0);
+		EWRITE_STRING(text);
+		EWRITE_SHORT(100);
+	EMESSAGE_END();
 }
 
 struct {

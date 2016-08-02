@@ -4,9 +4,9 @@
 * Checks whether the player is talking at this moment
 *
 * @param index		Client index
-* @return		1 if client is speaking, 0 otherwise
+* @return		true if client is speaking, false otherwise
 *
-* native VTC_IsClientSpeaking(const index);
+* native bool:VTC_IsClientSpeaking(const index);
 */
 cell AMX_NATIVE_CALL VTC_IsClientSpeaking(AMX *amx, cell *params)
 {
@@ -14,7 +14,7 @@ cell AMX_NATIVE_CALL VTC_IsClientSpeaking(AMX *amx, cell *params)
 
 	CHECK_ISPLAYER(arg_index);
 
-	return g_pVoiceTranscoderApi->IsClientSpeaking((size_t)params[arg_index]);
+	return (cell)g_pVoiceTranscoderApi->IsClientSpeaking((size_t)params[arg_index]);
 }
 
 /*
@@ -32,7 +32,6 @@ cell AMX_NATIVE_CALL VTC_MuteClient(AMX *amx, cell *params)
 	CHECK_ISPLAYER(arg_index);
 
 	g_pVoiceTranscoderApi->MuteClient((size_t)params[arg_index]);
-
 	return FALSE;
 }
 
@@ -51,7 +50,6 @@ cell AMX_NATIVE_CALL VTC_UnmuteClient(AMX *amx, cell *params)
 	CHECK_ISPLAYER(arg_index);
 
 	g_pVoiceTranscoderApi->UnmuteClient((size_t)params[arg_index]);
-
 	return FALSE;
 }
 

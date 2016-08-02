@@ -23,10 +23,10 @@ enum client_auth_type
 * Checks whether the player is talking at this moment
 *
 * @param index		Client index
-* @return		1 if client is speaking, 0 otherwise
+* @return		true if client is speaking, false otherwise
 *
 */
-native VTC_IsClientSpeaking(const index);
+native bool:VTC_IsClientSpeaking(const index);
 
 /*
 * Mutes this player
