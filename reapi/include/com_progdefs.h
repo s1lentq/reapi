@@ -71,8 +71,8 @@ struct com_entvars
 	int modelindex;
 	qstring_t model;
 
-	int viewmodel;		// player's viewmodel
-	int weaponmodel;	// what other players see
+	qstring_t viewmodel;	// player's viewmodel
+	qstring_t weaponmodel;	// what other players see
 
 	vec3_t absmin;		// BB max translated to world coord
 	vec3_t absmax;		// BB max translated to world coord

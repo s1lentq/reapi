@@ -230,17 +230,17 @@ enum EntVars
 
 	/*
 	* Description:		player's viewmodel
-	* Member type:		int
+	* Member type:		string_t
 	* Get params:		get_entvar(index, EntVars:var);
-	* Set params:		set_entvar(index, EntVars:var, value);
+	* Set params:		set_entvar(index, EntVars:var, const source[]);
 	*/
 	var_viewmodel,
 
 	/*
 	* Description:		what other players see
-	* Member type:		int
+	* Member type:		string_t
 	* Get params:		get_entvar(index, EntVars:var);
-	* Set params:		set_entvar(index, EntVars:var, value);
+	* Set params:		set_entvar(index, EntVars:var, const source[]);
 	*/
 	var_weaponmodel,
 
