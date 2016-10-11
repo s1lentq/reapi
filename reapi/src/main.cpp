@@ -22,6 +22,7 @@ void OnAmxxAttach()
 {
 	// initialize API
 	api_cfg.Init();
+	g_pEdicts = g_engfuncs.pfnPEntityOfEntIndex(0);
 }
 
 bool OnMetaAttach()
