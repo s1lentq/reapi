@@ -71,8 +71,8 @@ inline MType getMemberType(usercmd_s)			{ return MEBMER_USERCMD; }
 template<typename T>
 inline MType getMemberType(T) { static_assert(false, "Not implemented overload"); }
 
-template<typename T>
-inline size_t getTypeSize(T type[]) { return sizeof(T); }
+template<typename T, size_t size>
+inline size_t getTypeSize(T type[size]) { return sizeof(T); }
 
 template<typename T>
 inline size_t getTypeSize(T& type) { return sizeof(T); }

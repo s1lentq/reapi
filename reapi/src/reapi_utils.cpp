@@ -3,7 +3,7 @@
 void Broadcast(const char *sentence)
 {
 	char text[128];
-	snprintf(text, sizeof text, "%!MRAD_%s", sentence);
+	snprintf(text, sizeof text, "%%!MRAD_%s", sentence);
 
 	EMESSAGE_BEGIN(MSG_BROADCAST, gmsgSendAudio);
 		EWRITE_BYTE(0);
