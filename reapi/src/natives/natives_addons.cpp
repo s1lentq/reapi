@@ -96,10 +96,40 @@ cell AMX_NATIVE_CALL REU_GetAuthtype(AMX *amx, cell *params)
 	return g_ReunionApi->GetClientAuthtype(params[arg_index] - 1);
 }
 
+/*
+* Check if client running RevEmu with limited user rights
+*
+* @param index		Client index
+* @return		1/0
+*
+* native REU_IsRevemuWithoutAdminRights(const index);
+*/
+cell AMX_NATIVE_CALL REU_IsRevemuWithoutAdminRights(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index };
+
+	CHECK_ISPLAYER(arg_index);
+
+	int clientId = params[arg_index] - 1;
+	if (g_ReunionApi->GetClientAuthtype(clientId) != DP_AUTH_REVEMU)
+		return FALSE;
+
+	char buffer[256];
+	size_t size = g_ReunionApi->GetClientAuthdata(clientId, buffer, sizeof buffer);
+
+	for (size_t i = 0; i < size; i++) {
+		if (!isdigit(buffer[i]))
+			return FALSE;
+	}
+
+	return TRUE;
+}
+
 AMX_NATIVE_INFO Reunion_Natives[] =
 {
 	{ "REU_GetProtocol", REU_GetProtocol },
 	{ "REU_GetAuthtype", REU_GetAuthtype },
+	{ "REU_IsRevemuWithoutAdminRights", REU_IsRevemuWithoutAdminRights },
 
 	{ nullptr, nullptr }
 };

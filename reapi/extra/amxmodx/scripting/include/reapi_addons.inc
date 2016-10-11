@@ -75,3 +75,12 @@ native REU_GetProtocol(const index);
 * @return		client auth type
 */
 native client_auth_type:REU_GetAuthtype(const index);
+
+/*
+* Check if client running RevEmu with limited user rights
+*
+* @param index		Client index
+* @return		1/0
+*
+*/
+native bool:REU_IsRevemuWithoutAdminRights(const index);
