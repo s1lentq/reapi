@@ -40,7 +40,7 @@ inline AType getApiType(int)			{ return ATYPE_INTEGER; }
 inline AType getApiType(unsigned)		{ return ATYPE_INTEGER; }
 inline AType getApiType(float)			{ return ATYPE_FLOAT; }
 inline AType getApiType(const char *)		{ return ATYPE_STRING; }
-inline AType getApiType(char [])		{ return ATYPE_STRING; }
+inline AType getApiType(char[])				{ return ATYPE_STRING; }
 inline AType getApiType(CBaseEntity *)		{ return ATYPE_CLASSPTR; }
 inline AType getApiType(edict_t *)		{ return ATYPE_EDICT; }
 inline AType getApiType(entvars_t *)		{ return ATYPE_EVARS; }
@@ -155,10 +155,11 @@ template <typename original_t, typename ...f_args>
 void callVoidForward(size_t func, original_t original, f_args... args)
 {
 	hookctx_t hookCtx(sizeof...(args), args...);
+	hookctx_t* save = g_hookCtx;
 
 	g_hookCtx = &hookCtx;
 	_callVoidForward(g_hookManager.getHookFast(func), original, args...);
-	g_hookCtx = nullptr;
+	g_hookCtx = save;
 }
 
 template <typename R, typename original_t, typename ...f_args>
@@ -179,7 +180,7 @@ NOINLINE R DLLEXPORT _callForward(const hook_t* hook, original_t original, volat
 			}
 
 			if (!hookCtx->retVal.set) {
-				g_amxxapi.LogError(fwd->GetAmx(), AMX_ERR_CALLBACK, "%s", "can't suppress original function call without new return value set");
+				g_amxxapi.LogError(fwd->GetAmx(), AMX_ERR_CALLBACK, "can't suppress original function call without new return value set");
 				continue;
 			}
 
@@ -220,10 +221,11 @@ template <typename R, typename original_t, typename ...f_args>
 R callForward(size_t func, original_t original, f_args... args)
 {
 	hookctx_t hookCtx(sizeof...(args), args...);
+	hookctx_t* save = g_hookCtx;
 
 	g_hookCtx = &hookCtx;
 	auto ret = _callForward<R>(g_hookManager.getHookFast(func), original, args...);
-	g_hookCtx = nullptr;
+	g_hookCtx = save;
 
 	return ret;
 }

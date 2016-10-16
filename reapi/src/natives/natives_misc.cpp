@@ -109,6 +109,8 @@ cell AMX_NATIVE_CALL rg_give_item(AMX *amx, cell *params)
 					pPlayer->RemovePlayerItem(pItem);
 					pItem->Kill();
 					break;
+				case GT_APPEND: break;
+				default: break;
 				}
 
 				pItem = pItem->m_pNext;
