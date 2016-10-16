@@ -1,36 +1,31 @@
 #pragma once
 
 #include <string.h>
-#include <new>
 #include <stdarg.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>			// for strncpy(), etc
-
 #include <vector>				// std::vector
+
 #include <extdll.h>
-#include <cbase.h>
-#include <pm_defs.h>
-#include "com_progdefs.h"
-
-#include "osdep.h"			// win32 vsnprintf, etc
-#include "sdk_util.h"
-
 #include <eiface.h>
 #include <meta_api.h>
-#include "amxxmodule.h"
-#include "osconfig.h"
 
-#include "pm_defs.h"
-#include "pm_movevars.h"
+#include <cbase.h>
+#include <pm_defs.h>
+#include <pm_defs.h>
+#include <pm_movevars.h>
+#include <com_progdefs.h>
+
+#include <osdep.h>			// win32 vsnprintf, etc
+#include <osconfig.h>
+#include <sdk_util.h>
+#include <platform.h>
 
 // regamedll API
 #include "gamerules.h"
 #include "regamedll_api.h"
 #include "mod_regamedll_api.h"
-
-#include "main.h"
-#include "reapi_utils.h"
 
 // rehlds API
 #include "rehlds_api.h"
@@ -44,6 +39,11 @@
 #include "reunion_api.h"
 #include "mod_reunion_api.h"
 
+// AmxModX API
+#include "amxxmodule.h"
+
+#include "main.h"
+#include "reapi_utils.h"
 #include "api_config.h"
 #include "hook_manager.h"
 #include "hook_callback.h"
@@ -54,13 +54,3 @@
 #include "natives_misc.h"
 #include "natives_addons.h"
 #include "natives_helper.h"
-
-#undef DLLEXPORT
-#ifdef _WIN32
-#define DLLEXPORT __declspec(dllexport)
-#define NOINLINE __declspec(noinline)
-#else
-#define DLLEXPORT __attribute__((visibility("default")))
-#define NOINLINE __attribute__((noinline))
-#define WINAPI		/* */
-#endif

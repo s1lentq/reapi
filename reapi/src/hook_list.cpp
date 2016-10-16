@@ -153,7 +153,7 @@ hook_t hooklist_gamerules[] = {
 
 hook_t* hooklist_t::getHookSafe(size_t hook)
 {
-	#define CASE(h)	case ht_##h: if (index < arraysize(hooklist_##h)) return &hooklist_##h[index]; else break;
+	#define CASE(h)	case ht_##h: if (likely(index < arraysize(hooklist_##h))) return &hooklist_##h[index]; else break;
 
 	const auto table = hooks_tables_e(hook / MAX_REGION_RANGE);
 	const auto index = hook & (MAX_REGION_RANGE - 1);

@@ -39,7 +39,9 @@ inline size_t indexOfEdict(entvars_t* pev)
 inline edict_t* edictByIndexAmx(int index)
 {
 	auto ed = g_pEdicts + index;
-	return index < 0 ? nullptr : ed;
+	if (unlikely(index < 0))
+		ed = nullptr;
+	return ed;
 }
 
 // fast

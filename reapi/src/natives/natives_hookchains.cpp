@@ -19,13 +19,13 @@ cell AMX_NATIVE_CALL RegisterHookChain(AMX *amx, cell *params)
 	int post = params[arg_post];
 	auto hook = g_hookManager.getHook(func);
 
-	if (hook == nullptr)
+	if (unlikely(hook == nullptr))
 	{
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: function with id (%d) doesn't exist in current API version.", __FUNCTION__, func);
 		return 0;
 	}
 
-	if (!hook->checkRequirements())
+	if (unlikely(!hook->checkRequirements()))
 	{
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: function (%s) is not available, %s required.", __FUNCTION__, hook->func_name, hook->depend_name);
 		return 0;
@@ -33,14 +33,14 @@ cell AMX_NATIVE_CALL RegisterHookChain(AMX *amx, cell *params)
 
 	int funcid;
 	const char *funcname = getAmxString(amx, params[arg_handler]);
-	if (g_amxxapi.amx_FindPublic(amx, funcname, &funcid) != AMX_ERR_NONE)
+	if (unlikely(g_amxxapi.amx_FindPublic(amx, funcname, &funcid) != AMX_ERR_NONE))
 	{
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: public function \"%s\" not found.", __FUNCTION__, funcname);
 		return 0;
 	}
 
 	int fwid = hook->registerForward(amx, funcname);
-	if (fwid == -1)
+	if (unlikely(fwid == -1))
 	{
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: register forward failed.", __FUNCTION__);
 		return 0;
@@ -64,7 +64,7 @@ cell AMX_NATIVE_CALL EnableHookChain(AMX *amx, cell *params)
 
 	auto hook = g_hookManager.getAmxxHook(params[arg_handle_hook]);
 
-	if (hook == nullptr)
+	if (unlikely(hook == nullptr))
 	{
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid HookChain handle.", __FUNCTION__);
 		return FALSE;
@@ -88,7 +88,7 @@ cell AMX_NATIVE_CALL DisableHookChain(AMX *amx, cell *params)
 
 	auto hook = g_hookManager.getAmxxHook(params[arg_handle_hook]);
 
-	if (hook == nullptr)
+	if (unlikely(hook == nullptr))
 	{
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid HookChain handle.", __FUNCTION__);
 		return FALSE;
@@ -109,7 +109,7 @@ cell AMX_NATIVE_CALL DisableHookChain(AMX *amx, cell *params)
 */
 cell AMX_NATIVE_CALL SetHookChainReturn(AMX *amx, cell *params)
 {
-	if (!g_hookCtx)
+	if (unlikely(!g_hookCtx))
 	{
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: trying to set return value without active hook.", __FUNCTION__);
 		return FALSE;
@@ -118,7 +118,7 @@ cell AMX_NATIVE_CALL SetHookChainReturn(AMX *amx, cell *params)
 	enum args_e { arg_count, arg_type, arg_value };
 	auto& retVal = g_hookCtx->retVal;
 
-	if (params[arg_type] != retVal.type)
+	if (unlikely(params[arg_type] != retVal.type))
 	{
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: trying to set return value with incompatible type.", __FUNCTION__);
 		return FALSE;
@@ -171,7 +171,7 @@ cell AMX_NATIVE_CALL SetHookChainReturn(AMX *amx, cell *params)
 */
 cell AMX_NATIVE_CALL GetHookChainReturn(AMX *amx, cell *params)
 {
-	if (!g_hookCtx)
+	if (unlikely(!g_hookCtx))
 	{
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: trying to get return value without active hook.", __FUNCTION__);
 		return FALSE;
@@ -180,7 +180,7 @@ cell AMX_NATIVE_CALL GetHookChainReturn(AMX *amx, cell *params)
 	enum args_e { arg_count, arg_value, arg_maxlen };
 	auto& retVal = g_hookCtx->retVal;
 
-	if (!retVal.set)
+	if (unlikely(!retVal.set))
 	{
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: return value isn't set.", __FUNCTION__);
 		return FALSE;
@@ -227,7 +227,7 @@ cell AMX_NATIVE_CALL GetHookChainReturn(AMX *amx, cell *params)
 */
 cell AMX_NATIVE_CALL SetHookChainArg(AMX *amx, cell *params)
 {
-	if (!g_hookCtx)
+	if (unlikely(!g_hookCtx))
 	{
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: trying to get return value without active hook.", __FUNCTION__);
 		return FALSE;
@@ -236,7 +236,7 @@ cell AMX_NATIVE_CALL SetHookChainArg(AMX *amx, cell *params)
 	enum args_e { arg_count, arg_number, arg_type, arg_value };
 	size_t number = params[arg_number] - 1;
 
-	if (number >= g_hookCtx->args_count)
+	if (unlikely(number >= g_hookCtx->args_count))
 	{
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: can't set argument %i of hookchain with %i args.", __FUNCTION__, params[arg_number], g_hookCtx->args_count);
 		return FALSE;
@@ -244,7 +244,7 @@ cell AMX_NATIVE_CALL SetHookChainArg(AMX *amx, cell *params)
 
 	AType type = g_hookCtx->args_type[number];
 
-	if (params[arg_type] != type)
+	if (unlikely(params[arg_type] != type))
 	{
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid argument type provided.", __FUNCTION__);
 		return FALSE;

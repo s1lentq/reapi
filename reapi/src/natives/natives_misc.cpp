@@ -17,10 +17,7 @@ cell AMX_NATIVE_CALL rg_set_animation(AMX *amx, cell *params)
 	CHECK_ISPLAYER(arg_index);
 
 	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
-	if (pPlayer == nullptr || pPlayer->has_disconnected) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
-		return FALSE;
-	}
+	CHECK_CONNECTED(pPlayer, arg_index);
 
 	pPlayer->CSPlayer()->SetAnimation(CAmxArg(amx, params[arg_anim]));
 	return TRUE;
@@ -46,10 +43,7 @@ cell AMX_NATIVE_CALL rg_add_account(AMX *amx, cell *params)
 	CHECK_ISPLAYER(arg_index);
 
 	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
-	if (pPlayer == nullptr || pPlayer->has_disconnected) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
-		return FALSE;
-	}
+	CHECK_CONNECTED(pPlayer, arg_index);
 
 	if (static_cast<AccountSet>(params[arg_typeSet]) == AS_SET) {
 		pPlayer->m_iAccount = 0;
@@ -79,10 +73,7 @@ cell AMX_NATIVE_CALL rg_give_item(AMX *amx, cell *params)
 	CHECK_ISPLAYER(arg_index);
 
 	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
-	if (pPlayer == nullptr || pPlayer->has_disconnected) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
-		return FALSE;
-	}
+	CHECK_CONNECTED(pPlayer, arg_index);
 
 	GiveType type = static_cast<GiveType>(params[arg_type]);
 	const char *itemName = getAmxString(amx, params[arg_item]);
@@ -138,10 +129,7 @@ cell AMX_NATIVE_CALL rg_give_default_items(AMX *amx, cell *params)
 	CHECK_ISPLAYER(arg_index);
 
 	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
-	if (pPlayer == nullptr || pPlayer->has_disconnected) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
-		return FALSE;
-	}
+	CHECK_CONNECTED(pPlayer, arg_index);
 
 	pPlayer->CSPlayer()->GiveDefaultItems();
 	return TRUE;
@@ -164,10 +152,7 @@ cell AMX_NATIVE_CALL rg_give_shield(AMX *amx, cell *params)
 	CHECK_ISPLAYER(arg_index);
 
 	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
-	if (pPlayer == nullptr || pPlayer->has_disconnected) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
-		return FALSE;
-	}
+	CHECK_CONNECTED(pPlayer, arg_index);
 
 	pPlayer->CSPlayer()->GiveShield(params[arg_deploy] != 0);
 	return TRUE;
@@ -582,10 +567,7 @@ cell AMX_NATIVE_CALL rg_find_weapon_bpack_by_name(AMX *amx, cell *params)
 	CHECK_ISPLAYER(arg_index);
 
 	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
-	if (pPlayer == nullptr || pPlayer->has_disconnected) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
-		return FALSE;
-	}
+	CHECK_CONNECTED(pPlayer, arg_index);
 
 	const char *pszWeaponName = getAmxString(amx, params[arg_weapon]);
 	auto pInfo = g_ReGameApi->GetWeaponSlot(pszWeaponName);
@@ -633,10 +615,7 @@ cell AMX_NATIVE_CALL rg_has_item_by_name(AMX *amx, cell *params)
 	CHECK_ISPLAYER(arg_index);
 
 	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
-	if (pPlayer == nullptr || pPlayer->has_disconnected) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
-		return FALSE;
-	}
+	CHECK_CONNECTED(pPlayer, arg_index);
 
 	const char *pszItemName = getAmxString(amx, params[arg_item]);
 	// item_* and weapon_shield
@@ -823,10 +802,7 @@ cell AMX_NATIVE_CALL rg_remove_all_items(AMX *amx, cell *params)
 	CHECK_ISPLAYER(arg_index);
 
 	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
-	if (pPlayer == nullptr || pPlayer->has_disconnected) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
-		return FALSE;
-	}
+	CHECK_CONNECTED(pPlayer, arg_index);
 
 	pPlayer->CSPlayer()->RemoveAllItems(params[arg_suit] != 0);
 	return TRUE;
@@ -849,10 +825,7 @@ cell AMX_NATIVE_CALL rg_remove_item(AMX *amx, cell *params)
 	CHECK_ISPLAYER(arg_index);
 
 	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
-	if (pPlayer == nullptr || pPlayer->has_disconnected) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
-		return FALSE;
-	}
+	CHECK_CONNECTED(pPlayer, arg_index);
 
 	const char* szItemName = getAmxString(amx, params[arg_item_name]);
 	if (pPlayer->CSPlayer()->RemovePlayerItem(szItemName)) {
@@ -879,10 +852,7 @@ cell AMX_NATIVE_CALL rg_get_user_bpammo(AMX *amx, cell *params)
 	CHECK_ISPLAYER(arg_index);
 
 	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
-	if (pPlayer == nullptr || pPlayer->has_disconnected) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
-		return FALSE;
-	}
+	CHECK_CONNECTED(pPlayer, arg_index);
 
 	WeaponIdType weaponId = static_cast<WeaponIdType>(params[arg_weapon]);
 	if (weaponId < WEAPON_P228 || weaponId > WEAPON_P90 || weaponId == WEAPON_KNIFE)
@@ -924,10 +894,7 @@ cell AMX_NATIVE_CALL rg_set_user_bpammo(AMX *amx, cell *params)
 	CHECK_ISPLAYER(arg_index);
 
 	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
-	if (pPlayer == nullptr || pPlayer->has_disconnected) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
-		return FALSE;
-	}
+	CHECK_CONNECTED(pPlayer, arg_index);
 
 	WeaponIdType weaponId = static_cast<WeaponIdType>(params[arg_weapon]);
 	if (weaponId < WEAPON_P228 || weaponId > WEAPON_P90 || weaponId == WEAPON_KNIFE)
@@ -973,18 +940,14 @@ cell AMX_NATIVE_CALL rg_give_defusekit(AMX *amx, cell *params)
 	CHECK_ISPLAYER(arg_index);
 
 	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
-	if (pPlayer == nullptr || pPlayer->has_disconnected) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
-		return FALSE;
-	}
+	CHECK_CONNECTED(pPlayer, arg_index);
 
 	// on the map there is not bomb places
 	if (CSGameRules() != nullptr && !CSGameRules()->m_bMapHasBombTarget && !CSGameRules()->m_bMapHasBombZone) {
 		return FALSE;
 	}
 
-	pPlayer->m_bHasDefuser =
-		pPlayer->pev->body = params[arg_def] != 0;
+	pPlayer->m_bHasDefuser = pPlayer->pev->body = params[arg_def] != 0;
 
 	if (params[arg_def] != 0)
 	{
@@ -1027,10 +990,7 @@ cell AMX_NATIVE_CALL rg_get_user_armor(AMX *amx, cell *params)
 	CHECK_ISPLAYER(arg_index);
 
 	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
-	if (pPlayer == nullptr || pPlayer->has_disconnected) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
-		return FALSE;
-	}
+	CHECK_CONNECTED(pPlayer, arg_index);
 
 	*getAmxAddr(amx, params[arg_armortype]) = pPlayer->m_iKevlar;
 	return static_cast<cell>(pPlayer->pev->armorvalue);
@@ -1054,10 +1014,7 @@ cell AMX_NATIVE_CALL rg_set_user_armor(AMX *amx, cell *params)
 	CHECK_ISPLAYER(arg_index);
 
 	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
-	if (pPlayer == nullptr || pPlayer->has_disconnected) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
-		return FALSE;
-	}
+	CHECK_CONNECTED(pPlayer, arg_index);
 
 	ArmorType armorType = static_cast<ArmorType>(params[arg_armortype]);
 
@@ -1096,10 +1053,7 @@ cell AMX_NATIVE_CALL rg_set_user_team(AMX *amx, cell *params)
 	CHECK_ISPLAYER(arg_index);
 
 	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
-	if (pPlayer == nullptr || pPlayer->has_disconnected) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
-		return FALSE;
-	}
+	CHECK_CONNECTED(pPlayer, arg_index);
 
 	CAmxArgs args(amx, params);
 
@@ -1187,10 +1141,7 @@ cell AMX_NATIVE_CALL rg_set_user_model(AMX *amx, cell *params)
 	CHECK_ISPLAYER(arg_index);
 
 	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
-	if (pPlayer == nullptr || pPlayer->has_disconnected) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
-		return FALSE;
-	}
+	CHECK_CONNECTED(pPlayer, arg_index);
 
 	const char* newModel = getAmxString(amx, params[arg_model]);
 	if (*newModel == '\0') {
@@ -1227,10 +1178,7 @@ cell AMX_NATIVE_CALL rg_reset_user_model(AMX *amx, cell *params)
 	CHECK_ISPLAYER(arg_index);
 
 	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
-	if (pPlayer == nullptr || pPlayer->has_disconnected) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
-		return FALSE;
-	}
+	CHECK_CONNECTED(pPlayer, arg_index);
 
 	pPlayer->CSPlayer()->SetPlayerModelEx("");
 	pPlayer->CSPlayer()->SetPlayerModel(pPlayer->m_bHasC4);
@@ -1255,10 +1203,7 @@ cell AMX_NATIVE_CALL rg_transfer_c4(AMX *amx, cell *params)
 	CHECK_ISPLAYER(arg_index);
 
 	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
-	if (pPlayer == nullptr || pPlayer->has_disconnected) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
-		return FALSE;
-	}
+	CHECK_CONNECTED(pPlayer, arg_index);
 
 	if (!pPlayer->m_bHasC4 || !pPlayer->CSPlayer()->RemovePlayerItem("weapon_c4"))
 		return FALSE;
@@ -1270,10 +1215,7 @@ cell AMX_NATIVE_CALL rg_transfer_c4(AMX *amx, cell *params)
 
 	if (params[arg_receiver] != 0 && params[arg_receiver] <= gpGlobals->maxClients) {
 		CBasePlayer *pReceiver = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_receiver]);
-		if (pReceiver == nullptr || pReceiver->has_disconnected) {
-			MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_receiver]);
-			return FALSE;
-		}
+		CHECK_CONNECTED(pReceiver, arg_receiver);
 
 		pReceiver->m_bHasC4 = true;
 		pReceiver->CSPlayer()->GiveNamedItemEx("weapon_c4");
@@ -1306,10 +1248,7 @@ cell AMX_NATIVE_CALL rg_instant_reload_weapons(AMX *amx, cell *params)
 	CHECK_ISPLAYER(arg_index);
 
 	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
-	if (pPlayer == nullptr || pPlayer->has_disconnected) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
-		return FALSE;
-	}
+	CHECK_CONNECTED(pPlayer, arg_index);
 
 	CBasePlayerWeapon *pWeapon = nullptr;
 	if (params[arg_weapon] != 0)
@@ -1394,10 +1333,7 @@ cell AMX_NATIVE_CALL rg_join_team(AMX *amx, cell *params)
 	CHECK_ISPLAYER(arg_index);
 
 	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
-	if (pPlayer == nullptr || pPlayer->has_disconnected) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
-		return FALSE;
-	}
+	CHECK_CONNECTED(pPlayer, arg_index);
 
 	return (cell)pPlayer->CSPlayer()->JoinTeam(static_cast<TeamName>(params[arg_team]));
 }
@@ -1449,10 +1385,7 @@ cell AMX_NATIVE_CALL rg_switch_team(AMX *amx, cell *params)
 	CHECK_ISPLAYER(arg_index);
 
 	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
-	if (pPlayer == nullptr || pPlayer->has_disconnected) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
-		return FALSE;
-	}
+	CHECK_CONNECTED(pPlayer, arg_index);
 
 	pPlayer->CSPlayer()->SwitchTeam();
 	return TRUE;
@@ -1475,10 +1408,7 @@ cell AMX_NATIVE_CALL rg_switch_weapon(AMX *amx, cell *params)
 	CHECK_ISPLAYER(arg_index);
 
 	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
-	if (pPlayer == nullptr || pPlayer->has_disconnected) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
-		return FALSE;
-	}
+	CHECK_CONNECTED(pPlayer, arg_index);
 
 	auto pWeapon = getPrivate<CBasePlayerWeapon>(params[arg_weapon]);
 	if (pWeapon == nullptr || !pWeapon->IsWeapon()) {
@@ -1521,10 +1451,7 @@ cell AMX_NATIVE_CALL rg_is_player_can_takedamage(AMX *amx, cell *params)
 	CHECK_ISPLAYER(arg_index);
 
 	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
-	if (pPlayer == nullptr || pPlayer->has_disconnected) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
-		return FALSE;
-	}
+	CHECK_CONNECTED(pPlayer, arg_index);
 
 	CBaseEntity *pAttacker = getPrivate<CBaseEntity>(params[arg_attacker]);
 	if (!pAttacker) {
@@ -1579,10 +1506,7 @@ cell AMX_NATIVE_CALL rg_round_respawn(AMX *amx, cell *params)
 	enum args_e { arg_count, arg_index };
 
 	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
-	if (pPlayer == nullptr || pPlayer->has_disconnected) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
-		return FALSE;
-	}
+	CHECK_CONNECTED(pPlayer, arg_index);
 
 	pPlayer->RoundRespawn();
 	return TRUE;
@@ -1605,10 +1529,7 @@ cell AMX_NATIVE_CALL rg_send_bartime(AMX *amx, cell *params)
 	enum args_e { arg_count, arg_index, arg_time, arg_observer };
 
 	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
-	if (pPlayer == nullptr || pPlayer->has_disconnected) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
-		return FALSE;
-	}
+	CHECK_CONNECTED(pPlayer, arg_index);
 
 	CAmxArgs args(amx, params);
 	if (!args[arg_observer]) {
@@ -1639,10 +1560,7 @@ cell AMX_NATIVE_CALL rg_send_bartime2(AMX *amx, cell *params)
 	enum args_e { arg_count, arg_index, arg_time, arg_start_percent, arg_observer };
 
 	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
-	if (pPlayer == nullptr || pPlayer->has_disconnected) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
-		return FALSE;
-	}
+	CHECK_CONNECTED(pPlayer, arg_index);
 
 	CAmxArgs args(amx, params);
 	if (!args[arg_observer]) {
@@ -1846,10 +1764,7 @@ cell AMX_NATIVE_CALL rh_emit_sound2(AMX *amx, cell *params)
 	enum args_e { arg_count, arg_entity, arg_recipient, arg_channel, arg_sample, arg_vol, arg_attn, arg_flags, arg_pitch, arg_emitFlags, arg_origin };
 
 	CBaseEntity *pRecipient = getPrivate<CBaseEntity>(params[arg_recipient]);
-	if (pRecipient && pRecipient->has_disconnected) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_recipient]);
-		return FALSE;
-	}
+	CHECK_CONNECTED(pRecipient, arg_recipient);
 
 	// ignore recipient of non-player
 	if (params[arg_recipient] != 0 && pRecipient && !pRecipient->IsNetClient()) {
@@ -1880,10 +1795,7 @@ cell AMX_NATIVE_CALL rh_update_user_info(AMX *amx, cell *params)
 	enum args_e { arg_count, arg_playerEntIndex };
 
 	CBasePlayer *pPlayer = getPrivate<CBasePlayer>(params[arg_playerEntIndex]);
-	if (pPlayer != nullptr && pPlayer->has_disconnected) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_playerEntIndex]);
-		return FALSE;
-	}
+	CHECK_CONNECTED(pPlayer, arg_playerEntIndex);
 
 	CAmxArgs args(amx, params);
 	g_RehldsFuncs->SV_UpdateUserInfo(args[arg_playerEntIndex]);

@@ -122,7 +122,7 @@ struct hookctx_t
 	char* get_temp_string(AMX* amx)
 	{
 		auto ptr = s_temp_strings.push(amx);
-		if (ptr) {
+		if (likely(ptr)) {
 			tempstrings_used++;
 			return ptr;
 		}
@@ -154,15 +154,15 @@ NOINLINE void DLLEXPORT _callVoidForward(const hook_t* hook, original_t original
 
 	for (auto fwd : hook->pre)
 	{
-		if (fwd->GetState() == FSTATE_ENABLED)
+		if (likely(fwd->GetState() == FSTATE_ENABLED))
 		{
 			auto ret = g_amxxapi.ExecuteForward(fwd->GetIndex(), args...);
 
-			if (ret == HC_BREAK) {
+			if (unlikely(ret == HC_BREAK)) {
 				return;
 			}
 
-			if (ret > hc_state)
+			if (unlikely(ret > hc_state))
 				hc_state = ret;
 		}
 	}
@@ -174,10 +174,10 @@ NOINLINE void DLLEXPORT _callVoidForward(const hook_t* hook, original_t original
 	}
 
 	for (auto fwd : hook->post) {
-		if (fwd->GetState() == FSTATE_ENABLED) {
+		if (likely(fwd->GetState() == FSTATE_ENABLED)) {
 			auto ret = g_amxxapi.ExecuteForward(fwd->GetIndex(), args...);
 
-			if (ret == HC_BREAK)
+			if (unlikely(ret == HC_BREAK))
 				break;
 		}
 	}
@@ -207,45 +207,45 @@ NOINLINE R DLLEXPORT _callForward(const hook_t* hook, original_t original, volat
 
 	for (auto fwd : hook->pre)
 	{
-		if (fwd->GetState() == FSTATE_ENABLED)
+		if (likely(fwd->GetState() == FSTATE_ENABLED))
 		{
 			auto ret = g_amxxapi.ExecuteForward(fwd->GetIndex(), args...);
 
-			if (ret == HC_CONTINUE) {
+			if (likely(ret == HC_CONTINUE)) {
 				continue;
 			}
 
-			if (!hookCtx->retVal.set) {
+			if (unlikely(!hookCtx->retVal.set)) {
 				g_amxxapi.LogError(fwd->GetAmx(), AMX_ERR_CALLBACK, "can't suppress original function call without new return value set");
 				continue;
 			}
 
-			if (ret == HC_BREAK) {
+			if (unlikely(ret == HC_BREAK)) {
 				return *(R *)&hookCtx->retVal._integer;
 			}
 
-			if (ret > hc_state)
+			if (unlikely(ret > hc_state))
 				hc_state = ret;
 		}
 	}
 
-	if (hc_state != HC_SUPERCEDE)
+	if (likely(hc_state != HC_SUPERCEDE))
 	{
 		g_hookCtx = nullptr;
 		auto retVal = original(args...);
 		g_hookCtx = hookCtx;
 
-		if (hc_state != HC_OVERRIDE)
+		if (likely(hc_state != HC_OVERRIDE))
 			hookCtx->retVal._integer = *(int *)&retVal;
 
 		hookCtx->retVal.set = true;
 	}
 
 	for (auto fwd : hook->post) {
-		if (fwd->GetState() == FSTATE_ENABLED) {
+		if (likely(fwd->GetState() == FSTATE_ENABLED)) {
 			auto ret = g_amxxapi.ExecuteForward(fwd->GetIndex(), args...);
 
-			if (ret == HC_BREAK)
+			if (unlikely(ret == HC_BREAK))
 				break;
 		}
 	}
