@@ -250,8 +250,6 @@ cell AMX_NATIVE_CALL SetHookChainArg(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	static char temp_strings[MAX_HOOKCHAIN_ARGS][1024];
-
 	cell* srcAddr = getAmxAddr(amx, params[arg_value]);
 	size_t destAddr = g_hookCtx->args_ptr + number * sizeof(int);
 
@@ -262,7 +260,7 @@ cell AMX_NATIVE_CALL SetHookChainArg(AMX *amx, cell *params)
 		*(cell *)destAddr = *srcAddr;
 		break;
 	case ATYPE_STRING:
-		*(char **)destAddr = getAmxStringTemp(srcAddr, temp_strings[number], sizeof temp_strings[0] - 1);
+		*(char **)destAddr = getAmxStringTemp(srcAddr, g_hookCtx->get_temp_string(amx), CTempStrings::STRING_LEN);
 		break;
 	case ATYPE_CLASSPTR:
 		*(CBaseEntity **)destAddr = getPrivate<CBaseEntity>(*srcAddr);

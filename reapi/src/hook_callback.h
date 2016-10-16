@@ -40,13 +40,22 @@ inline AType getApiType(int)			{ return ATYPE_INTEGER; }
 inline AType getApiType(unsigned)		{ return ATYPE_INTEGER; }
 inline AType getApiType(float)			{ return ATYPE_FLOAT; }
 inline AType getApiType(const char *)		{ return ATYPE_STRING; }
-inline AType getApiType(char[])				{ return ATYPE_STRING; }
+inline AType getApiType(char[])			{ return ATYPE_STRING; }
 inline AType getApiType(CBaseEntity *)		{ return ATYPE_CLASSPTR; }
 inline AType getApiType(edict_t *)		{ return ATYPE_EDICT; }
 inline AType getApiType(entvars_t *)		{ return ATYPE_EVARS; }
 
 template<typename T>
 inline AType getApiType(T *) { return ATYPE_INTEGER; }
+
+inline bool hasStringArgs() { return false; }
+
+template <typename T, typename ...f_args>
+bool hasStringArgs(T, f_args... args)
+{
+	if (getApiType(T()) == ATYPE_STRING) return true;
+	return hasStringArgs(args...);
+}
 
 #define MAX_HOOKCHAIN_ARGS 12u
 
@@ -95,6 +104,11 @@ struct hookctx_t
 	hookctx_t(size_t arg_count, t_args... args)
 	{
 		args_count = min(arg_count, MAX_HOOKCHAIN_ARGS);
+		
+		if (hasStringArgs(args...)) {
+			tempstrings_used = 0;
+		}
+
 		setupArgTypes(args_type, args...);
 	}
 
@@ -105,10 +119,28 @@ struct hookctx_t
 		args_ptr = arg_ptr;
 	}
 
+	char* get_temp_string(AMX* amx)
+	{
+		auto ptr = s_temp_strings.push(amx);
+		if (ptr) {
+			tempstrings_used++;
+			return ptr;
+		}
+		return "<reapi error>";
+	}
+
+	void clear_temp_strings() const
+	{
+		s_temp_strings.pop(tempstrings_used);
+	}
+
 	retval_t retVal;
 	size_t args_count;
 	size_t args_ptr;
+	size_t tempstrings_used;
 	AType args_type[MAX_HOOKCHAIN_ARGS];
+
+	static CTempStrings s_temp_strings;
 };
 
 extern hookctx_t* g_hookCtx;
@@ -160,6 +192,10 @@ void callVoidForward(size_t func, original_t original, f_args... args)
 	g_hookCtx = &hookCtx;
 	_callVoidForward(g_hookManager.getHookFast(func), original, args...);
 	g_hookCtx = save;
+
+	if (hasStringArgs(args...)) {
+		hookCtx.clear_temp_strings();
+	}
 }
 
 template <typename R, typename original_t, typename ...f_args>
@@ -220,12 +256,20 @@ NOINLINE R DLLEXPORT _callForward(const hook_t* hook, original_t original, volat
 template <typename R, typename original_t, typename ...f_args>
 R callForward(size_t func, original_t original, f_args... args)
 {
+	if (sizeof(R) > sizeof(int)) {
+		UTIL_SysError("%s: invalid return type size (%i)", __FUNCTION__, sizeof(R));
+	}
+
 	hookctx_t hookCtx(sizeof...(args), args...);
 	hookctx_t* save = g_hookCtx;
 
 	g_hookCtx = &hookCtx;
 	auto ret = _callForward<R>(g_hookManager.getHookFast(func), original, args...);
 	g_hookCtx = save;
+
+	if (hasStringArgs(args...)) {
+		hookCtx.clear_temp_strings();
+	}
 
 	return ret;
 }

@@ -42,3 +42,24 @@ ModelName GetModelAuto(TeamName team)
 
 	return MODEL_UNASSIGNED;
 }
+
+CTempStrings::CTempStrings()
+{
+	m_current = 0;
+}
+
+
+char* CTempStrings::push(AMX* amx)
+{
+	if (m_current == STRINGS_MAX) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "temp strings limit exceeded, contact reapi authors");
+		return nullptr;
+	}
+
+	return m_strings[m_current++];
+}
+
+void CTempStrings::pop(size_t count)
+{
+	m_current -= count;
+}

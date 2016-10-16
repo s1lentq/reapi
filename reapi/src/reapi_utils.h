@@ -134,3 +134,22 @@ ModelName GetModelAuto(TeamName team);
 void UTIL_ServerPrint(const char *fmt, ...);
 
 extern void __declspec(noreturn) UTIL_SysError(const char *fmt, ...);
+
+class CTempStrings
+{
+public:
+	CTempStrings();
+	char* push(AMX* amx);
+	void pop(size_t count);
+
+	enum
+	{
+		STRINGS_MAX = 16,
+		STRING_SIZE = 1024,
+		STRING_LEN = STRING_SIZE - 1
+	};
+
+private:
+	size_t m_current;
+	char m_strings[STRINGS_MAX][STRING_SIZE];
+};

@@ -1,6 +1,7 @@
 #include "precompiled.h"
 
 hookctx_t* g_hookCtx = nullptr;
+CTempStrings hookctx_t::s_temp_strings;
 
 /*
 * ReHLDS functions
