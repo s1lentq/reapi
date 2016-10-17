@@ -275,8 +275,7 @@ CBasePlayer *CBasePlayer_Observer_IsValidTarget(IReGameHook_CBasePlayer_Observer
 {
 	auto original = [chain](int _pthis, int _iPlayerIndex, bool _bSameTeam)
 	{
-		auto pPlayer = chain->callNext(getPrivate<CBasePlayer>(_pthis), _iPlayerIndex, _bSameTeam);
-		return pPlayer ? indexOfEdict(pPlayer->pev) : 0;
+		return indexOfPDataAmx(chain->callNext(getPrivate<CBasePlayer>(_pthis), _iPlayerIndex, _bSameTeam));
 	};
 
 	return getPrivate<CBasePlayer>(callForward<size_t>(RG_CBasePlayer_Observer_IsValidTarget, original, indexOfEdict(pthis->pev), iPlayerIndex, bSameTeam));
@@ -526,24 +525,24 @@ void CSGameRules_ClientUserInfoChanged(IReGameHook_CSGameRules_ClientUserInfoCha
 	callVoidForward(RG_CSGameRules_ClientUserInfoChanged, original, indexOfEdict(pPlayer->pev), infobuffer);
 }
 
-void CSGameRules_PlayerKilled(IReGameHook_CSGameRules_PlayerKilled *chain, CBasePlayer *pVictim, entvars_t *pKiller, entvars_t *pInflictor)
+void CSGameRules_PlayerKilled(IReGameHook_CSGameRules_PlayerKilled *chain, CBasePlayer *pVictim, entvars_t *pevKiller, entvars_t *pevInflictor)
 {
-	auto original = [chain](int _pVictim, int _pKiller, int _pInflictor)
+	auto original = [chain](int _pVictim, int _pevKiller, int _pevInflictor)
 	{
-		chain->callNext(getPrivate<CBasePlayer>(_pVictim), PEV(_pKiller), PEV(_pInflictor));
+		chain->callNext(getPrivate<CBasePlayer>(_pVictim), PEV(_pevKiller), PEV(_pevInflictor));
 	};
 
-	callVoidForward(RG_CSGameRules_PlayerKilled, original, indexOfEdict(pVictim->pev), indexOfEdict(pKiller), pInflictor ? indexOfEdict(pInflictor) : -1);
+	callVoidForward(RG_CSGameRules_PlayerKilled, original, indexOfEdict(pVictim->pev), indexOfEdict(pevKiller), indexOfEdictAmx(pevInflictor));
 }
 
-void CSGameRules_DeathNotice(IReGameHook_CSGameRules_DeathNotice *chain, CBasePlayer *pVictim, entvars_t *pKiller, entvars_t *pevInflictor)
+void CSGameRules_DeathNotice(IReGameHook_CSGameRules_DeathNotice *chain, CBasePlayer *pVictim, entvars_t *pevKiller, entvars_t *pevInflictor)
 {
-	auto original = [chain](int _pVictim, int _pKiller, int _pevInflictor)
+	auto original = [chain](int _pVictim, int _pevKiller, int _pevInflictor)
 	{
-		chain->callNext(getPrivate<CBasePlayer>(_pVictim), PEV(_pKiller), PEV(_pevInflictor));
+		chain->callNext(getPrivate<CBasePlayer>(_pVictim), PEV(_pevKiller), PEV(_pevInflictor));
 	};
 
-	callVoidForward(RG_CSGameRules_DeathNotice, original, indexOfEdict(pVictim->pev), indexOfEdict(pKiller), pevInflictor ? indexOfEdict(pevInflictor) : -1);
+	callVoidForward(RG_CSGameRules_DeathNotice, original, indexOfEdict(pVictim->pev), indexOfEdict(pevKiller), indexOfEdictAmx(pevInflictor));
 }
 
 int CSGameRules_CanHavePlayerItem(IReGameHook_CSGameRules_CanHavePlayerItem *chain, CBasePlayer *pPlayer, CBasePlayerItem *pItem)

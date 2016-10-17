@@ -31,6 +31,11 @@ extern hook_t hooklist_animating[];
 extern hook_t hooklist_player[];
 extern hook_t hooklist_gamerules[];
 
+enum
+{
+	INVALID_HOOKCHAIN = 0
+};
+
 struct hooklist_t
 {
 	hook_t *operator[](size_t hook) const

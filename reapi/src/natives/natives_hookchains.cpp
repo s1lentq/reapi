@@ -22,13 +22,13 @@ cell AMX_NATIVE_CALL RegisterHookChain(AMX *amx, cell *params)
 	if (unlikely(hook == nullptr))
 	{
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: function with id (%d) doesn't exist in current API version.", __FUNCTION__, func);
-		return 0;
+		return INVALID_HOOKCHAIN;
 	}
 
 	if (unlikely(!hook->checkRequirements()))
 	{
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: function (%s) is not available, %s required.", __FUNCTION__, hook->func_name, hook->depend_name);
-		return 0;
+		return INVALID_HOOKCHAIN;
 	}
 
 	int funcid;
@@ -36,14 +36,14 @@ cell AMX_NATIVE_CALL RegisterHookChain(AMX *amx, cell *params)
 	if (unlikely(g_amxxapi.amx_FindPublic(amx, funcname, &funcid) != AMX_ERR_NONE))
 	{
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: public function \"%s\" not found.", __FUNCTION__, funcname);
-		return 0;
+		return INVALID_HOOKCHAIN;
 	}
 
 	int fwid = hook->registerForward(amx, funcname);
 	if (unlikely(fwid == -1))
 	{
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: register forward failed.", __FUNCTION__);
-		return 0;
+		return INVALID_HOOKCHAIN;
 	}
 
 	return g_hookManager.addHandler(amx, func, fwid, post != 0);
