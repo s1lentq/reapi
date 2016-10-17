@@ -53,6 +53,7 @@ inline bool hasStringArgs() { return false; }
 template <typename T, typename ...f_args>
 bool hasStringArgs(T, f_args... args)
 {
+	if (sizeof(T) > sizeof(int)) UTIL_SysError("%s: invalid hookchain argument size (%i > %i)", __FUNCTION__, sizeof(T), sizeof(int));
 	if (getApiType(T()) == ATYPE_STRING) return true;
 	return hasStringArgs(args...);
 }
@@ -257,7 +258,7 @@ template <typename R, typename original_t, typename ...f_args>
 R callForward(size_t func, original_t original, f_args... args)
 {
 	if (sizeof(R) > sizeof(int)) {
-		UTIL_SysError("%s: invalid return type size (%i)", __FUNCTION__, sizeof(R));
+		UTIL_SysError("%s: invalid return type size (%i > %i)", __FUNCTION__, sizeof(R), sizeof(int));
 	}
 
 	hookctx_t hookCtx(sizeof...(args), args...);

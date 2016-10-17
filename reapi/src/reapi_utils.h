@@ -51,14 +51,20 @@ inline edict_t* edictByIndex(int index)
 }
 
 template<typename T>
-T* getPrivate(int index)
+inline T* getPrivate(int index)
 {
-	return (T *)GET_PRIVATE(edictByIndexAmx(index));
+	T* pdata = nullptr;
+	if (likely(index >= 0))
+		pdata = (T *)g_pEdicts[index].pvPrivateData;
+	return pdata;
 }
 
 inline entvars_t* PEV(int index)
 {
-	return VARS(edictByIndexAmx(index));
+	entvars_t* pvars = nullptr;
+	if (likely(index >= 0))
+		pvars = &g_pEdicts[index].v;
+	return pvars;
 }
 
 // HLTypeConversion.h -> AMXModX
