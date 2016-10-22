@@ -97,6 +97,27 @@ cell AMX_NATIVE_CALL REU_GetAuthtype(AMX *amx, cell *params)
 }
 
 /*
+* Check if client is a steam player
+*
+* @param index		Client index
+* @return		1/0
+*
+* native REU_IsUserSteam(const index);
+*/
+cell AMX_NATIVE_CALL REU_IsUserSteam(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index };
+
+	CHECK_ISPLAYER(arg_index);
+
+	int clientId = params[arg_index] - 1;
+	if (g_ReunionApi->GetClientAuthtype(clientId) == DP_AUTH_STEAM)
+		return TRUE;
+	
+	return FALSE;
+}
+
+/*
 * Check if client running RevEmu with limited user rights
 *
 * @param index		Client index
@@ -129,6 +150,7 @@ AMX_NATIVE_INFO Reunion_Natives[] =
 {
 	{ "REU_GetProtocol", REU_GetProtocol },
 	{ "REU_GetAuthtype", REU_GetAuthtype },
+	{ "REU_IsUserSteam", REU_IsUserSteam },
 	{ "REU_IsRevemuWithoutAdminRights", REU_IsRevemuWithoutAdminRights },
 
 	{ nullptr, nullptr }
