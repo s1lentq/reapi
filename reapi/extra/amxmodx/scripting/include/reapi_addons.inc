@@ -77,6 +77,15 @@ native REU_GetProtocol(const index);
 native client_auth_type:REU_GetAuthtype(const index);
 
 /*
+* Check if client is a steam player
+*
+* @param index		Client index
+* @return		1/0
+*
+*/
+native bool:REU_IsUserSteam(const index);
+
+/*
 * Check if client running RevEmu with limited user rights
 *
 * @param index		Client index
