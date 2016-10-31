@@ -1528,7 +1528,7 @@ cell AMX_NATIVE_CALL rg_reset_maxspeed(AMX *amx, cell *params)
 	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
 	CHECK_CONNECTED(pPlayer, arg_index);
 
-	pPlayer->ResetMaxSPeed();
+	pPlayer->ResetMaxSpeed();
 	return TRUE;
 }
 
