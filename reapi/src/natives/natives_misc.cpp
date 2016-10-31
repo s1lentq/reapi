@@ -1513,6 +1513,26 @@ cell AMX_NATIVE_CALL rg_round_respawn(AMX *amx, cell *params)
 }
 
 /*
+* Reset player maxspeed
+*
+* @param index		Client index
+*
+* @noreturn
+*
+* native rg_reset_maxspeed(const index);
+*/
+cell AMX_NATIVE_CALL rg_reset_maxspeed(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index };
+
+	CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(params[arg_index]);
+	CHECK_CONNECTED(pPlayer, arg_index);
+
+	pPlayer->ResetMaxSPeed();
+	return TRUE;
+}
+
+/*
 * Draws a HUD progress bar which is fills from 0% to 100% for the time duration seconds.
 * NOTE: Set Duration to 0 to hide the bar.
 *
@@ -1666,6 +1686,7 @@ AMX_NATIVE_INFO Misc_Natives_RG[] =
 	{ "rg_is_player_can_takedamage", rg_is_player_can_takedamage },
 	{ "rg_get_weaponbox_id", rg_get_weaponbox_id },
 	{ "rg_round_respawn", rg_round_respawn },
+	{ "rg_reset_maxspeed", rg_reset_maxspeed },
 
 	{ "rg_send_bartime", rg_send_bartime },
 	{ "rg_send_bartime2", rg_send_bartime2 },
