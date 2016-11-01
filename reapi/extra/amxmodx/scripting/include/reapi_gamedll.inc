@@ -596,6 +596,16 @@ native WeaponIdType:rg_get_weaponbox_id(const entity);
 native rg_round_respawn(const index);
 
 /*
+* Reset player maxspeed
+*
+* @param index		Client index
+*
+* @noreturn
+*
+*/
+native rg_reset_maxspeed(const index);
+
+/*
 * Draws a HUD progress bar which is fills from 0% to 100% for the time duration seconds.
 * NOTE: Set Duration to 0 to hide the bar.
 *
