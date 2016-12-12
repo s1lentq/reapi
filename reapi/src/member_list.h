@@ -74,13 +74,13 @@ enum CSGameRules_Members
 	m_nMaxPlayers,
 	m_UpdateInterval,
 
-	m_fTeamCount,				// m_flRestartRoundTime, the global time when the round is supposed to end, if this is not 0
+	m_flRestartRoundTime,			// The global time when the round is supposed to end, if this is not 0 (deprecated name m_fTeamCount)
 	m_flCheckWinConditions,
-	m_fRoundCount,
+	m_fRoundStartTime,			// Time round has started (deprecated name m_fRoundCount)
 	m_iRoundTime,				// (From mp_roundtime) - How many seconds long this round is.
 	m_iRoundTimeSecs,
 	m_iIntroRoundTime,			// (From mp_freezetime) - How many seconds long the intro round (when players are frozen) is.
-	m_fIntroRoundCount,			// The global time when the intro round ends and the real one starts
+	m_fRoundStartTimeReal,			// The global time when the intro round ends and the real one starts
 						// wrote the original "m_flRoundTime" comment for this variable).
 	m_iAccountTerrorist,
 	m_iAccountCT,
@@ -102,7 +102,7 @@ enum CSGameRules_Members
 	m_bMapHasBuyZone,
 	m_bMapHasRescueZone,
 	m_bMapHasEscapeZone,
-	m_iMapHasVIPSafetyZone,			// 0 = uninitialized,   1 = has VIP safety zone,   2 = DOES not have VIP safetyzone
+	m_bMapHasVIPSafetyZone,			// 0 = uninitialized,   1 = has VIP safety zone,   2 = DOES not have VIP safetyzone
 	m_bMapHasCameras,
 	m_iC4Timer,
 	m_iC4Guy,				// The current Terrorist who has the C4.
@@ -142,7 +142,7 @@ enum CSGameRules_Members
 	m_flIntermissionStartTime,
 	m_iEndIntermissionButtonHit,
 	m_tmNextPeriodicThink,
-	m_bFirstConnected,
+	m_bGameStarted,
 	m_bInCareerGame,
 	m_fCareerRoundMenuTime,
 	m_iCareerMatchWins,

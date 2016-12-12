@@ -7,7 +7,7 @@ CGameRules *g_pGameRules = nullptr;
 
 bool RegamedllApi_Init()
 {
-	const char *szGameDLLModule = GET_GAME_INFO(PLID, GINFO_REALDLL_FULLPATH);
+	const char *szGameDLLModule = GET_GAME_INFO(PLID, GINFO_DLL_FULLPATH);
 	if (!szGameDLLModule)
 		return false;
 

@@ -22,7 +22,7 @@ cell AMX_NATIVE_CALL set_member(AMX *amx, cell *params)
 
 	const auto table = memberlist_t::members_tables_e(params[arg_member] / MAX_REGION_RANGE);
 	if (table == memberlist_t::mt_csplayer) {
-		CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(indexOfEdict(pEdict));
+		CBasePlayer *pPlayer = UTIL_PlayerByIndex(indexOfEdict(pEdict));
 		if (unlikely(!pPlayer || !pPlayer->CSPlayer())) {
 			return FALSE;
 		}
@@ -90,7 +90,7 @@ cell AMX_NATIVE_CALL get_member(AMX *amx, cell *params)
 
 	const auto table = memberlist_t::members_tables_e(params[arg_member] / MAX_REGION_RANGE);
 	if (table == memberlist_t::mt_csplayer) {
-		CBasePlayer *pPlayer = g_ReGameFuncs->UTIL_PlayerByIndex(indexOfEdict(pEdict));
+		CBasePlayer *pPlayer = UTIL_PlayerByIndex(indexOfEdict(pEdict));
 		if (!pPlayer || !pPlayer->CSPlayer()) {
 			return FALSE;
 		}

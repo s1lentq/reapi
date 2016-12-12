@@ -626,7 +626,7 @@ enum CSGameRules_Members
 	* Get params:		Float:get_member_game(member);
 	* Set params:		set_member_game(member, Float:value);
 	*/
-	m_fTeamCount,
+	m_flRestartRoundTime,
 
 	/*
 	* Description:		-
@@ -637,12 +637,12 @@ enum CSGameRules_Members
 	m_flCheckWinConditions,
 
 	/*
-	* Description:		-
+	* Description:		Time round has started
 	* Member type:		float
 	* Get params:		Float:get_member_game(member);
 	* Set params:		set_member_game(member, Float:value);
 	*/
-	m_fRoundCount,
+	m_fRoundStartTime,
 
 	/*
 	* Description:		How many seconds long this round is.
@@ -669,12 +669,12 @@ enum CSGameRules_Members
 	m_iIntroRoundTime,
 
 	/*
-	* Description:		The global time when the intro round ends
+	* Description:		The global time when the intro round ends and the real one starts wrote the original "m_flRoundTime" comment for this variable).
 	* Member type:		float
 	* Get params:		Float:get_member_game(member);
 	* Set params:		set_member_game(member, Float:value);
 	*/
-	m_fIntroRoundCount,
+	m_fRoundStartTimeReal,
 
 	/*
 	* Description:		-
@@ -838,11 +838,11 @@ enum CSGameRules_Members
 
 	/*
 	* Description:		0 = uninitialized, 1 = has VIP safety zone, 2 = DOES not have VIP safetyzone
-	* Member type:		int
+	* Member type:		qboolean
 	* Get params:		get_member_game(member);
 	* Set params:		set_member_game(member, value);
 	*/
-	m_iMapHasVIPSafetyZone,
+	m_bMapHasVIPSafetyZone,
 
 	/*
 	* Description:		-
@@ -1158,12 +1158,12 @@ enum CSGameRules_Members
 	m_tmNextPeriodicThink,
 
 	/*
-	* Description:		-
+	* Description:		TRUE = the game commencing when there is at least one CT and T, FALSE = scoring will not start until both teams have players (deprecated name m_bFirstConnected)
 	* Member type:		bool
 	* Get params:		get_member_game(member);
 	* Set params:		set_member_game(member, value);
 	*/
-	m_bFirstConnected,
+	m_bGameStarted,
 
 	/*
 	* Description:		-

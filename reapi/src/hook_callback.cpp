@@ -301,14 +301,14 @@ void CBasePlayer_GiveDefaultItems(IReGameHook_CBasePlayer_GiveDefaultItems *chai
 	callVoidForward(RG_CBasePlayer_GiveDefaultItems, original, indexOfEdict(pthis->pev));
 }
 
-void CBasePlayer_GiveNamedItem(IReGameHook_CBasePlayer_GiveNamedItem *chain, CBasePlayer *pthis, const char *pszName)
+CBaseEntity *CBasePlayer_GiveNamedItem(IReGameHook_CBasePlayer_GiveNamedItem *chain, CBasePlayer *pthis, const char *pszName)
 {
 	auto original = [chain](int _pthis, const char *_pszName)
 	{
-		chain->callNext(getPrivate<CBasePlayer>(_pthis), _pszName);
+		return indexOfPDataAmx(chain->callNext(getPrivate<CBasePlayer>(_pthis), _pszName));
 	};
 
-	callVoidForward(RG_CBasePlayer_GiveNamedItem, original, indexOfEdict(pthis->pev), pszName);
+	return getPrivate<CBaseEntity>(callForward<size_t>(RG_CBasePlayer_GiveNamedItem, original, indexOfEdict(pthis->pev), pszName));
 }
 
 void CBasePlayer_AddAccount(IReGameHook_CBasePlayer_AddAccount *chain, CBasePlayer *pthis, int amount, RewardType type, bool bTrackChange)
@@ -341,14 +341,14 @@ void CBasePlayer_SetClientUserInfoModel(IReGameHook_CBasePlayer_SetClientUserInf
 	callVoidForward(RG_CBasePlayer_SetClientUserInfoModel, original, indexOfEdict(pthis->pev), infobuffer, szNewModel);
 }
 
-void CBasePlayer_SetClientUserInfoName(IReGameHook_CBasePlayer_SetClientUserInfoName *chain, CBasePlayer *pthis, char *infobuffer, char *szNewName)
+bool CBasePlayer_SetClientUserInfoName(IReGameHook_CBasePlayer_SetClientUserInfoName *chain, CBasePlayer *pthis, char *infobuffer, char *szNewName)
 {
 	auto original = [chain](int _pthis, char *_infobuffer, char *_szNewName)
 	{
-		chain->callNext(getPrivate<CBasePlayer>(_pthis), _infobuffer, _szNewName);
+		return chain->callNext(getPrivate<CBasePlayer>(_pthis), _infobuffer, _szNewName);
 	};
 
-	callVoidForward(RG_CBasePlayer_SetClientUserInfoName, original, indexOfEdict(pthis->pev), infobuffer, szNewName);
+	return callForward<bool>(RG_CBasePlayer_SetClientUserInfoName, original, indexOfEdict(pthis->pev), infobuffer, szNewName);
 }
 
 bool CBasePlayer_HasRestrictItem(IReGameHook_CBasePlayer_HasRestrictItem *chain, CBasePlayer *pthis, ItemID item, ItemRestType type)

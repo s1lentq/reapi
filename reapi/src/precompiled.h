@@ -17,6 +17,9 @@
 #include <extdll.h>
 #include <eiface.h>
 
+// rewrite on own custom preprocessor definitions INDEXENT and ENTINDEX from cbase.h
+#include "type_conversion.h"
+
 #include <cbase.h>
 #include <pm_defs.h>
 #include <pm_movevars.h>

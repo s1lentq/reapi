@@ -215,6 +215,7 @@
     <ClInclude Include="..\src\natives\natives_addons.h" />
     <ClInclude Include="..\src\precompiled.h" />
     <ClInclude Include="..\src\reapi_utils.h" />
+    <ClInclude Include="..\src\type_conversion.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\include\cssdk\common\parsemsg.cpp">
