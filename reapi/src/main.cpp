@@ -59,8 +59,18 @@ void ServerDeactivate_Post()
 	api_cfg.ServerDeactivate();
 	g_hookManager.clearHandlers();
 	g_pFunctionTable->pfnSpawn = DispatchSpawn;
+	g_pFunctionTable->pfnKeyValue = KeyValue;
 
 	SET_META_RESULT(MRES_IGNORED);
+}
+
+void KeyValue(edict_t *pentKeyvalue, KeyValueData *pkvd)
+{
+	// get the first edict worldspawn
+	if (FClassnameIs(pentKeyvalue, "worldspawn")) {
+		g_pEdicts = pentKeyvalue;
+		g_pFunctionTable->pfnKeyValue = nullptr;
+	}
 }
 
 CGameRules *InstallGameRules(IReGameHook_InstallGameRules *chain)

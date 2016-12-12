@@ -17,5 +17,6 @@ void ServerActivate_Post(edict_t *pEdictList, int edictCount, int clientMax);
 void ServerDeactivate_Post();
 int DispatchSpawn(edict_t* pEntity);
 void ResetGlobalState();
+void KeyValue(edict_t *pentKeyvalue, KeyValueData *pkvd);
 
 CGameRules *InstallGameRules(IReGameHook_InstallGameRules *chain);

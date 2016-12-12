@@ -9,7 +9,7 @@ DLL_FUNCTIONS gFunctionTable =
 	NULL,					// pfnUse
 	NULL,					// pfnTouch
 	NULL,					// pfnBlocked
-	NULL,					// pfnKeyValue
+	&KeyValue,					// pfnKeyValue
 	NULL,					// pfnSave
 	NULL,					// pfnRestore
 	NULL,					// pfnSetAbsBox
