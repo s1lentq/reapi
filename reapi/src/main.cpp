@@ -71,6 +71,8 @@ void KeyValue(edict_t *pentKeyvalue, KeyValueData *pkvd)
 		g_pEdicts = pentKeyvalue;
 		g_pFunctionTable->pfnKeyValue = nullptr;
 	}
+
+	SET_META_RESULT(MRES_IGNORED);
 }
 
 CGameRules *InstallGameRules(IReGameHook_InstallGameRules *chain)
