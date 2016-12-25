@@ -356,5 +356,5 @@ void CSGameRules_BalanceTeams(IReGameHook_CSGameRules_BalanceTeams *chain);
 extern int g_iClientStartSpeak;
 extern int g_iClientStopSpeak;
 
-void ClientStartSpeak(size_t clientIndex);
-void ClientStopSpeak(size_t clientIndex);
+void OnClientStartSpeak(size_t clientIndex);
+void OnClientStopSpeak(size_t clientIndex);

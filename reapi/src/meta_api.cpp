@@ -19,7 +19,7 @@ plugin_info_t Plugin_info =
 	PT_NEVER,				// (when) unloadable
 };
 
-C_DLLEXPORT int Meta_Query(char *interfaceVersion, plugin_info_t* *plinfo, mutil_funcs_t *pMetaUtilFuncs)
+C_DLLEXPORT int Meta_Query(char *interfaceVersion, plugin_info_t **plinfo, mutil_funcs_t *pMetaUtilFuncs)
 {
 	*plinfo = &Plugin_info;
 	gpMetaUtilFuncs = pMetaUtilFuncs;

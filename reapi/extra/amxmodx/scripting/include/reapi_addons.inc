@@ -45,6 +45,29 @@ native VTC_MuteClient(const index);
 native VTC_UnmuteClient(const index);
 
 /*
+* Checks whether the player is muted at this moment
+*
+* @param index          Client index
+* @return               true if client is muted, false otherwise
+*
+*/
+native bool:VTC_IsClientMuted(const index);
+
+/*
+* To play the audio file via the voice stream.
+*
+* @param receiver       Receiver index
+* @param soundFilePath  The path to the sound file.
+*
+* @note Usage example:
+*       VTC_PlaySound(id, "sound/ambience/Opera.wav");
+*
+* @noreturn
+*
+*/
+native VTC_PlaySound(const receiver, const soundFilePath[]);
+
+/*
 * Called when player started talking
 *
 * @param index		Client index

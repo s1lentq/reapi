@@ -36,8 +36,8 @@ void OnMetaDetach()
 	g_hookManager.clearHandlers();
 
 	if (api_cfg.hasVTC()) {
-		g_pVoiceTranscoderApi->ClientStartSpeak()->unregisterCallback(&ClientStartSpeak);
-		g_pVoiceTranscoderApi->ClientStopSpeak()->unregisterCallback(&ClientStopSpeak);
+		g_pVoiceTranscoderApi->OnClientStartSpeak() -= OnClientStartSpeak;
+		g_pVoiceTranscoderApi->OnClientStopSpeak() -= OnClientStopSpeak;
 	}
 
 	if (api_cfg.hasReGameDLL()) {
@@ -56,8 +56,10 @@ void ServerActivate_Post(edict_t *pEdictList, int edictCount, int clientMax)
 
 void ServerDeactivate_Post()
 {
+	g_pEdicts = nullptr;
 	api_cfg.ServerDeactivate();
 	g_hookManager.clearHandlers();
+
 	g_pFunctionTable->pfnSpawn = DispatchSpawn;
 	g_pFunctionTable->pfnKeyValue = KeyValue;
 

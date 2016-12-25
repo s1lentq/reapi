@@ -25,8 +25,8 @@ bool VTC_Api_Init()
 		return false;
 	}
 
-	g_pVoiceTranscoderApi->ClientStartSpeak()->registerCallback(&ClientStartSpeak);
-	g_pVoiceTranscoderApi->ClientStopSpeak()->registerCallback(&ClientStopSpeak);
+	g_pVoiceTranscoderApi->OnClientStartSpeak() += OnClientStartSpeak;
+	g_pVoiceTranscoderApi->OnClientStopSpeak() += OnClientStopSpeak;
 
 	return true;
 }

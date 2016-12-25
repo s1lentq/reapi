@@ -1,21 +1,22 @@
 #pragma once
 
-#define VOICETRANSCODER_API_VERSION_MAJOR 1
-#define VOICETRANSCODER_API_VERSION_MINOR 0
+#include <cstddef>
 
-template <typename ...t_args>
-class IVoidCallbackRegistry {
+const char VOICETRANSCODER_VERSION[] = "2017 RC";
+
+const size_t VOICETRANSCODER_API_VERSION_MAJOR = 3;
+const size_t VOICETRANSCODER_API_VERSION_MINOR = 0;
+
+template <typename ...T_ARGS>
+class IEvent {
 public:
-	virtual ~IVoidCallbackRegistry() {}
+	virtual ~IEvent() {}
 
-	typedef void (*callback_t)(t_args...);
+	typedef void (*handler_t)(T_ARGS...);
 
-	virtual void registerCallback(callback_t func) = 0;
-	virtual void unregisterCallback(callback_t func) = 0;
+	virtual void operator+=(handler_t callback) = 0;
+	virtual void operator-=(handler_t callback) = 0;
 };
-
-typedef IVoidCallbackRegistry<size_t> ICallbackRegistry_ClientStartSpeak;
-typedef IVoidCallbackRegistry<size_t> ICallbackRegistry_ClientStopSpeak;
 
 class IVoiceTranscoderAPI {
 public:
@@ -26,9 +27,12 @@ public:
 
 	virtual bool IsClientSpeaking(size_t clientIndex) = 0;
 
-	virtual ICallbackRegistry_ClientStartSpeak *ClientStartSpeak() = 0;
-	virtual ICallbackRegistry_ClientStopSpeak *ClientStopSpeak() = 0;
+	virtual IEvent<size_t>& OnClientStartSpeak() = 0;
+	virtual IEvent<size_t>& OnClientStopSpeak() = 0;
 
 	virtual void MuteClient(size_t clientIndex) = 0;
 	virtual void UnmuteClient(size_t clientIndex) = 0;
+	virtual bool IsClientMuted(size_t clientIndex) = 0;
+
+	virtual void PlaySound(size_t receiverClientIndex, const char *soundFilePath) = 0;
 };

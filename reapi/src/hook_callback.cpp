@@ -707,12 +707,12 @@ void ShowVGUIMenu(IReGameHook_ShowVGUIMenu *chain, CBasePlayer *pPlayer, int Men
 
 int g_iClientStartSpeak, g_iClientStopSpeak;
 
-void ClientStartSpeak(size_t clientIndex)
+void OnClientStartSpeak(size_t clientIndex)
 {
 	g_amxxapi.ExecuteForward(g_iClientStartSpeak, clientIndex);
 }
 
-void ClientStopSpeak(size_t clientIndex)
+void OnClientStopSpeak(size_t clientIndex)
 {
 	g_amxxapi.ExecuteForward(g_iClientStopSpeak, clientIndex);
 }

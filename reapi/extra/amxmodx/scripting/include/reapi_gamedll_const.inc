@@ -8,7 +8,7 @@
 // NOTE: Use this for hookchain RG_RoundEnd with the parameter ScenarioEventEndRound:event
 #define HadRoundExpired(event)	(1<<_:event) & (1<<_:ROUND_TARGET_SAVED) | (1<<_:ROUND_HOSTAGE_NOT_RESCUED) | (1<<_:ROUND_TERRORISTS_NOT_ESCAPED) | (1<<_:ROUND_VIP_NOT_ESCAPED)
 
-// bypass warning: 200 on amxmodx 1.8.2
+// suppress warning: 200 on amxmodx 1.8.2
 #if AMXX_VERSION_NUM < 183
 	#define RG_CBaseAnimating_ResetSequenceInfo RG_CBaseAnimating_ResetSequence
 	#define RG_CBasePlayer_Observer_IsValidTarget RG_CBasePlayer_Observer_IsValid
@@ -469,7 +469,7 @@ enum GamedllFunc_CSGameRules
 	RG_CSGameRules_GetPlayerSpawnSpot,
 
 	/*
-	* Description:		the player has changed userinfo;  can change it now
+	* Description:		the player has changed userinfo; can change it now
 	* Params:		(const index, infobuffer[])
 	*/
 	RG_CSGameRules_ClientUserInfoChanged,
