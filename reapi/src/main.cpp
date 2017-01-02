@@ -69,7 +69,12 @@ void ServerDeactivate_Post()
 void KeyValue(edict_t *pentKeyvalue, KeyValueData *pkvd)
 {
 	// get the first edict worldspawn
-	if (FClassnameIs(pentKeyvalue, "worldspawn")) {
+	if (FClassnameIs(pentKeyvalue, "worldspawn"))
+	{
+		// save true mapname
+		strncpy(g_szMapName, STRING(gpGlobals->mapname), sizeof(g_szMapName) - 1);
+		g_szMapName[sizeof(g_szMapName) - 1] = '\0';
+
 		g_pEdicts = pentKeyvalue;
 		g_pFunctionTable->pfnKeyValue = nullptr;
 	}
@@ -84,10 +89,6 @@ CGameRules *InstallGameRules(IReGameHook_InstallGameRules *chain)
 
 int DispatchSpawn(edict_t *pEntity)
 {
-	// save true mapname
-	strncpy(g_szMapName, STRING(gpGlobals->mapname), sizeof(g_szMapName) - 1);
-	g_szMapName[sizeof(g_szMapName) - 1] = '\0';
-
 	g_pEdicts = g_engfuncs.pfnPEntityOfEntIndex(0);
 	if (api_cfg.hasReGameDLL()) {
 		g_pMove = g_ReGameApi->GetPlayerMove();
