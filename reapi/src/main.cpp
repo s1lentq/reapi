@@ -23,6 +23,10 @@ void OnAmxxAttach()
 	// initialize API
 	api_cfg.Init();
 	g_pEdicts = g_engfuncs.pfnPEntityOfEntIndex(0);
+
+	// save true mapname
+	strncpy(g_szMapName, STRING(gpGlobals->mapname), sizeof(g_szMapName) - 1);
+	g_szMapName[sizeof(g_szMapName) - 1] = '\0';
 }
 
 bool OnMetaAttach()
