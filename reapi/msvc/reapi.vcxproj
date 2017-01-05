@@ -216,6 +216,7 @@
     <ClInclude Include="..\src\precompiled.h" />
     <ClInclude Include="..\src\reapi_utils.h" />
     <ClInclude Include="..\src\type_conversion.h" />
+    <ClInclude Include="..\version\appversion.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\include\cssdk\common\parsemsg.cpp">
@@ -259,6 +260,7 @@
     </ClCompile>
     <ClCompile Include="..\src\reapi_utils.cpp" />
     <ClCompile Include="..\src\sdk_util.cpp" />
+    <ClCompile Include="..\version\version.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="reapi.rc" />
@@ -272,7 +274,7 @@
     <None Include="..\extra\amxmodx\scripting\include\reapi_gamedll_const.inc" />
     <None Include="..\extra\amxmodx\scripting\include\reapi_addons.inc" />
     <None Include="..\extra\amxmodx\scripting\reapi_test.sma" />
-    <None Include="..\src\reapi_version.inc" />
+    <None Include="..\version\reapi_version.inc" />
     <None Include="reapi.def" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

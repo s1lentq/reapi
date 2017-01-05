@@ -20,31 +20,13 @@ class VelocityUtils {
 
 		Velocity.init(p);
 	}
-	static String renderTemplate(File tplFile, ReapiVersionInfo ctx) {
+	static String renderTemplate(File tplFile, Map<String, ? extends Object> ctx) {
 		Template tpl = Velocity.getTemplate(tplFile.absolutePath)
 		if (!tpl) {
 			throw new RuntimeException("Failed to load velocity template ${tplFile.absolutePath}: not found")
 		}
 
-		def templateCtx = [
-			verInfo: ctx
-		]
-
-		def velocityContext = new VelocityContext(templateCtx)
-
-		if (ctx.specialVersion.length() > 0) {
-			velocityContext.put("appFlags", 0x0L)
-			velocityContext.put("formatSpecialVersion", "-" + ctx.specialVersion)
-		} else {
-			
-			velocityContext.put("appFlags", "VS_FF_SPECIALBUILD")
-			velocityContext.put("formatSpecialVersion", "")
-		}
-
-		velocityContext.put("current_version", ctx.asVersion())
-
-		velocityContext.put("_DateTimeFormat", DateTimeFormat)
-
+		def velocityContext = new VelocityContext(ctx)
 		def sw = new StringWriter()
 		tpl.merge(velocityContext, sw)
 

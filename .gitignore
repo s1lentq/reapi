@@ -16,3 +16,4 @@
 
 publish
 **/appversion.h
+**/reapi_version.inc

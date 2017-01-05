@@ -55,6 +55,9 @@
     <Filter Include="src\mods">
       <UniqueIdentifier>{669b4426-091f-4cac-9281-f5585a2922fb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="version">
+      <UniqueIdentifier>{60b1b924-8415-4c1d-9fef-57e717e12f42}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\metamod\dllapi.h">
@@ -660,6 +663,9 @@
     <ClInclude Include="..\src\type_conversion.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="..\version\appversion.h">
+      <Filter>version</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\include\cssdk\common\parsemsg.cpp">
@@ -740,6 +746,9 @@
     <ClCompile Include="..\src\natives\natives_addons.cpp">
       <Filter>src\natives</Filter>
     </ClCompile>
+    <ClCompile Include="..\version\version.cpp">
+      <Filter>version</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\extra\amxmodx\scripting\include\reapi.inc">
@@ -764,11 +773,11 @@
     <None Include="..\extra\amxmodx\scripting\include\reapi_addons.inc">
       <Filter>amxmodx\scripting\include</Filter>
     </None>
-    <None Include="..\src\reapi_version.inc">
-      <Filter>src</Filter>
-    </None>
     <None Include="..\extra\amxmodx\scripting\include\cssdk_const.inc">
       <Filter>amxmodx\scripting\include</Filter>
+    </None>
+    <None Include="..\version\reapi_version.inc">
+      <Filter>version</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

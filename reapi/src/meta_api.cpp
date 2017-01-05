@@ -10,8 +10,8 @@ plugin_info_t Plugin_info =
 {
 	META_INTERFACE_VERSION,			// ifvers
 	"ReAPI",				// name
-	APP_VERSION_STRD,					// version
-	APP_VERSION_YMD_STR,				// date
+	APP_VERSION,					// version
+	APP_COMMIT_DATE,				// date
 	"Asmodai & s1lent",				// author
 	"https://github.com/s1lentq/reapi/",	// url
 	"ReAPI",				// logtag, all caps please

@@ -1,0 +1,9 @@
+\#if defined _reapi_version_included
+	#endinput
+#endif
+\#define _reapi_version_included
+
+// reapi version
+\#define REAPI_VERSION $verInfo.asReapiVersion()
+\#define REAPI_VERSION_MAJOR ${verInfo.majorVersion}
+\#define REAPI_VERSION_MINOR ${verInfo.minorVersion}

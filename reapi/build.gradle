@@ -155,22 +155,35 @@ task buildRelease {
 
 tasks.clean.doLast {
 	project.file('version/appversion.h').delete()
+	project.file('version/reapi_version.inc').delete()
 }
 
 task generateAppVersion {
 
 	ReapiVersionInfo verInfo = (ReapiVersionInfo) rootProject.reapiVersionInfo
+	def tplversionFileInc = project.file('version/reapi_version.vm')
+	def versionFileInc = project.file('version/reapi_version.inc')
+
 	def tplversionFile = project.file('version/appversion.vm')
 	def versionFile = project.file('version/appversion.h')
 
 	inputs.file tplversionFile
+	inputs.file tplversionFileInc
 	inputs.file project.file('gradle.properties')
 	outputs.file versionFile
+	outputs.file versionFileInc
 
 	doLast {
+	        def templateCtx = [
+	                verInfo : verInfo
+	        ]
 
-		def versionContent = VelocityUtils.renderTemplate(tplversionFile, verInfo)
+		def versionContent = VelocityUtils.renderTemplate(tplversionFile, templateCtx)
 		versionFile.delete()
 		versionFile.write(versionContent, 'utf-8')
+
+		def versionContentInc = VelocityUtils.renderTemplate(tplversionFileInc, templateCtx)
+		versionFileInc.delete()
+		versionFileInc.write(versionContentInc, 'utf-8')
 	}
 }

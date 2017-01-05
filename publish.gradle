@@ -32,7 +32,7 @@ task publishPrepareFiles << {
 		into 'publish/publishRoot/reapi/addons'
 	}
 	copy {
-		from 'reapi/src/reapi_version.inc'
+		from 'reapi/version/reapi_version.inc'
 		into 'publish/publishRoot/reapi/addons/amxmodx/scripting/include'
 	}
 }

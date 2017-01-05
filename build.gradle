@@ -1,5 +1,6 @@
 import versioning.GitVersioner
 import versioning.ReapiVersionInfo
+import org.joda.time.DateTime
 
 apply from: 'shared.gradle'
 group = 'reapi'
@@ -13,13 +14,8 @@ idea {
 }
 
 def gitInfo = GitVersioner.versionForDir(project.rootDir)
-if (!gitInfo) {
-	throw new RuntimeException('Running outside git repository')
-}
-
 ReapiVersionInfo versionInfo
-if (gitInfo.tag && gitInfo.tag[0] == 'v') {
-
+if (gitInfo && gitInfo.tag && gitInfo.tag[0] == 'v') {
 	def m = gitInfo.tag =~ /^v(\d+)\.(\d+)(\.(\d+))?$/
 	if (!m.find()) {
 		throw new RuntimeException("Invalid git version tag name ${gitInfo.tag}")
@@ -29,22 +25,28 @@ if (gitInfo.tag && gitInfo.tag[0] == 'v') {
 		majorVersion: m.group(1) as int,
 		minorVersion: m.group(2) as int,
 		maintenanceVersion: m.group(4) ? (m.group(4) as int) : null,
-		countCommit: gitInfo.countCommit,
-		lastCommitDate: gitInfo.lastCommitDate
+		localChanges: gitInfo.localChanges,
+		commitDate: gitInfo.commitDate,
+		commitSHA: gitInfo.commitSHA,
+		commitURL: gitInfo.commitURL
 	)
 } else {
 
 	versionInfo = new ReapiVersionInfo(
 		majorVersion: project.majorVersion as int,
 		minorVersion: project.minorVersion as int,
-		specialVersion: project.specialVersion,
-		countCommit: gitInfo.countCommit,
-		lastCommitDate: gitInfo.lastCommitDate
+		maintenanceVersion: project.maintenanceVersion as int,
+		suffix: 'dev',
+		localChanges: gitInfo ? gitInfo.localChanges : true,
+		commitDate: gitInfo ? gitInfo.commitDate : new DateTime(),
+		commitSHA: gitInfo ? gitInfo.commitSHA : "",
+		commitURL: gitInfo ? gitInfo.commitURL : "",
+		commitCount: gitInfo ? (gitInfo.commitCount as int) : null
 	)
 }
 
 project.ext.reapiVersionInfo = versionInfo
-project.version = versionInfo.asVersion()
+project.version = versionInfo.asMavenVersion()
 
 apply from: 'publish.gradle'
 

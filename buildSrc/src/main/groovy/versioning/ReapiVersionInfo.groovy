@@ -3,6 +3,7 @@ package versioning
 import groovy.transform.CompileStatic
 import groovy.transform.ToString
 import groovy.transform.TypeChecked
+import org.joda.time.format.DateTimeFormat
 import org.joda.time.DateTime
 
 @CompileStatic @TypeChecked
@@ -11,31 +12,65 @@ class ReapiVersionInfo {
 	int majorVersion
 	int minorVersion
 	Integer maintenanceVersion
-	String specialVersion
-	Integer countCommit
-	DateTime lastCommitDate
+	String suffix
 
-	String format(String versionSeparator, String suffixSeparator, boolean includeSuffix) {
+	boolean  localChanges
+	DateTime commitDate
+	String   commitSHA
+	String   commitURL
+	Integer  commitCount
+
+	String asReapiVersion() {
 		StringBuilder sb = new StringBuilder()
-		sb.append(majorVersion).append(versionSeparator).append(minorVersion)
+		sb.append(majorVersion).append(minorVersion).append(commitCount);
+		return sb.toString()
+	}
+	String asMavenVersionC() {
+		StringBuilder sb = new StringBuilder()
+		sb.append(majorVersion).append(',' + minorVersion);
 		if (maintenanceVersion != null) {
-			sb.append(versionSeparator).append(maintenanceVersion)
+			sb.append(',' + maintenanceVersion);
 		}
 
-		if (specialVersion && includeSuffix) {
-			sb.append(suffixSeparator).append(specialVersion)
+		if (commitCount != null) {
+			sb.append(',' + commitCount)
 		}
 
 		return sb.toString()
 	}
-	String asVersion() {
-		if (specialVersion.length() > 0) {
-			sprintf("%d.%d.%d-%s", majorVersion, minorVersion, countCommit, specialVersion)
+	String asMavenVersion(boolean extra = true) {
+		StringBuilder sb = new StringBuilder()
+		sb.append(majorVersion).append('.' + minorVersion);
+		if (maintenanceVersion != null) {
+			sb.append('.' + maintenanceVersion);
 		}
-		else
-			sprintf("%d.%d.%d", majorVersion, minorVersion, countCommit)
+
+		if (commitCount != null) {
+			sb.append('.' + commitCount)
+		}
+
+		if (extra && suffix) {
+			sb.append('-' + suffix)
+		}
+
+		// do mark for this build like a modified version
+		if (extra && localChanges) {
+			sb.append('+m');
+		}
+
+		return sb.toString()
 	}
-	String asMavenVersion() {
-		format('.', '-', true)
+	String asCommitDate(String pattern = null) {
+		if (pattern == null) {
+			pattern = "MMM  d yyyy";
+			if (commitDate.getDayOfMonth() >= 10) {
+				pattern = "MMM d yyyy";
+			}
+		}
+
+		return DateTimeFormat.forPattern(pattern).withLocale(Locale.ENGLISH).print(commitDate);
+	}
+	String asCommitTime() {
+		return DateTimeFormat.forPattern('HH:mm:ss').withLocale(Locale.ENGLISH).print(commitDate);
 	}
 }

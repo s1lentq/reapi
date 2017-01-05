@@ -74,12 +74,12 @@ BEGIN
 		BEGIN
 			VALUE "CompanyName", ""
 			VALUE "FileDescription", "AMX Mod X module, using API regamedll & rehlds"
-			VALUE "FileVersion", APP_VERSION_STRD_RC
+			VALUE "FileVersion", APP_VERSION_STRD
 			VALUE "InternalName", "Reapi"
 			VALUE "LegalCopyright", ""
 			VALUE "OriginalFilename", "reapi_amxx.dll"
 			VALUE "ProductName", "Reapi"
-			VALUE "ProductVersion", APP_VERSION_STRD_RC
+			VALUE "ProductVersion", APP_VERSION_STRD
 			#if APP_VERSION_FLAGS != 0x0L
 				VALUE "SpecialBuild", APP_VERSION_SPECIALBUILD
 			#endif
