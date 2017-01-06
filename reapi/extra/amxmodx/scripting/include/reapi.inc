@@ -56,8 +56,10 @@ enum members_tables_e
 #include <reapi_addons>		// NOTE: 3-rd party addons
 #include <reapi_version>
 
+#if AMXX_VERSION_NUM >= 183
 #pragma deprecated Use HC_CONTINUE or anything.
 #define HC_OVERRIDE 0
+#endif
 
 // hookchain return type
 enum
