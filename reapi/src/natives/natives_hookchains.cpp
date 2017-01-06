@@ -100,7 +100,6 @@ cell AMX_NATIVE_CALL DisableHookChain(AMX *amx, cell *params)
 
 /*
 * Sets the return value of a hookchain.
-* This needs to be used in conjunction with RH_OVERRIDE or RH_SUPERCEDE.
 *
 * @param type		To specify the type ATYPE_*, look at the enum AType
 * @param value		The value to set the return to.
@@ -164,10 +163,11 @@ cell AMX_NATIVE_CALL SetHookChainReturn(AMX *amx, cell *params)
 * Gets the return value of the current hookchain.
 * This has no effect in pre hookchain.
 *
+* @param type		To specify the type ATYPE_*, look at the enum AType
 * @param [maxlen]	Max length of string (optional)
 * @return		If an integer or boolean or one byte or float, array or everything else is passed via 1rd argument and more
 *
-* native any:GetHookChainReturn(any:...);
+* native any:GetHookChainReturn(AType:type, any:...);
 */
 cell AMX_NATIVE_CALL GetHookChainReturn(AMX *amx, cell *params)
 {
@@ -177,8 +177,14 @@ cell AMX_NATIVE_CALL GetHookChainReturn(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	enum args_e { arg_count, arg_value, arg_maxlen };
+	enum args_e { arg_count, arg_type, arg_value, arg_maxlen };
 	auto& retVal = g_hookCtx->retVal;
+
+	if (unlikely(params[arg_type] != retVal.type))
+	{
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: trying to set return value with incompatible type.", __FUNCTION__);
+		return FALSE;
+	}
 
 	if (unlikely(!retVal.set))
 	{

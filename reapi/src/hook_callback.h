@@ -4,9 +4,9 @@
 enum HookChainState
 {
 	HC_CONTINUE = 0,	// plugin didn't take any action
-	HC_OVERRIDE,		// call real function, but use my return value
 	HC_SUPERCEDE,		// skip real function, use my return value
 	HC_BREAK		// skip all forwards and real function, use my return value
+				// @note Warning: Be very careful using this type of return will skip calls for all following AMXX the plugins.
 };
 
 // api types
@@ -236,10 +236,10 @@ NOINLINE R DLLEXPORT _callForward(const hook_t* hook, original_t original, volat
 		auto retVal = original(args...);
 		g_hookCtx = hookCtx;
 
-		if (likely(hc_state != HC_OVERRIDE))
+		if (unlikely(!hookCtx->retVal.set)) {
 			hookCtx->retVal._integer = *(int *)&retVal;
-
-		hookCtx->retVal.set = true;
+			hookCtx->retVal.set = true;
+		}
 	}
 
 	for (auto fwd : hook->post) {

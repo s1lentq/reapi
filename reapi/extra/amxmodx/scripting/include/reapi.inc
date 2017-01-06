@@ -56,13 +56,16 @@ enum members_tables_e
 #include <reapi_addons>		// NOTE: 3-rd party addons
 #include <reapi_version>
 
+#pragma deprecated Use HC_CONTINUE or anything.
+#define HC_OVERRIDE 0
+
 // hookchain return type
 enum
 {
 	HC_CONTINUE = 0,	// plugin didn't take any action
-	HC_OVERRIDE,		// call real function, but use my return value
 	HC_SUPERCEDE,		// skip real function, use my return value
-	HC_BREAK		// skip a call each forward in AMXX plugins
+	HC_BREAK		// skip all forwards and real function, use my return value
+				// @note Warning: Be very careful using this type of return will skip calls for all following AMXX the plugins.
 };
 
 // hookchain types
@@ -113,7 +116,6 @@ native bool:EnableHookChain(HookChain:hook);
 
 /*
 * Sets the return value of a hookchain.
-* This needs to be used in conjunction with RH_OVERRIDE or RH_SUPERCEDE.
 *
 * @param type		To specify the type ATYPE_*, look at the enum AType
 * @param value		The value to set the return to.
@@ -125,11 +127,12 @@ native SetHookChainReturn(AType:type, any:...);
 * Gets the return value of the current hookchain.
 * This has no effect in pre hookchain.
 *
+* @param type		To specify the type ATYPE_*, look at the enum AType
 * @param [maxlen]	Max length of string (optional)
 * @return		If an integer or boolean or one byte or float, array or everything else is passed via 1rd argument and more
 *
 */
-native any:GetHookChainReturn(any:...);
+native any:GetHookChainReturn(AType:type, any:...);
 
 /*
 * Set hookchain argument.
