@@ -2,7 +2,7 @@
 
 edict_t* g_pEdicts;
 playermove_t* g_pMove;
-char g_szMapName[32];
+char g_szMapName[32] = "";
 int gmsgSendAudio, gmsgStatusIcon, gmsgArmorType, gmsgItemStatus, gmsgBarTime, gmsgBarTime2;
 
 struct
@@ -24,9 +24,13 @@ void OnAmxxAttach()
 	api_cfg.Init();
 	g_pEdicts = g_engfuncs.pfnPEntityOfEntIndex(0);
 
-	// save true mapname
-	strncpy(g_szMapName, STRING(gpGlobals->mapname), sizeof(g_szMapName) - 1);
-	g_szMapName[sizeof(g_szMapName) - 1] = '\0';
+	// If AMXX_Attach been called in a first the event Spawn
+	if (g_pEdicts)
+	{
+		// save true mapname
+		strncpy(g_szMapName, STRING(gpGlobals->mapname), sizeof(g_szMapName) - 1);
+		g_szMapName[sizeof(g_szMapName) - 1] = '\0';
+	}
 }
 
 bool OnMetaAttach()

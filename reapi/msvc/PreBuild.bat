@@ -8,6 +8,7 @@ set srcdir=%~1
 set repodir=%~2
 
 set old_version=
+set old_version_inc=
 set version_major=0
 set version_minor=0
 set version_maintenance=0
@@ -44,6 +45,21 @@ IF EXIST "%srcdir%\appversion.h" (
 				:: Remove quotes
 				set v=%%k
 				set old_version=!v:"=!
+			)
+		)
+	)
+)
+
+::
+:: Read old reapi_version.inc, if present
+::
+IF EXIST "%srcdir%\reapi_version.inc" (
+	FOR /F "usebackq tokens=1,2,3" %%i in ("%srcdir%\reapi_version.inc") do (
+		IF %%i==#define (
+			IF %%j==REAPI_VERSION (
+				:: Remove quotes
+				set v=%%k
+				set old_version_inc=!v:"=!
 			)
 		)
 	)
@@ -165,8 +181,36 @@ IF [%localChanged%]==[1] (
 )
 
 ::
-:: Update reapi_version.inc
+:: Now form full version string like 1.0.0.1
 ::
+
+set new_version_inc=%version_major%%version_minor%%commitCount%
+set new_version=%version_major%.%version_minor%.%version_maintenance%.%commitCount%-dev%version_modifed%
+
+::
+:: Update appversion.h if version has changed or modifications/mixed revisions detected
+::
+IF NOT "%new_version%"=="%old_version%" (
+	goto _update
+)
+
+::
+:: Update reapi_version.inc if version has changed or modifications/mixed revisions detected
+::
+
+IF NOT "%new_version_inc%"=="%old_version_inc%" (
+	goto _update
+)
+
+goto _exit
+
+:_update
+
+::
+:: Write reapi_version.inc
+::
+echo Updating reapi_version.inc, new version is "%new_version_inc%", the old one was %old_version_inc%
+
 echo #if defined _reapi_version_included>"%srcdir%\reapi_version.inc"
 echo 	#endinput>>"%srcdir%\reapi_version.inc"
 echo #endif>>"%srcdir%\reapi_version.inc"
@@ -179,22 +223,9 @@ echo.>>"%srcdir%\reapi_version.inc"
 >>"%srcdir%\reapi_version.inc" echo #define REAPI_VERSION_MINOR %version_minor%
 
 ::
-:: Now form full version string like 1.0.0.1
+:: Write appversion.h
 ::
-
-set new_version=%version_major%.%version_minor%.%version_maintenance%.%commitCount%-dev%version_modifed%
-
-::
-:: Update appversion.h if version has changed or modifications/mixed revisions detected
-::
-IF NOT "%new_version%"=="%old_version%" (
-	goto _update
-)
-
-goto _exit
-
-:_update
-echo Updating appversion.h and reapi_version.inc, new version is "%new_version%", the old one was %old_version%
+echo Updating appversion.h, new version is "%new_version%", the old one was %old_version%
 
 echo #ifndef __APPVERSION_H__>"%srcdir%\appversion.h"
 echo #define __APPVERSION_H__>>"%srcdir%\appversion.h"
