@@ -661,7 +661,7 @@ cell AMX_NATIVE_CALL rg_get_weapon_info(AMX *amx, cell *params)
 	WeaponIdType weaponID = static_cast<WeaponIdType>(*getAmxAddr(amx, params[arg_weapon_id]));
 	WpnInfo info_type = static_cast<WpnInfo>(*getAmxAddr(amx, params[arg_type]));
 
-	if (!GetWeaponInfoRange(weaponID) && info_type != WI_ID)
+	if (!GetWeaponInfoRange(weaponID) && info_type != WI_ID && weaponID != WEAPON_KNIFE)
 	{
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid weapon id %i", __FUNCTION__, weaponID);
 		return 0;
