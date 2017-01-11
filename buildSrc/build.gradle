@@ -20,4 +20,6 @@ dependencies {
 	compile 'org.doomedsociety.gradlecpp:gradle-cpp-plugin:1.2'
 	compile 'org.eclipse.jgit:org.eclipse.jgit:3.7.0.201502260915-r'
 	compile 'org.apache.velocity:velocity:1.7'
+	compile group: 'org.codehaus.groovy.modules.http-builder', name: 'http-builder', version: '0.7.1'
+
 }
