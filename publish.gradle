@@ -45,29 +45,7 @@ task publishPackage(type: Zip, dependsOn: 'publishPrepareFiles') {
 	from 'publish/publishRoot/reapi'
 }
 
-Properties repoCreds = new Properties()
-project.ext.repoCreds = repoCreds
-if (file('repo_creds.properties').exists()) {
-	println 'Loading credentials'
-	file('repo_creds.properties').withReader('UTF-8', { Reader r ->
-		repoCreds.load(r)
-	})
-}
-
-task updateVersion {
-	def http = new HTTPBuilder("http://rehlds.ru/version/update.php?appid=reapi&key=" + repoCreds.getProperty('key') + "&version=" + project.ext.reapiVersionInfo.asMavenVersion(false));
-	http.headers = [ "User-Agent": "Mozilla/5.0" ];
-	http.request(POST) {
-		response.success = { resp ->
-			println "Version version success! Status: ${resp.status}"
-		}
-		response.failure = { resp ->
-			println "Request failed with status ${resp.status}"
-		}
-	}
-}
-
 task doPackage {
-	dependsOn 'publishPackage', 'updateVersion'
+	dependsOn 'publishPackage'
 
 }

@@ -173,6 +173,8 @@ task generateAppVersion {
 	outputs.file versionFile
 	outputs.file versionFileInc
 
+	println "##teamcity[buildNumber '" + verInfo.asMavenVersion(false) + "']";
+
 	doLast {
 	        def templateCtx = [
 	                verInfo : verInfo
