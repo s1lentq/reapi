@@ -13,7 +13,7 @@ class CAmxxHook
 {
 public:
 	CAmxxHook(AMX* amx, int index) : m_index(index), m_state(FSTATE_ENABLED), m_amx(amx) {};
-	
+
 	int GetIndex() const;
 	fwdstate GetState() const;
 	AMX* GetAmx() const;

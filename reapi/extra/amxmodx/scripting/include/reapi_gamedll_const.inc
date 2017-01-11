@@ -1031,7 +1031,7 @@ enum CSGameRules_Members
 	/*
 	* Description:		-
 	* Member type:		int [100]
-	* Get params:		get_member_game(member);
+	* Get params:		get_member_game(member, element);
 	* Set params:		set_member_game(member, value, element);
 	*/
 	m_iMapVotes,
@@ -1119,7 +1119,7 @@ enum CSGameRules_Members
 	/*
 	* Description:		-
 	* Member type:		int [5]
-	* Get params:		get_member_game(member);
+	* Get params:		get_member_game(member, element);
 	* Set params:		set_member_game(member, value, element);
 	*/
 	m_pVIPQueue,
@@ -1232,8 +1232,8 @@ enum CSGameRules_Members
 	/*
 	* Description:		-
 	* Member type:		float
-	* Get params:		Float:get_member(index, member);
-	* Set params:		set_member(index, member, Float:value);
+	* Get params:		Float:get_member_game(member);
+	* Set params:		set_member_game(member, Float:value);
 	*/
 	m_flEscapeRatio
 };

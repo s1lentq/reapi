@@ -1,9 +1,17 @@
 #include "precompiled.h"
 
-#define CLASS_MEMBERS(cx, mx, postf, pref) ((!(postf & (MAX_REGION_RANGE - 1)) ? regmember::current_cell = 1, true : false) || (postf & (MAX_REGION_RANGE - 1)) == regmember::current_cell++) ? regmember([](member_t* ptr){ decltype(##cx::##pref##mx) f = {};ptr->size = getTypeSize(f);ptr->max_size = sizeof(f);ptr->offset = offsetof(##cx, ##pref##mx);ptr->type = getMemberType(f);ptr->name = #postf;}) : regmember(#pref#mx)
+#if _MSC_VER <= 1800 && __INTEL_COMPILER < 1500
+	// BUG BUG
+	// http://connect.microsoft.com/VisualStudio/feedbackdetail/view/797682/c-decltype-of-class-member-access-incompletely-implemented
+	#define decltypefx(cx, pref, dt, mx) decltype(std::declval<cx>()dt##pref##mx)
+#else
+	#define decltypefx(cx, pref, dt, mx) decltype(cx::pref##mx)
+#endif
+
+#define CLASS_MEMBERS(cx, mx, postf, pref) ((!(postf & (MAX_REGION_RANGE - 1)) ? regmember::current_cell = 1, true : false) || (postf & (MAX_REGION_RANGE - 1)) == regmember::current_cell++) ? regmember([](member_t* ptr){ decltypefx(cx, pref, ., mx) f = {};ptr->size = getTypeSize(f);ptr->max_size = sizeof(f);ptr->offset = offsetof(##cx, ##pref##mx);ptr->type = getMemberType(f);ptr->name = #postf;}) : regmember(#pref#mx)
 
 #define GM_MEMBERS(mx)			CLASS_MEMBERS(CHalfLifeMultiplay, mx, mx,)
-#define GM_VOICE_MEMBERS(mx)		CLASS_MEMBERS(CVoiceGameMgr, mx, mx,)
+#define GM_VOICE_MEMBERS(mx)		CLASS_MEMBERS(CHalfLifeMultiplay, mx, mx, m_VoiceGameMgr.)
 #define BASE_MEMBERS(mx)		CLASS_MEMBERS(CBaseEntity, mx, mx,)
 #define ANIM_MEMBERS(mx)		CLASS_MEMBERS(CBaseAnimating, mx, mx,)
 #define MONST_MEMBERS(mx)		CLASS_MEMBERS(CBaseMonster, mx, mx,)
@@ -38,8 +46,8 @@ inline MType getMemberType(Vector*)			{ return MEMBER_VECTOR; }
 inline MType getMemberType(Vector)			{ return MEMBER_VECTOR; }
 
 inline MType getMemberType(char*)			{ return MEMBER_STRING; }
-inline MType getMemberType(qstring_t)		{ return MEMBER_QSTRING; }
-inline MType getMemberType(qstring_t*)		{ return MEMBER_QSTRING; }
+inline MType getMemberType(qstring_t)			{ return MEMBER_QSTRING; }
+inline MType getMemberType(qstring_t*)			{ return MEMBER_QSTRING; }
 
 inline MType getMemberType(char)			{ return MEMBER_BYTE; }
 inline MType getMemberType(byte)			{ return MEMBER_BYTE; }

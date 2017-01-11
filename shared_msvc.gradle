@@ -93,7 +93,7 @@ rootProject.ext.createMsvcConfig = { boolean release, BinaryKind binKind ->
 					'WIN32': null,
 					'_MBCS': null,
 					'_DEBUG': null,
-					'NOMINMAX': null,
+					'NOMINMAX': null
 				]
 			),
 

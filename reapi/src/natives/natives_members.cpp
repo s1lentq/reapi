@@ -71,7 +71,7 @@ cell AMX_NATIVE_CALL get_member(AMX *amx, cell *params)
 		cell* arg3 = getAmxAddr(amx, params[arg_3]);
 
 		if (isTypeReturnable(member->type)) {
-			dest = (member->type != MEMBER_FLOAT) ? nullptr : arg3;
+			dest = nullptr;
 			element = *arg3;
 		}
 		else {
@@ -123,7 +123,7 @@ cell AMX_NATIVE_CALL set_member_game(AMX *amx, cell *params)
 // native get_member_game(any:_member, any:...);
 cell AMX_NATIVE_CALL get_member_game(AMX *amx, cell *params)
 {
-	enum args_e { arg_count, arg_member, arg_3, arg_4 };
+	enum args_e { arg_count, arg_member, arg_2 };
 
 	CHECK_GAMERULES();
 
@@ -137,16 +137,11 @@ cell AMX_NATIVE_CALL get_member_game(AMX *amx, cell *params)
 	size_t element;
 	size_t length;
 
-	if (PARAMS_COUNT == 4) {
-		dest = getAmxAddr(amx, params[arg_3]);
-		length = *getAmxAddr(amx, params[arg_4]);
-		element = 0;
-	}
-	else if (PARAMS_COUNT == 3) {
-		cell* arg3 = getAmxAddr(amx, params[arg_3]);
-
+	if (PARAMS_COUNT == 2)
+	{
+		cell* arg3 = getAmxAddr(amx, params[arg_2]);
 		if (isTypeReturnable(member->type)) {
-			dest = (member->type != MEMBER_FLOAT) ? nullptr : arg3;
+			dest = nullptr;
 			element = *arg3;
 		}
 		else {
@@ -154,22 +149,13 @@ cell AMX_NATIVE_CALL get_member_game(AMX *amx, cell *params)
 			element = 0;
 		}
 		length = 0;
-	}
-	else {
+	} else {
 		dest = nullptr;
 		element = 0;
 		length = 0;
 	}
 
-	void* data;
-	// members of m_VoiceGameMgr
-	if (params[arg_member] >= m_msgPlayerVoiceMask && params[arg_member] <= m_UpdateInterval) {
-		data = &CSGameRules()->m_VoiceGameMgr;
-	} else {
-		data = g_pGameRules;
-	}
-
-	return get_member(data, member, dest, element, length);
+	return get_member(g_pGameRules, member, dest, element, length);
 }
 
 // native set_entvar(const index, const EntVars:var, any:...);
@@ -227,9 +213,15 @@ cell AMX_NATIVE_CALL get_entvar(AMX *amx, cell *params)
 	else if (PARAMS_COUNT == 3) {
 		cell* arg3 = getAmxAddr(amx, params[arg_3]);
 
-		if (isTypeReturnable(member->type)) {
-			dest = (member->type != MEMBER_FLOAT) ? nullptr : arg3;
-			element = *arg3;
+		if (isTypeReturnable(member->type))
+		{
+			if (member->type == MEMBER_FLOAT) {
+				dest = arg3;
+				element = 0;
+			} else {
+				dest = nullptr;
+				element = *arg3;
+			}
 		}
 		else {
 			dest = arg3;
@@ -672,8 +664,11 @@ cell get_member(void* pdata, const member_t *member, cell* dest, size_t element,
 		// native any:get_member(_index, any:_member, element);
 		return get_member<bool>(pdata, member->offset, element);
 	case MEMBER_DOUBLE:
+	{
 		// native any:get_member(_index, any:_member, element);
-		return get_member<double>(pdata, member->offset, element);
+		auto ret = (float)get_member<double>(pdata, member->offset, element);
+		return (cell &)ret;
+	}
 	case MEMBER_SIGNALS:
 		{
 			enum { _Signal, _State };
