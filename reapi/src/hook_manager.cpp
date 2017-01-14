@@ -2,7 +2,7 @@
 
 CHookManager g_hookManager;
 
-int CHookManager::addHandler(AMX* amx, int func, int forward, bool post) const
+int CHookManager::addHandler(AMX* amx, int func, const char *funcname, int forward, bool post) const
 {
 	auto hook = m_hooklist.getHookSafe(func);
 
@@ -13,7 +13,7 @@ int CHookManager::addHandler(AMX* amx, int func, int forward, bool post) const
 	}
 
 	auto& dest = post ? hook->post : hook->pre;
-	dest.push_back(new CAmxxHook(amx, forward));
+	dest.push_back(new CAmxxHook(amx, funcname, forward));
 	int id = func * MAX_HOOK_FORWARDS + dest.size();
 	return post ? -id : id; // use unsigned ids for post hooks
 }
@@ -21,6 +21,11 @@ int CHookManager::addHandler(AMX* amx, int func, int forward, bool post) const
 AMX* CAmxxHook::GetAmx() const
 {
 	return m_amx;
+}
+
+const char *CAmxxHook::GetCallbackName() const
+{
+	return m_CallbackName;
 }
 
 int CAmxxHook::GetIndex() const

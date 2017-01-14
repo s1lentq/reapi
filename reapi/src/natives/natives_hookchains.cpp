@@ -46,7 +46,7 @@ cell AMX_NATIVE_CALL RegisterHookChain(AMX *amx, cell *params)
 		return INVALID_HOOKCHAIN;
 	}
 
-	return g_hookManager.addHandler(amx, func, fwid, post != 0);
+	return g_hookManager.addHandler(amx, func, funcname, fwid, post != 0);
 }
 
 /*

@@ -217,7 +217,7 @@ NOINLINE R DLLEXPORT _callForward(const hook_t* hook, original_t original, volat
 			}
 
 			if (unlikely(!hookCtx->retVal.set)) {
-				g_amxxapi.LogError(fwd->GetAmx(), AMX_ERR_CALLBACK, "can't suppress original function call without new return value set");
+				AMXX_Error(fwd->GetAmx(), "%s : Can't suppress original function call without new return value set", fwd->GetCallbackName());
 				continue;
 			}
 

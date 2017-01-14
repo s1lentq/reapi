@@ -12,15 +12,22 @@ enum fwdstate
 class CAmxxHook
 {
 public:
-	CAmxxHook(AMX* amx, int index) : m_index(index), m_state(FSTATE_ENABLED), m_amx(amx) {};
+	CAmxxHook(AMX* amx, const char *funcname, int index) : m_index(index), m_state(FSTATE_ENABLED), m_amx(amx)
+	{
+		strncpy(m_CallbackName, funcname, sizeof(m_CallbackName) - 1);
+		m_CallbackName[sizeof(m_CallbackName) - 1] = '\0';
+	};
 
 	int GetIndex() const;
 	fwdstate GetState() const;
 	AMX* GetAmx() const;
+	const char *GetCallbackName() const;
+
 	void SetState(fwdstate st);
 
 private:
 	int m_index;
+	char m_CallbackName[64];
 	fwdstate m_state;
 	AMX* m_amx;
 };
@@ -29,7 +36,7 @@ class CHookManager
 {
 public:
 	void clearHandlers() const;
-	cell addHandler(AMX* amx, int func, int forward, bool post) const;
+	cell addHandler(AMX* amx, int func, const char *funcname, int forward, bool post) const;
 	hook_t* getHook(size_t func) const;
 	CAmxxHook* getAmxxHook(cell hook) const;
 

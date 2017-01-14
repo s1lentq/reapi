@@ -493,6 +493,7 @@ extern amxxapi_t g_amxxapi;
 
 void MF_Log(const char *fmt, ...);
 void MF_LogError(AMX *amx, int err, const char *fmt, ...);
+void AMXX_Error(AMX *amx, const char *fmt, ...);
 char* getAmxStringTemp(cell* src, char* dest, size_t max, size_t* len = nullptr);
 void setAmxString(cell* dest, const char* string, size_t max);
 

@@ -45,9 +45,9 @@ static struct funcreq_t
 	//DECLARE_REQ(GetAmxVectorNull),
 	//DECLARE_REQ(PrintSrvConsole),
 	//DECLARE_REQ(GetModname),
-	//DECLARE_REQ(GetAmxScriptName),
+	DECLARE_REQ(GetAmxScriptName),
 	//DECLARE_REQ(GetAmxScript),
-	//DECLARE_REQ(FindAmxScriptByAmx),
+	DECLARE_REQ(FindAmxScriptByAmx),
 	//DECLARE_REQ(FindAmxScriptByName),
 	DECLARE_REQ(SetAmxString),
 	//DECLARE_REQ(SetAmxStringUTF8Char),
@@ -217,6 +217,24 @@ NOINLINE void MF_LogError(AMX *amx, int err, const char *fmt, ...)
 	va_end(arglst);
 
 	g_amxxapi.LogError(amx, err, "[%s] %s", g_ModuleInfo.logtag, msg);
+}
+
+NOINLINE void AMXX_Error(AMX *amx, const char *fmt, ...)
+{
+	char msg[2048];
+	va_list arglst;
+	va_start(arglst, fmt);
+	vsnprintf(msg, sizeof msg, fmt, arglst);
+	va_end(arglst);
+
+	auto scriptName = g_amxxapi.GetAmxScriptName(g_amxxapi.FindAmxScriptByAmx(amx));
+	if (scriptName)
+	{
+		if ((scriptName = strrchr(scriptName, '\\')))
+			scriptName++;
+	}
+
+	g_amxxapi.Log("[%s] %s", scriptName, msg);
 }
 
 char* getAmxStringTemp(cell* src, char* dest, size_t max, size_t* len)
