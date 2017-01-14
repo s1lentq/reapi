@@ -32,13 +32,27 @@ bool RehldsApi_Init()
 
 	if (majorVersion != REHLDS_API_VERSION_MAJOR)
 	{
-		UTIL_ServerPrint("[%s]: ReHLDS Api major version mismatch; expected %d, real %d\n", Plugin_info.logtag, REHLDS_API_VERSION_MAJOR, majorVersion);
+		UTIL_ServerPrint("[%s]: ReHLDS API major version mismatch; expected %d, real %d\n", Plugin_info.logtag, REHLDS_API_VERSION_MAJOR, majorVersion);
+
+		// need to notify that it is necessary to update the ReHLDS.
+		if (majorVersion < REHLDS_API_VERSION_MAJOR)
+		{
+			UTIL_ServerPrint("[%s]: Please update the ReHLDS up to a major version API >= %d\n", Plugin_info.logtag, REHLDS_API_VERSION_MAJOR);
+		}
+
+		// need to notify that it is necessary to update the module.
+		else if (majorVersion > REHLDS_API_VERSION_MAJOR)
+		{
+			UTIL_ServerPrint("[%s]: Please update the %s up to a major version API >= %d\n", Plugin_info.logtag, Plugin_info.logtag, majorVersion);
+		}
+
 		return false;
 	}
 
 	if (minorVersion < REHLDS_API_VERSION_MINOR)
 	{
-		UTIL_ServerPrint("[%s]: ReHLDS Api minor version mismatch; expected at least %d, real %d\n", Plugin_info.logtag, REHLDS_API_VERSION_MINOR, minorVersion);
+		UTIL_ServerPrint("[%s]: ReHLDS API minor version mismatch; expected at least %d, real %d\n", Plugin_info.logtag, REHLDS_API_VERSION_MINOR, minorVersion);
+		UTIL_ServerPrint("[%s]: Please update the ReHLDS up to a minor version API >= %d\n", Plugin_info.logtag, REHLDS_API_VERSION_MINOR);
 		return false;
 	}
 

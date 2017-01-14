@@ -21,7 +21,6 @@ bool RegamedllApi_Init()
 
 	int retCode = 0;
 	g_ReGameApi = (IReGameApi *)ifaceFactory(VRE_GAMEDLL_API_VERSION, &retCode);
-
 	if (!g_ReGameApi)
 	{
 		return false;
@@ -32,13 +31,27 @@ bool RegamedllApi_Init()
 
 	if (majorVersion != REGAMEDLL_API_VERSION_MAJOR)
 	{
-		UTIL_ServerPrint("[%s]: ReGameDLL Api major version mismatch; expected %d, real %d\n", Plugin_info.logtag, REGAMEDLL_API_VERSION_MAJOR, majorVersion);
+		UTIL_ServerPrint("[%s]: ReGameDLL API major version mismatch; expected %d, real %d\n", Plugin_info.logtag, REGAMEDLL_API_VERSION_MAJOR, majorVersion);
+
+		// need to notify that it is necessary to update the ReGameDLL.
+		if (majorVersion < REGAMEDLL_API_VERSION_MAJOR)
+		{
+			UTIL_ServerPrint("[%s]: Please update the ReGameDLL up to a major version API >= %d\n", Plugin_info.logtag, REGAMEDLL_API_VERSION_MAJOR);
+		}
+
+		// need to notify that it is necessary to update the module.
+		else if (majorVersion > REGAMEDLL_API_VERSION_MAJOR)
+		{
+			UTIL_ServerPrint("[%s]: Please update the %s up to a major version API >= %d\n", Plugin_info.logtag, Plugin_info.logtag, majorVersion);
+		}
+
 		return false;
 	}
 
 	if (minorVersion < REGAMEDLL_API_VERSION_MINOR)
 	{
-		UTIL_ServerPrint("[%s]: ReGameDLL Api minor version mismatch; expected at least %d, real %d\n", Plugin_info.logtag, REGAMEDLL_API_VERSION_MINOR, minorVersion);
+		UTIL_ServerPrint("[%s]: ReGameDLL API minor version mismatch; expected at least %d, real %d\n", Plugin_info.logtag, REGAMEDLL_API_VERSION_MINOR, minorVersion);
+		UTIL_ServerPrint("[%s]: Please update the ReGameDLL up to a minor version API >= %d\n", Plugin_info.logtag, REGAMEDLL_API_VERSION_MINOR);
 		return false;
 	}
 
