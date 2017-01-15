@@ -9,7 +9,7 @@
 **/msvc/*.user
 **/msvc/*.suo
 **/msvc/*.aps
-**/msvc/start*.bat
+**/msvc/START*.bat
 **/msvc/ipch
 **/PublishPath*.txt
 **/*.log

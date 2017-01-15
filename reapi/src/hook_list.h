@@ -95,6 +95,9 @@ enum GamedllFunc
 	RG_ShowMenu,
 	RG_ShowVGUIMenu,
 
+	RG_BuyGunAmmo,
+	RG_BuyWeaponByWeaponID,
+
 	// [...]
 };
 
@@ -142,6 +145,15 @@ enum GamedllFunc_CBasePlayer
 	RG_CBasePlayer_DropPlayerItem,
 	RG_CBasePlayer_HasRestrictItem,
 
+	RG_CBasePlayer_DropShield,
+	RG_CBasePlayer_OnSpawnEquip,
+	RG_CBasePlayer_Radio,
+	RG_CBasePlayer_Disappear,
+	RG_CBasePlayer_MakeVIP,
+	RG_CBasePlayer_MakeBomber,
+	RG_CBasePlayer_StartObserver,
+	RG_CBasePlayer_GetIntoGame,
+
 	// [...]
 };
 
@@ -169,8 +181,8 @@ enum GamedllFunc_CSGameRules
 	RG_CSGameRules_GiveC4,
 	RG_CSGameRules_ChangeLevel,
 	RG_CSGameRules_GoToIntermission,
-
 	RG_CSGameRules_BalanceTeams,
+	RG_CSGameRules_OnRoundFreezeEnd,
 
 	// [...]
 };

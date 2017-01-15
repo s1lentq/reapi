@@ -210,7 +210,21 @@ enum GamedllFunc
 	* Description:		-
 	* Params:		(const index, VGUIMenu:menuType, const bitsSlots, szOldMenu[], bool:bForceOldMenu)
 	*/
-	RG_ShowVGUIMenu
+	RG_ShowVGUIMenu,
+
+	/*
+	* Description:		The player buys ammo.
+	* Return type:		bool
+	* Params:		(const index, const weapon_entity, const bool:blinkMoney)
+	*/
+	RG_BuyGunAmmo,
+
+	/*
+	* Description:		-
+	* Return type:		CBaseEntity * (Entity index of weapon)
+	* Params:		(const index, const WeaponIdType:weaponID)
+	*/
+	RG_BuyWeaponByWeaponID
 };
 
 enum GamedllFunc_CBaseAnimating
@@ -394,6 +408,7 @@ enum GamedllFunc_CBasePlayer
 
 	/*
 	* Description:		-
+	* Return type:		CBaseEntity * (Entity index of item)
 	* Params:		(const this, const pszName[])
 	*/
 	RG_CBasePlayer_GiveNamedItem,
@@ -420,7 +435,58 @@ enum GamedllFunc_CBasePlayer
 	* Description:		-
 	* Params:		(const this, ItemID:item, ItemRestType:type)
 	*/
-	RG_CBasePlayer_HasRestrictItem
+	RG_CBasePlayer_HasRestrictItem,
+
+	/*
+	* Description:		It is called when a player threw the shield to the ground.
+	* Params:		(const this, bool:deploy)
+	*/
+	RG_CBasePlayer_DropShield,
+
+	/*
+	* Description:		It is called on the spawn, the attempt to equip player.
+	* Params:		(const this, bool addDefault, bool equipGame)
+	*/
+	RG_CBasePlayer_OnSpawnEquip,
+
+	/*
+	* Description:		The player uses a radio message.
+	*			It is called self-uses radio or throw grenades or on freeze the period end.
+	* Params:		(const this, const msg_id[], const char msg_verbose[], pitch, bool:showIcon)
+	*/
+	RG_CBasePlayer_Radio,
+
+	/*
+	* Description:		VIP player got to the point of rescue.
+	* Params:		(const this)
+	*/
+	RG_CBasePlayer_Disappear,
+
+	/*
+	* Description:		Makes a random player the VIP.
+	* Params:		(const this)
+	*/
+	RG_CBasePlayer_MakeVIP,
+
+	/*
+	* Description:		Makes a random player the bomber.
+	* Return type:		bool
+	* Params:		(const this)
+	*/
+	RG_CBasePlayer_MakeBomber,
+
+	/*
+	* Description:		The player goes into observer mode.
+	* Params:		(const this, Float:vecPosition[3], Float:vecViewAngle[3])
+	*/
+	RG_CBasePlayer_StartObserver,
+
+	/*
+	* Description:		It is called when a player enters the game.
+	* Return type:		bool
+	* Params:		(const this)
+	*/
+	RG_CBasePlayer_GetIntoGame
 
 };
 
@@ -558,7 +624,13 @@ enum GamedllFunc_CSGameRules
 	* Description:		-
 	* Params:		()
 	*/
-	RG_CSGameRules_BalanceTeams
+	RG_CSGameRules_BalanceTeams,
+
+	/*
+	* Description:		It's called on freeze the period end.
+	* Params:		()
+	*/
+	RG_CSGameRules_OnRoundFreezeEnd
 };
 
 // CSGameRules

@@ -371,6 +371,88 @@ void CBasePlayer_DropPlayerItem(IReGameHook_CBasePlayer_DropPlayerItem *chain, C
 	callVoidForward(RG_CBasePlayer_DropPlayerItem, original, indexOfEdict(pthis->pev), pszItemName);
 }
 
+void CBasePlayer_DropShield(IReGameHook_CBasePlayer_DropShield *chain, CBasePlayer *pthis, bool bDeploy)
+{
+	auto original = [chain](int _pthis, bool _bDeploy)
+	{
+		chain->callNext(getPrivate<CBasePlayer>(_pthis), _bDeploy);
+	};
+
+	callVoidForward(RG_CBasePlayer_DropShield, original, indexOfEdict(pthis->pev), bDeploy);
+}
+
+void CBasePlayer_OnSpawnEquip(IReGameHook_CBasePlayer_OnSpawnEquip *chain, CBasePlayer *pthis, bool addDefault, bool equipGame)
+{
+	auto original = [chain](int _pthis, bool _addDefault, bool _equipGame)
+	{
+		chain->callNext(getPrivate<CBasePlayer>(_pthis), _addDefault, _equipGame);
+	};
+
+	callVoidForward(RG_CBasePlayer_OnSpawnEquip, original, indexOfEdict(pthis->pev), addDefault, equipGame);
+}
+
+void CBasePlayer_Radio(IReGameHook_CBasePlayer_Radio *chain, CBasePlayer *pthis, const char *msg_id, const char *msg_verbose, short pitch, bool showIcon)
+{
+	auto original = [chain](int _pthis, const char *_msg_id, const char *_msg_verbose, short _pitch, bool _showIcon)
+	{
+		chain->callNext(getPrivate<CBasePlayer>(_pthis), _msg_id, _msg_verbose, _pitch, _showIcon);
+	};
+
+	callVoidForward(RG_CBasePlayer_Radio, original, indexOfEdict(pthis->pev), msg_id, msg_verbose, pitch, showIcon);
+}
+
+void CBasePlayer_Disappear(IReGameHook_CBasePlayer_Disappear *chain, CBasePlayer *pthis)
+{
+	auto original = [chain](int _pthis)
+	{
+		chain->callNext(getPrivate<CBasePlayer>(_pthis));
+	};
+
+	callVoidForward(RG_CBasePlayer_Disappear, original, indexOfEdict(pthis->pev));
+}
+
+void CBasePlayer_MakeVIP(IReGameHook_CBasePlayer_MakeVIP *chain, CBasePlayer *pthis)
+{
+	auto original = [chain](int _pthis)
+	{
+		chain->callNext(getPrivate<CBasePlayer>(_pthis));
+	};
+
+	callVoidForward(RG_CBasePlayer_MakeVIP, original, indexOfEdict(pthis->pev));
+}
+
+bool CBasePlayer_MakeBomber(IReGameHook_CBasePlayer_MakeBomber *chain, CBasePlayer *pthis)
+{
+	auto original = [chain](int _pthis)
+	{
+		return chain->callNext(getPrivate<CBasePlayer>(_pthis));
+	};
+
+	return callForward<bool>(RG_CBasePlayer_MakeBomber, original, indexOfEdict(pthis->pev));
+}
+
+void CBasePlayer_StartObserver(IReGameHook_CBasePlayer_StartObserver *chain, CBasePlayer *pthis, Vector &vecPosition, Vector &vecViewAngle)
+{
+	Vector vecPositionCopy(vecPosition), vecViewAngleCopy(vecViewAngle);
+
+	auto original = [chain, &vecPositionCopy, &vecViewAngleCopy](int _pthis, cell _vecPosition, cell _vecViewAngle)
+	{
+		chain->callNext(getPrivate<CBasePlayer>(_pthis), vecPositionCopy, vecViewAngleCopy);
+	};
+
+	callVoidForward(RG_CBasePlayer_StartObserver, original, indexOfEdict(pthis->pev), g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecPosition), 3, true), g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecViewAngle), 3, true));
+}
+
+bool CBasePlayer_GetIntoGame(IReGameHook_CBasePlayer_GetIntoGame *chain, CBasePlayer *pthis)
+{
+	auto original = [chain](int _pthis)
+	{
+		return chain->callNext(getPrivate<CBasePlayer>(_pthis));
+	};
+
+	return callForward<bool>(RG_CBasePlayer_GetIntoGame, original, indexOfEdict(pthis->pev));
+}
+
 void CBaseAnimating_ResetSequenceInfo(IReGameHook_CBaseAnimating_ResetSequenceInfo *chain, CBaseAnimating *pthis)
 {
 	auto original = [chain](int _pthis)
@@ -665,6 +747,16 @@ void CSGameRules_BalanceTeams(IReGameHook_CSGameRules_BalanceTeams *chain)
 	callVoidForward(RG_CSGameRules_BalanceTeams, original);
 }
 
+void CSGameRules_OnRoundFreezeEnd(IReGameHook_CSGameRules_OnRoundFreezeEnd *chain)
+{
+	auto original = [chain]()
+	{
+		chain->callNext();
+	};
+
+	callVoidForward(RG_CSGameRules_OnRoundFreezeEnd, original);
+}
+
 void HandleMenu_ChooseAppearance(IReGameHook_HandleMenu_ChooseAppearance *chain, CBasePlayer *pPlayer, int slot)
 {
 	auto original = [chain](int _pPlayer, int _slot)
@@ -703,6 +795,26 @@ void ShowVGUIMenu(IReGameHook_ShowVGUIMenu *chain, CBasePlayer *pPlayer, int Men
 	};
 
 	callVoidForward(RG_ShowVGUIMenu, original, indexOfEdict(pPlayer->pev), MenuType, BitMask, szOldMenu);
+}
+
+bool BuyGunAmmo(IReGameHook_BuyGunAmmo *chain, CBasePlayer *player, CBasePlayerItem *weapon, bool bBlinkMoney)
+{
+	auto original = [chain](int _player, int _weapon, bool _bBlinkMoney)
+	{
+		return chain->callNext(getPrivate<CBasePlayer>(_player), getPrivate<CBasePlayerItem>(_weapon), _bBlinkMoney);
+	};
+
+	return callForward<bool>(RG_BuyGunAmmo, original, indexOfEdict(player->pev), indexOfEdict(weapon->pev), bBlinkMoney);
+}
+
+CBaseEntity *BuyWeaponByWeaponID(IReGameHook_BuyWeaponByWeaponID *chain, CBasePlayer *pPlayer, WeaponIdType weaponID)
+{
+	auto original = [chain](int _pPlayer, WeaponIdType _weaponID)
+	{
+		return indexOfPDataAmx(chain->callNext(getPrivate<CBasePlayer>(_pPlayer), _weaponID));
+	};
+
+	return getPrivate<CBaseEntity>(callForward<size_t>(RG_BuyWeaponByWeaponID, original, indexOfEdict(pPlayer->pev), weaponID));
 }
 
 int g_iClientStartSpeak, g_iClientStopSpeak;

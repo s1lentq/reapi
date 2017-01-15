@@ -1,9 +1,11 @@
 #include "precompiled.h"
 
 inline size_t getFwdParamType(void(*)(int))			{ return FP_CELL; }
+inline size_t getFwdParamType(void(*)(short))			{ return FP_CELL; }
 inline size_t getFwdParamType(void(*)(bool))			{ return FP_CELL; }
 inline size_t getFwdParamType(void(*)(Vector&))			{ return FP_ARRAY; }
 inline size_t getFwdParamType(void(*)(PLAYER_ANIM))		{ return FP_CELL; }
+inline size_t getFwdParamType(void(*)(WeaponIdType))		{ return FP_CELL; }
 inline size_t getFwdParamType(void(*)(RewardType))		{ return FP_CELL; }
 inline size_t getFwdParamType(void(*)(ScenarioEventEndRound))	{ return FP_CELL; }
 inline size_t getFwdParamType(void(*)(ItemID))			{ return FP_CELL; }
@@ -84,6 +86,8 @@ hook_t hooklist_gamedll[] = {
 	DLL(HandleMenu_ChooseTeam),
 	DLL(ShowMenu),
 	DLL(ShowVGUIMenu),
+	DLL(BuyGunAmmo),
+	DLL(BuyWeaponByWeaponID),
 };
 
 hook_t hooklist_animating[] = {
@@ -124,6 +128,14 @@ hook_t hooklist_player[] = {
 	DLL(CBasePlayer_GiveShield),
 	DLL(CBasePlayer_DropPlayerItem),
 	DLL(CBasePlayer_HasRestrictItem),
+	DLL(CBasePlayer_DropShield),
+	DLL(CBasePlayer_OnSpawnEquip),
+	DLL(CBasePlayer_Radio),
+	DLL(CBasePlayer_Disappear),
+	DLL(CBasePlayer_MakeVIP),
+	DLL(CBasePlayer_MakeBomber),
+	DLL(CBasePlayer_StartObserver),
+	DLL(CBasePlayer_GetIntoGame),
 };
 
 hook_t hooklist_gamerules[] = {
@@ -149,6 +161,7 @@ hook_t hooklist_gamerules[] = {
 	DLL(CSGameRules_ChangeLevel),
 	DLL(CSGameRules_GoToIntermission),
 	DLL(CSGameRules_BalanceTeams),
+	DLL(CSGameRules_OnRoundFreezeEnd),
 };
 
 hook_t* hooklist_t::getHookSafe(size_t hook)
