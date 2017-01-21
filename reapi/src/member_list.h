@@ -26,18 +26,9 @@ enum MType
 	MEBMER_USERCMD,			// struct usercmd_s
 };
 
-struct member_t
-{
-	uint16 size;
-	uint16 max_size;
-	uint32 offset;
-	const char *name;
-	MType type;
-};
-
 struct memberlist_t
 {
-	member_t *operator[](size_t members) const;
+	struct member_t *operator[](size_t members) const;
 
 	enum members_tables_e
 	{
@@ -58,6 +49,49 @@ struct memberlist_t
 		mt_armoury
 	};
 };
+
+struct member_t
+{
+	bool hasTable(memberlist_t::members_tables_e tbl) const;
+	bool isTypeReturnable() const;
+
+	uint16 size;
+	uint16 max_size;
+	uint32 offset;
+	const char *name;
+	MType type;
+	memberlist_t::members_tables_e table;
+};
+
+inline bool member_t::hasTable(memberlist_t::members_tables_e tbl) const
+{
+	if (likely(table != tbl))
+		return false;
+
+	return true;
+}
+
+inline bool member_t::isTypeReturnable() const
+{
+	switch (type) {
+	case MEMBER_FLOAT:
+	case MEMBER_DOUBLE:
+	case MEMBER_ENTITY:
+	case MEMBER_CLASSPTR:
+	case MEMBER_EDICT:
+	case MEMBER_INTEGER:
+	case MEMBER_SHORT:
+	case MEMBER_BYTE:
+	case MEMBER_BOOL:
+	case MEMBER_EVARS:
+	case MEMBER_PMTRACE:
+	case MEBMER_USERCMD:
+		return true;
+
+	default:
+		return false;
+	}
+}
 
 extern memberlist_t memberlist;
 

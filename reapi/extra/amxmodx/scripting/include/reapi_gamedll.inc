@@ -127,7 +127,7 @@ native rg_add_account(const index, amount, AccountSet:typeSet = AS_ADD, const bo
 * @param pszName	Classname item
 * @param type		Look at the enum's with name GiveType
 *
-* @return		1 if successfully, 0 otherwise
+* @return		Index of entity if successfully, -1 otherwise
 */
 native rg_give_item(const index, const pszName[], GiveType:type = GT_APPEND);
 
@@ -259,7 +259,7 @@ native rg_update_teamscores(const iCtsWins = 0, const iTsWins = 0, const bool:bA
 /*
 * Creates an entity using Counter-Strike's custom CreateNamedEntity wrapper.
 *
-* @param classname		Entity class name
+* @param classname		Entity classname
 * @param useHashTable		Use this only for known game entities.
 *				NOTE: Do not use this if you use a custom classname.
 *
@@ -338,20 +338,55 @@ native any:rg_get_weapon_info(any:...);
 native rg_set_weapon_info(const {WeaponIdType,_}:weapon_id, WpnInfo:type, any:...);
 
 /*
-* Remove all the player's stuff
+* Remove all the player's stuff by specific slot.
 *
 * @param index		Client index
+* @param slot		Specific slot for remove of each item.
 *
-* @noreturn
+* @return		1 if successfully, 0 otherwise
 *
 */
-native rg_remove_all_items(const index, const bool:bRemoveSuit = false);
+native rg_remove_items_by_slot(const index, const InventorySlotType:slot);
 
 /*
-* Remove specifed the player's item by class name
+* Remove all the player's stuff.
 *
 * @param index		Client index
-* @param item_name	Class name item
+* @param removeSuit	Remove suit
+*
+* @return		1 if successfully, 0 otherwise
+*
+*/
+native rg_remove_all_items(const index, const bool:removeSuit = false);
+
+/*
+* Drop specifed the player's item by classname.
+*
+* @param index		Client index
+* @param item_name	Classname of item
+*
+* @return		1 if successfully, 0 otherwise
+*
+*/
+native rg_drop_item(const index, const item_name[]);
+
+/*
+* Execute a client command on the gamedll side.
+*
+* @param index		Client index
+* @param command	Client command to execute on
+* @param arg		Optional command arguments
+*
+* @return		1 if successfully, 0 otherwise
+*
+*/
+native rg_internal_cmd(const index, const cmd[], const arg[] = "");
+
+/*
+* Remove specifed the player's item by classname
+*
+* @param index		Client index
+* @param item_name	Classname of item
 *
 * @return		1 if found and remove, 0 otherwise
 *
@@ -455,6 +490,27 @@ native rg_set_user_model(const index, const model[], const bool:update_index = f
 *
 */
 native rg_reset_user_model(const index);
+
+/*
+* Enable/Disable footsteps of the player.
+*
+* @param index		Client index
+* @param silent		To enable silent footsteps of player's
+*
+* @return		1 if successfully, 0 otherwise
+*
+*/
+native rg_set_user_footsteps(const index, bool:silent = false);
+
+/*
+* Get the current state footsteps of the player.
+*
+* @param index		Client index
+*
+* @return		1 if have silent footsteps, 0 otherwise
+*
+*/
+native rg_get_user_footsteps(const index);
 
 /*
 * Transfer C4 to player

@@ -62,7 +62,7 @@ enum GiveType { GT_APPEND, GT_REPLACE, GT_DROP_AND_REPLACE };
 * @param pszName	Classname item
 * @param type		Look at the enum's with name GiveType
 *
-* @return		1 if successfully, 0 otherwise
+* @return		Index of entity if successfully, -1 otherwise
 *
 * native rg_give_item(index, const pszName[], GiveType:type = GT_APPEND);
 */
@@ -81,36 +81,38 @@ cell AMX_NATIVE_CALL rg_give_item(AMX *amx, cell *params)
 	if (type > GT_APPEND) {
 
 		auto pInfo = g_ReGameApi->GetWeaponSlot(itemName);
-		if (pInfo != nullptr)
+		if (pInfo)
 		{
-			auto pItem = pPlayer->m_rgpPlayerItems[ pInfo->slot ];
-			while (pItem != nullptr) {
-				if (pItem->m_iId == pInfo->id) {
-					pItem = pItem->m_pNext;
-					continue;
-				}
-
-				switch (type)
+			pPlayer->ForEachItem(pInfo->slot, [pPlayer, pInfo, type](CBasePlayerItem *pItem)
+			{
+				if (pItem->m_iId != pInfo->id)
 				{
-				case GT_DROP_AND_REPLACE:
-					pPlayer->CSPlayer()->DropPlayerItem(STRING(pItem->pev->classname));
-					break;
-				case GT_REPLACE:
-					pPlayer->pev->weapons &= ~(1 << pItem->m_iId);
-					pPlayer->RemovePlayerItem(pItem);
-					pItem->Kill();
-					break;
-				case GT_APPEND: break;
-				default: break;
+					switch (type)
+					{
+					case GT_DROP_AND_REPLACE:
+						pPlayer->CSPlayer()->DropPlayerItem(STRING(pItem->pev->classname));
+						break;
+					case GT_REPLACE:
+						pPlayer->pev->weapons &= ~(1 << pItem->m_iId);
+						pPlayer->RemovePlayerItem(pItem);
+						pItem->Kill();
+						break;
+					case GT_APPEND:
+					default:
+						break;
+					}
 				}
 
-				pItem = pItem->m_pNext;
-			}
+				return false;
+			});
 		}
 	}
 
-	pPlayer->CSPlayer()->GiveNamedItemEx(itemName);
-	return TRUE;
+	auto pEntity = pPlayer->CSPlayer()->GiveNamedItemEx(itemName);
+	if (pEntity)
+		return indexOfPDataAmx(pEntity);
+
+	return AMX_NULLENT;
 }
 
 /*
@@ -388,7 +390,7 @@ cell AMX_NATIVE_CALL rg_round_end(AMX *amx, cell *params)
 
 	CHECK_GAMERULES();
 
-	size_t winstatus = params[arg_win];
+	auto winstatus = params[arg_win];
 	if (winstatus <= 0) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown win status %i", __FUNCTION__, winstatus);
 		return FALSE;
@@ -411,9 +413,7 @@ cell AMX_NATIVE_CALL rg_round_end(AMX *amx, cell *params)
 	if (_sentence[0])
 		Broadcast(_sentence);
 
-	if (_message[0])
-		CSGameRules()->EndRoundMessage(_message, event);
-
+	CSGameRules()->EndRoundMessage(_message, event);
 	CSGameRules()->TerminateRound(CAmxArg(amx, params[arg_delay]), winstatus);
 	return TRUE;
 }
@@ -445,7 +445,7 @@ cell AMX_NATIVE_CALL rg_update_teamscores(AMX *amx, cell *params)
 /*
 * Creates an entity using Counter-Strike's custom CreateNamedEntity wrapper.
 *
-* @param classname		Entity class name
+* @param classname		Entity classname
 * @param useHashTable		Use this only for known game entities.
 *				NOTE: Do not use this if you use a custom classname.
 *
@@ -787,13 +787,43 @@ cell AMX_NATIVE_CALL rg_set_weapon_info(AMX *amx, cell *params)
 }
 
 /*
+* Remove all the player's stuff by specific slot.
+*
+* @param index		Client index
+* @param slot		Specific slot for remove of each item.
+*
+* @return		1 if successfully, 0 otherwise
+*
+* native rg_remove_items_by_slot(const index, const InventorySlotType:slot);
+*/
+cell AMX_NATIVE_CALL rg_remove_items_by_slot(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_slot };
+
+	CHECK_ISPLAYER(arg_index);
+
+	CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_index]);
+	CHECK_CONNECTED(pPlayer, arg_index);
+
+	pPlayer->ForEachItem(params[arg_slot], [pPlayer](CBasePlayerItem *pItem) {
+		pPlayer->pev->weapons &= ~(1 << pItem->m_iId);
+		pPlayer->RemovePlayerItem(pItem);
+		pItem->Kill();
+		return false;
+	});
+
+	return TRUE;
+}
+
+/*
 * Remove all the player's stuff
 *
 * @param index		Client index
+* @param removeSuit	Remove suit
 *
-* @noreturn
+* @return		1 if successfully, 0 otherwise
 *
-* native rg_remove_all_items(const index, const bool:bRemoveSuit);
+* native rg_remove_all_items(const index, const bool:removeSuit = false);
 */
 cell AMX_NATIVE_CALL rg_remove_all_items(AMX *amx, cell *params)
 {
@@ -809,12 +839,60 @@ cell AMX_NATIVE_CALL rg_remove_all_items(AMX *amx, cell *params)
 }
 
 /*
-* Remove specifed the player's item by class name
+* Drop specifed the player's item by classname.
 *
 * @param index		Client index
-* @param item_name	Class name item
+* @param item_name	Classname of item
 *
-* @noreturn
+* @return		1 if successfully, 0 otherwise
+*
+* native rg_drop_item(const index, const item_name[]);
+*/
+cell AMX_NATIVE_CALL rg_drop_item(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_item_name };
+
+	CHECK_ISPLAYER(arg_index);
+
+	CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_index]);
+	CHECK_CONNECTED(pPlayer, arg_index);
+
+	pPlayer->CSPlayer()->DropPlayerItem(getAmxString(amx, params[arg_item_name]));
+	return TRUE;
+}
+
+/*
+* Execute a client command on the gamedll side.
+*
+* @param index		Client index
+* @param command	Client command to execute on
+* @param arg		Optional command arguments
+*
+* @return		1 if successfully, 0 otherwise
+*
+* native rg_internal_cmd(const index, const cmd[], const arg[] = "");
+*/
+cell AMX_NATIVE_CALL rg_internal_cmd(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_cmd, arg_arg };
+
+	CHECK_ISPLAYER(arg_index);
+
+	CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_index]);
+	CHECK_CONNECTED(pPlayer, arg_index);
+
+	pPlayer->CSPlayer()->ClientCommand(getAmxString(amx, params[arg_cmd]), getAmxString(amx, params[arg_arg]));
+
+	return TRUE;
+}
+
+/*
+* Remove specifed the player's item by classname.
+*
+* @param index		Client index
+* @param item_name	Classname of item
+*
+* @return		1 if successfully, 0 otherwise
 *
 * native rg_remove_item(const index, const item_name[]);
 */
@@ -861,16 +939,12 @@ cell AMX_NATIVE_CALL rg_get_user_bpammo(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	for (auto pItem : pPlayer->m_rgpPlayerItems)
-	{
-		while (pItem != nullptr)
-		{
-			if (pItem->m_iId == weaponId) {
-				return pPlayer->m_rgAmmo[ static_cast<CBasePlayerWeapon *>(pItem)->m_iPrimaryAmmoType ];
-			}
+	auto itemFound = (CBasePlayerWeapon *)pPlayer->ForEachItem([pPlayer, weaponId](CBasePlayerItem *pItem) {
+		return pItem->m_iId == weaponId;
+	});
 
-			pItem = pItem->m_pNext;
-		}
+	if (itemFound) {
+		return (cell)pPlayer->m_rgAmmo[ itemFound->m_iPrimaryAmmoType ];
 	}
 
 	return FALSE;
@@ -903,17 +977,13 @@ cell AMX_NATIVE_CALL rg_set_user_bpammo(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	for (auto pItem : pPlayer->m_rgpPlayerItems)
-	{
-		while (pItem != nullptr)
-		{
-			if (pItem->m_iId == weaponId) {
-				pPlayer->m_rgAmmo[ static_cast<CBasePlayerWeapon *>(pItem)->m_iPrimaryAmmoType ] = params[arg_amount];
-				return TRUE;
-			}
+	auto itemFound = (CBasePlayerWeapon *)pPlayer->ForEachItem([pPlayer, weaponId](CBasePlayerItem *pItem) {
+		return pItem->m_iId == weaponId;
+	});
 
-			pItem = pItem->m_pNext;
-		}
+	if (itemFound) {
+		pPlayer->m_rgAmmo[ itemFound->m_iPrimaryAmmoType ] = params[arg_amount];
+		return TRUE;
 	}
 
 	return FALSE;
@@ -1183,6 +1253,57 @@ cell AMX_NATIVE_CALL rg_reset_user_model(AMX *amx, cell *params)
 	pPlayer->CSPlayer()->SetPlayerModelEx("");
 	pPlayer->CSPlayer()->SetPlayerModel(pPlayer->m_bHasC4);
 	return TRUE;
+}
+
+/*
+* Enable/Disable footsteps of the player.
+*
+* @param index		Client index
+* @param silent		To enable silent footsteps of player's
+*
+* @return		1 if successfully, 0 otherwise
+*
+* native rg_set_user_footsteps(const index, bool:silent = false);
+*/
+cell AMX_NATIVE_CALL rg_set_user_footsteps(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_silent };
+
+	CHECK_ISPLAYER(arg_index);
+
+	CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_index]);
+	CHECK_CONNECTED(pPlayer, arg_index);
+
+	if (params[arg_silent]) {
+		pPlayer->m_flTimeStepSound = 999;
+		pPlayer->pev->flTimeStepSound = 999;
+	} else {
+		pPlayer->m_flTimeStepSound = 0;
+		pPlayer->pev->flTimeStepSound = 400;
+	}
+
+	return TRUE;
+}
+
+/*
+* Get the current state footsteps of the player.
+*
+* @param index		Client index
+*
+* @return		1 if have silent footsteps, 0 otherwise
+*
+* native rg_get_user_footsteps(const index);
+*/
+cell AMX_NATIVE_CALL rg_get_user_footsteps(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index };
+
+	CHECK_ISPLAYER(arg_index);
+
+	CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_index]);
+	CHECK_CONNECTED(pPlayer, arg_index);
+
+	return (cell)(pPlayer->m_flTimeStepSound == 999);
 }
 
 /*
@@ -1654,21 +1775,25 @@ AMX_NATIVE_INFO Misc_Natives_RG[] =
 	{ "rg_get_weapon_info", rg_get_weapon_info },
 	{ "rg_set_weapon_info", rg_set_weapon_info },
 
+	{ "rg_remove_items_by_slot", rg_remove_items_by_slot },
 	{ "rg_remove_all_items", rg_remove_all_items },
 	{ "rg_remove_item", rg_remove_item },
+	{ "rg_drop_item", rg_drop_item },
+	{ "rg_internal_cmd", rg_internal_cmd },
+
+	{ "rg_give_defusekit", rg_give_defusekit },
 
 	{ "rg_get_user_bpammo", rg_get_user_bpammo },
 	{ "rg_set_user_bpammo", rg_set_user_bpammo },
 
-	{ "rg_give_defusekit", rg_give_defusekit },
-
 	{ "rg_get_user_armor", rg_get_user_armor },
 	{ "rg_set_user_armor", rg_set_user_armor },
-
 	{ "rg_set_user_team", rg_set_user_team },
-
 	{ "rg_set_user_model", rg_set_user_model },
 	{ "rg_reset_user_model", rg_reset_user_model },
+
+	{ "rg_set_user_footsteps", rg_set_user_footsteps },
+	{ "rg_get_user_footsteps", rg_get_user_footsteps },
 
 	{ "rg_transfer_c4", rg_transfer_c4 },
 	{ "rg_instant_reload_weapons", rg_instant_reload_weapons },

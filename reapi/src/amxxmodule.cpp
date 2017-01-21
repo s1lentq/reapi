@@ -42,7 +42,7 @@ static struct funcreq_t
 	//DECLARE_REQ(BuildPathname),
 	//DECLARE_REQ(BuildPathnameR),
 	DECLARE_REQ(GetAmxAddr),
-	//DECLARE_REQ(GetAmxVectorNull),
+	//DECLARE_REQ(GetAmxVectorNull),			// AMXX 1.8.3-dev
 	//DECLARE_REQ(PrintSrvConsole),
 	//DECLARE_REQ(GetModname),
 	DECLARE_REQ(GetAmxScriptName),
@@ -50,10 +50,10 @@ static struct funcreq_t
 	DECLARE_REQ(FindAmxScriptByAmx),
 	//DECLARE_REQ(FindAmxScriptByName),
 	DECLARE_REQ(SetAmxString),
-	//DECLARE_REQ(SetAmxStringUTF8Char),
-	//DECLARE_REQ(SetAmxStringUTF8Cell),
+	//DECLARE_REQ(SetAmxStringUTF8Char),			// AMXX 1.8.3-dev
+	//DECLARE_REQ(SetAmxStringUTF8Cell),			// AMXX 1.8.3-dev
 	DECLARE_REQ(GetAmxString),
-	//DECLARE_REQ(GetAmxStringNull),
+	//DECLARE_REQ(GetAmxStringNull),			// AMXX 1.8.3-dev
 	//DECLARE_REQ(GetAmxStringLen),
 	//DECLARE_REQ(FormatAmxString),
 	//DECLARE_REQ(CopyAmxMemory),
@@ -97,7 +97,7 @@ static struct funcreq_t
 	DECLARE_REQ(RegisterSPForward),
 	DECLARE_REQ(RegisterSPForwardByName),
 	DECLARE_REQ(UnregisterSPForward),
-	//DECLARE_REQ(MergeDefinition_File),
+	//DECLARE_REQ(MergeDefinitionFile),
 	//DECLARE_REQ(amx_FindNative),
 	//DECLARE_REQ(GetPlayerFlags),
 	//DECLARE_REQ(GetPlayerEdict),
@@ -114,7 +114,7 @@ static struct funcreq_t
 	//DECLARE_REQ(RemoveLibraries),
 	//DECLARE_REQ(OverrideNatives),
 	//DECLARE_REQ(GetLocalInfo),
-	//DECLARE_REQ(AmxReRegister),
+	//DECLARE_REQ(AmxReregister),
 	//DECLARE_REQ(RegisterFunctionEx),
 	//DECLARE_REQ(MessageBlock),
 };

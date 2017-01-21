@@ -20,10 +20,9 @@ cell AMX_NATIVE_CALL set_member(AMX *amx, cell *params)
 	cell* value = getAmxAddr(amx, params[arg_value]);
 	size_t element = (PARAMS_COUNT == 4) ? *getAmxAddr(amx, params[arg_elem]) : 0;
 
-	const auto table = memberlist_t::members_tables_e(params[arg_member] / MAX_REGION_RANGE);
-	if (table == memberlist_t::mt_csplayer) {
-		CBasePlayer *pPlayer = UTIL_PlayerByIndex(indexOfEdict(pEdict));
-		if (unlikely(!pPlayer || !pPlayer->CSPlayer())) {
+	if (member->hasTable(memberlist_t::mt_csplayer)) {
+		CBasePlayer *pPlayer = (CBasePlayer *)pEdict->pvPrivateData;
+		if (unlikely(pPlayer->CSPlayer() == nullptr)) {
 			return FALSE;
 		}
 
@@ -69,8 +68,7 @@ cell AMX_NATIVE_CALL get_member(AMX *amx, cell *params)
 	case 3:
 	{
 		cell* arg3 = getAmxAddr(amx, params[arg_3]);
-
-		if (isTypeReturnable(member->type)) {
+		if (member->isTypeReturnable()) {
 			dest = nullptr;
 			element = *arg3;
 		}
@@ -88,10 +86,9 @@ cell AMX_NATIVE_CALL get_member(AMX *amx, cell *params)
 		break;
 	}
 
-	const auto table = memberlist_t::members_tables_e(params[arg_member] / MAX_REGION_RANGE);
-	if (table == memberlist_t::mt_csplayer) {
-		CBasePlayer *pPlayer = UTIL_PlayerByIndex(indexOfEdict(pEdict));
-		if (!pPlayer || !pPlayer->CSPlayer()) {
+	if (member->hasTable(memberlist_t::mt_csplayer)) {
+		CBasePlayer *pPlayer = (CBasePlayer *)pEdict->pvPrivateData;
+		if (unlikely(pPlayer->CSPlayer() == nullptr)) {
 			return FALSE;
 		}
 
@@ -140,7 +137,7 @@ cell AMX_NATIVE_CALL get_member_game(AMX *amx, cell *params)
 	if (PARAMS_COUNT == 2)
 	{
 		cell* arg3 = getAmxAddr(amx, params[arg_2]);
-		if (isTypeReturnable(member->type)) {
+		if (member->isTypeReturnable()) {
 			dest = nullptr;
 			element = *arg3;
 		}
@@ -213,7 +210,7 @@ cell AMX_NATIVE_CALL get_entvar(AMX *amx, cell *params)
 	else if (PARAMS_COUNT == 3) {
 		cell* arg3 = getAmxAddr(amx, params[arg_3]);
 
-		if (isTypeReturnable(member->type))
+		if (member->isTypeReturnable())
 		{
 			if (member->type == MEMBER_FLOAT) {
 				dest = arg3;
@@ -701,26 +698,4 @@ cell get_member(void* pdata, const member_t *member, cell* dest, size_t element,
 	}
 
 	return 0;
-}
-
-bool isTypeReturnable(MType type)
-{
-	switch (type) {
-	case MEMBER_FLOAT:
-	case MEMBER_DOUBLE:
-	case MEMBER_ENTITY:
-	case MEMBER_CLASSPTR:
-	case MEMBER_EDICT:
-	case MEMBER_INTEGER:
-	case MEMBER_SHORT:
-	case MEMBER_BYTE:
-	case MEMBER_BOOL:
-	case MEMBER_EVARS:
-	case MEMBER_PMTRACE:
-	case MEBMER_USERCMD:
-		return true;
-
-	default:
-		return false;
-	}
 }
