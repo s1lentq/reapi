@@ -60,5 +60,6 @@
 #include "natives_hookchains.h"
 #include "natives_members.h"
 #include "natives_misc.h"
+#include "natives_common.h"
 #include "natives_addons.h"
 #include "natives_helper.h"

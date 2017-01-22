@@ -42,7 +42,7 @@ enum members_tables_e
 };
 
 // is like FNullEnt
-#define is_nullent(%0)			(is_entity(%0) == false)
+#define is_nullent(%0)			(%0 != 0 && is_entity(%0) == false)
 
 #define MAX_REGION_RANGE		1024
 
@@ -147,6 +147,15 @@ native any:GetHookChainReturn(AType:type, any:...);
 *
 */
 native SetHookChainArg(number, AType:type, any:...);
+
+/*
+* Compares the entity to specified a classname.
+* @note This native also checks the validity of an entity.
+*
+* @return		true/false
+*
+*/
+native bool:FClassnameIs(const entityIndex, const className[]);
 
 /*
 * Check if the entity is valid

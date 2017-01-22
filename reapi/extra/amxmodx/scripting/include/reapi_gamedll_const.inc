@@ -452,7 +452,7 @@ enum GamedllFunc_CBasePlayer
 	/*
 	* Description:		The player uses a radio message.
 	*			It is called self-uses radio or throw grenades or on freeze the period end.
-	* Params:		(const this, const msg_id[], const char msg_verbose[], pitch, bool:showIcon)
+	* Params:		(const this, const msg_id[], const msg_verbose[], pitch, bool:showIcon)
 	*/
 	RG_CBasePlayer_Radio,
 

@@ -666,6 +666,9 @@
     <ClInclude Include="..\version\appversion.h">
       <Filter>version</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\natives\natives_common.h">
+      <Filter>src\natives</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\include\cssdk\common\parsemsg.cpp">
@@ -748,6 +751,9 @@
     </ClCompile>
     <ClCompile Include="..\version\version.cpp">
       <Filter>version</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\natives\natives_common.cpp">
+      <Filter>src\natives</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

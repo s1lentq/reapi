@@ -672,7 +672,7 @@ native rg_reset_maxspeed(const index);
 * @noreturn
 *
 */
-native rg_send_bartime(const index, const Float:duration, const bool:observer = true);
+native rg_send_bartime(const index, const duration, const bool:observer = true);
 
 /*
 * Same as BarTime, but StartPercent specifies how much of the bar is (already) filled.
@@ -685,7 +685,7 @@ native rg_send_bartime(const index, const Float:duration, const bool:observer = 
 * @noreturn
 *
 */
-native rg_send_bartime2(const index, const Float:duration, const Float:startPercent, const bool:observer = true);
+native rg_send_bartime2(const index, const duration, const startPercent, const bool:observer = true);
 
 /*
 * Sends the message SendAudio - plays the specified audio

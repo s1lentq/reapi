@@ -20,7 +20,7 @@ cell AMX_NATIVE_CALL set_member(AMX *amx, cell *params)
 	cell* value = getAmxAddr(amx, params[arg_value]);
 	size_t element = (PARAMS_COUNT == 4) ? *getAmxAddr(amx, params[arg_elem]) : 0;
 
-	if (member->hasTable(memberlist_t::mt_csplayer)) {
+	if (member->hasTable(params[arg_member], memberlist_t::mt_csplayer)) {
 		CBasePlayer *pPlayer = (CBasePlayer *)pEdict->pvPrivateData;
 		if (unlikely(pPlayer->CSPlayer() == nullptr)) {
 			return FALSE;
@@ -86,7 +86,7 @@ cell AMX_NATIVE_CALL get_member(AMX *amx, cell *params)
 		break;
 	}
 
-	if (member->hasTable(memberlist_t::mt_csplayer)) {
+	if (member->hasTable(params[arg_member], memberlist_t::mt_csplayer)) {
 		CBasePlayer *pPlayer = (CBasePlayer *)pEdict->pvPrivateData;
 		if (unlikely(pPlayer->CSPlayer() == nullptr)) {
 			return FALSE;

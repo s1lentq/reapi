@@ -208,6 +208,7 @@
     <ClInclude Include="..\src\mods\mod_rehlds_api.h" />
     <ClInclude Include="..\src\mods\mod_reunion_api.h" />
     <ClInclude Include="..\src\mods\mod_vtc_api.h" />
+    <ClInclude Include="..\src\natives\natives_common.h" />
     <ClInclude Include="..\src\natives\natives_helper.h" />
     <ClInclude Include="..\src\natives\natives_hookchains.h" />
     <ClInclude Include="..\src\natives\natives_members.h" />
@@ -250,6 +251,7 @@
     <ClCompile Include="..\src\mods\mod_rehlds_api.cpp" />
     <ClCompile Include="..\src\mods\mod_reunion_api.cpp" />
     <ClCompile Include="..\src\mods\mod_vtc_api.cpp" />
+    <ClCompile Include="..\src\natives\natives_common.cpp" />
     <ClCompile Include="..\src\natives\natives_hookchains.cpp" />
     <ClCompile Include="..\src\natives\natives_members.cpp" />
     <ClCompile Include="..\src\natives\natives_misc.cpp" />

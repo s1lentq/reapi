@@ -52,7 +52,7 @@ struct memberlist_t
 
 struct member_t
 {
-	bool hasTable(memberlist_t::members_tables_e tbl) const;
+	bool hasTable(size_t members, memberlist_t::members_tables_e tbl) const;
 	bool isTypeReturnable() const;
 
 	uint16 size;
@@ -60,11 +60,11 @@ struct member_t
 	uint32 offset;
 	const char *name;
 	MType type;
-	memberlist_t::members_tables_e table;
 };
 
-inline bool member_t::hasTable(memberlist_t::members_tables_e tbl) const
+inline bool member_t::hasTable(size_t members, memberlist_t::members_tables_e tbl) const
 {
+	const auto table = memberlist_t::members_tables_e(members / MAX_REGION_RANGE);
 	if (likely(table != tbl))
 		return false;
 
