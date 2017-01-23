@@ -806,11 +806,22 @@ cell AMX_NATIVE_CALL rg_remove_items_by_slot(AMX *amx, cell *params)
 	CHECK_CONNECTED(pPlayer, arg_index);
 
 	pPlayer->ForEachItem(params[arg_slot], [pPlayer](CBasePlayerItem *pItem) {
-		pPlayer->pev->weapons &= ~(1 << pItem->m_iId);
-		pPlayer->RemovePlayerItem(pItem);
-		pItem->Kill();
+
+		if (pItem->IsWeapon() && pItem == pPlayer->m_pActiveItem) {
+			((CBasePlayerWeapon *)pItem)->RetireWeapon();
+		}
+
+		if (pPlayer->RemovePlayerItem(pItem)) {
+			pPlayer->pev->weapons &= ~(1 << pItem->m_iId);
+			pItem->Kill();
+		}
+
 		return false;
 	});
+
+	if (!pPlayer->m_rgpPlayerItems[PRIMARY_WEAPON_SLOT]) {
+		pPlayer->m_bHasPrimary = false;
+	}
 
 	return TRUE;
 }
