@@ -807,8 +807,12 @@ cell AMX_NATIVE_CALL rg_remove_items_by_slot(AMX *amx, cell *params)
 
 	pPlayer->ForEachItem(params[arg_slot], [pPlayer](CBasePlayerItem *pItem) {
 
-		if (pItem->IsWeapon() && pItem == pPlayer->m_pActiveItem) {
-			((CBasePlayerWeapon *)pItem)->RetireWeapon();
+		if (pItem->IsWeapon()) {
+			if (pItem == pPlayer->m_pActiveItem) {
+				((CBasePlayerWeapon *)pItem)->RetireWeapon();
+			}
+
+			pPlayer->m_rgAmmo[ pItem->PrimaryAmmoIndex() ] = 0;
 		}
 
 		if (pPlayer->RemovePlayerItem(pItem)) {
@@ -890,10 +894,11 @@ cell AMX_NATIVE_CALL rg_internal_cmd(AMX *amx, cell *params)
 	CHECK_ISPLAYER(arg_index);
 
 	CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_index]);
-	CHECK_CONNECTED(pPlayer, arg_index);
+	if (unlikely(pPlayer == nullptr || pPlayer->has_disconnected)) {
+		return FALSE;
+	}
 
 	pPlayer->CSPlayer()->ClientCommand(getAmxString(amx, params[arg_cmd]), getAmxString(amx, params[arg_arg]));
-
 	return TRUE;
 }
 
@@ -1235,7 +1240,7 @@ cell AMX_NATIVE_CALL rg_set_user_model(AMX *amx, cell *params)
 
 	if (params[arg_update] != 0)
 	{
-		char model[260];
+		char model[MAX_PATH];
 		snprintf(model, sizeof(model), "models/player/%s/%s.mdl", newModel, newModel);
 		pPlayer->CSPlayer()->SetNewPlayerModel(model);
 	}
@@ -1247,14 +1252,15 @@ cell AMX_NATIVE_CALL rg_set_user_model(AMX *amx, cell *params)
 * Reset model user
 *
 * @param index		Client index
+* @param update_index	If true, the modelindex is reseted as well
 *
 * @return		1 if successfully, 0 otherwise
 *
-* native rg_reset_user_model(const index);
+* native rg_reset_user_model(const index, const bool:update_index = false);
 */
 cell AMX_NATIVE_CALL rg_reset_user_model(AMX *amx, cell *params)
 {
-	enum args_e { arg_count, arg_index, arg_team, arg_model };
+	enum args_e { arg_count, arg_index, arg_update };
 
 	CHECK_ISPLAYER(arg_index);
 
@@ -1263,6 +1269,17 @@ cell AMX_NATIVE_CALL rg_reset_user_model(AMX *amx, cell *params)
 
 	pPlayer->CSPlayer()->SetPlayerModelEx("");
 	pPlayer->CSPlayer()->SetPlayerModel(pPlayer->m_bHasC4);
+
+	if (params[arg_update] != 0)
+	{
+		char *infobuffer = GET_INFO_BUFFER(pPlayer->edict());
+		char *pModel = GET_KEY_VALUE(infobuffer, "model");
+
+		char model[MAX_PATH];
+		snprintf(model, sizeof(model), "models/player/%s/%s.mdl", pModel, pModel);
+		pPlayer->CSPlayer()->SetNewPlayerModel(model);
+	}
+
 	return TRUE;
 }
 
