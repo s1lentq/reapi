@@ -349,6 +349,17 @@ native rg_set_weapon_info(const {WeaponIdType,_}:weapon_id, WpnInfo:type, any:..
 native rg_remove_items_by_slot(const index, const InventorySlotType:slot);
 
 /*
+* Drop to floor all the player's stuff by specific slot.
+*
+* @param index		Client index
+* @param slot		Specific slot for remove of each item.
+*
+* @return		1 if successfully, 0 otherwise
+*
+*/
+native rg_drop_items_by_slot(const index, const InventorySlotType:slot);
+
+/*
 * Remove all the player's stuff.
 *
 * @param index		Client index

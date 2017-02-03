@@ -831,6 +831,33 @@ cell AMX_NATIVE_CALL rg_remove_items_by_slot(AMX *amx, cell *params)
 }
 
 /*
+* Drop to floor all the player's stuff by specific slot.
+*
+* @param index		Client index
+* @param slot		Specific slot for remove of each item.
+*
+* @return		1 if successfully, 0 otherwise
+*
+* native rg_drop_items_by_slot(const index, const InventorySlotType:slot);
+*/
+cell AMX_NATIVE_CALL rg_drop_items_by_slot(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_slot };
+
+	CHECK_ISPLAYER(arg_index);
+
+	CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_index]);
+	CHECK_CONNECTED(pPlayer, arg_index);
+
+	pPlayer->ForEachItem(params[arg_slot], [pPlayer](CBasePlayerItem *pItem) {
+		pPlayer->CSPlayer()->DropPlayerItem(STRING(pItem->pev->classname));
+		return false;
+	});
+
+	return TRUE;
+}
+
+/*
 * Remove all the player's stuff
 *
 * @param index		Client index
@@ -1803,6 +1830,8 @@ AMX_NATIVE_INFO Misc_Natives_RG[] =
 	{ "rg_set_weapon_info", rg_set_weapon_info },
 
 	{ "rg_remove_items_by_slot", rg_remove_items_by_slot },
+	{ "rg_drop_items_by_slot", rg_drop_items_by_slot },
+
 	{ "rg_remove_all_items", rg_remove_all_items },
 	{ "rg_remove_item", rg_remove_item },
 	{ "rg_drop_item", rg_drop_item },

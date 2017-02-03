@@ -1,5 +1,9 @@
 #include "precompiled.h"
 
+#if _MSC_VER >= 1900
+#pragma warning(disable:4573)
+#endif
+
 #if _MSC_VER <= 1800 && __INTEL_COMPILER < 1500
 	// BUG BUG
 	// http://connect.microsoft.com/VisualStudio/feedbackdetail/view/797682/c-decltype-of-class-member-access-incompletely-implemented

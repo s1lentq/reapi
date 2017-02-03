@@ -55,9 +55,9 @@ struct member_t
 	bool hasTable(size_t members, memberlist_t::members_tables_e tbl) const;
 	bool isTypeReturnable() const;
 
-	uint16 size;
-	uint16 max_size;
-	uint32 offset;
+	size_t size;
+	size_t max_size;
+	size_t offset;
 	const char *name;
 	MType type;
 };
@@ -633,7 +633,7 @@ enum PlayerMove
 	physent_t moveents[MAX_MOVEENTS];		// just a list of ladders
 	pm_numvisent;					// All things being rendered, for tracing against things you don't actually collide with
 	physent_t visents[MAX_PHYSENTS];*/
-	
+
 	pm_cmd,
 	pm_numtouch,
 	//pm_touchindex,
