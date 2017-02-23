@@ -661,7 +661,7 @@ cell AMX_NATIVE_CALL rg_get_weapon_info(AMX *amx, cell *params)
 	WeaponIdType weaponID = static_cast<WeaponIdType>(*getAmxAddr(amx, params[arg_weapon_id]));
 	WpnInfo info_type = static_cast<WpnInfo>(*getAmxAddr(amx, params[arg_type]));
 
-	if (!GetWeaponInfoRange(weaponID) && info_type != WI_ID && weaponID != WEAPON_KNIFE)
+	if (!GetWeaponInfoRange(weaponID, false) && info_type != WI_ID)
 	{
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid weapon id %i", __FUNCTION__, weaponID);
 		return 0;
@@ -752,7 +752,7 @@ cell AMX_NATIVE_CALL rg_set_weapon_info(AMX *amx, cell *params)
 	enum args_e { arg_count, arg_weapon_id, arg_type, arg_value };
 
 	WeaponIdType weaponID = static_cast<WeaponIdType>(params[arg_weapon_id]);
-	if (!GetWeaponInfoRange(weaponID))
+	if (!GetWeaponInfoRange(weaponID, true))
 	{
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid weapon id %i", __FUNCTION__, weaponID);
 		return 0;
