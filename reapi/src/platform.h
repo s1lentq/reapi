@@ -4,6 +4,7 @@
 #ifdef _WIN32
 #define DLLEXPORT __declspec(dllexport)
 #define NOINLINE __declspec(noinline)
+#define snprintf _snprintf
 #else
 #define DLLEXPORT __attribute__((visibility("default")))
 #define NOINLINE __attribute__((noinline))

@@ -11,7 +11,7 @@
 #include <vector>				// std::vector
 
 // platform defs
-#include <platform.h>
+#include "platform.h"
 
 // cssdk
 #include <extdll.h>
