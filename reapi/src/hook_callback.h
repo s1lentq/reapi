@@ -237,7 +237,17 @@ NOINLINE R DLLEXPORT _callForward(const hook_t* hook, original_t original, volat
 		g_hookCtx = hookCtx;
 
 		if (unlikely(!hookCtx->retVal.set)) {
-			hookCtx->retVal._integer = *(int *)&retVal;
+			switch (sizeof retVal) {
+			case sizeof(int8):
+				hookCtx->retVal._integer = *(int8 *)&retVal;
+				break;
+			case sizeof(int16):
+				hookCtx->retVal._integer = *(int16 *)&retVal;
+				break;
+			case sizeof(int32):
+				hookCtx->retVal._integer = *(int32 *)&retVal;
+				break;
+			}
 			hookCtx->retVal.set = true;
 		}
 	}
