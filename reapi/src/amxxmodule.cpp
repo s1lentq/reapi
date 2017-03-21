@@ -231,7 +231,7 @@ NOINLINE void AMXX_Error(AMX *amx, const char *fmt, ...)
 	auto scriptName = g_amxxapi.GetAmxScriptName(g_amxxapi.FindAmxScriptByAmx(amx));
 	if (scriptName)
 	{
-		if ((scriptName = strrchr(scriptName, '\\')))
+		if ((scriptName = strrchr(scriptName, '/')))
 			scriptName++;
 	}
 

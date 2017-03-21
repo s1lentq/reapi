@@ -208,7 +208,7 @@ enum GamedllFunc
 
 	/*
 	* Description:		-
-	* Params:		(const index, VGUIMenu:menuType, const bitsSlots, szOldMenu[], bool:bForceOldMenu)
+	* Params:		(const index, VGUIMenu:menuType, const bitsSlots, szOldMenu[])
 	*/
 	RG_ShowVGUIMenu,
 

@@ -496,11 +496,12 @@ native rg_set_user_model(const index, const model[], const bool:update_index = f
 * Reset model user
 *
 * @param index		Client index
+* @param update_index	If true, the modelindex is reseted as well
 *
 * @return		1 if successfully, 0 otherwise
 *
 */
-native rg_reset_user_model(const index);
+native rg_reset_user_model(const index, const bool:update_index = false);
 
 /*
 * Enable/Disable footsteps of the player.
