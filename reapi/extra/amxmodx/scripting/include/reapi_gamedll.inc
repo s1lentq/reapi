@@ -33,7 +33,9 @@ native any:get_member_game(CSGameRules_Members:member, any:...);
 *
 * @return		1 on success.
 */
-native set_member(const index, any:member, any:...);
+native set_member(const index, {CBaseEntity_Members, CBaseAnimating_Members, CBaseMonster_Members,
+	CBasePlayer_Members, CCSPlayer_Members, CBasePlayerItem_Members, CBasePlayerWeapon_Members,
+	CWeaponBox_Members, CArmoury_Members}:member, any:...);
 
 /*
 * Returns a value from an entity's member
@@ -43,7 +45,9 @@ native set_member(const index, any:member, any:...);
 *
 * @return		If an integer or boolean or one byte, array or everything else is passed via 3rd argument and more, look at argument list for specified member
 */
-native any:get_member(const index, any:member, any:...);
+native any:get_member(const index, {CBaseEntity_Members, CBaseAnimating_Members, CBaseMonster_Members,
+	CBasePlayer_Members, CCSPlayer_Members, CBasePlayerItem_Members, CBasePlayerWeapon_Members,
+	CWeaponBox_Members, CArmoury_Members}:member, any:...);
 
 /*
 * Sets a playermove vars
