@@ -22,12 +22,15 @@ inline void EWRITE_ENTITY(int iValue) { (*g_pengfuncsTable->pfnWriteEntity)(iVal
 #define _strlwr(p) for (int i = 0; p[i] != 0; i++) p[i] = tolower(p[i]);
 #endif
 
-inline bool GetWeaponInfoRange(WeaponIdType wpnid)
+inline bool GetWeaponInfoRange(WeaponIdType wpnid, bool set_info)
 {
 	if (wpnid == WEAPON_SHIELDGUN)
 		return true;
+	
+	if (set_info && (wpnid == WEAPON_KNIFE || wpnid == WEAPON_C4))
+		return false;
 
-	if (wpnid > WEAPON_NONE && wpnid != WEAPON_C4 && wpnid != WEAPON_KNIFE && wpnid <= WEAPON_P90)
+	if (WEAPON_NONE < wpnid && wpnid <= WEAPON_P90)
 		return true;
 
 	return false;
