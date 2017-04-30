@@ -4,7 +4,7 @@
 
 #define _reapi_gamedll_const_included
 
-// Returns 1, if round ended by expired time
+// Returns 1 if round ended by expired time
 // NOTE: Use this for hookchain RG_RoundEnd with the parameter ScenarioEventEndRound:event
 #define HadRoundExpired(event)	(1<<_:event) & (1<<_:ROUND_TARGET_SAVED) | (1<<_:ROUND_HOSTAGE_NOT_RESCUED) | (1<<_:ROUND_TERRORISTS_NOT_ESCAPED) | (1<<_:ROUND_VIP_NOT_ESCAPED)
 
@@ -35,8 +35,8 @@ enum UnifiedSignals
 
 enum AccountSet
 {
-	AS_SET,	// sets the value of the account
-	AS_ADD	// adds a value to the account
+	AS_SET,	// Setts the value of the account
+	AS_ADD	// Adds a value to the account
 };
 
 // Weapon info types for use with rg_get_weapon_info()
@@ -115,12 +115,12 @@ enum WpnInfo
 	WI_NAME
 };
 
-// use with rg_give_item
+// Use with rg_give_item
 enum GiveType
 {
-	GT_APPEND,		// just give item
-	GT_REPLACE,		// to remove all weapons from the slot
-	GT_DROP_AND_REPLACE	// drop all weapons on the ground
+	GT_APPEND,		// Just give item
+	GT_REPLACE,		// Give the item and remove all other weapons from the slot
+	GT_DROP_AND_REPLACE	// Give the item and drop all other weapons from the slot
 };
 
 enum MenuChooseTeam
@@ -438,20 +438,20 @@ enum GamedllFunc_CBasePlayer
 	RG_CBasePlayer_HasRestrictItem,
 
 	/*
-	* Description:		It is called when a player threw the shield to the ground.
+	* Description:		Called when a player throws the shield on the ground.
 	* Params:		(const this, bool:deploy)
 	*/
 	RG_CBasePlayer_DropShield,
 
 	/*
-	* Description:		It is called on the spawn, the attempt to equip player.
+	* Description:		Called on spawn, the attempt to equip a player.
 	* Params:		(const this, bool addDefault, bool equipGame)
 	*/
 	RG_CBasePlayer_OnSpawnEquip,
 
 	/*
 	* Description:		The player uses a radio message.
-	*			It is called self-uses radio or throw grenades or on freeze the period end.
+	*			Called on self-radio uses, throwing grenades or on freeze time end.
 	* Params:		(const this, const msg_id[], const msg_verbose[], pitch, bool:showIcon)
 	*/
 	RG_CBasePlayer_Radio,
@@ -482,7 +482,7 @@ enum GamedllFunc_CBasePlayer
 	RG_CBasePlayer_StartObserver,
 
 	/*
-	* Description:		It is called when a player enters the game.
+	* Description:		Called when a player enters the game.
 	* Return type:		bool
 	* Params:		(const this)
 	*/
@@ -493,7 +493,7 @@ enum GamedllFunc_CBasePlayer
 enum GamedllFunc_CSGameRules
 {
 	/*
-	* Description:		should the player switch to this weapon?
+	* Description:		Should the player switch to this weapon?
 	* Params:		(const index, const weapon)
 	*/
 	RG_CSGameRules_FShouldSwitchWeapon = BEGIN_FUNC_REGION(gamerules),
@@ -511,37 +511,37 @@ enum GamedllFunc_CSGameRules
 	RG_CSGameRules_FlPlayerFallDamage,
 
 	/*
-	* Description:		can this player take damage from this attacker?
+	* Description:		Can this player take damage from this attacker?
 	* Params:		(const index, const attacker)
 	*/
 	RG_CSGameRules_FPlayerCanTakeDamage,
 
 	/*
-	* Description:		called by CBasePlayer::Spawn just before releasing player into the game
+	* Description:		Called by CBasePlayer::Spawn just before releasing the player into the game.
 	* Params:		(const index)
 	*/
 	RG_CSGameRules_PlayerSpawn,
 
 	/*
-	* Description:		is this player allowed to respawn now?
+	* Description:		Is this player allowed to respawn now?
 	* Params:		(const index)
 	*/
 	RG_CSGameRules_FPlayerCanRespawn,
 
 	/*
-	* Description:		Place this player on their spawnspot and face them the proper direction.
+	* Description:		Place this player on his spawnspot and face him in the proper direction.
 	* Params:		(const index)
 	*/
 	RG_CSGameRules_GetPlayerSpawnSpot,
 
 	/*
-	* Description:		the player has changed userinfo; can change it now
+	* Description:		The player has changed userinfo; can change it now.
 	* Params:		(const index, infobuffer[])
 	*/
 	RG_CSGameRules_ClientUserInfoChanged,
 
 	/*
-	* Description:		Called each time a player dies
+	* Description:		Called each time a player dies.
 	* Params:		(const victim, const killer, const inflictor)
 	*/
 	RG_CSGameRules_PlayerKilled,
@@ -553,13 +553,13 @@ enum GamedllFunc_CSGameRules
 	RG_CSGameRules_DeathNotice,
 
 	/*
-	* Description:		The player is touching an CBasePlayerItem, do I give it to him?
+	* Description:		The player is touching a CBasePlayerItem, do I give it to him?
 	* Params:		(const index, const item)
 	*/
 	RG_CSGameRules_CanHavePlayerItem,
 
 	/*
-	* Description:		what do I do with a player's weapons when he's killed?
+	* Description:		What do I do with player's weapons when he's killed?
 	* Params:		(const index)
 	*/
 	RG_CSGameRules_DeadPlayerWeapons,
@@ -585,13 +585,13 @@ enum GamedllFunc_CSGameRules
 	RG_CSGameRules_CleanUpMap,
 
 	/*
-	* Description:		Call this on new round or restart round with member m_bCompleteReset is TRUE
+	* Description:		Call this on a new round or restart round with member m_bCompleteReset is TRUE
 	* Params:		()
 	*/
 	RG_CSGameRules_RestartRound,
 
 	/*
-	* Description:		check if the scenario has been won/lost
+	* Description:		Check if the scenario has been won/lost.
 	* Params:		()
 	*/
 	RG_CSGameRules_CheckWinConditions,
@@ -627,7 +627,7 @@ enum GamedllFunc_CSGameRules
 	RG_CSGameRules_BalanceTeams,
 
 	/*
-	* Description:		It's called on freeze the period end.
+	* Description:		It's called when the freeze time ends.
 	* Params:		()
 	*/
 	RG_CSGameRules_OnRoundFreezeEnd
@@ -693,7 +693,7 @@ enum CSGameRules_Members
 	m_UpdateInterval,
 
 	/*
-	* Description:		The global time when the round is supposed to end, if this is not 0
+	* Description:		The global time when the round is supposed to end, if this is not 0.
 	* Member type:		float
 	* Get params:		Float:get_member_game(member);
 	* Set params:		set_member_game(member, Float:value);
@@ -709,7 +709,7 @@ enum CSGameRules_Members
 	m_flCheckWinConditions,
 
 	/*
-	* Description:		Time round has started
+	* Description:		Time round has started.
 	* Member type:		float
 	* Get params:		Float:get_member_game(member);
 	* Set params:		set_member_game(member, Float:value);
@@ -741,7 +741,7 @@ enum CSGameRules_Members
 	m_iIntroRoundTime,
 
 	/*
-	* Description:		The global time when the intro round ends and the real one starts wrote the original "m_flRoundTime" comment for this variable).
+	* Description:		The global time when the intro round ends and the real one starts (wrote the original "m_flRoundTime" comment for this variable).
 	* Member type:		float
 	* Get params:		Float:get_member_game(member);
 	* Set params:		set_member_game(member, Float:value);
@@ -765,7 +765,7 @@ enum CSGameRules_Members
 	m_iAccountCT,
 
 	/*
-	* Description:		The number of terrorists on the team (this is generated at the end of a round)
+	* Description:		The number of terrorists on the team (this is generated at the end of a round).
 	* Member type:		int
 	* Get params:		get_member_game(member);
 	* Set params:		set_member_game(member, value);
@@ -773,7 +773,7 @@ enum CSGameRules_Members
 	m_iNumTerrorist,
 
 	/*
-	* Description:		The number of CTs on the team (this is generated at the end of a round)
+	* Description:		The number of CTs on the team (this is generated at the end of a round).
 	* Member type:		int
 	* Get params:		get_member_game(member);
 	* Set params:		set_member_game(member, value);
@@ -797,7 +797,7 @@ enum CSGameRules_Members
 	m_iNumSpawnableCT,
 
 	/*
-	* Description:		Number of Terrorist spawn points
+	* Description:		Number of Terrorist spawn points.
 	* Member type:		int
 	* Get params:		get_member_game(member);
 	* Set params:		set_member_game(member, value);
@@ -805,7 +805,7 @@ enum CSGameRules_Members
 	m_iSpawnPointCount_Terrorist,
 
 	/*
-	* Description:		Number of CT spawn points
+	* Description:		Number of CT spawn points.
 	* Member type:		int
 	* Get params:		get_member_game(member);
 	* Set params:		set_member_game(member, value);
@@ -829,7 +829,7 @@ enum CSGameRules_Members
 	m_iHostagesTouched,
 
 	/*
-	* Description:		1 == CT's won last round, 2 == Terrorists did, 3 == Draw, no winner
+	* Description:		1 == CTs won last round, 2 == Terrorists did, 3 == Draw, no winner
 	* Member type:		int
 	* Get params:		get_member_game(member);
 	* Set params:		set_member_game(member, value);
@@ -853,7 +853,7 @@ enum CSGameRules_Members
 	m_iNumTerroristWins,
 
 	/*
-	* Description:		whether or not the bomb has been bombed
+	* Description:		Whether or not the bomb target has been bombed.
 	* Member type:		bool
 	* Get params:		get_member_game(member);
 	* Set params:		set_member_game(member, bool:value);
@@ -861,7 +861,7 @@ enum CSGameRules_Members
 	m_bTargetBombed,
 
 	/*
-	* Description:		whether or not the bomb has been defused
+	* Description:		Whether or not the bomb has been defused.
 	* Member type:		bool
 	* Get params:		get_member_game(member);
 	* Set params:		set_member_game(member, value);
@@ -941,7 +941,7 @@ enum CSGameRules_Members
 	m_iC4Guy,
 
 	/*
-	* Description:		the amount of money the losing team gets. This scales up as they lose more rounds in a row
+	* Description:		The amount of money the losing team gets. This scales up as they lose more rounds in a row.
 	* Member type:		int
 	* Get params:		get_member_game(member);
 	* Set params:		set_member_game(member, value);
@@ -949,7 +949,7 @@ enum CSGameRules_Members
 	m_iLoserBonus,
 
 	/*
-	* Description:		the number of rounds the CTs have lost in a row.
+	* Description:		The number of rounds the CTs have lost in a row.
 	* Member type:		int
 	* Get params:		get_member_game(member);
 	* Set params:		set_member_game(member, value);
@@ -957,7 +957,7 @@ enum CSGameRules_Members
 	m_iNumConsecutiveCTLoses,
 
 	/*
-	* Description:		the number of rounds the Terrorists have lost in a row.
+	* Description:		The number of rounds the Terrorists have lost in a row.
 	* Member type:		int
 	* Get params:		get_member_game(member);
 	* Set params:		set_member_game(member, value);
@@ -965,7 +965,7 @@ enum CSGameRules_Members
 	m_iNumConsecutiveTerroristLoses,
 
 	/*
-	* Description:		For the idle kick functionality. This is tha max amount of time that the player has to be idle before being kicked
+	* Description:		For the idle kick functionality. This is the max amount of time that the player has to be idle before being kicked.
 	* Member type:		float
 	* Get params:		Float:get_member_game(member);
 	* Set params:		set_member_game(member, Float:value);
@@ -997,7 +997,7 @@ enum CSGameRules_Members
 	m_bRoundTerminating,
 
 	/*
-	* Description:		Set to TRUE to have the scores reset next time round restarts
+	* Description:		Set to TRUE to have the scores reset next time round restarts.
 	* Member type:		bool
 	* Get params:		get_member_game(member);
 	* Set params:		set_member_game(member, value);
@@ -1085,7 +1085,7 @@ enum CSGameRules_Members
 	m_iTotalArmourCount,
 
 	/*
-	* Description:		keeps track of the # of consecutive rounds that have gone by where one team outnumbers the other team by more than 2
+	* Description:		Keeps track of the # of consecutive rounds that have gone by where one team outnumbers the other team by more than 2.
 	* Member type:		int
 	* Get params:		get_member_game(member);
 	* Set params:		set_member_game(member, value);
@@ -1093,7 +1093,7 @@ enum CSGameRules_Members
 	m_iUnBalancedRounds,
 
 	/*
-	* Description:		keeps track of the # of consecutive rounds of escape played.. Teams will be swapped after 8 rounds
+	* Description:		Keeps track of the # of consecutive rounds of escape played. Teams will be swapped after 8 rounds.
 	* Member type:		int
 	* Get params:		get_member_game(member);
 	* Set params:		set_member_game(member, value);
@@ -4027,7 +4027,7 @@ enum CBasePlayerWeapon_Members
 	m_Weapon_fFireOnEmpty,
 
 	/*
-	* Description:		soonest time ItemPostFrame will call PrimaryAttack
+	* Description:		Soonest time ItemPostFrame will call PrimaryAttack.
 	* Member type:		float
 	* Get params:		Float:get_member(index, member);
 	* Set params:		set_member(index, member, Float:value);
@@ -4035,7 +4035,7 @@ enum CBasePlayerWeapon_Members
 	m_Weapon_flNextPrimaryAttack,
 
 	/*
-	* Description:		soonest time ItemPostFrame will call SecondaryAttack
+	* Description:		Soonest time ItemPostFrame will call SecondaryAttack.
 	* Member type:		float
 	* Get params:		Float:get_member(index, member);
 	* Set params:		set_member(index, member, Float:value);
@@ -4043,7 +4043,7 @@ enum CBasePlayerWeapon_Members
 	m_Weapon_flNextSecondaryAttack,
 
 	/*
-	* Description:		soonest time ItemPostFrame will call WeaponIdle
+	* Description:		Soonest time ItemPostFrame will call WeaponIdle.
 	* Member type:		float
 	* Get params:		Float:get_member(index, member);
 	* Set params:		set_member(index, member, Float:value);
@@ -4051,7 +4051,7 @@ enum CBasePlayerWeapon_Members
 	m_Weapon_flTimeWeaponIdle,
 
 	/*
-	* Description:		"primary" ammo index into players m_rgAmmo[]
+	* Description:		"primary" ammo index into player's m_rgAmmo[]
 	* Member type:		int
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);
@@ -4059,7 +4059,7 @@ enum CBasePlayerWeapon_Members
 	m_Weapon_iPrimaryAmmoType,
 
 	/*
-	* Description:		"secondary" ammo index into players m_rgAmmo[]
+	* Description:		"secondary" ammo index into player's m_rgAmmo[]
 	* Member type:		int
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);
@@ -4067,7 +4067,7 @@ enum CBasePlayerWeapon_Members
 	m_Weapon_iSecondaryAmmoType,
 
 	/*
-	* Description:		number of shots left in the primary weapon clip, -1 it not used
+	* Description:		Number of shots left in the primary weapon clip, -1 if not used.
 	* Member type:		int
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);
@@ -4075,7 +4075,7 @@ enum CBasePlayerWeapon_Members
 	m_Weapon_iClip,
 
 	/*
-	* Description:		the last version of m_Weapon_iClip sent to hud dll
+	* Description:		The last version of m_Weapon_iClip sent to hud dll.
 	* Member type:		int
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);
@@ -4083,7 +4083,7 @@ enum CBasePlayerWeapon_Members
 	m_Weapon_iClientClip,
 
 	/*
-	* Description:		the last version of the weapon state sent to hud dll (is current weapon, is on target)
+	* Description:		The last version of the weapon state sent to hud dll (is current weapon, is on target).
 	* Member type:		int
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);
@@ -4091,7 +4091,7 @@ enum CBasePlayerWeapon_Members
 	m_Weapon_iClientWeaponState,
 
 	/*
-	* Description:		Are we in the middle of a reload
+	* Description:		Are we in the middle of a reload?
 	* Member type:		int
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);
@@ -4099,7 +4099,7 @@ enum CBasePlayerWeapon_Members
 	m_Weapon_fInReload,
 
 	/*
-	* Description:		Are we in the middle of a reload for the shotguns
+	* Description:		Are we in the middle of a reload for the shotguns?
 	* Member type:		int
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);
@@ -4107,7 +4107,7 @@ enum CBasePlayerWeapon_Members
 	m_Weapon_fInSpecialReload,
 
 	/*
-	* Description:		how much ammo you get when you pick up this weapon as placed by a level designer
+	* Description:		How much ammo you get when you pick up this weapon as placed by a level designer.
 	* Member type:		int
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);
@@ -4179,7 +4179,7 @@ enum CBasePlayerWeapon_Members
 	m_Weapon_iShotsFired,
 
 	/*
-	* Description:		time to shoot the remaining bullets of the glock18 burst fire
+	* Description:		Time to shoot the remaining bullets of the glock18 burst fire.
 	* Member type:		float
 	* Get params:		Float:get_member(index, member);
 	* Set params:		set_member(index, member, Float:value);
@@ -4187,7 +4187,7 @@ enum CBasePlayerWeapon_Members
 	m_Weapon_flGlock18Shoot,
 
 	/*
-	* Description:		used to keep track of the shots fired during the Glock18 burst fire mode
+	* Description:		Used to keep track of the shots fired during the Glock18 burst fire mode.
 	* Member type:		int
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);

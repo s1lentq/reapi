@@ -7,29 +7,29 @@
 #include <reapi_gamedll_const>
 
 /*
-* Sets a value to an CSGameRules_Members members
+* Sets a value to CSGameRules_Members members.
 *
-* @param member		The specified member, look at the enum's with name CSGameRules_Members
+* @param member		The specified member, look at the enums with name CSGameRules_Members
 *
 * @return		1 on success.
 */
 native set_member_game(CSGameRules_Members:member, any:...);
 
 /*
-* Returns a value from an CSGameRules_Members members
+* Returns a value from CSGameRules_Members members
 *
-* @param member		The specified member, look at the enum's with name CSGameRules_Members
+* @param member		The specified member, look at the enums with name CSGameRules_Members
 *
-* @return		If an integer or boolean or one byte, array or everything else is passed via 3rd argument and more, look at argument list for specified member
+* @return		If an integer or boolean or one byte, array or everything else is passed via the 3rd argument and more, look at the argument list for the pecified member
 *
 */
 native any:get_member_game(CSGameRules_Members:member, any:...);
 
 /*
-* Sets a value to an entity's member
+* Sets a value to an entity's member.
 *
 * @param index		Entity index
-* @param member		The specified member, look at the enum's with name *_Members
+* @param member		The specified member, look at the enums with name *_Members
 *
 * @return		1 on success.
 */
@@ -38,76 +38,76 @@ native set_member(const index, {CBaseEntity_Members, CBaseAnimating_Members, CBa
 	CWeaponBox_Members, CArmoury_Members}:member, any:...);
 
 /*
-* Returns a value from an entity's member
+* Returns a value from an entity's member.
 *
 * @param index		Entity index
-* @param member		The specified member, look at the enum's with name *_Members
+* @param member		The specified member, look at the enums with name *_Members
 *
-* @return		If an integer or boolean or one byte, array or everything else is passed via 3rd argument and more, look at argument list for specified member
+* @return		If an integer or boolean or one byte, array or everything else is passed via the 3rd argument and more, look at the argument list for the specified member
 */
 native any:get_member(const index, {CBaseEntity_Members, CBaseAnimating_Members, CBaseMonster_Members,
 	CBasePlayer_Members, CCSPlayer_Members, CBasePlayerItem_Members, CBasePlayerWeapon_Members,
 	CWeaponBox_Members, CArmoury_Members}:member, any:...);
 
 /*
-* Sets a playermove vars
+* Sets playermove var.
 *
-* @param var		The specified playermove, look at the enum's PlayerMove
+* @param var		The specified playermove, look at the enum PlayerMove
 *
 * @return		1 on success.
 */
 native set_pmove(const PlayerMove:var, any:...);
 
 /*
-* Returns a playermove vars
+* Returns a playermove var.
 *
-* @param var		The specified playermove var, look at the enum's PlayerMove
+* @param var		The specified playermove var, look at the enums PlayerMove
 *
-* @return		If an integer or boolean or one byte, array or everything else is passed via 3rd argument and more, look at argument list for specified mvar
+* @return		If an integer or boolean or one byte, array or everything else is passed via the 3rd argument and more, look at the argument list for the specified mvar
 */
 native any:get_pmove(const PlayerMove:var, any:...);
 
 /*
-* Sets a movevars value to an playermove
+* Sets a movevar value to a playermove.
 *
-* @param var		The specified mvar, look at the enum's MoveVars
+* @param var		The specified mvar, look at the enum MoveVars
 *
 * @return		1 on success.
 */
 native set_movevar(const MoveVars:var, any:...);
 
 /*
-* Returns a movevars value from an playermove
+* Returns a movevar value from a playermove.
 *
-* @param var		The specified mvar, look at the enum's MoveVars
+* @param var		The specified mvar, look at the enum MoveVars
 *
-* @return		If an integer or boolean or one byte, array or everything else is passed via 3rd argument and more, look at argument list for specified mvar
+* @return		If an integer or boolean or one byte, array or everything else is passed via the 3rd argument and more, look at the argument list for the specified mvar
 */
 native any:get_movevar(const MoveVars:var, any:...);
 
 /*
-* Sets a pmtrace vars
+* Sets a pmtrace var.
 *
-* @param var		The specified mvar, look at the enum's PMTrace
+* @param var		The specified mvar, look at the enum PMTrace
 *
 * @return		1 on success.
 */
 native set_pmtrace(const tracehandle, const PMTrace:var, any:...);
 
 /*
-* Returns a pmtrace vars
+* Returns a pmtrace var
 *
-* @param var		The specified mvar, look at the enum's PMTrace
+* @param var		The specified mvar, look at the enum PMTrace
 *
-* @return		If an integer or boolean or one byte, array or everything else is passed via 3rd argument and more, look at argument list for specified mvar
+* @return		If an integer or boolean or one byte, array or everything else is passed via the 3rd argument and more, look at the argument list for the specified mvar
 */
 native any:get_pmtrace(const tracehandle, const PMTrace:var, any:...);
 
 /*
-* Assign the number of the player animations.
+* Assign the number of the player's animation.
 *
 * @param index		Client index
-* @param playerAnim	Specific the number animation
+* @param playerAnim	Specific animation number
 *
 * @noreturn
 */
@@ -118,25 +118,25 @@ native rg_set_animation(const index, PLAYER_ANIM:playerAnim);
 *
 * @param index		Client index
 * @param amount		The amount of money
-* @param bTrackChange	If the bTrackChange is 1, the amount of money added will also be displayed.
+* @param bTrackChange	If bTrackChange is 1, the amount of money added will also be displayed.
 *
 * @noreturn
 */
 native rg_add_account(const index, amount, AccountSet:typeSet = AS_ADD, const bool:bTrackChange = true);
 
 /*
-* Gives item to player
+* Gives the player an item.
 *
 * @param index		Client index
-* @param pszName	Classname item
-* @param type		Look at the enum's with name GiveType
+* @param pszName	Item classname
+* @param type		Look at the enums with name GiveType
 *
-* @return		Index of entity if successfully, -1 otherwise
+* @return		Index of entity if successfull, -1 otherwise
 */
 native rg_give_item(const index, const pszName[], GiveType:type = GT_APPEND);
 
 /*
-* Give the player default items
+* Give the default items to a player.
 *
 * @param index		Client index
 *
@@ -145,24 +145,24 @@ native rg_give_item(const index, const pszName[], GiveType:type = GT_APPEND);
 native rg_give_default_items(const index);
 
 /*
-* Give the player shield
+* Gives the player a shield
 *
 * @param index		Client index
-* @param bDeploy	to get shield from holster
+* @param bDeploy	To deploy the shield
 *
 * @noreturn
 */
 native rg_give_shield(const index, const bool:bDeploy = true);
 
 /*
-* Inflicts in a radius from the source position.
+* Inflicts damage in a radius from the source position.
 *
 * @param vecSrc		The source position
 * @param inflictor	Inflictor is the entity that caused the damage (such as a gun)
-* @param attacker	Attacker is the entity that tirggered the damage (such as the gun's owner).
+* @param attacker	Attacker is the entity that triggered the damage (such as the gun's owner)
 * @param flDamage	The amount of damage
-* @param flRadius	Radius damage
-* @param iClassIgnore	To specify classes that are immune to damage.
+* @param flRadius	Damage radius
+* @param iClassIgnore	To specify classes that are immune to damage
 * @param bitsDamageType	Damage type DMG_*
 *
 * @noreturn
@@ -170,27 +170,27 @@ native rg_give_shield(const index, const bool:bDeploy = true);
 native rg_dmg_radius(Float:vecSrc[3], const inflictor, const attacker, const Float:flDamage, const Float:flRadius, const iClassIgnore, const bitsDamageType);
 
 /*
-* Resets the global multi damage accumulator
+* Resets the global multi damage accumulator.
 *
 * @noreturn
 */
 native rg_multidmg_clear();
 
 /*
-* Inflicts contents of global multi damage register on victim
+* Inflicts contents of global multi damage registered on victim.
 *
 * @param inflictor	Inflictor is the entity that caused the damage (such as a gun)
-* @param attacker	Attacker is the entity that tirggered the damage (such as the gun's owner).
+* @param attacker	Attacker is the entity that triggered the damage (such as the gun's owner)
 *
 * @noreturn
 */
 native rg_multidmg_apply(const inflictor, const attacker);
 
 /*
-* Adds damage the accumulator
+* Adds damage to the accumulator.
 *
 * @param inflictor	Inflictor is the entity that caused the damage (such as a gun)
-* @param victim		A victim that takes damage
+* @param victim		The victim that takes damage
 * @param flDamage	The amount of damage
 * @param bitsDamageType	Damage type DMG_*
 *
@@ -199,17 +199,17 @@ native rg_multidmg_apply(const inflictor, const attacker);
 native rg_multidmg_add(const inflictor, const victim, const Float:flDamage, const bitsDamageType);
 
 /*
-* Fire bullets from entity
+* Fires bullets from entity.
 *
 * @param inflictor		Inflictor is the entity that caused the damage (such as a gun)
-* @param attacker		Attacker is the entity that tirggered the damage (such as the gun's owner).
+* @param attacker		Attacker is the entity that tirggered the damage (such as the gun's owner)
 * @param shots			The number of shots
 * @param vecSrc			The source position of the barrel
-* @param vecDirShooting		Direction shooting
+* @param vecDirShooting		Shooting direction
 * @param vecSpread		Spread
 * @param flDistance		Max shot distance
-* @param iBulletType		Bullet type, look at the enum's with name Bullet cssdk_const.inc
-* @param iTracerFreq		Tracer frequancy
+* @param iBulletType		Bullet type, look at the enum with name Bullet in cssdk_const.inc
+* @param iTracerFreq		Tracer frequency
 * @param iDamage		Damage amount
 *
 * @noreturn
@@ -217,29 +217,29 @@ native rg_multidmg_add(const inflictor, const victim, const Float:flDamage, cons
 native rg_fire_bullets(const inflictor, const attacker, const shots, Float:vecSrc[3], Float:vecDirShooting[3], Float:vecSpread[3], const Float:flDistance, const Bullet:iBulletType, const iTracerFreq, const iDamage);
 
 /*
-* Fire bullets from player's weapon
+* Fires bullets from player's weapon.
 *
 * @param inflictor		Inflictor is the entity that caused the damage (such as a gun)
-* @param attacker		Attacker is the entity that tirggered the damage (such as the gun's owner).
+* @param attacker		Attacker is the entity that tirggered the damage (such as the gun's owner)
 * @param vecSrc			The source position of the barrel
-* @param vecDirShooting		Direction shooting
+* @param vecDirShooting		Shooting direction
 * @param vecSpread		Spread
 * @param flDistance		Max shot distance
-* @param iPenetration		The number of penetration
-* @param iBulletType		Bullet type, look at the enum's with name Bullet cssdk_const.inc
+* @param iPenetration		The amount of penetration
+* @param iBulletType		Bullet type, look at the enum with name Bullet in cssdk_const.inc
 * @param iDamage		Damage amount
 * @param flRangeModifier	Damage range modifier
 * @param bPistol		Pistol shot
 * @param shared_rand		Use player's random seed, get circular gaussian spread
 *
-* @return Float:[3]		The result spread
+* @return Float:[3]		The spread result
 */
 native Float:[3] rg_fire_bullets3(const inflictor, const attacker, Float:vecSrc[3], Float:vecDirShooting[3], const Float:vecSpread, const Float:flDistance, const iPenetration, const Bullet:iBulletType, const iDamage, const Float:flRangeModifier, const bool:bPistol, const shared_rand);
 
 /*
-* Complete the round
+* Forces the round to end.
 *
-* @param tmDelay		Delay before the onset of a new round.
+* @param tmDelay		Delay before the onset of a new round
 * @param st			Which team won
 * @param event			The event is the end of the round
 * @param message		The message on round end
@@ -250,11 +250,11 @@ native Float:[3] rg_fire_bullets3(const inflictor, const attacker, Float:vecSrc[
 native rg_round_end(const Float:tmDelay, const WinStatus:st, const ScenarioEventEndRound:event = ROUND_NONE, const message[] = "default", const sentence[] = "default");
 
 /*
-* Update current scores
+* Updates current scores.
 *
-* @param iCtsWins		The amount of wins to won
-* @param iTsWins		The amount of wins to won
-* @param bAdd			Adds the score to the current amount wins.
+* @param iCtsWins		The amount of wins for counter-terrorists
+* @param iTsWins		The amount of wins for terrorists
+* @param bAdd			Adds the score to the current amount
 *
 * @noreturn
 */
@@ -264,8 +264,8 @@ native rg_update_teamscores(const iCtsWins = 0, const iTsWins = 0, const bool:bA
 * Creates an entity using Counter-Strike's custom CreateNamedEntity wrapper.
 *
 * @param classname		Entity classname
-* @param useHashTable		Use this only for known game entities.
-*				NOTE: Do not use this if you use a custom classname.
+* @param useHashTable		Use this only for known game entities
+*				NOTE: Do not use this if you use a custom classname
 *
 * @return			Index of the created entity or 0 otherwise
 *
@@ -277,8 +277,8 @@ native rg_create_entity(const classname[], const bool:useHashTable = false);
 *
 * @param start_index		Entity index to start searching from. -1 to start from the first entity
 * @param classname		Classname to search for
-* @param useHashTable		Use this only for known game entities.
-*				NOTE: Do not use this if you use a custom classname.
+* @param useHashTable		Use this only for known game entities
+*				NOTE: Do not use this if you use a custom classname
 *
 * @return			Entity index > 0 if found, 0 otherwise
 *
@@ -297,57 +297,57 @@ native rg_find_ent_by_class(start_index, const classname[], const bool:useHashTa
 native rg_find_ent_by_owner(&start_index, const classname[], owner);
 
 /*
-* Find the weapon by name in the player's inventory.
+* Finds the weapon by name in the player's inventory.
 *
 * @param index			Client index
 * @param weapon			Weapon name
 *
-* @return			Entity-index of weapon, 0 otherwise
+* @return			Weapon's entity index, 0 otherwise
 *
 */
 native rg_find_weapon_bpack_by_name(const index, const weapon[]);
 
 /*
-* Check if the player already have this item.
+* Checks if the player has the item.
 *
 * @param index			Client index
 * @param item			Item name
 *
-* @return			1 if successfully, 0 otherwise
+* @return			true if he does, false otherwise
 *
 */
 native bool:rg_has_item_by_name(const index, const item[]);
 
 /*
-* Returns some information about a weapon.
+* Returns specific information about the weapon.
 *
-* @param weapon name or id	Weapon id, see WEAPON_* constants WeaponIdType or weapon_* name
+* @param weapon name or id	Weapon id, see WEAPON_* constants, WeaponIdType or weapon_* name
 * @param WpnInfo:type		Info type, see WI_* constants
 *
-* @return			Weapon information value
-* @error			If weapon_id and type are out of bound, an error will be thrown.
+* @return			Weapon information
+* @error			If weapon_id or type are out of bounds, an error will be thrown
 *
 */
 native any:rg_get_weapon_info(any:...);
 
 /*
-* Sets specific values of weapons info.
+* Sets specific weapon info values.
 *
 * @param weapon_id	Weapon id, see WEAPON_* constants
 * @param type		Info type, see WI_* constants
 *
-* @return		1 if successfully, 0 otherwise
+* @return		1 on success, 0 otherwise
 *
 */
 native rg_set_weapon_info(const {WeaponIdType,_}:weapon_id, WpnInfo:type, any:...);
 
 /*
-* Remove all the player's stuff by specific slot.
+* Remove all the player's stuff in a specific slot.
 *
 * @param index		Client index
-* @param slot		Specific slot for remove of each item.
+* @param slot		The slot that will be emptied
 *
-* @return		1 if successfully, 0 otherwise
+* @return		1 on success, 0 otherwise
 *
 */
 native rg_remove_items_by_slot(const index, const InventorySlotType:slot);
@@ -358,50 +358,50 @@ native rg_remove_items_by_slot(const index, const InventorySlotType:slot);
 * @param index		Client index
 * @param slot		Specific slot for remove of each item.
 *
-* @return		1 if successfully, 0 otherwise
+* @return		1 on success, 0 otherwise
 *
 */
 native rg_drop_items_by_slot(const index, const InventorySlotType:slot);
 
 /*
-* Remove all the player's stuff.
+* Remove all of the player's items.
 *
 * @param index		Client index
 * @param removeSuit	Remove suit
 *
-* @return		1 if successfully, 0 otherwise
+* @return		1 on success, 0 otherwise
 *
 */
 native rg_remove_all_items(const index, const bool:removeSuit = false);
 
 /*
-* Drop specifed the player's item by classname.
+* Forces the player to drop the specified item classname.
 *
 * @param index		Client index
-* @param item_name	Classname of item
+* @param item_name	Item classname
 *
-* @return		1 if successfully, 0 otherwise
+* @return		1 on success, 0 otherwise
 *
 */
 native rg_drop_item(const index, const item_name[]);
 
 /*
-* Execute a client command on the gamedll side.
+* Executes a client command on the gamedll side.
 *
 * @param index		Client index
-* @param command	Client command to execute on
+* @param command	Client command to execute
 * @param arg		Optional command arguments
 *
-* @return		1 if successfully, 0 otherwise
+* @return		1 on success, 0 otherwise
 *
 */
 native rg_internal_cmd(const index, const cmd[], const arg[] = "");
 
 /*
-* Remove specifed the player's item by classname
+* Removes the specified item classname from the player
 *
 * @param index		Client index
-* @param item_name	Classname of item
+* @param item_name	Item classname
 *
 * @return		1 if found and remove, 0 otherwise
 *
@@ -409,7 +409,7 @@ native rg_internal_cmd(const index, const cmd[], const arg[] = "");
 native rg_remove_item(const index, const item_name[]);
 
 /*
-* Returns amount of ammo in the client's backpack for a specific weapon.
+* Returns the amount of ammo in the client's backpack for a specific weapon.
 *
 * @param index		Client index
 * @param weapon		Weapon id
@@ -420,7 +420,7 @@ native rg_remove_item(const index, const item_name[]);
 native rg_get_user_bpammo(const index, WeaponIdType:weapon);
 
 /*
-* Sets amount of ammo in the client's backpack for a specific weapon.
+* Sets the amount of ammo in the client's backpack for a specific weapon.
 *
 * @param index		Client index
 * @param weapon		Weapon id
@@ -437,7 +437,7 @@ native rg_set_user_bpammo(const index, WeaponIdType:weapon, amount);
 * @param index		Client index
 * @param defusekit	If nonzero the client will have a defusekit, otherwise it will be removed
 * @param color		Color RGB
-* @param icon		HUD sprite to use as icon
+* @param icon		HUD sprite to use as an icon
 * @param flash		If nonzero the icon will flash red
 *
 * @noreturn
@@ -451,17 +451,17 @@ native rg_give_defusekit(const index, const bool:bDefusekit = true, const Float:
 * @param index		Client index
 * @param armortype	Variable to store armor type in
 *
-* @return		Amount of armor, 0 if client has no armor
+* @return		Amount of armor, 0 if the client has no armor
 *
 */
 native rg_get_user_armor(const index, &ArmorType:armortype);
 
 /*
-* Sets the client's armor value the type of armor.
+* Sets the client's armor value and the type of armor.
 *
 * @param index		Client index
 * @param armorvalue	Amount of armor to set
-* @param armortype	Armor type
+* @param armortype	Armor type to set
 *
 * @noreturn
 *
@@ -469,17 +469,17 @@ native rg_get_user_armor(const index, &ArmorType:armortype);
 native rg_set_user_armor(const index, armorvalue, ArmorType:armortype);
 
 /*
-* Sets the client's team without killing the player, and sets the client model.
-* @note To obtain of TeamName use the following:
+* Sets the client's team without killing the player and sets the client's model.
+* @note To obtain a TeamName use the following:
 *	new TeamName:team = get_member(id, m_iTeam);
 *
 * @param index		Client index
 * @param team		Team id
-* @param model		Internal model, use MODEL_AUTO for a random appearance or if MODEL_UNASSIGNED not update it.
+* @param model		Internal model, use MODEL_AUTO for a random appearance or MODEL_UNASSIGNED to not update it
 *
 * @param send_teaminfo	If true, a TeamInfo message will be sent
 *
-* @return		1 if successfully, 0 otherwise
+* @return		1 on success, 0 otherwise
 *
 */
 native rg_set_user_team(const index, {TeamName,_}:team, {ModelName,_}:model = MODEL_AUTO, const bool:send_teaminfo = true);
@@ -491,61 +491,61 @@ native rg_set_user_team(const index, {TeamName,_}:team, {ModelName,_}:model = MO
 * @param model		Model name
 * @param update_index	If true, the modelindex is updated as well
 *
-* @return		1 if successfully, 0 otherwise
+* @return		1 on success, 0 otherwise
 *
 */
 native rg_set_user_model(const index, const model[], const bool:update_index = false);
 
 /*
-* Reset model user
+* Resets the client's model.
 *
 * @param index		Client index
-* @param update_index	If true, the modelindex is reseted as well
+* @param update_index	If true, the modelindex is reset as well
 *
-* @return		1 if successfully, 0 otherwise
+* @return		1 on success, 0 otherwise
 *
 */
 native rg_reset_user_model(const index, const bool:update_index = false);
 
 /*
-* Enable/Disable footsteps of the player.
+* Enable/Disable player's footsteps.
 *
 * @param index		Client index
-* @param silent		To enable silent footsteps of player's
+* @param silent		To enable silent footsteps
 *
-* @return		1 if successfully, 0 otherwise
+* @return		1 on success, 0 otherwise
 *
 */
 native rg_set_user_footsteps(const index, bool:silent = false);
 
 /*
-* Get the current state footsteps of the player.
+* Get the current footsteps state of the player.
 *
 * @param index		Client index
 *
-* @return		1 if have silent footsteps, 0 otherwise
+* @return		1 if the player has silent footsteps, 0 otherwise
 *
 */
 native rg_get_user_footsteps(const index);
 
 /*
-* Transfer C4 to player
+* Transfers C4 from one player to another.
 *
 * @param index		Client index
-* @param receiver	Receiver index, if 0 so will transfer a random to player
+* @param receiver	Receiver index, if 0 it will transfer to a random player
 *
-* @return		1 if successfully, 0 otherwise
+* @return		1 on success, 0 otherwise
 *
 */
 native rg_transfer_c4(const index, const receiver = 0);
 
 /*
-* Instant reload weapons
+* Instantly reload client's weapons.
 *
 * @param index		Client index
-* @param weapon		Weapon entity-index, if 0 then all the weapons
+* @param weapon		Weapon entity-index, if 0 then all weapons will be reloaded
 *
-* @return		1 if successfully, 0 otherwise
+* @return		1 on success, 0 otherwise
 *
 */
 native rg_instant_reload_weapons(const index, const weapon = 0);
@@ -553,8 +553,8 @@ native rg_instant_reload_weapons(const index, const weapon = 0);
 /*
 * Sets the amount of reward in the game account for all players.
 *
-* @param rules_index	Look at the enum's with name RewardRules
-* @param amount		The amount money
+* @param rules_index	Look at the enum with name RewardRules
+* @param amount		The money amount
 *
 * @noreturn
 *
@@ -562,36 +562,36 @@ native rg_instant_reload_weapons(const index, const weapon = 0);
 native rg_set_account_rules(const RewardRules:rules_index, const amount);
 
 /*
-* Get the amount of reward from account
+* Gets the specified reward rule's money amount.
 *
-* @param rules_index	Look at the enum's with name RewardRules
+* @param rules_index	Look at the enum with name RewardRules
 *
-* @return		The amount of reward from account
+* @return		The amount of reward
 *
 */
 native rg_get_account_rules(const RewardRules:rules_index);
 
 /*
-* If the bomb is planted
+* Checks if the bomb is planted.
 *
-* @return		true if bomb is planted, false otherwise
+* @return		true if the bomb is planted, false otherwise
 *
 */
 native bool:rg_is_bomb_planted();
 
 /*
-* Join team
+* Forces a player to join a team.
 *
 * @param index		Client index
 * @param team		Team id
 *
-* @return		1 if successfully joined the team, 0 otherwise
+* @return		1 on success, 0 otherwise
 *
 */
 native rg_join_team(const index, const TeamName:team);
 
 /*
-* Instantly balances the team.
+* Instantly balances the teams.
 *
 * @noreturn
 *
@@ -599,7 +599,7 @@ native rg_join_team(const index, const TeamName:team);
 native rg_balance_teams();
 
 /*
-* To swap players, without reset frags/deaths and the amount wins.
+* Swaps players' teams without reseting frags, deaths and wins.
 *
 * @noreturn
 *
@@ -607,8 +607,8 @@ native rg_balance_teams();
 native rg_swap_all_players();
 
 /*
-* Instantly switches to the opposite team for one player.
-* @note Switch from CT to TERRORIST also opposite.
+* Instantly switches the player to his opposite team.
+* @note Switch from CT to TERRORIST is also opposite.
 *
 * @param index		Client index
 *
@@ -618,18 +618,18 @@ native rg_swap_all_players();
 native rg_switch_team(const index);
 
 /*
-* Switch to specific weapon
+* Forces the player to switch to a specific weapon.
 *
 * @param index		Client index
 * @param weapon		Weapon entity-index
 *
-* @return		1 if successfully switched, 0 otherwise
+* @return		1 on success, 0 otherwise
 *
 */
 native rg_switch_weapon(const index, const weapon);
 
 /*
-* To get which team has a high priority to join.
+* Gets which team has a higher join priority.
 *
 * @return		Returns the Team Name
 *
@@ -637,28 +637,28 @@ native rg_switch_weapon(const index, const weapon);
 native TeamName:rg_get_join_team_priority();
 
 /*
-* Can this player take damage from this attacker?
+* Checks whether the player can take damage from the attacker.
 *
 * @param index		Client index
 * @param attacker	Attacker index
 *
-* @return		true if can take a damage, false otherwise
+* @return		true if he can take damage, false otherwise
 *
 */
 native bool:rg_is_player_can_takedamage(const index, const attacker);
 
 /*
-* To get WeaponIdType from weaponbox
+* Gets WeaponIdType from weaponbox
 *
 * @param entity		Weaponbox entity
 *
-* @return		return enum's of WeaponIdType
+* @return		return enum of WeaponIdType
 *
 */
 native WeaponIdType:rg_get_weaponbox_id(const entity);
 
 /*
-* Respawn on round for players/bots
+* Respawn on round for players/bots.
 *
 * @param index		Client index
 *
@@ -668,7 +668,7 @@ native WeaponIdType:rg_get_weaponbox_id(const entity);
 native rg_round_respawn(const index);
 
 /*
-* Reset player maxspeed
+* Resets player's maxspeed.
 *
 * @param index		Client index
 *
@@ -678,12 +678,12 @@ native rg_round_respawn(const index);
 native rg_reset_maxspeed(const index);
 
 /*
-* Draws a HUD progress bar which is fills from 0% to 100% for the time duration seconds.
-* NOTE: Set Duration to 0 to hide the bar.
+* Draws a HUD progress bar which fills from 0% to 100% for the time duration in seconds.
+* NOTE: Set the duration to 0 to hide the bar.
 *
 * @param index		Client index
 * @param time		Duration
-* @param observer	Send for everyone observer player
+* @param observer	Send for everyone who is observing the player
 *
 * @noreturn
 *
@@ -696,7 +696,7 @@ native rg_send_bartime(const index, const duration, const bool:observer = true);
 * @param index		Client index
 * @param time		Duration
 * @param startPercent	Start percent
-* @param observer	Send for everyone observer player
+* @param observer	Send for everyone who is observing the player
 *
 * @noreturn
 *
@@ -704,7 +704,7 @@ native rg_send_bartime(const index, const duration, const bool:observer = true);
 native rg_send_bartime2(const index, const duration, const startPercent, const bool:observer = true);
 
 /*
-* Sends the message SendAudio - plays the specified audio
+* Sends the SendAudio message - plays the specified audio.
 *
 * @param index		Receiver index or use 0 for everyone
 * @param sample		Sound file to play
