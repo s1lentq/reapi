@@ -199,17 +199,17 @@
 #define DMG_GRENADE			(1<<24)	// Counter-Strike only - Hit by HE grenade
 #define DMG_TIMEBASED			(~(0x3fff)) // Mask for time-based damage
 
-// these are the damage types that are allowed to gib corpses
+// These are the damage types that are allowed to gib corpses
 #define DMG_GIB_CORPSE			(DMG_CRUSH | DMG_FALL | DMG_BLAST | DMG_SONIC | DMG_CLUB)
 
-// these are the damage types that have client hud art
+// These are the damage types that have client hud art
 #define DMG_SHOWNHUD			(DMG_POISON | DMG_ACID | DMG_FREEZE | DMG_SLOWFREEZE | DMG_DROWN | DMG_BURN | DMG_SLOWBURN | DMG_NERVEGAS | DMG_RADIATION | DMG_SHOCK)
 
-// when calling KILLED(), a value that governs gib behavior is expected to be
+// When calling KILLED(), a value that governs gib behavior is expected to be
 // one of these three values
-#define GIB_NORMAL			0	// gib if entity was overkilled
-#define GIB_NEVER			1	// never gib, no matter how much death damage is done ( freezing, etc )
-#define GIB_ALWAYS			2	// always gib ( Houndeye Shock, Barnacle Bite )
+#define GIB_NORMAL			0	// Gib if entity was overkilled
+#define GIB_NEVER			1	// Never gib, no matter how much death damage is done ( freezing, etc )
+#define GIB_ALWAYS			2	// Always gib ( Houndeye Shock, Barnacle Bite )
 
 // Player physics flags bits
 // CBasePlayer::m_afPhysicsFlags
@@ -217,9 +217,9 @@
 #define PFLAG_ONSWING			(1<<0)
 #define PFLAG_ONTRAIN			(1<<1)
 #define PFLAG_ONBARNACLE		(1<<2)
-#define PFLAG_DUCKING			(1<<3)	// In the process of ducking, but totally squatted yet
+#define PFLAG_DUCKING			(1<<3)	// In the process of ducking, but not totally squatted yet
 #define PFLAG_USING			(1<<4)	// Using a continuous entity
-#define PFLAG_OBSERVER			(1<<5)	// player is locked in stationary cam mode. Spectators can move, observers can't.
+#define PFLAG_OBSERVER			(1<<5)	// Player is locked in stationary cam mode. Spectators can move, observers can't.
 
 /**
 * @section get_entvar(entity, var_spawnflags) values
@@ -288,7 +288,7 @@
 #define SF_DOOR_NO_AUTO_RETURN		32
 #define SF_DOOR_ROTATE_Z		64
 #define SF_DOOR_ROTATE_X		128
-#define SF_DOOR_USE_ONLY		256		// Door must be opened by player's use button
+#define SF_DOOR_USE_ONLY		256		// Door must be opened by player's USE button
 #define SF_DOOR_NOMONSTERS		512		// Monster can't open
 #define SF_DOOR_SILENT			0x80000000
 
@@ -612,12 +612,12 @@
 * save/restore and level transitions.
 */
 #define FCAP_CUSTOMSAVE			0x00000001
-#define FCAP_ACROSS_TRANSITION		0x00000002	// should transfer between transitions
+#define FCAP_ACROSS_TRANSITION		0x00000002	// Should transfer between transitions
 #define FCAP_MUST_SPAWN			0x00000004	// Spawn after restore
 #define FCAP_DONT_SAVE			0x80000000	// Don't save this
-#define FCAP_IMPULSE_USE		0x00000008	// can be used by the player
-#define FCAP_CONTINUOUS_USE		0x00000010	// can be used by the player
-#define FCAP_ONOFF_USE			0x00000020	// can be used by the player
+#define FCAP_IMPULSE_USE		0x00000008	// Can be used by the player
+#define FCAP_CONTINUOUS_USE		0x00000010	// Can be used by the player
+#define FCAP_ONOFF_USE			0x00000020	// Can be used by the player
 #define FCAP_DIRECTIONAL_USE		0x00000040	// Player sends +/- 1 when using (currently only tracktrains)
 #define FCAP_MASTER			0x00000080	// Can be used to "master" other entities (like multisource)
 
@@ -633,9 +633,9 @@
 // CBasePlayer::m_iIgnoreGlobalChat
 enum
 {
-	IGNOREMSG_NONE,		// nothing to do
-	IGNOREMSG_ENEMY,	// to ignore any chat messages from the enemy.
-	IGNOREMSG_TEAM		// same as IGNOREMSG_ENEMY but ignore teammates
+	IGNOREMSG_NONE,		// Nothing to do
+	IGNOREMSG_ENEMY,	// To ignore any chat messages from the enemy
+	IGNOREMSG_TEAM		// Same as IGNOREMSG_ENEMY but ignore teammates
 }
 
 enum HitBoxGroup
@@ -653,12 +653,12 @@ enum HitBoxGroup
 
 enum ArmorType
 {
-	ARMOR_NONE,	// no armor
-	ARMOR_KEVLAR,	// body vest only
-	ARMOR_VESTHELM,	// vest and helmet
+	ARMOR_NONE,	// No armor
+	ARMOR_KEVLAR,	// Body vest only
+	ARMOR_VESTHELM,	// Vest and helmet
 };
 
-// for CArmoury::m_Armoury_iItem
+// For CArmoury::m_Armoury_iItem
 enum ArmouryItemPack
 {
 	ARMOURY_MP5NAVY,
@@ -779,7 +779,7 @@ enum WeaponIdType
 	WEAPON_SHIELDGUN = 99
 };
 
-// for member CBaseMonster::m_rgbTimeBasedDamage
+// For member CBaseMonster::m_rgbTimeBasedDamage
 enum TimeBasedDamage
 {
 	ITDB_PRALYZE,
@@ -905,13 +905,13 @@ enum WinStatus
 	WINSTATUS_DRAW,
 };
 
-// bypass warning: 200 on amxmodx 1.8.2
+// Bypass warning: 200 on amxmodx 1.8.2
 #if AMXX_VERSION_NUM < 183
 	#define ROUND_ESCAPING_TERRORISTS_NEUTRALIZED ROUND_ESCAPING_TERRORISTS_NEUTR
 	#define RR_ESCAPING_TERRORISTS_NEUTRALIZED RR_ESCAPING_TERRORISTS_NEUTR
 #endif
 
-// used for EndRoundMessage() logged messages
+// Used for EndRoundMessage() logged messages
 enum ScenarioEventEndRound
 {
 	ROUND_NONE,
@@ -1019,7 +1019,7 @@ enum shieldgun_e
 	SHIELDGUN_DOWN,
 };
 
-// flags for CUnifiedSignals m_signals
+// Flags for CUnifiedSignals m_signals
 enum SignalState
 {
 	SIGNAL_BUY		= (1<<0),
@@ -1089,12 +1089,12 @@ enum RewardRules
 
 enum ItemRestType
 {
-	ITEM_TYPE_BUYING,	// when a player buying items
-	ITEM_TYPE_TOUCHED,	// when the player touches with a weaponbox or armoury_entity
-	ITEM_TYPE_EQUIPPED	// when a entity game_player_equip gives item to player or default item's on player spawn
+	ITEM_TYPE_BUYING,	// When a player is buying items
+	ITEM_TYPE_TOUCHED,	// When the player touches a weaponbox or armoury_entity
+	ITEM_TYPE_EQUIPPED	// When an entity game_player_equip gives item to player or default items on player spawn
 };
 
-// constant items
+// Constant items
 enum ItemID
 {
 	ITEM_NONE = -1,
