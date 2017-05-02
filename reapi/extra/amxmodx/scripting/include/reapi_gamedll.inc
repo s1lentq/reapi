@@ -20,7 +20,7 @@ native set_member_game(CSGameRules_Members:member, any:...);
 *
 * @param member		The specified member, look at the enums with name CSGameRules_Members
 *
-* @return		If an integer or boolean or one byte, array or everything else is passed via the 3rd argument and more, look at the argument list for the pecified member
+* @return		If an integer or boolean or one byte, array or everything else is passed via the 3rd argument and more, look at the argument list for the specified member
 *
 */
 native any:get_member_game(CSGameRules_Members:member, any:...);
