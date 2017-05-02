@@ -20,7 +20,7 @@ enum client_auth_type
 };
 
 /*
-* Checks whether the player is talking at this moment
+* Checks whether the player is talking at the moment.
 *
 * @param index		Client index
 * @return		true if client is speaking, false otherwise
@@ -29,7 +29,7 @@ enum client_auth_type
 native bool:VTC_IsClientSpeaking(const index);
 
 /*
-* Mutes this player
+* Mutes the player.
 *
 * @param index		Client index
 * @noreturn
@@ -37,7 +37,7 @@ native bool:VTC_IsClientSpeaking(const index);
 native VTC_MuteClient(const index);
 
 /*
-* Unmutes this player
+* Unmutes the player.
 *
 * @param index		Client index
 * @noreturn
@@ -45,7 +45,7 @@ native VTC_MuteClient(const index);
 native VTC_UnmuteClient(const index);
 
 /*
-* Checks whether the player is muted at this moment
+* Checks whether the player is muted at the moment.
 *
 * @param index          Client index
 * @return               true if client is muted, false otherwise
@@ -54,10 +54,10 @@ native VTC_UnmuteClient(const index);
 native bool:VTC_IsClientMuted(const index);
 
 /*
-* To play the audio file via the voice stream.
+* Play the audio file via the voice stream.
 *
 * @param receiver       Receiver index
-* @param soundFilePath  The path to the sound file.
+* @param soundFilePath  The path to the sound file
 *
 * @note Usage example:
 *       VTC_PlaySound(id, "sound/ambience/Opera.wav");
@@ -68,7 +68,7 @@ native bool:VTC_IsClientMuted(const index);
 native VTC_PlaySound(const receiver, const soundFilePath[]);
 
 /*
-* Called when player started talking
+* Called when the player started talking.
 *
 * @param index		Client index
 * @noreturn
@@ -76,7 +76,7 @@ native VTC_PlaySound(const receiver, const soundFilePath[]);
 forward VTC_OnClientStartSpeak(const index);
 
 /*
-* Called when player stopped talking
+* Called when the player stopped talking.
 *
 * @param index		Client index
 * @noreturn
@@ -84,23 +84,23 @@ forward VTC_OnClientStartSpeak(const index);
 forward VTC_OnClientStopSpeak(const index);
 
 /*
-* Get client protocol
+* Gets client protocol.
 *
 * @param index		Client index
-* @return		client protocol
+* @return		Client protocol
 */
 native REU_GetProtocol(const index);
 
 /*
-* Get client auth type
+* Gets client auth type.
 *
 * @param index		Client index
-* @return		client auth type
+* @return		Client auth type
 */
 native client_auth_type:REU_GetAuthtype(const index);
 
 /*
-* Check if client running RevEmu with limited user rights
+* Check if the client is running RevEmu with limited user rights.
 *
 * @param index		Client index
 * @return		1/0

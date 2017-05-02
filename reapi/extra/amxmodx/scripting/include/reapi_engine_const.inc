@@ -4,16 +4,16 @@
 
 #define _reapi_engine_const_included
 
-// for natives rh_get_mapname
+// For native rh_get_mapname
 enum MapNameType
 {
-	MNT_TRUE,	// return true the name of the current map independently of the set via rh_set_mapname
+	MNT_TRUE,	// return the original map name independant of the name set with via rh_set_mapname
 	MNT_SET		// return the name of the current map
 };
 
 // rh_emit_sound2 flags
-#define SND_EMIT2_NOPAS		(1<<0)	// never to do check PAS
-#define SND_EMIT2_INVOKER	(1<<1)	// do not send to the client invoker
+#define SND_EMIT2_NOPAS		(1<<0)	// Never to check PAS
+#define SND_EMIT2_INVOKER	(1<<1)	// Do not send to the client invoker
 
 enum EngineFunc
 {
@@ -93,7 +93,7 @@ enum EntVars
 	var_basevelocity,
 
 	/*
-	* Description:		Base velocity that was passed in to server physics so client can predict conveyors correctly. Server zeroes it, so we need to store here, too.
+	* Description:		Base velocity that was passed in to server physics so client can predict conveyors correctly. Server zeroes it, so we need to it store here, too.
 	* Member type:		class Vector
 	* Get params:		get_entvar(index, EntVars:var, Float:output[3]);
 	* Set params:		set_entvar(index, EntVars:var, Float:dest[3]);
@@ -109,7 +109,7 @@ enum EntVars
 	var_movedir,
 
 	/*
-	* Description:		Model angles
+	* Description:		Angles model.
 	* Member type:		class Vector
 	* Get params:		get_entvar(index, EntVars:var, Float:output[3]);
 	* Set params:		set_entvar(index, EntVars:var, Float:dest[3]);
@@ -117,7 +117,7 @@ enum EntVars
 	var_angles,
 
 	/*
-	* Description:		angle velocity (degrees per second)
+	* Description:		Angle velocity (degrees per second).
 	* Member type:		class Vector
 	* Get params:		get_entvar(index, EntVars:var, Float:output[3]);
 	* Set params:		set_entvar(index, EntVars:var, Float:dest[3]);
@@ -125,7 +125,7 @@ enum EntVars
 	var_avelocity,
 
 	/*
-	* Description:		auto-decaying view angle adjustment
+	* Description:		Auto-decaying view angle adjustment.
 	* Member type:		class Vector
 	* Get params:		get_entvar(index, EntVars:var, Float:output[3]);
 	* Set params:		set_entvar(index, EntVars:var, Float:dest[3]);
@@ -133,7 +133,7 @@ enum EntVars
 	var_punchangle,
 
 	/*
-	* Description:		Viewing angle (player only)
+	* Description:		View angle (player only).
 	* Member type:		class Vector
 	* Get params:		get_entvar(index, EntVars:var, Float:output[3]);
 	* Set params:		set_entvar(index, EntVars:var, Float:dest[3]);
@@ -229,7 +229,7 @@ enum EntVars
 	var_model,
 
 	/*
-	* Description:		player's viewmodel
+	* Description:		Player's viewmodel.
 	* Member type:		string_t
 	* Get params:		get_entvar(index, EntVars:var);
 	* Set params:		set_entvar(index, EntVars:var, const source[]);
@@ -237,7 +237,7 @@ enum EntVars
 	var_viewmodel,
 
 	/*
-	* Description:		what other players see
+	* Description:		The model that other players see.
 	* Member type:		string_t
 	* Get params:		get_entvar(index, EntVars:var);
 	* Set params:		set_entvar(index, EntVars:var, const source[]);
@@ -245,7 +245,7 @@ enum EntVars
 	var_weaponmodel,
 
 	/*
-	* Description:		BB min translated to world coord
+	* Description:		BB min translated to world coord.
 	* Member type:		class Vector
 	* Get params:		get_entvar(index, EntVars:var, Float:output[3]);
 	* Set params:		set_entvar(index, EntVars:var, Float:dest[3]);
@@ -253,7 +253,7 @@ enum EntVars
 	var_absmin,
 
 	/*
-	* Description:		BB max translated to world coord
+	* Description:		BB max translated to world coord.
 	* Member type:		class Vector
 	* Get params:		get_entvar(index, EntVars:var, Float:output[3]);
 	* Set params:		set_entvar(index, EntVars:var, Float:dest[3]);
@@ -261,7 +261,7 @@ enum EntVars
 	var_absmax,
 
 	/*
-	* Description:		local BB min
+	* Description:		Local BB min.
 	* Member type:		class Vector
 	* Get params:		get_entvar(index, EntVars:var, Float:output[3]);
 	* Set params:		set_entvar(index, EntVars:var, Float:dest[3]);
@@ -269,7 +269,7 @@ enum EntVars
 	var_mins,
 
 	/*
-	* Description:		local BB max
+	* Description:		Local BB max.
 	* Member type:		class Vector
 	* Get params:		get_entvar(index, EntVars:var, Float:output[3]);
 	* Set params:		set_entvar(index, EntVars:var, Float:dest[3]);
@@ -317,7 +317,7 @@ enum EntVars
 	var_solid,
 
 	/*
-	* Description:		-
+	* Description:		Skin selection for studio models.
 	* Member type:		int
 	* Get params:		get_entvar(index, EntVars:var);
 	* Set params:		set_entvar(index, EntVars:var, value);
@@ -325,7 +325,7 @@ enum EntVars
 	var_skin,
 
 	/*
-	* Description:		-
+	* Description:		Sub-model selection for studio models.
 	* Member type:		int
 	* Get params:		get_entvar(index, EntVars:var);
 	* Set params:		set_entvar(index, EntVars:var, value);
@@ -333,7 +333,7 @@ enum EntVars
 	var_body,
 
 	/*
-	* Description:		sub-model selection for studiomodels
+	* Description:		-
 	* Member type:		int
 	* Get params:		get_entvar(index, EntVars:var);
 	* Set params:		set_entvar(index, EntVars:var, value);
@@ -341,7 +341,7 @@ enum EntVars
 	var_effects,
 
 	/*
-	* Description:		% of "normal" gravity
+	* Description:		% of "normal" gravity.
 	* Member type:		float
 	* Get params:		Float:get_entvar(index, EntVars:var);
 	* Set params:		set_entvar(index, EntVars:var, Float:value);
@@ -349,7 +349,7 @@ enum EntVars
 	var_gravity,
 
 	/*
-	* Description:		inverse elasticity of MOVETYPE_BOUNCE
+	* Description:		Inverse elasticity of MOVETYPE_BOUNCE
 	* Member type:		float
 	* Get params:		Float:get_entvar(index, EntVars:var);
 	* Set params:		set_entvar(index, EntVars:var, Float:value);
@@ -365,7 +365,7 @@ enum EntVars
 	var_light_level,
 
 	/*
-	* Description:		animation sequence
+	* Description:		Animation sequence.
 	* Member type:		int
 	* Get params:		get_entvar(index, EntVars:var);
 	* Set params:		set_entvar(index, EntVars:var, value);
@@ -373,7 +373,7 @@ enum EntVars
 	var_sequence,
 
 	/*
-	* Description:		movement animation sequence for player (0 for none)
+	* Description:		Movement animation sequence for player (0 for none)
 	* Member type:		int
 	* Get params:		get_entvar(index, EntVars:var);
 	* Set params:		set_entvar(index, EntVars:var, value);
@@ -389,7 +389,7 @@ enum EntVars
 	var_frame,
 
 	/*
-	* Description:		world time when frame was set
+	* Description:		World time when frame was set.
 	* Member type:		float
 	* Get params:		Float:get_entvar(index, EntVars:var);
 	* Set params:		set_entvar(index, EntVars:var, Float:value);
@@ -397,7 +397,7 @@ enum EntVars
 	var_animtime,
 
 	/*
-	* Description:		animation playback rate (-8x to 8x)
+	* Description:		Animation playback rate (-8x to 8x)
 	* Member type:		float
 	* Get params:		Float:get_entvar(index, EntVars:var);
 	* Set params:		set_entvar(index, EntVars:var, Float:value);
@@ -405,7 +405,7 @@ enum EntVars
 	var_framerate,
 
 	/*
-	* Description:		bone controller setting (0..255)
+	* Description:		Bone controller setting (0..255)
 	* Member type:		byte [4]
 	* Get params:		get_entvar(index, EntVars:var, element);
 	* Set params:		set_entvar(index, EntVars:var, value, element);
@@ -413,7 +413,7 @@ enum EntVars
 	var_controller,
 
 	/*
-	* Description:		blending amount between sub-sequences (0..255)
+	* Description:		Blending amount between sub-sequences (0..255)
 	* Member type:		byte [2]
 	* Get params:		get_entvar(index, EntVars:var, element);
 	* Set params:		set_entvar(index, EntVars:var, value, element);
@@ -421,7 +421,7 @@ enum EntVars
 	var_blending,
 
 	/*
-	* Description:		sprite rendering scale (0..255)
+	* Description:		Sprite rendering scale (0..255)
 	* Member type:		float
 	* Get params:		Float:get_entvar(index, EntVars:var);
 	* Set params:		set_entvar(index, EntVars:var, Float:value);
@@ -525,7 +525,7 @@ enum EntVars
 	var_impulse,
 
 	/*
-	* Description:		Entity pointer when linked into a linked list
+	* Description:		Entity pointer when linked into a linked list.
 	* Member type:		struct edict_s *
 	* Get params:		get_entvar(index, EntVars:var);
 	* Set params:		set_entvar(index, EntVars:var, value);
@@ -549,7 +549,7 @@ enum EntVars
 	var_enemy,
 
 	/*
-	* Description:		entity pointer when MOVETYPE_FOLLOW
+	* Description:		Entity pointer when MOVETYPE_FOLLOW
 	* Member type:		struct edict_s *
 	* Get params:		get_entvar(index, EntVars:var);
 	* Set params:		set_entvar(index, EntVars:var, value);
