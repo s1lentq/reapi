@@ -49,6 +49,15 @@ inline T* getPrivate(int index)
 	return pdata;
 }
 
+template<typename T>
+inline T* getPrivate(edict_t *pEdict)
+{
+	T* pdata = nullptr;
+	if (likely(pEdict != nullptr))
+		pdata = (T *)pEdict->pvPrivateData;
+	return pdata;
+}
+
 inline entvars_t* PEV(int index)
 {
 	entvars_t* pvars = nullptr;

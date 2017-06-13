@@ -19,6 +19,8 @@ enum client_auth_type
 	CA_TYPE_SSE3,
 };
 
+#define is_user_steam(%0) (REU_GetAuthtype(%0) == CA_TYPE_STEAM)
+
 /*
 * Checks whether the player is talking at the moment.
 *

@@ -25,9 +25,47 @@ cell AMX_NATIVE_CALL amx_FClassnameIs(AMX *amx, cell *params)
 	return FALSE;
 }
 
+/*
+* To get WeaponIdType from grenade entity
+*
+* @param entity     Grenade entity
+*
+* @return           return enum's of WeaponIdType
+*
+* native WeaponIdType:GetGrenadeType(const entityIndex);
+*/
+cell AMX_NATIVE_CALL amx_GetGrenadeType(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index };
+
+	CHECK_ISENTITY(arg_index);
+
+	edict_t *pEdict = edictByIndex(params[arg_index]);
+	if (!pEdict || !FClassnameIs(pEdict, "grenade")) {
+		return WEAPON_NONE;
+	}
+
+	CGrenade *pGrenade = getPrivate<CGrenade>(pEdict);
+	if (!pGrenade) {
+		return WEAPON_NONE;
+	}
+
+	if (pGrenade->m_bIsC4) {
+		return WEAPON_C4;
+	}
+
+	static unsigned short usCreateExplosion = 0;
+	if (!usCreateExplosion) {
+		usCreateExplosion = PRECACHE_EVENT(1, "events/createexplo.sc");
+	}
+
+	return (pGrenade->m_usEvent == usCreateExplosion) ? WEAPON_HEGRENADE : WEAPON_SMOKEGRENADE;
+}
+
 AMX_NATIVE_INFO Natives_Common[] =
 {
 	{ "FClassnameIs", amx_FClassnameIs },
+	{ "GetGrenadeType", amx_GetGrenadeType },
 
 	{ nullptr, nullptr }
 };

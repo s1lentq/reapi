@@ -153,6 +153,15 @@ native SetHookChainArg(number, AType:type, any:...);
 native bool:FClassnameIs(const entityIndex, const className[]);
 
 /*
+* To get WeaponIdType from grenade entity
+*
+* @param entity     Grenade entity
+*
+* @return           return enum's of WeaponIdType
+*/
+native WeaponIdType:GetGrenadeType(const entityIndex);
+
+/*
 * Check if the entity is valid.
 *
 * @return		true/false
