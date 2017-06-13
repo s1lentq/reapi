@@ -54,6 +54,10 @@ cell AMX_NATIVE_CALL amx_GetGrenadeType(AMX *amx, cell *params)
 		return WEAPON_C4;
 	}
 
+	if (!pGrenade->m_usEvent) {
+		return WEAPON_FLASHBANG;
+	}
+
 	static unsigned short usCreateExplosion = 0;
 	if (!usCreateExplosion) {
 		usCreateExplosion = PRECACHE_EVENT(1, "events/createexplo.sc");
