@@ -1,5 +1,11 @@
 #pragma once
 
+enum
+{
+	MAX_KV_LEN = 127,
+	MAX_INFO_STRING = 256
+};
+
 enum WpnInfo
 {
 	WI_ID,

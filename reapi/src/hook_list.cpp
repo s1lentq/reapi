@@ -1,13 +1,13 @@
 #include "precompiled.h"
 
-inline size_t getFwdParamType(void(*)(int))						{ return FP_CELL; }
-inline size_t getFwdParamType(void(*)(short))					{ return FP_CELL; }
-inline size_t getFwdParamType(void(*)(bool))					{ return FP_CELL; }
-inline size_t getFwdParamType(void(*)(uint32))					{ return FP_CELL; }
-inline size_t getFwdParamType(void(*)(Vector&))					{ return FP_ARRAY; }
-inline size_t getFwdParamType(void(*)(PLAYER_ANIM))				{ return FP_CELL; }
-inline size_t getFwdParamType(void(*)(WeaponIdType))			{ return FP_CELL; }
-inline size_t getFwdParamType(void(*)(RewardType))				{ return FP_CELL; }
+inline size_t getFwdParamType(void(*)(int))			{ return FP_CELL; }
+inline size_t getFwdParamType(void(*)(size_t))			{ return FP_CELL; }
+inline size_t getFwdParamType(void(*)(short))			{ return FP_CELL; }
+inline size_t getFwdParamType(void(*)(bool))			{ return FP_CELL; }
+inline size_t getFwdParamType(void(*)(Vector&))			{ return FP_ARRAY; }
+inline size_t getFwdParamType(void(*)(PLAYER_ANIM))		{ return FP_CELL; }
+inline size_t getFwdParamType(void(*)(WeaponIdType))		{ return FP_CELL; }
+inline size_t getFwdParamType(void(*)(RewardType))		{ return FP_CELL; }
 inline size_t getFwdParamType(void(*)(ScenarioEventEndRound))	{ return FP_CELL; }
 inline size_t getFwdParamType(void(*)(ItemID))					{ return FP_CELL; }
 inline size_t getFwdParamType(void(*)(ItemRestType))			{ return FP_CELL; }
@@ -74,7 +74,8 @@ hook_t hooklist_engine[] = {
 	ENG(SV_StartSound),
 	ENG(SV_DropClient),
 	ENG(SV_ActivateServer),
-	ENG(Cvar_DirectSet)
+	ENG(Cvar_DirectSet),
+	ENG(SV_WriteFullClientUpdate)
 };
 
 #define DLL(h) { {}, {}, #h, "ReGameDLL", [](){ return api_cfg.hasReGameDLL(); }, ((!(RG_##h & (MAX_REGION_RANGE - 1)) ? regfunc::current_cell = 1, true : false) || (RG_##h & (MAX_REGION_RANGE - 1)) == regfunc::current_cell++) ? regfunc(h) : regfunc(#h), [](){ g_ReGameHookchains->##h##()->registerHook(&##h); }, [](){ g_ReGameHookchains->##h##()->unregisterHook(&##h); }}

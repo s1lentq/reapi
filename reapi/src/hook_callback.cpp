@@ -46,6 +46,26 @@ void Cvar_DirectSet(IRehldsHook_Cvar_DirectSet *chain, cvar_t *var, const char *
 	callVoidForward(RH_Cvar_DirectSet, original, var, value);
 }
 
+void SV_WriteFullClientUpdate(IRehldsHook_SV_WriteFullClientUpdate *chain, IGameClient *client, char *info, size_t maxlen, sizebuf_t *sb, IGameClient *receiver)
+{
+	int receiver_id = 0;
+	if (receiver)
+		receiver_id = receiver->GetId() + 1;
+
+	auto original = [chain, sb](int _client, int _receiver, int _pinfo)
+	{
+		sizebuf_t* dest = sb;
+		IGameClient* receiver = nullptr;
+		if (_receiver) {
+			receiver = g_RehldsSvs->GetClient(_receiver - 1);
+			dest = receiver->GetNetChan()->GetMessageBuf();
+		}
+		chain->callNext(g_RehldsSvs->GetClient(_client - 1), (char *)_pinfo, MAX_INFO_STRING, dest, receiver);
+	};
+
+	callVoidForward(RH_SV_WriteFullClientUpdate, original, client->GetId() + 1, receiver_id, int(info));
+}
+
 /*
 * ReGameDLL functions
 */

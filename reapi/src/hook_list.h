@@ -80,6 +80,7 @@ enum EngineFunc
 	RH_SV_DropClient,
 	RH_SV_ActivateServer,
 	RH_Cvar_DirectSet,
+	RH_SV_WriteFullClientUpdate
 
 	// [...]
 };

@@ -88,3 +88,28 @@ native bool:rh_emit_sound2(const entity, const recipient, const channel, const s
 * @noreturn
 */
 native rh_update_user_info(playerEntIndex);
+
+/*
+* Gets value for key in buffer
+*
+* @param pbuffer    Pointer to buffer
+* @param key        Key string
+* @param value      Buffer to copy value to
+* @param maxlen     Maximum size of the buffer
+*
+* @return           Number of cells written to buffer
+* @error            If the index is not within the range of 1 to MaxClients or
+*                   the client is not connected, an error will be thrown.
+*/
+native rh_get_key_value(const pbuffer, const key[], value[], maxlen)
+
+/*
+* Sets value for key in buffer
+*
+* @param pbuffer    Pointer to buffer
+* @param key        Key string
+* @param value      Value to set
+*
+* @noreturn
+*/
+native rh_set_key_value(const pbuffer, const key[], const value[])

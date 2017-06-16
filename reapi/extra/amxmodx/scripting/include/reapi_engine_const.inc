@@ -40,6 +40,12 @@ enum EngineFunc
 	* Params:		(pcvar, const value[])
 	*/
 	RH_Cvar_DirectSet,
+
+	/*
+	* Description:		Receiver is player index or 0 when update will be sended to all.
+	* Params:		(client, receiver, pinfo)
+	*/
+	RH_SV_WriteFullClientUpdate,
 };
 
 enum EntVars
