@@ -1233,6 +1233,11 @@ cell AMX_NATIVE_CALL rg_set_user_team(AMX *amx, cell *params)
 	}
 
 	g_amxxapi.SetPlayerTeamInfo(args[arg_index], args[arg_team], GetTeamName(args[arg_team]));
+
+	// If team was changed to spectator, then player should be able immediately to spectate
+	if (args[arg_team] == SPECTATOR && !pPlayer->IsAlive()) {
+		pPlayer->CSPlayer()->StartDeathCam();
+	}
 	return TRUE;
 }
 
