@@ -66,10 +66,33 @@ cell AMX_NATIVE_CALL amx_GetGrenadeType(AMX *amx, cell *params)
 	return (pGrenade->m_usEvent == usCreateExplosion) ? WEAPON_HEGRENADE : WEAPON_SMOKEGRENADE;
 }
 
+/*
+* Sets the view mode on a client.
+* This allows pfnSetView able to hooks.
+*
+* @param index       Client index
+* @param viewEntity  Entity index
+*
+* native engset_view(const index, const const viewEntity);
+*/
+cell AMX_NATIVE_CALL amx_engset_view(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_entity };
+
+	CHECK_ISPLAYER(arg_index);
+
+	CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_index]);
+	CHECK_CONNECTED(pPlayer, arg_index);
+
+	g_pengfuncsTable->pfnSetView(pPlayer->edict(), edictByIndexAmx(params[arg_entity]));
+	return TRUE;
+}
+
 AMX_NATIVE_INFO Natives_Common[] =
 {
-	{ "FClassnameIs", amx_FClassnameIs },
+	{ "FClassnameIs",   amx_FClassnameIs   },
 	{ "GetGrenadeType", amx_GetGrenadeType },
+	{ "engset_view",    amx_engset_view    },
 
 	{ nullptr, nullptr }
 };
