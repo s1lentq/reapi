@@ -301,6 +301,6 @@ void RegisterNatives_HookChains()
 {
 	if (!api_cfg.hasReHLDS() && !api_cfg.hasReGameDLL())
 		fillNatives(HookChain_Natives, [](AMX *amx, cell *params) -> cell { MF_LogError(amx, AMX_ERR_NATIVE, "You need ReHlds or ReGameDll for use hookchains"); return FALSE; });
-	
+
 	g_amxxapi.AddNatives(HookChain_Natives);
 }

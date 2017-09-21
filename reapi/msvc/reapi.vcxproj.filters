@@ -651,9 +651,6 @@
     <ClInclude Include="..\src\mods\mod_reunion_api.h">
       <Filter>src\mods</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\natives\natives_addons.h">
-      <Filter>src\natives</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\com_progdefs.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -668,6 +665,21 @@
     </ClInclude>
     <ClInclude Include="..\src\natives\natives_common.h">
       <Filter>src\natives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mods\mod_rechecker_api.h">
+      <Filter>src\mods</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\natives\natives_rechecker.h">
+      <Filter>src\natives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\natives\natives_reunion.h">
+      <Filter>src\natives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\natives\natives_vtc.h">
+      <Filter>src\natives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mods\queryfile_handler.h">
+      <Filter>src\mods</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -746,14 +758,26 @@
     <ClCompile Include="..\src\mods\mod_reunion_api.cpp">
       <Filter>src\mods</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\natives\natives_addons.cpp">
-      <Filter>src\natives</Filter>
-    </ClCompile>
     <ClCompile Include="..\version\version.cpp">
       <Filter>version</Filter>
     </ClCompile>
     <ClCompile Include="..\src\natives\natives_common.cpp">
       <Filter>src\natives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mods\mod_rechecker_api.cpp">
+      <Filter>src\mods</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\natives\natives_rechecker.cpp">
+      <Filter>src\natives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\natives\natives_reunion.cpp">
+      <Filter>src\natives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\natives\natives_vtc.cpp">
+      <Filter>src\natives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mods\queryfile_handler.cpp">
+      <Filter>src\mods</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

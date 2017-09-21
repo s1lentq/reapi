@@ -41,7 +41,8 @@ bool OnMetaAttach()
 void OnMetaDetach()
 {
 	// clear all hooks?
-	g_hookManager.clearHandlers();
+	g_hookManager.Clear();
+	g_queryFileManager.Clear();
 
 	if (api_cfg.hasVTC()) {
 		g_pVoiceTranscoderApi->OnClientStartSpeak() -= OnClientStartSpeak;
@@ -66,7 +67,8 @@ void ServerDeactivate_Post()
 {
 	g_pEdicts = nullptr;
 	api_cfg.ServerDeactivate();
-	g_hookManager.clearHandlers();
+	g_hookManager.Clear();
+	g_queryFileManager.Clear();
 
 	g_pFunctionTable->pfnSpawn = DispatchSpawn;
 	g_pFunctionTable->pfnKeyValue = KeyValue;

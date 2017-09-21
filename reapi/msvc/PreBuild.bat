@@ -27,6 +27,14 @@ set "hour=%dt:~8,2%"
 set "min=%dt:~10,2%"
 set "sec=%dt:~12,2%"
 
+::
+:: Remove leading zero from MM (e.g 09 > 9)
+for /f "tokens=* delims=0" %%I in ("%MM%") do set MM=%%I
+::
+
+::
+:: Index into array to get month name
+::
 for /f "tokens=%MM%" %%I in ("Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec") do set "month=%%I"
 
 ::
@@ -143,10 +151,10 @@ IF NOT %errlvl% == "1" (
 		)
 
 		:: append extra string
-		If NOT "%commitURL%"=="%commitURL:bitbucket.org=%" (
-			set commitURL=!commitURL!/commit/
-		) ELSE (
+		If NOT "!commitURL!"=="!commitURL:bitbucket.org=!" (
 			set commitURL=!commitURL!/commits/
+		) ELSE (
+			set commitURL=!commitURL!/commit/
 		)
 
 	) ELSE (
@@ -158,10 +166,10 @@ IF NOT %errlvl% == "1" (
 		set commitURL=!commitURL::=/!
 
 		:: append extra string
-		If NOT "%commitURL%"=="%commitURL:bitbucket.org=%" (
-			set commitURL=https://!commitURL!/commit/
-		) ELSE (
+		If NOT "!commitURL!"=="!commitURL:bitbucket.org=!" (
 			set commitURL=https://!commitURL!/commits/
+		) ELSE (
+			set commitURL=https://!commitURL!/commit/
 		)
 	)
 )
@@ -243,7 +251,7 @@ echo #define APP_VERSION_STRD "%version_major%.%version_minor%.%version_maintena
 echo #define APP_VERSION_FLAGS 0x0L>>"%srcdir%\appversion.h"
 
 echo.>>"%srcdir%\appversion.h"
-echo #define APP_COMMIT_DATE "%YYYY%-%DD%-%MM%">>"%srcdir%\appversion.h"
+echo #define APP_COMMIT_DATE "%month% %DD% %YYYY%">>"%srcdir%\appversion.h"
 echo #define APP_COMMIT_TIME "%hour%:%min%:%sec%">>"%srcdir%\appversion.h"
 
 echo.>>"%srcdir%\appversion.h"

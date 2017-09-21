@@ -19,7 +19,8 @@ enum hooks_tables_e
 	ht_gamedll,
 	ht_animating,
 	ht_player,
-	ht_gamerules
+	ht_gamerules,
+	ht_rechecker
 };
 
 enum members_tables_e
@@ -42,7 +43,7 @@ enum members_tables_e
 };
 
 // Is like FNullEnt
-#define is_nullent(%0)			(%0 != 0 && is_entity(%0) == false)
+#define is_nullent(%0)			(%0 == 0 || is_entity(%0) == false)
 
 #define MAX_REGION_RANGE		1024
 
@@ -51,10 +52,14 @@ enum members_tables_e
 
 #include <cssdk_const>
 
+#include <reapi_version>
 #include <reapi_engine>		// NOTE: only for ReHLDS
 #include <reapi_gamedll>	// NOTE: only for gamedll Counter-Strike (ReGameDLL_CS)
-#include <reapi_addons>		// NOTE: 3rd party addons
-#include <reapi_version>
+
+// addons
+#include <reapi_vtc>
+#include <reapi_reunion>
+#include <reapi_rechecker>
 
 // hookchain return type
 enum
@@ -90,7 +95,7 @@ enum HookChain
 * @return 		Returns a hook handle. Use EnableHookChain/DisableHookChain to toggle the forward on or off
 *
 */
-native HookChain:RegisterHookChain({EngineFunc, GamedllFunc, GamedllFunc_CBaseAnimating, GamedllFunc_CBasePlayer, GamedllFunc_CSGameRules}:function_id, const callback[], post = 0);
+native HookChain:RegisterHookChain({EngineFunc, GamedllFunc, GamedllFunc_CBaseAnimating, GamedllFunc_CBasePlayer, GamedllFunc_CSGameRules, ReCheckerFunc}:function_id, const callback[], post = 0);
 
 /*
 * Stops a hook from triggering.

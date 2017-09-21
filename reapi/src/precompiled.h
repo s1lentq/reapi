@@ -45,6 +45,10 @@
 #include <reunion_api.h>
 #include "mod_reunion_api.h"
 
+// regamedll API
+#include <rechecker_api.h>
+#include "mod_rechecker_api.h"
+
 // AmxModX API
 #include "amxxmodule.h"
 
@@ -61,5 +65,9 @@
 #include "natives_members.h"
 #include "natives_misc.h"
 #include "natives_common.h"
-#include "natives_addons.h"
 #include "natives_helper.h"
+
+// addons
+#include "natives_vtc.h"
+#include "natives_reunion.h"
+#include "natives_rechecker.h"

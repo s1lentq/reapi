@@ -105,7 +105,7 @@ struct hookctx_t
 	hookctx_t(size_t arg_count, t_args... args)
 	{
 		args_count = min(arg_count, MAX_HOOKCHAIN_ARGS);
-		
+
 		if (hasStringArgs(args...)) {
 			tempstrings_used = 0;
 		}
@@ -285,6 +285,15 @@ R callForward(size_t func, original_t original, f_args... args)
 	return ret;
 }
 
+template<typename T, typename A>
+struct hookdata_t
+{
+	hookdata_t(T chain, A data) : m_chain(chain), m_data(data) {}
+
+	T m_chain;
+	A m_data;
+};
+
 // rehlds functions
 void SV_StartSound(IRehldsHook_SV_StartSound *chain, int recipients, edict_t *entity, int channel, const char *sample, int volume, float attenuation, int fFlags, int pitch);
 void SV_DropClient(IRehldsHook_SV_DropClient *chain, IGameClient *cl, bool crash, const char *fmt);
@@ -379,3 +388,13 @@ extern int g_iClientStopSpeak;
 
 void OnClientStartSpeak(size_t clientIndex);
 void OnClientStopSpeak(size_t clientIndex);
+
+using CmdExec_t = hookdata_t<IRecheckerHook_CmdExec *, IResourceBuffer *>;
+void CmdExec_AMXX(CmdExec_t *chain, IGameClient *cl, const char *filename, char *cmd, uint32 responseHash);
+void CmdExec(IRecheckerHook_CmdExec *chain, IGameClient *cl, IResourceBuffer *res, char *cmd, uint32 responseHash);
+
+using FileConsistencyProcess_t = hookdata_t<IRecheckerHook_FileConsistencyProcess *, IResourceBuffer *>;
+void FileConsistencyProcess_AMXX(FileConsistencyProcess_t *data, IGameClient *cl, const char *filename, const char *cmd, ResourceType_e type, uint32 responseHash, bool isBreak);
+void FileConsistencyProcess(IRecheckerHook_FileConsistencyProcess *chain, IGameClient *cl, IResourceBuffer *res, ResourceType_e typeFind, uint32 responseHash);
+
+void FileConsistencyFinal(IRecheckerHook_FileConsistencyFinal *chain, IGameClient *cl);

@@ -12,6 +12,7 @@ public:
 	bool hasReGameDLL() const { return m_api_regame; }
 	bool hasVTC() const { return m_api_vtc; }
 	bool hasReunion() const { return m_api_reunion; }
+	bool hasRechecker() const { return m_api_rechecker; }
 
 	void ServerDeactivate() const;
 
@@ -25,7 +26,7 @@ private:
 	bool m_api_reunion;		// for information about authorization client
 
 	//bool m_api_revoice;		// for gag #2
-	//bool m_api_rechecker;		// for detection when checking and adding few files
+	bool m_api_rechecker;		// for detection when checking and adding few files
 };
 
 extern CAPI_Config api_cfg;

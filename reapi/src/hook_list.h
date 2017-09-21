@@ -12,13 +12,13 @@ typedef void (*regchain_t)();
 struct hook_t
 {
 	std::vector<class CAmxxHook *> pre;		// pre forwards
-	std::vector<class CAmxxHook *> post;		// post forwards
+	std::vector<class CAmxxHook *> post;	// post forwards
 
-	const char *func_name;			// function name
-	const char *depend_name;		// platform dependency
+	const char *func_name;				// function name
+	const char *depend_name;			// platform dependency
 
 	reqfunc_t checkRequirements;
-	regfunc_t registerForward;		// AMXX forward registration function
+	regfunc_t registerForward;			// AMXX forward registration function
 	regchain_t registerHookchain;		// register re* API hook
 	regchain_t unregisterHookchain;		// unregister re* API hook
 
@@ -30,6 +30,7 @@ extern hook_t hooklist_gamedll[];
 extern hook_t hooklist_animating[];
 extern hook_t hooklist_player[];
 extern hook_t hooklist_gamerules[];
+extern hook_t hooklist_rechecker[];
 
 enum
 {
@@ -51,6 +52,7 @@ struct hooklist_t
 			CASE(animating)
 			CASE(player)
 			CASE(gamerules)
+			CASE(rechecker)
 		}
 
 		return nullptr;
@@ -66,6 +68,7 @@ struct hooklist_t
 		ht_animating,
 		ht_player,
 		ht_gamerules,
+		ht_rechecker,
 
 		ht_end
 	};
@@ -183,6 +186,15 @@ enum GamedllFunc_CSGameRules
 	RG_CSGameRules_GoToIntermission,
 	RG_CSGameRules_BalanceTeams,
 	RG_CSGameRules_OnRoundFreezeEnd,
+
+	// [...]
+};
+
+enum ReCheckerFunc
+{
+	RC_FileConsistencyProcess = BEGIN_FUNC_REGION(rechecker),
+	RC_FileConsistencyFinal,
+	RC_CmdExec,
 
 	// [...]
 };

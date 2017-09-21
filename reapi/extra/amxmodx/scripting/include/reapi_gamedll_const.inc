@@ -1782,7 +1782,7 @@ enum CBasePlayer_Members
 	m_bHighDamage,
 
 	/*
-	* Description:		-
+	* Description:		Slow down the player based on the velocity modifier, applies when the player takes damage.
 	* Member type:		float
 	* Get params:		Float:get_member(index, member);
 	* Set params:		set_member(index, member, Float:value);
@@ -3983,7 +3983,7 @@ enum CCSPlayer_Members
 enum CBasePlayerItem_Members
 {
 	/*
-	* Description:		-
+	* Description:		ID of the owner on this item
 	* Member type:		class CBasePlayer *
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);
@@ -3991,7 +3991,7 @@ enum CBasePlayerItem_Members
 	m_pPlayer = BEGIN_MEMBER_REGION(baseitem),
 
 	/*
-	* Description:		-
+	* Description:		Iterator for linked list of the entities
 	* Member type:		class CBasePlayerItem *
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);
@@ -3999,7 +3999,7 @@ enum CBasePlayerItem_Members
 	m_pNext,
 
 	/*
-	* Description:		-
+	* Description:		ID of the item
 	* Member type:		int
 	* Get params:		get_member(index, member);
 	* Set params:		set_member(index, member, value);

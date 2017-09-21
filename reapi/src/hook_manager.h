@@ -35,7 +35,7 @@ private:
 class CHookManager
 {
 public:
-	void clearHandlers() const;
+	void Clear() const;
 	cell addHandler(AMX* amx, int func, const char *funcname, int forward, bool post) const;
 	hook_t* getHook(size_t func) const;
 	CAmxxHook* getAmxxHook(cell hook) const;

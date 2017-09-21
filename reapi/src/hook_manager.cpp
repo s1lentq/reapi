@@ -43,7 +43,7 @@ void CAmxxHook::SetState(fwdstate st)
 	m_state = st;
 }
 
-void CHookManager::clearHandlers() const
+void CHookManager::Clear() const
 {
 	m_hooklist.clear();
 }

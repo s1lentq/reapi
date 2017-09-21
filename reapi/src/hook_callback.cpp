@@ -828,3 +828,58 @@ void OnClientStopSpeak(size_t clientIndex)
 {
 	g_amxxapi.ExecuteForward(g_iClientStopSpeak, clientIndex);
 }
+
+/*
+* ReChecker functions
+*/
+void FileConsistencyProcess_AMXX(FileConsistencyProcess_t *data, IGameClient *cl, const char *filename, const char *cmd, ResourceType_e type, uint32 responseHash, bool isBreak)
+{
+	int hashCopy = responseHash;
+	auto original = [data, hashCopy](int _cl, const char *_filename, const char *_cmd, ResourceType_e _type, uint32 _hash, bool _isBreak)
+	{
+		data->m_chain->callNext(g_RehldsSvs->GetClient(_cl - 1), data->m_data, _type, hashCopy);
+	};
+
+	if (g_RecheckerFuncs->GetResource()->GetPrevHash() == responseHash) {
+		responseHash = 0;
+	}
+
+	callVoidForward(RC_FileConsistencyProcess, original, cl->GetId() + 1, filename, cmd, type, responseHash, isBreak);
+}
+
+void FileConsistencyProcess(IRecheckerHook_FileConsistencyProcess *chain, IGameClient *cl, IResourceBuffer *res, ResourceType_e typeFind, uint32 responseHash)
+{
+	FileConsistencyProcess_t data(chain, res);
+	FileConsistencyProcess_AMXX(&data, cl, res->GetFileName(), res->GetCmdExec(), typeFind, responseHash, res->IsBreak());
+}
+
+void FileConsistencyFinal(IRecheckerHook_FileConsistencyFinal *chain, IGameClient *cl)
+{
+	auto original = [chain](int _cl)
+	{
+		chain->callNext(g_RehldsSvs->GetClient(_cl - 1));
+	};
+
+	callVoidForward(RC_FileConsistencyFinal, original, cl->GetId() + 1);
+}
+
+void CmdExec_AMXX(CmdExec_t *data, IGameClient *cl, const char *filename, char *cmd, uint32 responseHash)
+{
+	int hashCopy = responseHash;
+	auto original = [data, hashCopy](int _cl, const char *_filename, char *_cmd, uint32 _responseHash)
+	{
+		data->m_chain->callNext(g_RehldsSvs->GetClient(_cl - 1), data->m_data, _cmd, hashCopy);
+	};
+
+	if (g_RecheckerFuncs->GetResource()->GetPrevHash() == responseHash) {
+		responseHash = 0;
+	}
+
+	callVoidForward(RC_CmdExec, original, cl->GetId() + 1, filename, cmd, responseHash);
+}
+
+void CmdExec(IRecheckerHook_CmdExec *chain, IGameClient *cl, IResourceBuffer *res, char *cmdExec, uint32 responseHash)
+{
+	CmdExec_t data(chain, res);
+	CmdExec_AMXX(&data, cl, res->GetFileName(), cmdExec, responseHash);
+}

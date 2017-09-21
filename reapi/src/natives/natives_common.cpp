@@ -153,11 +153,11 @@ cell AMX_NATIVE_CALL has_vtc(AMX *amx, cell *params)
 
 AMX_NATIVE_INFO Natives_Checks[] =
 {
-	{ "is_entity", is_entity },
-	{ "is_rehlds", is_rehlds },
+	{ "is_entity",    is_entity    },
+	{ "is_rehlds",    is_rehlds    },
 	{ "is_regamedll", is_regamedll },
-	{ "has_reunion", has_reunion },
-	{ "has_vtc", has_vtc }
+	{ "has_reunion",  has_reunion  },
+	{ "has_vtc",      has_vtc      },
 };
 
 void RegisterNatives_Common()

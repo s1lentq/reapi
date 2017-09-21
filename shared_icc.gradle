@@ -18,14 +18,16 @@ rootProject.ext.createIccConfig = { boolean release, BinaryKind binKind ->
 				extraDefines: [
 					'linux': null,
 					'__linux__': null,
-					'NDEBUG': null
-				]
+					'NDEBUG': null,
+					'_GLIBCXX_USE_CXX11_ABI': 0,  // don't use specific c++11 features from GCC 5.X for backward compatibility to earlier version ABI libstdc++.so.6
+				],
 			),
 
 			linkerOptions: new GccToolchainConfig.LinkerOptions(
-				interProceduralOptimizations: true,
+				interProceduralOptimizations: true,		// -ipo
 				stripSymbolTable: true,
-				staticLibGcc: true,
+				staticLibStdCpp: false,
+				staticLibGcc: false,
 				staticIntel: true,
 			),
 
@@ -46,14 +48,16 @@ rootProject.ext.createIccConfig = { boolean release, BinaryKind binKind ->
 				extraDefines: [
 					'linux': null,
 					'__linux__': null,
-					'NDEBUG': null
-				]
+					'NDEBUG': null,
+					'_GLIBCXX_USE_CXX11_ABI': 0,  // don't use specific c++11 features from GCC 5.X for backward compatibility to earlier version ABI libstdc++.so.6
+				],
 			),
 
 			linkerOptions: new GccToolchainConfig.LinkerOptions(
 				interProceduralOptimizations: false,
 				stripSymbolTable: false,
-				staticLibGcc: true,
+				staticLibStdCpp: false,
+				staticLibGcc: false,
 				staticIntel: true,
 			),
 
