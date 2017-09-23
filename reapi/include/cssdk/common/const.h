@@ -741,7 +741,12 @@ enum
 
 
 typedef unsigned int	func_t;
-typedef unsigned int	string_t;
+
+#ifdef HAVE_STRONG_TYPEDEF
+enum class string_t: unsigned int {};
+#else
+typedef unsigned int string_t;
+#endif
 
 typedef unsigned char 		byte;
 typedef unsigned short 		word;

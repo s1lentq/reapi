@@ -681,6 +681,15 @@
     <ClInclude Include="..\src\mods\queryfile_handler.h">
       <Filter>src\mods</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\com_client.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\com_delta_packet.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\com_net.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\include\cssdk\common\parsemsg.cpp">

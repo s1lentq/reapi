@@ -6,18 +6,18 @@
 
 extern edict_t* g_pEdicts;
 
-inline size_t indexOfEdict(edict_t* ed)
+inline size_t indexOfEdict(const edict_t* ed)
 {
 	return ed - g_pEdicts;
 }
 
-inline size_t indexOfEdict(entvars_t* pev)
+inline size_t indexOfEdict(const entvars_t* pev)
 {
 	return indexOfEdict(pev->pContainingEntity);
 }
 
 // safe to nullptr
-inline size_t indexOfEdictAmx(entvars_t* pev)
+inline size_t indexOfEdictAmx(const entvars_t* pev)
 {
 	size_t index = AMX_NULLENT;
 	if (likely(pev != nullptr))
@@ -25,14 +25,22 @@ inline size_t indexOfEdictAmx(entvars_t* pev)
 	return index;
 }
 
+inline size_t indexOfEdictAmx(const edict_t *pEdict)
+{
+	size_t index = AMX_NULLENT;
+	if (likely(pEdict != nullptr))
+		index = indexOfEdict(pEdict);
+	return index;
+}
+
 // fast
-inline edict_t* edictByIndex(int index)
+inline edict_t* edictByIndex(const int index)
 {
 	return g_pEdicts + index;
 }
 
 // safe to index -1
-inline edict_t* edictByIndexAmx(int index)
+inline edict_t* edictByIndexAmx(const int index)
 {
 	auto ed = g_pEdicts + index;
 	if (unlikely(index < 0)) // == AMX_NULLENT
@@ -41,7 +49,7 @@ inline edict_t* edictByIndexAmx(int index)
 }
 
 template<typename T>
-inline T* getPrivate(int index)
+inline T* getPrivate(const int index)
 {
 	T* pdata = nullptr;
 	if (likely(index >= 0)) // != AMX_NULLENT
@@ -50,7 +58,7 @@ inline T* getPrivate(int index)
 }
 
 template<typename T>
-inline T* getPrivate(edict_t *pEdict)
+inline T* getPrivate(const edict_t *pEdict)
 {
 	T* pdata = nullptr;
 	if (likely(pEdict != nullptr))
@@ -58,7 +66,7 @@ inline T* getPrivate(edict_t *pEdict)
 	return pdata;
 }
 
-inline entvars_t* PEV(int index)
+inline entvars_t* PEV(const int index)
 {
 	entvars_t* pvars = nullptr;
 	if (likely(index >= 0)) // != AMX_NULLENT
@@ -67,7 +75,7 @@ inline entvars_t* PEV(int index)
 }
 
 template<typename T>
-inline size_t indexOfPDataAmx(T* pdata)
+inline size_t indexOfPDataAmx(const T* pdata)
 {
 	size_t index = AMX_NULLENT;
 	if (likely(pdata != nullptr))

@@ -2,6 +2,7 @@
 **/.gradle
 .idea
 *.iml
+*.bat
 **/msvc/Debug*
 **/msvc/Release*
 **/msvc/*.sdf
@@ -10,6 +11,7 @@
 **/msvc/*.suo
 **/msvc/*.db
 **/msvc/*.opendb
+**/msvc/*.txt
 **/msvc/*.aps
 **/msvc/.vs
 **/msvc/START*.bat

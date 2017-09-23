@@ -26,24 +26,14 @@
 *
 */
 
-#ifndef MAINTYPES_H
-#define MAINTYPES_H
-#ifdef _WIN32
 #pragma once
-#endif
 
+#include "entity_state.h"
 
-#include "osconfig.h"
-#include "mathlib.h"
+typedef struct packet_entities_s
+{
+	int num_entities;
+	unsigned char flags[32];
+	entity_state_t *entities;
+} packet_entities_t;
 
-
-// Has no references on server side.
-#define NOXREF
-// Function body is not implemented.
-#define NOBODY
-// Function is not tested at all.
-#define UNTESTED
-
-#define BIT(n) (1<<(n))
-
-#endif // MAINTYPES_H

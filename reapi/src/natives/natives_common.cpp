@@ -67,7 +67,7 @@ cell AMX_NATIVE_CALL amx_GetGrenadeType(AMX *amx, cell *params)
 }
 
 /*
-* Sets the view mode on a client.
+* Sets the view entity on a client.
 * This allows pfnSetView able to hooks.
 *
 * @param index       Client index
@@ -88,11 +88,35 @@ cell AMX_NATIVE_CALL amx_engset_view(AMX *amx, cell *params)
 	return TRUE;
 }
 
+/*
+* Gets the return index of the current view entity on a client.
+*
+* @param index       Client index
+*
+* native get_viewent(const index);
+*/
+cell AMX_NATIVE_CALL amx_get_viewent(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index };
+
+	CHECK_ISPLAYER(arg_index);
+
+	client_t *pClient = clientOfIndex(params[arg_index]);
+	if (unlikely(pClient == nullptr || !(pClient->active | pClient->spawned | pClient->connected)))
+	{
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
+		return FALSE;
+	}
+
+	return indexOfEdictAmx(pClient->pViewEntity);
+}
+
 AMX_NATIVE_INFO Natives_Common[] =
 {
 	{ "FClassnameIs",   amx_FClassnameIs   },
 	{ "GetGrenadeType", amx_GetGrenadeType },
 	{ "engset_view",    amx_engset_view    },
+	{ "get_viewent",    amx_get_viewent    },
 
 	{ nullptr, nullptr }
 };

@@ -167,7 +167,7 @@ native bool:FClassnameIs(const entityIndex, const className[]);
 native WeaponIdType:GetGrenadeType(const entityIndex);
 
 /*
-* Sets the view mode on a client.
+* Sets the view entity on a client.
 * This allows pfnSetView able to hooks.
 *
 * @param index       Client index
@@ -175,6 +175,14 @@ native WeaponIdType:GetGrenadeType(const entityIndex);
 *
 */
 native engset_view(const index, const const viewEntity);
+
+/*
+* Gets the return index of the current view entity on a client.
+*
+* @param index       Client index
+*
+*/
+native get_viewent(const index);
 
 /*
 * Check if the entity is valid.

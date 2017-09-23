@@ -26,24 +26,10 @@
 *
 */
 
-#ifndef MAINTYPES_H
-#define MAINTYPES_H
-#ifdef _WIN32
 #pragma once
-#endif
 
-
-#include "osconfig.h"
-#include "mathlib.h"
-
-
-// Has no references on server side.
-#define NOXREF
-// Function body is not implemented.
-#define NOBODY
-// Function is not tested at all.
-#define UNTESTED
-
-#define BIT(n) (1<<(n))
-
-#endif // MAINTYPES_H
+class string_t
+{
+public:
+	using unsigned int; 
+};

@@ -15,7 +15,7 @@
 #define CLASS_MEMBERS(cx, mx, postf, pref) ((!(postf & (MAX_REGION_RANGE - 1)) ? regmember::current_cell = 1, true : false) || (postf & (MAX_REGION_RANGE - 1)) == regmember::current_cell++) ? regmember([](member_t* ptr){ decltypefx(cx, pref, ., mx) f = {};ptr->size = getTypeSize(f);ptr->max_size = sizeof(f);ptr->offset = offsetof(##cx, ##pref##mx);ptr->type = getMemberType(f);ptr->name = #postf;}) : regmember(#pref#mx)
 
 #define GM_MEMBERS(mx)			CLASS_MEMBERS(CHalfLifeMultiplay, mx, mx,)
-#define GM_VOICE_MEMBERS(mx)		CLASS_MEMBERS(CHalfLifeMultiplay, mx, mx, m_VoiceGameMgr.)
+#define GM_VOICE_MEMBERS(mx)	CLASS_MEMBERS(CHalfLifeMultiplay, mx, mx, m_VoiceGameMgr.)
 #define BASE_MEMBERS(mx)		CLASS_MEMBERS(CBaseEntity, mx, mx,)
 #define ANIM_MEMBERS(mx)		CLASS_MEMBERS(CBaseAnimating, mx, mx,)
 #define MONST_MEMBERS(mx)		CLASS_MEMBERS(CBaseMonster, mx, mx,)
@@ -26,54 +26,56 @@
 #define UCMD_MEMBERS(mx)		CLASS_MEMBERS(usercmd_s, mx, ucmd_##mx,)
 #define PMTRACE_MEMBERS(mx)		CLASS_MEMBERS(pmtrace_s, mx, pmt_##mx,)
 #define CSPL_MEMBERS(mx)		CLASS_MEMBERS(CCSPlayer, mx, mx,)
-#define BASEITEM_MEMBERS(mx)		CLASS_MEMBERS(CBasePlayerItem, mx, mx,)
+#define BASEITEM_MEMBERS(mx)	CLASS_MEMBERS(CBasePlayerItem, mx, mx,)
 #define BASEWPN_MEMBERS(mx)		CLASS_MEMBERS(CBasePlayerWeapon, mx, m_Weapon_##mx, m_)
-#define WPNBOX_MEMBERS(mx)		CLASS_MEMBERS(CWeaponBox_COM, mx, m_WeaponBox_##mx, m_)
+#define WPNBOX_MEMBERS(mx)		CLASS_MEMBERS(CWeaponBox, mx, m_WeaponBox_##mx, m_)
 #define ARMOURY_MEMBERS(mx)		CLASS_MEMBERS(CArmoury, mx, m_Armoury_##mx, m_)
 
-inline MType getMemberType(float*)			{ return MEMBER_FLOAT; }
-inline MType getMemberType(float)			{ return MEMBER_FLOAT; }
+inline MType getMemberType(float*)				{ return MEMBER_FLOAT; }
+inline MType getMemberType(float)				{ return MEMBER_FLOAT; }
 
-inline MType getMemberType(double)			{ return MEMBER_DOUBLE; }
+inline MType getMemberType(double)				{ return MEMBER_DOUBLE; }
 
 inline MType getMemberType(CBasePlayer**)		{ return MEMBER_CLASSPTR; }
 inline MType getMemberType(CBasePlayer*)		{ return MEMBER_CLASSPTR; }
-inline MType getMemberType(CBasePlayerItem**)		{ return MEMBER_CLASSPTR; }
-inline MType getMemberType(CBasePlayerItem*)		{ return MEMBER_CLASSPTR; }
+inline MType getMemberType(CBasePlayerItem**)	{ return MEMBER_CLASSPTR; }
+inline MType getMemberType(CBasePlayerItem*)	{ return MEMBER_CLASSPTR; }
 inline MType getMemberType(CBaseEntity*)		{ return MEMBER_CLASSPTR; }
 
-inline MType getMemberType(EHANDLE)			{ return MEMBER_EHANDLE; }
+inline MType getMemberType(EHANDLE)				{ return MEMBER_EHANDLE; }
 inline MType getMemberType(entvars_t*)			{ return MEMBER_EVARS; }
 inline MType getMemberType(edict_t*)			{ return MEMBER_EDICT; }
 
-inline MType getMemberType(Vector*)			{ return MEMBER_VECTOR; }
-inline MType getMemberType(Vector)			{ return MEMBER_VECTOR; }
+inline MType getMemberType(Vector*)				{ return MEMBER_VECTOR; }
+inline MType getMemberType(Vector)				{ return MEMBER_VECTOR; }
 
-inline MType getMemberType(char*)			{ return MEMBER_STRING; }
+inline MType getMemberType(char*)				{ return MEMBER_STRING; }
+inline MType getMemberType(string_t)			{ return MEMBER_QSTRING; }
+inline MType getMemberType(string_t*)			{ return MEMBER_QSTRING; }
 inline MType getMemberType(qstring_t)			{ return MEMBER_QSTRING; }
 inline MType getMemberType(qstring_t*)			{ return MEMBER_QSTRING; }
 
-inline MType getMemberType(char)			{ return MEMBER_BYTE; }
-inline MType getMemberType(byte)			{ return MEMBER_BYTE; }
-inline MType getMemberType(byte*)			{ return MEMBER_BYTE; }
+inline MType getMemberType(char)				{ return MEMBER_BYTE; }
+inline MType getMemberType(byte)				{ return MEMBER_BYTE; }
+inline MType getMemberType(byte*)				{ return MEMBER_BYTE; }
 
-inline MType getMemberType(int*)			{ return MEMBER_INTEGER; }
-inline MType getMemberType(int)				{ return MEMBER_INTEGER; }
+inline MType getMemberType(int*)				{ return MEMBER_INTEGER; }
+inline MType getMemberType(int)					{ return MEMBER_INTEGER; }
 inline MType getMemberType(unsigned)			{ return MEMBER_INTEGER; }
 inline MType getMemberType(TeamName)			{ return MEMBER_INTEGER; }
 inline MType getMemberType(JoinState)			{ return MEMBER_INTEGER; }
 inline MType getMemberType(ModelName)			{ return MEMBER_INTEGER; }
-inline MType getMemberType(_Menu)			{ return MEMBER_INTEGER; }
+inline MType getMemberType(_Menu)				{ return MEMBER_INTEGER; }
 inline MType getMemberType(MusicState)			{ return MEMBER_INTEGER; }
 inline MType getMemberType(Activity)			{ return MEMBER_INTEGER; }
 inline MType getMemberType(MONSTERSTATE)		{ return MEMBER_INTEGER; }
 inline MType getMemberType(ArmorType)			{ return MEMBER_INTEGER; }
 inline MType getMemberType(ArmouryItemPack)		{ return MEMBER_INTEGER; }
 
-inline MType getMemberType(short)			{ return MEMBER_SHORT; }
+inline MType getMemberType(short)				{ return MEMBER_SHORT; }
 inline MType getMemberType(unsigned short)		{ return MEMBER_SHORT; }
 
-inline MType getMemberType(bool)			{ return MEMBER_BOOL; }
+inline MType getMemberType(bool)				{ return MEMBER_BOOL; }
 inline MType getMemberType(CUnifiedSignals)		{ return MEMBER_SIGNALS; }
 inline MType getMemberType(RebuyStruct)			{ return MEBMER_REBUYSTRUCT; }
 

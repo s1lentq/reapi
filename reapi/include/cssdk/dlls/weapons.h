@@ -311,7 +311,7 @@ public:
 	virtual void Touch(CBaseEntity *pOther) = 0;
 public:
 	CBasePlayerItem *m_rgpPlayerItems[MAX_ITEM_TYPES];
-	int m_rgiszAmmo[MAX_AMMO_SLOTS];
+	string_t m_rgiszAmmo[MAX_AMMO_SLOTS];
 	int m_rgAmmo[MAX_AMMO_SLOTS];
 	int m_cAmmoTypes;
 	bool m_bIsBomb;

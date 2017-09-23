@@ -52,6 +52,8 @@
 // AmxModX API
 #include "amxxmodule.h"
 
+#include "com_client.h"
+
 // reapi main
 #include "main.h"
 #include "reapi_utils.h"

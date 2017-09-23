@@ -29,8 +29,8 @@
 
 #include "enginecallback.h"
 
-#define eoNullEntity		0	// Testing the three types of "entity" for nullity
-#define iStringNull		0	// Testing strings for nullity
+#define eoNullEntity		0			// Testing the three types of "entity" for nullity
+#define iStringNull			(string_t)0	// Testing strings for nullity
 
 #define cchMapNameMost		32
 
@@ -146,7 +146,8 @@ inline void MESSAGE_BEGIN(int msg_dest, int msg_type, const float *pOrigin, entv
 inline BOOL FNullEnt(EOFFSET eoffset) { return (eoffset == 0); }
 inline BOOL FNullEnt(entvars_t *pev) { return (pev == NULL || FNullEnt(OFFSET(pev))); }
 inline BOOL FNullEnt(const edict_t *pent) { return (pent == NULL || FNullEnt(OFFSET(pent))); }
-inline BOOL FStringNull(int iString) { return (iString == iStringNull); }
+inline BOOL FStringNull(int iString) { return ((string_t)iString == iStringNull); }
+inline BOOL FStringNull(string_t iString) { return (iString == iStringNull); }
 inline BOOL FStrEq(const char *sz1, const char *sz2) { return (strcmp(sz1, sz2) == 0); }
 inline BOOL FClassnameIs(entvars_t *pev, const char *szClassname) { return FStrEq(STRING(pev->classname), szClassname); }
 inline BOOL FClassnameIs(edict_t *pent, const char *szClassname) { return FStrEq(STRING(VARS(pent)->classname), szClassname); }

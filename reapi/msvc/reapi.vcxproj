@@ -11,6 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\com_client.h" />
+    <ClInclude Include="..\include\com_delta_packet.h" />
+    <ClInclude Include="..\include\com_net.h" />
     <ClInclude Include="..\include\com_progdefs.h" />
     <ClInclude Include="..\include\cssdk\common\beamdef.h" />
     <ClInclude Include="..\include\cssdk\common\cl_entity.h" />
@@ -329,7 +332,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;HAVE_STRONG_TYPEDEF;_DEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
@@ -379,7 +382,7 @@
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;HAVE_STRONG_TYPEDEF;NDEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>
       </SDLCheck>
       <AdditionalIncludeDirectories>$(ProjectDir)\..\src;$(ProjectDir)\..\src\mods;$(ProjectDir)\..\src\natives;$(ProjectDir)\..\version;$(ProjectDir)\..\include;$(ProjectDir)\..\include\metamod;$(ProjectDir)\..\include\cssdk\common;$(ProjectDir)\..\include\cssdk\dlls;$(ProjectDir)\..\include\cssdk\engine;$(ProjectDir)\..\include\cssdk\game_shared;$(ProjectDir)\..\include\cssdk\pm_shared;$(ProjectDir)\..\include\cssdk\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>

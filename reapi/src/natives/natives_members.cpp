@@ -453,7 +453,7 @@ void RegisterNatives_Members()
 {
 	if (!api_cfg.hasReGameDLL())
 		fillNatives(ReGameVars_Natives, [](AMX *amx, cell *params) -> cell { MF_LogError(amx, AMX_ERR_NATIVE, "%s: isn't available", "ReGameDll"); return FALSE; });
-	
+
 	g_amxxapi.AddNatives(ReGameVars_Natives);
 	g_amxxapi.AddNatives(EngineVars_Natives);
 }
@@ -512,7 +512,7 @@ BOOL set_member(void* pdata, const member_t *member, cell* value, size_t element
 	case MEMBER_QSTRING:
 		{
 			char *source = getAmxString(value);
-			string_t newstr = (source && source[0] != '\0') ? ALLOC_STRING(source) : 0;
+			string_t newstr = (source && source[0] != '\0') ? ALLOC_STRING(source) : iStringNull;
 			set_member<string_t>(pdata, member->offset, newstr, element);
 			return TRUE;
 		}
