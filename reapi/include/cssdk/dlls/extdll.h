@@ -36,7 +36,7 @@
 
 #include "archtypes.h"
 #include "maintypes.h"
-#include "regamedll_common.h"
+#include "strtools.h"
 
 #ifdef _WIN32
 	#define WIN32_LEAN_AND_MEAN

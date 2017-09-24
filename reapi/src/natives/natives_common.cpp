@@ -179,7 +179,7 @@ cell AMX_NATIVE_CALL is_regamedll(AMX *amx, cell *params)
 *
 * @return		true/false
 *
-* native bool:is_has_reunion();
+* native bool:has_reunion();
 */
 cell AMX_NATIVE_CALL has_reunion(AMX *amx, cell *params)
 {
@@ -191,20 +191,33 @@ cell AMX_NATIVE_CALL has_reunion(AMX *amx, cell *params)
 *
 * @return		true/false
 *
-* native bool:is_has_vtc();
+* native bool:has_vtc();
 */
 cell AMX_NATIVE_CALL has_vtc(AMX *amx, cell *params)
 {
 	return (cell)api_cfg.hasVTC();
 }
 
+/*
+* Check if the rechecker is available
+*
+* @return		true/false
+*
+* native bool:has_rechecker();
+*/
+cell AMX_NATIVE_CALL has_rechecker(AMX *amx, cell *params)
+{
+	return (cell)api_cfg.hasRechecker();
+}
+
 AMX_NATIVE_INFO Natives_Checks[] =
 {
-	{ "is_entity",    is_entity    },
-	{ "is_rehlds",    is_rehlds    },
-	{ "is_regamedll", is_regamedll },
-	{ "has_reunion",  has_reunion  },
-	{ "has_vtc",      has_vtc      },
+	{ "is_entity",     is_entity     },
+	{ "is_rehlds",     is_rehlds     },
+	{ "is_regamedll",  is_regamedll  },
+	{ "has_reunion",   has_reunion   },
+	{ "has_vtc",       has_vtc       },
+	{ "has_rechecker", has_rechecker },
 };
 
 void RegisterNatives_Common()

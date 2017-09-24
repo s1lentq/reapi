@@ -396,24 +396,26 @@ cell AMX_NATIVE_CALL rg_round_end(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	const char *_sentence, *_message;
 	ScenarioEventEndRound event = static_cast<ScenarioEventEndRound>(params[arg_event]);
 
-	_sentence = getAmxString(amx, params[arg_sentence]);
-	_message = getAmxString(amx, params[arg_message]);
+	char sentence[190], message[190];
+	Q_strlcpy(sentence, getAmxString(amx, params[arg_sentence]));
+	Q_strlcpy(message, getAmxString(amx, params[arg_message]));
 
 	if (event != ROUND_NONE) {
 		auto& lst = msg_sentence_list[event];
-		if (strcmp(_sentence, "default") == 0)
-			_sentence = lst.sentence;
-		if (strcmp(_message, "default") == 0)
-			_message = lst.msg;
+		if (strcmp(sentence, "default") == 0)
+			Q_strlcpy(sentence, lst.sentence);
+		if (strcmp(message, "default") == 0)
+			Q_strlcpy(message, lst.msg);
 	}
 
-	if (_sentence[0])
-		Broadcast(_sentence);
+	if (sentence[0] != '\0')
+	{
+		Broadcast(sentence);
+	}
 
-	CSGameRules()->EndRoundMessage(_message, event);
+	CSGameRules()->EndRoundMessage(message, event);
 	CSGameRules()->TerminateRound(CAmxArg(amx, params[arg_delay]), winstatus);
 	return TRUE;
 }
@@ -925,7 +927,9 @@ cell AMX_NATIVE_CALL rg_internal_cmd(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	pPlayer->CSPlayer()->ClientCommand(getAmxString(amx, params[arg_cmd]), getAmxString(amx, params[arg_arg]));
+	char command[128];
+	Q_strlcpy(command, getAmxString(amx, params[arg_cmd]));
+	pPlayer->CSPlayer()->ClientCommand(command, getAmxString(amx, params[arg_arg]));
 	return TRUE;
 }
 

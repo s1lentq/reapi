@@ -225,6 +225,14 @@ native bool:has_reunion();
 native bool:has_vtc();
 
 /*
+* Check if Rechecker is available.
+*
+* @return		true/false
+*
+*/
+native bool:has_rechecker();
+
+/*
 * This is the callback from the module that gives major/minor versions for verifying compatibility for ReAPI versions.
 * If an AMXX plugin gets a failure, then you do need to upgrade to the latest version of the ReAPI module or update the files included for AMXX plugins.
 * Do not modify this!
