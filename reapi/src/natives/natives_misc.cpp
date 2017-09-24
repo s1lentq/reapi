@@ -400,22 +400,25 @@ cell AMX_NATIVE_CALL rg_round_end(AMX *amx, cell *params)
 
 	char sentence[190], message[190];
 	Q_strlcpy(sentence, getAmxString(amx, params[arg_sentence]));
-	Q_strlcpy(message, getAmxString(amx, params[arg_message]));
+	Q_strlcpy(message,  getAmxString(amx, params[arg_message]));
+
+	const char *_sentence = sentence;
+	const char *_message = message;
 
 	if (event != ROUND_NONE) {
 		auto& lst = msg_sentence_list[event];
-		if (strcmp(sentence, "default") == 0)
-			Q_strlcpy(sentence, lst.sentence);
+		if (strcmp(_sentence, "default") == 0)
+			_sentence = lst.sentence;
 		if (strcmp(message, "default") == 0)
-			Q_strlcpy(message, lst.msg);
+			_message = lst.msg;
 	}
 
-	if (sentence[0] != '\0')
+	if (_sentence[0] != '\0')
 	{
-		Broadcast(sentence);
+		Broadcast(_sentence);
 	}
 
-	CSGameRules()->EndRoundMessage(message, event);
+	CSGameRules()->EndRoundMessage(_message, event);
 	CSGameRules()->TerminateRound(CAmxArg(amx, params[arg_delay]), winstatus);
 	return TRUE;
 }

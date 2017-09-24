@@ -4280,7 +4280,7 @@ enum CWeaponBox_Members
 {
 	/*
 	* Description:		-
-	* Member type:		class CBasePlayerItem *[6]
+	* Member type:		class CBasePlayerItem *[MAX_ITEM_TYPES]
 	* Get params:		get_member(index, member, element);
 	* Set params:		set_member(index, member, value, element);
 	*/
@@ -4288,15 +4288,15 @@ enum CWeaponBox_Members
 
 	/*
 	* Description:		-
-	* Member type:		string_t [32]
-	* Get params:		get_member(index, member, dest[], const lenght);
-	* Set params:		set_member(index, member, const source[]);
+	* Member type:		string_t [MAX_AMMO_SLOTS]
+	* Get params:		get_member(index, member, dest[], const lenght, element);
+	* Set params:		set_member(index, member, const source[], element);
 	*/
 	m_WeaponBox_rgiszAmmo,
 
 	/*
 	* Description:		-
-	* Member type:		int [32]
+	* Member type:		int [MAX_AMMO_SLOTS]
 	* Get params:		get_member(index, member, element);
 	* Set params:		set_member(index, member, value, element);
 	*/
