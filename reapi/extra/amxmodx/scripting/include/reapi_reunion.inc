@@ -19,27 +19,32 @@ enum client_auth_type
 	CA_TYPE_SSE3,
 };
 
+#define is_user_steam(%0) (REU_GetAuthtype(%0) == CA_TYPE_STEAM)
+
 /*
 * Gets client protocol.
 *
-* @param index		Client index
-* @return		Client protocol
+* @param index  Client index
+*
+* @return       Client protocol
 */
 native REU_GetProtocol(const index);
 
 /*
 * Gets client auth type.
 *
-* @param index		Client index
-* @return		Client auth type
+* @param index  Client index
+*
+* @return       Client auth type
 */
 native client_auth_type:REU_GetAuthtype(const index);
 
 /*
 * Check if the client is running RevEmu with limited user rights.
 *
-* @param index		Client index
-* @return		1/0
+* @param index  Client index
+*
+* @return       1/0
 *
 */
 native bool:REU_IsRevemuWithoutAdminRights(const index);
