@@ -18,32 +18,32 @@ enum MapNameType
 enum EngineFunc
 {
 	/*
-	* Description:		-
-	* Params:		(const recipients, const entity, const channel, const sample[], const volume, Float:attenuation, const fFlags, const pitch)
+	* Description:  -
+	* Params:       (const recipients, const entity, const channel, const sample[], const volume, Float:attenuation, const fFlags, const pitch)
 	*/
 	RH_SV_StartSound = BEGIN_FUNC_REGION(engine),
 
 	/*
-	* Description:		-
-	* Params:		(const client, bool:crash, const fmt[])
+	* Description:  -
+	* Params:       (const client, bool:crash, const fmt[])
 	*/
 	RH_SV_DropClient,
 
 	/*
-	* Description:		-
-	* Params:		(const runPhysics)
+	* Description:  -
+	* Params:       (const runPhysics)
 	*/
 	RH_SV_ActivateServer,
 
 	/*
-	* Description:		-
-	* Params:		(pcvar, const value[])
+	* Description:  -
+	* Params:       (pcvar, const value[])
 	*/
 	RH_Cvar_DirectSet,
 
 	/*
-	* Description:		Receiver is player index or 0 when update will be sended to all.
-	* Params:		(client, receiver, pinfo)
+	* Description:  Receiver is player index or 0 when update will be sended to all.
+	* Params:       (const client, buffer, const receiver)
 	*/
 	RH_SV_WriteFullClientUpdate,
 };

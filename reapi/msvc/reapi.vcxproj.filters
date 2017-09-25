@@ -58,6 +58,9 @@
     <Filter Include="version">
       <UniqueIdentifier>{60b1b924-8415-4c1d-9fef-57e717e12f42}</UniqueIdentifier>
     </Filter>
+    <Filter Include="common">
+      <UniqueIdentifier>{8232a3e7-911f-4ee1-8223-03ac077d7bee}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\metamod\dllapi.h">
@@ -690,6 +693,9 @@
     <ClInclude Include="..\include\com_net.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\common\info.h">
+      <Filter>common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\include\cssdk\common\parsemsg.cpp">
@@ -787,6 +793,9 @@
     </ClCompile>
     <ClCompile Include="..\src\mods\queryfile_handler.cpp">
       <Filter>src\mods</Filter>
+    </ClCompile>
+    <ClCompile Include="..\common\info.cpp">
+      <Filter>common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

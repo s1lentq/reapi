@@ -129,9 +129,15 @@ cell AMX_NATIVE_CALL amx_get_key_value(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_buffer, arg_key, arg_value, arg_maxlen };
 
-	char buffer[MAX_INFO_STRING], key[MAX_KV_LEN];
-	Q_strlcpy(buffer, getAmxString(amx, params[arg_buffer]));
-	Q_strlcpy(key,    getAmxString(amx, params[arg_key]));
+	char *buffer = reinterpret_cast<char *>(params[arg_buffer]);
+	if (!buffer)
+	{
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: Invalid buffer", __FUNCTION__);
+		return FALSE;
+	}
+
+	char key[MAX_KV_LEN];
+	Q_strlcpy(key, getAmxString(amx, params[arg_key]));
 
 	return g_amxxapi.SetAmxString(amx, params[arg_value], g_engfuncs.pfnInfoKeyValue(buffer, key), params[arg_maxlen]);
 }
@@ -145,18 +151,33 @@ cell AMX_NATIVE_CALL amx_get_key_value(AMX *amx, cell *params)
 *
 * @noreturn
 *
-* native set_key_value(const pbuffer, const key[], const value[]);
+* native set_key_value(const &pbuffer, const key[], const value[]);
 */
 cell AMX_NATIVE_CALL amx_set_key_value(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_buffer, arg_key, arg_value };
 
-	char buffer[MAX_INFO_STRING], key[MAX_KV_LEN], value[MAX_KV_LEN];
-	Q_strlcpy(buffer, getAmxString(amx, params[arg_buffer]));
+	char *buffer = reinterpret_cast<char *>(params[arg_buffer]);
+	if (!buffer)
+	{
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: Invalid buffer", __FUNCTION__);
+		return FALSE;
+	}
+
+	char key[MAX_KV_LEN], value[MAX_KV_LEN];
 	Q_strlcpy(key,    getAmxString(amx, params[arg_key]));
 	Q_strlcpy(value,  getAmxString(amx, params[arg_value]));
 
-	g_engfuncs.pfnSetKeyValue(buffer, key, value);
+	if (!key[0])
+	{
+		buffer[0] = '\0';
+		return TRUE;
+	}
+
+	Info_SetValueForStarKey(buffer, key, value, MAX_INFO_STRING);
+
+	// TODO: this function doesn't let me sets another buffer
+	//g_engfuncs.pfnSetKeyValue(buffer, key, value);
 	return TRUE;
 }
 

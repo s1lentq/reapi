@@ -1,13 +1,13 @@
 #include "precompiled.h"
 
-inline size_t getFwdParamType(void(*)(int))			{ return FP_CELL; }
-inline size_t getFwdParamType(void(*)(size_t))			{ return FP_CELL; }
-inline size_t getFwdParamType(void(*)(short))			{ return FP_CELL; }
-inline size_t getFwdParamType(void(*)(bool))			{ return FP_CELL; }
-inline size_t getFwdParamType(void(*)(Vector&))			{ return FP_ARRAY; }
-inline size_t getFwdParamType(void(*)(PLAYER_ANIM))		{ return FP_CELL; }
-inline size_t getFwdParamType(void(*)(WeaponIdType))		{ return FP_CELL; }
-inline size_t getFwdParamType(void(*)(RewardType))		{ return FP_CELL; }
+inline size_t getFwdParamType(void(*)(int))						{ return FP_CELL; }
+inline size_t getFwdParamType(void(*)(size_t))					{ return FP_CELL; }
+inline size_t getFwdParamType(void(*)(short))					{ return FP_CELL; }
+inline size_t getFwdParamType(void(*)(bool))					{ return FP_CELL; }
+inline size_t getFwdParamType(void(*)(Vector&))					{ return FP_ARRAY; }
+inline size_t getFwdParamType(void(*)(PLAYER_ANIM))				{ return FP_CELL; }
+inline size_t getFwdParamType(void(*)(WeaponIdType))			{ return FP_CELL; }
+inline size_t getFwdParamType(void(*)(RewardType))				{ return FP_CELL; }
 inline size_t getFwdParamType(void(*)(ScenarioEventEndRound))	{ return FP_CELL; }
 inline size_t getFwdParamType(void(*)(ItemID))					{ return FP_CELL; }
 inline size_t getFwdParamType(void(*)(ItemRestType))			{ return FP_CELL; }
@@ -19,7 +19,7 @@ inline size_t getFwdParamType(void(*)(char *))					{ return FP_STRING; }
 inline size_t getFwdParamType(void(*)(IResourceBuffer*))		{ return FP_CELL; }
 
 template<typename T>
-inline size_t getFwdParamType(void(*)(T *))			{ return FP_CELL; }
+inline size_t getFwdParamType(void(*)(T *))						{ return FP_CELL; }
 
 template<size_t current = 0>
 void setupParamTypes(size_t param_types[], void (*)())
@@ -69,13 +69,13 @@ struct regfunc
 
 int regfunc::current_cell = 1;
 
-#define ENG(h) { {}, {}, #h, "ReHLDS", [](){ return api_cfg.hasReHLDS(); }, ((!(RH_##h & (MAX_REGION_RANGE - 1)) ? regfunc::current_cell = 1, true : false) || (RH_##h & (MAX_REGION_RANGE - 1)) == regfunc::current_cell++) ? regfunc(h) : regfunc(#h), [](){ g_RehldsHookchains->##h##()->registerHook(&##h); }, [](){ g_RehldsHookchains->##h##()->unregisterHook(&##h); }}
+#define ENG(h,...) { {}, {}, #h, "ReHLDS", [](){ return api_cfg.hasReHLDS(); }, ((!(RH_##h & (MAX_REGION_RANGE - 1)) ? regfunc::current_cell = 1, true : false) || (RH_##h & (MAX_REGION_RANGE - 1)) == regfunc::current_cell++) ? regfunc(h##__VA_ARGS__) : regfunc(#h#__VA_ARGS__), [](){ g_RehldsHookchains->##h##()->registerHook(&##h); }, [](){ g_RehldsHookchains->##h##()->unregisterHook(&##h); }}
 hook_t hooklist_engine[] = {
 	ENG(SV_StartSound),
 	ENG(SV_DropClient),
 	ENG(SV_ActivateServer),
 	ENG(Cvar_DirectSet),
-	ENG(SV_WriteFullClientUpdate)
+	ENG(SV_WriteFullClientUpdate, _AMXX)
 };
 
 #define DLL(h) { {}, {}, #h, "ReGameDLL", [](){ return api_cfg.hasReGameDLL(); }, ((!(RG_##h & (MAX_REGION_RANGE - 1)) ? regfunc::current_cell = 1, true : false) || (RG_##h & (MAX_REGION_RANGE - 1)) == regfunc::current_cell++) ? regfunc(h) : regfunc(#h), [](){ g_ReGameHookchains->##h##()->registerHook(&##h); }, [](){ g_ReGameHookchains->##h##()->unregisterHook(&##h); }}

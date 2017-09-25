@@ -46,24 +46,21 @@ void Cvar_DirectSet(IRehldsHook_Cvar_DirectSet *chain, cvar_t *var, const char *
 	callVoidForward(RH_Cvar_DirectSet, original, var, value);
 }
 
-void SV_WriteFullClientUpdate(IRehldsHook_SV_WriteFullClientUpdate *chain, IGameClient *client, char *info, size_t maxlen, sizebuf_t *sb, IGameClient *receiver)
+void SV_WriteFullClientUpdate_AMXX(SV_WriteFullClientUpdate_t *data, IGameClient *client, size_t buffer, IGameClient *receiver)
 {
-	int receiver_id = 0;
-	if (receiver)
-		receiver_id = receiver->GetId() + 1;
-
-	auto original = [chain, sb](int _client, int _receiver, int _pinfo)
+	auto original = [data](int _client, size_t _buffer, int _receiver)
 	{
-		sizebuf_t* dest = sb;
-		IGameClient* receiver = nullptr;
-		if (_receiver) {
-			receiver = g_RehldsSvs->GetClient(_receiver - 1);
-			dest = receiver->GetNetChan()->GetMessageBuf();
-		}
-		chain->callNext(g_RehldsSvs->GetClient(_client - 1), (char *)_pinfo, MAX_INFO_STRING, dest, receiver);
+		data->m_chain->callNext(g_RehldsSvs->GetClient(_client - 1), (char *)_buffer, data->m_args.maxlen, data->m_args.message, g_RehldsSvs->GetClient(_receiver - 1));
 	};
 
-	callVoidForward(RH_SV_WriteFullClientUpdate, original, client->GetId() + 1, receiver_id, int(info));
+	callVoidForward(RH_SV_WriteFullClientUpdate, original, client->GetId() + 1, buffer, receiver ? receiver->GetId() + 1 : AMX_NULLENT);
+}
+
+void SV_WriteFullClientUpdate(IRehldsHook_SV_WriteFullClientUpdate *chain, IGameClient *client, char *buffer, size_t maxlen, sizebuf_t *sb, IGameClient *receiver)
+{
+	SV_WriteFullClientUpdate_args_t args(sb, maxlen);
+	SV_WriteFullClientUpdate_t data(chain, args);
+	SV_WriteFullClientUpdate_AMXX(&data, client, (size_t)buffer, receiver);
 }
 
 /*
@@ -857,7 +854,7 @@ void FileConsistencyProcess_AMXX(FileConsistencyProcess_t *data, IGameClient *cl
 	int hashCopy = responseHash;
 	auto original = [data, hashCopy](int _cl, const char *_filename, const char *_cmd, ResourceType_e _type, uint32 _hash, bool _isBreak)
 	{
-		data->m_chain->callNext(g_RehldsSvs->GetClient(_cl - 1), data->m_data, _type, hashCopy);
+		data->m_chain->callNext(g_RehldsSvs->GetClient(_cl - 1), data->m_args, _type, hashCopy);
 	};
 
 	if (g_RecheckerFuncs->GetResource()->GetPrevHash() == responseHash) {
@@ -888,7 +885,7 @@ void CmdExec_AMXX(CmdExec_t *data, IGameClient *cl, const char *filename, char *
 	int hashCopy = responseHash;
 	auto original = [data, hashCopy](int _cl, const char *_filename, char *_cmd, uint32 _responseHash)
 	{
-		data->m_chain->callNext(g_RehldsSvs->GetClient(_cl - 1), data->m_data, _cmd, hashCopy);
+		data->m_chain->callNext(g_RehldsSvs->GetClient(_cl - 1), data->m_args, _cmd, hashCopy);
 	};
 
 	if (g_RecheckerFuncs->GetResource()->GetPrevHash() == responseHash) {

@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\common\info.h" />
     <ClInclude Include="..\include\com_client.h" />
     <ClInclude Include="..\include\com_delta_packet.h" />
     <ClInclude Include="..\include\com_net.h" />
@@ -227,6 +228,7 @@
     <ClInclude Include="..\version\appversion.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\common\info.cpp" />
     <ClCompile Include="..\include\cssdk\common\parsemsg.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -336,7 +338,7 @@
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)\..\src;$(ProjectDir)\..\src\mods;$(ProjectDir)\..\src\natives;$(ProjectDir)\..\version;$(ProjectDir)\..\include;$(ProjectDir)\..\include\metamod;$(ProjectDir)\..\include\cssdk\common;$(ProjectDir)\..\include\cssdk\dlls;$(ProjectDir)\..\include\cssdk\engine;$(ProjectDir)\..\include\cssdk\game_shared;$(ProjectDir)\..\include\cssdk\pm_shared;$(ProjectDir)\..\include\cssdk\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\..\src;$(ProjectDir)\..\src\mods;$(ProjectDir)\..\src\natives;$(ProjectDir)\..\common;$(ProjectDir)\..\version;$(ProjectDir)\..\include;$(ProjectDir)\..\include\metamod;$(ProjectDir)\..\include\cssdk\common;$(ProjectDir)\..\include\cssdk\dlls;$(ProjectDir)\..\include\cssdk\engine;$(ProjectDir)\..\include\cssdk\game_shared;$(ProjectDir)\..\include\cssdk\pm_shared;$(ProjectDir)\..\include\cssdk\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
@@ -385,7 +387,7 @@
       <PreprocessorDefinitions>WIN32;HAVE_STRONG_TYPEDEF;NDEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>
       </SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)\..\src;$(ProjectDir)\..\src\mods;$(ProjectDir)\..\src\natives;$(ProjectDir)\..\version;$(ProjectDir)\..\include;$(ProjectDir)\..\include\metamod;$(ProjectDir)\..\include\cssdk\common;$(ProjectDir)\..\include\cssdk\dlls;$(ProjectDir)\..\include\cssdk\engine;$(ProjectDir)\..\include\cssdk\game_shared;$(ProjectDir)\..\include\cssdk\pm_shared;$(ProjectDir)\..\include\cssdk\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\..\src;$(ProjectDir)\..\src\mods;$(ProjectDir)\..\src\natives;$(ProjectDir)\..\common;$(ProjectDir)\..\version;$(ProjectDir)\..\include;$(ProjectDir)\..\include\metamod;$(ProjectDir)\..\include\cssdk\common;$(ProjectDir)\..\include\cssdk\dlls;$(ProjectDir)\..\include\cssdk\engine;$(ProjectDir)\..\include\cssdk\game_shared;$(ProjectDir)\..\include\cssdk\pm_shared;$(ProjectDir)\..\include\cssdk\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>

@@ -37,7 +37,7 @@ void postEvaluate(NativeBinarySpec b) {
 
 void setupToolchain(NativeBinarySpec b) {
 	ToolchainConfig cfg = rootProject.createToolchainConfig(b)
-	cfg.projectInclude(project, '', '/src', '/src/mods', '/src/natives', '/include', '/include/metamod', '/include/cssdk/common', '/include/cssdk/dlls', '/include/cssdk/engine', '/include/cssdk/game_shared', '/include/cssdk/pm_shared', '/include/cssdk/public')
+	cfg.projectInclude(project, '', '/src', '/common', '/src/mods', '/src/natives', '/include', '/include/metamod', '/include/cssdk/common', '/include/cssdk/dlls', '/include/cssdk/engine', '/include/cssdk/game_shared', '/include/cssdk/pm_shared', '/include/cssdk/public')
 	cfg.singleDefines('HAVE_STRONG_TYPEDEF');
 
 	if (cfg instanceof MsvcToolchainConfig) {
@@ -108,7 +108,7 @@ model {
 				}
 				reapi_src(CppSourceSet) {
 					source {
-						srcDirs "src", "include/cssdk/public"
+						srcDirs "src", "common", "include/cssdk/public"
 						include "**/*.cpp"
 
 						exclude "precompiled.cpp"

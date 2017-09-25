@@ -29,8 +29,8 @@ struct retval_t
 	{
 		char*			_string;
 		float			_float;
-		int			_integer;
-		CBaseEntity*		_classptr;
+		int				_integer;
+		CBaseEntity*	_classptr;
 		edict_t*		_edict;
 		entvars_t*		_pev;
 	};
@@ -39,11 +39,11 @@ struct retval_t
 inline AType getApiType(int)			{ return ATYPE_INTEGER; }
 inline AType getApiType(unsigned)		{ return ATYPE_INTEGER; }
 inline AType getApiType(float)			{ return ATYPE_FLOAT; }
-inline AType getApiType(const char *)		{ return ATYPE_STRING; }
+inline AType getApiType(const char *)	{ return ATYPE_STRING; }
 inline AType getApiType(char[])			{ return ATYPE_STRING; }
-inline AType getApiType(CBaseEntity *)		{ return ATYPE_CLASSPTR; }
+inline AType getApiType(CBaseEntity *)	{ return ATYPE_CLASSPTR; }
 inline AType getApiType(edict_t *)		{ return ATYPE_EDICT; }
-inline AType getApiType(entvars_t *)		{ return ATYPE_EVARS; }
+inline AType getApiType(entvars_t *)	{ return ATYPE_EVARS; }
 
 template<typename T>
 inline AType getApiType(T *) { return ATYPE_INTEGER; }
@@ -288,10 +288,10 @@ R callForward(size_t func, original_t original, f_args... args)
 template<typename T, typename A>
 struct hookdata_t
 {
-	hookdata_t(T chain, A data) : m_chain(chain), m_data(data) {}
+	hookdata_t(T chain, A args) : m_chain(chain), m_args(args) {}
 
 	T m_chain;
-	A m_data;
+	A m_args;
 };
 
 // rehlds functions
@@ -299,7 +299,18 @@ void SV_StartSound(IRehldsHook_SV_StartSound *chain, int recipients, edict_t *en
 void SV_DropClient(IRehldsHook_SV_DropClient *chain, IGameClient *cl, bool crash, const char *fmt);
 void SV_ActivateServer(IRehldsHook_SV_ActivateServer *chain, int runPhysics);
 void Cvar_DirectSet(IRehldsHook_Cvar_DirectSet *chain, cvar_t *var, const char *value);
-void SV_WriteFullClientUpdate(IRehldsHook_SV_WriteFullClientUpdate *chain, IGameClient *client, char *info, size_t maxlen, sizebuf_t *sb, IGameClient *receiver);
+
+struct SV_WriteFullClientUpdate_args_t
+{
+	SV_WriteFullClientUpdate_args_t(sizebuf_t *msg, int size) : message(msg), maxlen(size) {}
+
+	sizebuf_t *message;
+	int maxlen;
+};
+
+using SV_WriteFullClientUpdate_t = hookdata_t<IRehldsHook_SV_WriteFullClientUpdate *, SV_WriteFullClientUpdate_args_t &>;
+void SV_WriteFullClientUpdate_AMXX(SV_WriteFullClientUpdate_t *data, IGameClient *client, size_t buffer, IGameClient *receiver);
+void SV_WriteFullClientUpdate(IRehldsHook_SV_WriteFullClientUpdate *chain, IGameClient *client, char *buffer, size_t maxlen, sizebuf_t *sb, IGameClient *receiver);
 
 // regamedll functions
 int GetForceCamera(IReGameHook_GetForceCamera *chain, CBasePlayer *pObserver);

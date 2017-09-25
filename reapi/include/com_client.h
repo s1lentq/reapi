@@ -34,10 +34,6 @@
 #include "com_progdefs.h"
 #include "com_delta_packet.h"
 
-// Key + value + 2 x slash + NULL
-const int MAX_INFO_STRING = 256;
-const int MAX_KV_LEN      = 127;
-
 typedef struct client_frame_s
 {
 	double senttime;
