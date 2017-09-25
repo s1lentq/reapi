@@ -2012,28 +2012,6 @@ cell AMX_NATIVE_CALL rh_update_user_info(AMX *amx, cell *params)
 	return TRUE;
 }
 
-cell AMX_NATIVE_CALL rh_get_key_value(AMX *amx, cell *params)
-{
-	enum args_e { arg_count, arg_buffer, arg_key, arg_value, arg_maxlen };
-
-	char *buffer = getAmxString(amx, params[arg_buffer]);
-	const char *key = getAmxString(amx, params[arg_key]);
-
-	return g_amxxapi.SetAmxString(amx, params[arg_value], g_engfuncs.pfnInfoKeyValue(buffer, key), params[arg_maxlen]);
-}
-
-cell AMX_NATIVE_CALL rh_set_key_value(AMX *amx, cell *params)
-{
-	enum args_e { arg_count, arg_buffer, arg_key, arg_value };
-
-	char *buffer = getAmxString(amx, params[arg_buffer]);
-	const char *key = getAmxString(amx, params[arg_key]);
-	const char *value = getAmxString(amx, params[arg_value]);
-
-	g_engfuncs.pfnSetKeyValue(buffer, key, value);
-	return 1;
-}
-
 AMX_NATIVE_INFO Misc_Natives_RH[] =
 {
 	{ "rh_set_mapname", rh_set_mapname },
@@ -2041,8 +2019,6 @@ AMX_NATIVE_INFO Misc_Natives_RH[] =
 	{ "rh_reset_mapname", rh_reset_mapname },
 	{ "rh_emit_sound2", rh_emit_sound2 },
 	{ "rh_update_user_info", rh_update_user_info },
-	{ "rh_get_key_value", rh_get_key_value },
-	{ "rh_set_key_value", rh_set_key_value },
 
 	{ nullptr, nullptr }
 };

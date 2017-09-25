@@ -111,12 +111,63 @@ cell AMX_NATIVE_CALL amx_get_viewent(AMX *amx, cell *params)
 	return indexOfEdictAmx(pClient->pViewEntity);
 }
 
+/*
+* Gets value for key in buffer
+*
+* @param pbuffer    Pointer to buffer
+* @param key        Key string
+* @param value      Buffer to copy value to
+* @param maxlen     Maximum size of the buffer
+*
+* @return           Number of cells written to buffer
+* @error            If the index is not within the range of 1 to MaxClients or
+*                   the client is not connected, an error will be thrown.
+*
+* native get_key_value(const pbuffer, const key[], const value[], const maxlen);
+*/
+cell AMX_NATIVE_CALL amx_get_key_value(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_buffer, arg_key, arg_value, arg_maxlen };
+
+	char buffer[MAX_INFO_STRING], key[MAX_KV_LEN];
+	Q_strlcpy(buffer, getAmxString(amx, params[arg_buffer]));
+	Q_strlcpy(key,    getAmxString(amx, params[arg_key]));
+
+	return g_amxxapi.SetAmxString(amx, params[arg_value], g_engfuncs.pfnInfoKeyValue(buffer, key), params[arg_maxlen]);
+}
+
+/*
+* Sets value for key in buffer
+*
+* @param pbuffer    Pointer to buffer
+* @param key        Key string
+* @param value      Value to set
+*
+* @noreturn
+*
+* native set_key_value(const pbuffer, const key[], const value[]);
+*/
+cell AMX_NATIVE_CALL amx_set_key_value(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_buffer, arg_key, arg_value };
+
+	char buffer[MAX_INFO_STRING], key[MAX_KV_LEN], value[MAX_KV_LEN];
+	Q_strlcpy(buffer, getAmxString(amx, params[arg_buffer]));
+	Q_strlcpy(key,    getAmxString(amx, params[arg_key]));
+	Q_strlcpy(value,  getAmxString(amx, params[arg_value]));
+
+	g_engfuncs.pfnSetKeyValue(buffer, key, value);
+	return TRUE;
+}
+
 AMX_NATIVE_INFO Natives_Common[] =
 {
 	{ "FClassnameIs",   amx_FClassnameIs   },
 	{ "GetGrenadeType", amx_GetGrenadeType },
 	{ "engset_view",    amx_engset_view    },
 	{ "get_viewent",    amx_get_viewent    },
+	{ "get_key_value",  amx_get_key_value  },
+	{ "set_key_value",  amx_set_key_value  },
 
 	{ nullptr, nullptr }
 };
