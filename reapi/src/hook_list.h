@@ -157,6 +157,7 @@ enum GamedllFunc_CBasePlayer
 	RG_CBasePlayer_MakeBomber,
 	RG_CBasePlayer_StartObserver,
 	RG_CBasePlayer_GetIntoGame,
+	RG_CBasePlayer_StartDeathCam,
 
 	// [...]
 };

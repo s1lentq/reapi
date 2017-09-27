@@ -44,7 +44,6 @@ enum ReCheckerFunc
 * @param hash           Hash of file to request.
 *
 * @return               Returns a hook handle. Use UnRegisterQueryFile to remove the forward
-*
 */
 native QueryFileHook:RegisterQueryFile(const file[], const function[], const ResourceType:type, const hash = -1);
 
@@ -55,6 +54,5 @@ native QueryFileHook:RegisterQueryFile(const file[], const function[], const Res
 * @param hook           The hook to remove
 *
 * @return               Returns true if the hook is successfully removed, otherwise false
-*
 */
 native bool:UnRegisterQueryFile(QueryFileHook:hook);

@@ -1,14 +1,14 @@
 #include "precompiled.h"
 
 /*
-* Assign the number of the player animations.
+* Assign the number of the player's animation.
 *
-* @param index		Client index
-* @param playerAnim	Specific the number animation
+* @param index          Client index
+* @param playerAnim     Specific animation number
 *
 * @noreturn
 *
-* native rg_set_animation(index, PLAYER_ANIM:playerAnim);
+* native rg_set_animation(const index, PLAYER_ANIM:playerAnim);
 */
 cell AMX_NATIVE_CALL rg_set_animation(AMX *amx, cell *params)
 {
@@ -28,13 +28,13 @@ enum AccountSet { AS_SET, AS_ADD };
 /*
 * Adds money to player's account.
 *
-* @param index		Client index
-* @param amount		The amount of money
-* @param bTrackChange	If the bTrackChange is 1, the amount of money added will also be displayed.
+* @param index          Client index
+* @param amount         The amount of money
+* @param bTrackChange   If bTrackChange is 1, the amount of money added will also be displayed.
 *
 * @noreturn
 *
-* native rg_add_account(index, amount, AccountSet:typeSet = AS_ADD, const bool:bTrackChange = true);
+* native rg_add_account(const index, amount, AccountSet:typeSet = AS_ADD, const bool:bTrackChange = true);
 */
 cell AMX_NATIVE_CALL rg_add_account(AMX *amx, cell *params)
 {
@@ -56,15 +56,15 @@ cell AMX_NATIVE_CALL rg_add_account(AMX *amx, cell *params)
 enum GiveType { GT_APPEND, GT_REPLACE, GT_DROP_AND_REPLACE };
 
 /*
-* Gives item to player
+* Gives the player an item.
 *
-* @param index		Client index
-* @param pszName	Classname item
-* @param type		Look at the enum's with name GiveType
+* @param index      Client index
+* @param pszName    Item classname
+* @param type       Look at the enums with name GiveType
 *
-* @return		Index of entity if successfully, -1 otherwise
+* @return           Index of entity if successfull, -1 otherwise
 *
-* native rg_give_item(index, const pszName[], GiveType:type = GT_APPEND);
+* native rg_give_item(const index, const pszName[], GiveType:type = GT_APPEND);
 */
 cell AMX_NATIVE_CALL rg_give_item(AMX *amx, cell *params)
 {
@@ -78,29 +78,26 @@ cell AMX_NATIVE_CALL rg_give_item(AMX *amx, cell *params)
 	GiveType type = static_cast<GiveType>(params[arg_type]);
 	const char *itemName = getAmxString(amx, params[arg_item]);
 
-	if (type > GT_APPEND) {
-
+	if (type > GT_APPEND)
+	{
 		auto pInfo = g_ReGameApi->GetWeaponSlot(itemName);
 		if (pInfo)
 		{
 			pPlayer->ForEachItem(pInfo->slot, [pPlayer, pInfo, type](CBasePlayerItem *pItem)
 			{
-				if (pItem->m_iId != pInfo->id)
+				switch (type)
 				{
-					switch (type)
-					{
-					case GT_DROP_AND_REPLACE:
-						pPlayer->CSPlayer()->DropPlayerItem(STRING(pItem->pev->classname));
-						break;
-					case GT_REPLACE:
-						pPlayer->pev->weapons &= ~(1 << pItem->m_iId);
-						pPlayer->RemovePlayerItem(pItem);
-						pItem->Kill();
-						break;
-					case GT_APPEND:
-					default:
-						break;
-					}
+				case GT_DROP_AND_REPLACE:
+					pPlayer->CSPlayer()->DropPlayerItem(STRING(pItem->pev->classname));
+					break;
+				case GT_REPLACE:
+					pPlayer->pev->weapons &= ~(1 << pItem->m_iId);
+					pPlayer->RemovePlayerItem(pItem);
+					pItem->Kill();
+					break;
+				case GT_APPEND:
+				default:
+					break;
 				}
 
 				return false;
@@ -116,13 +113,72 @@ cell AMX_NATIVE_CALL rg_give_item(AMX *amx, cell *params)
 }
 
 /*
-* Give the player default items
+* Gives the player an custom item, this means that don't handled API things.
 *
-* @param index		Client index
+* @example rg_give_custom_item(id, "weapon_c4"); doesn't sets the member m_bHasC4 to true, as the rg_give_item does.
+*
+* @param index      Client index
+* @param pszName    Item classname
+* @param type       Look at the enums with name GiveType
+*
+* @return           Index of entity if successfull, -1 otherwise
+*
+* native rg_give_custom_item(const index, const pszName[], GiveType:type = GT_APPEND);
+*/
+cell AMX_NATIVE_CALL rg_give_custom_item(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_item, arg_type };
+
+	CHECK_ISPLAYER(arg_index);
+
+	CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_index]);
+	CHECK_CONNECTED(pPlayer, arg_index);
+
+	GiveType type = static_cast<GiveType>(params[arg_type]);
+	const char *itemName = getAmxString(amx, params[arg_item]);
+
+	if (type > GT_APPEND)
+	{
+		auto pInfo = g_ReGameApi->GetWeaponSlot(itemName);
+		if (pInfo)
+		{
+			pPlayer->ForEachItem(pInfo->slot, [pPlayer, pInfo, type](CBasePlayerItem *pItem)
+			{
+				switch (type)
+				{
+				case GT_DROP_AND_REPLACE:
+					pPlayer->CSPlayer()->DropPlayerItem(STRING(pItem->pev->classname));
+					break;
+				case GT_REPLACE:
+					pPlayer->pev->weapons &= ~(1 << pItem->m_iId);
+					pPlayer->RemovePlayerItem(pItem);
+					pItem->Kill();
+					break;
+				case GT_APPEND:
+				default:
+					break;
+				}
+
+				return false;
+			});
+		}
+	}
+
+	auto pEntity = GiveNamedItemInternal(amx, pPlayer, itemName);
+	if (pEntity)
+		return indexOfPDataAmx(pEntity);
+
+	return AMX_NULLENT;
+}
+
+/*
+* Give the default items to a player.
+*
+* @param index      Client index
 *
 * @noreturn
 *
-* native rg_give_default_items(index);
+* native rg_give_default_items(const index);
 */
 cell AMX_NATIVE_CALL rg_give_default_items(AMX *amx, cell *params)
 {
@@ -138,14 +194,14 @@ cell AMX_NATIVE_CALL rg_give_default_items(AMX *amx, cell *params)
 }
 
 /*
-* Give the player shield
+* Gives the player a shield
 *
-* @param index		Client index
-* @param bDeploy	to get shield from holster
+* @param index          Client index
+* @param bDeploy        To deploy the shield
 *
 * @noreturn
 *
-* native rg_give_shield(index, const bool:bDeploy = true);
+* native rg_give_shield(const index, const bool:bDeploy = true);
 */
 cell AMX_NATIVE_CALL rg_give_shield(AMX *amx, cell *params)
 {
@@ -161,19 +217,19 @@ cell AMX_NATIVE_CALL rg_give_shield(AMX *amx, cell *params)
 }
 
 /*
-* Inflicts in a radius from the source position.
+* Inflicts damage in a radius from the source position.
 *
-* @param vecSrc		The source position
-* @param inflictor	Inflictor is the entity that caused the damage (such as a gun)
-* @param attacker	Attacker is the entity that tirggered the damage (such as the gun's owner).
-* @param flDamage	The amount of damage
-* @param flRadius	Radius damage
-* @param iClassIgnore	To specify classes that are immune to damage.
-* @param bitsDamageType	Damage type DMG_*
+* @param vecSrc             The source position
+* @param inflictor          Inflictor is the entity that caused the damage (such as a gun)
+* @param attacker           Attacker is the entity that triggered the damage (such as the gun's owner)
+* @param flDamage           The amount of damage
+* @param flRadius           Damage radius
+* @param iClassIgnore       To specify classes that are immune to damage
+* @param bitsDamageType     Damage type DMG_*
 *
 * @noreturn
 *
-* native rg_dmg_radius(Float:vecSrc[3], inflictor, attacker, Float:flDamage, Float:flRadius, iClassIgnore, bitsDamageType);
+* native rg_dmg_radius(Float:vecSrc[3], const inflictor, const attacker, const Float:flDamage, const Float:flRadius, const iClassIgnore, const bitsDamageType);
 */
 cell AMX_NATIVE_CALL rg_dmg_radius(AMX *amx, cell *params)
 {
@@ -189,7 +245,7 @@ cell AMX_NATIVE_CALL rg_dmg_radius(AMX *amx, cell *params)
 }
 
 /*
-* Resets the global multi damage accumulator
+* Resets the global multi damage accumulator.
 *
 * @noreturn
 *
@@ -202,14 +258,14 @@ cell AMX_NATIVE_CALL rg_multidmg_clear(AMX *amx, cell *params)
 }
 
 /*
-* Inflicts contents of global multi damage register on victim
+* Inflicts contents of global multi damage registered on victim.
 *
-* @param inflictor	Inflictor is the entity that caused the damage (such as a gun)
-* @param attacker	Attacker is the entity that tirggered the damage (such as the gun's owner).
+* @param inflictor      Inflictor is the entity that caused the damage (such as a gun)
+* @param attacker       Attacker is the entity that triggered the damage (such as the gun's owner)
 *
 * @noreturn
 *
-* native rg_multidmg_apply(inflictor, attacker);
+* native rg_multidmg_apply(const inflictor, const attacker);
 */
 cell AMX_NATIVE_CALL rg_multidmg_apply(AMX *amx, cell *params)
 {
@@ -225,16 +281,16 @@ cell AMX_NATIVE_CALL rg_multidmg_apply(AMX *amx, cell *params)
 }
 
 /*
-* Adds damage the accumulator
+* Adds damage to the accumulator.
 *
-* @param inflictor	Inflictor is the entity that caused the damage (such as a gun)
-* @param victim		A victim that takes damage
-* @param flDamage	The amount of damage
-* @param bitsDamageType	Damage type DMG_*
+* @param inflictor          Inflictor is the entity that caused the damage (such as a gun)
+* @param victim             The victim that takes damage
+* @param flDamage           The amount of damage
+* @param bitsDamageType     Damage type DMG_*
 *
 * @noreturn
 *
-* native rg_multidmg_add(inflictor, victim, Float:flDamage, bitsDamageType);
+* native rg_multidmg_add(const inflictor, const victim, const Float:flDamage, const bitsDamageType);
 */
 cell AMX_NATIVE_CALL rg_multidmg_add(AMX *amx, cell *params)
 {
@@ -255,22 +311,22 @@ cell AMX_NATIVE_CALL rg_multidmg_add(AMX *amx, cell *params)
 }
 
 /*
-* Fire bullets from entity
+* Fires bullets from entity.
 *
-* @param inflictor		Inflictor is the entity that caused the damage (such as a gun)
-* @param attacker		Attacker is the entity that tirggered the damage (such as the gun's owner).
-* @param shots			The number of shots
-* @param vecSrc			The source position of the barrel
-* @param vecDirShooting		Direction shooting
-* @param vecSpread		Spread
-* @param flDistance		Max shot distance
-* @param iBulletType		Bullet type
-* @param iTracerFreq		Tracer frequancy
-* @param iDamage		Damage amount
+* @param inflictor          Inflictor is the entity that caused the damage (such as a gun)
+* @param attacker           Attacker is the entity that tirggered the damage (such as the gun's owner)
+* @param shots              The number of shots
+* @param vecSrc             The source position of the barrel
+* @param vecDirShooting     Shooting direction
+* @param vecSpread          Spread
+* @param flDistance         Max shot distance
+* @param iBulletType        Bullet type, look at the enum with name Bullet in cssdk_const.inc
+* @param iTracerFreq        Tracer frequency
+* @param iDamage            Damage amount
 *
 * @noreturn
 *
-* native rg_fire_bullets(inflictor, attacker, shots, Float:vecSrc[3], Float:vecDirShooting[3], Float::vecSpread[3], Float:flDistance, iBulletType, iTracerFreq, iDamage);
+* native rg_fire_bullets(const inflictor, const attacker, const shots, Float:vecSrc[3], Float:vecDirShooting[3], Float:vecSpread[3], const Float:flDistance, const Bullet:iBulletType, const iTracerFreq, const iDamage);
 */
 cell AMX_NATIVE_CALL rg_fire_bullets(AMX *amx, cell *params)
 {
@@ -299,22 +355,22 @@ cell AMX_NATIVE_CALL rg_fire_bullets(AMX *amx, cell *params)
 }
 
 /*
-* Fire bullets from player's weapon
+* Fires bullets from player's weapon.
 *
-* @param inflictor		Inflictor is the entity that caused the damage (such as a gun)
-* @param attacker		Attacker is the entity that tirggered the damage (such as the gun's owner).
-* @param vecSrc			The source position of the barrel
-* @param vecDirShooting		Direction shooting
-* @param vecSpread		Spread
-* @param flDistance		Max shot distance
-* @param iPenetration		The number of penetration
-* @param iBulletType		Bullet type
-* @param iDamage		Damage amount
-* @param flRangeModifier	Damage range modifier
-* @param bPistol		Pistol shot
-* @param shared_rand		Use player's random seed, get circular gaussian spread
+* @param inflictor          Inflictor is the entity that caused the damage (such as a gun)
+* @param attacker           Attacker is the entity that tirggered the damage (such as the gun's owner)
+* @param vecSrc             The source position of the barrel
+* @param vecDirShooting     Shooting direction
+* @param vecSpread          Spread
+* @param flDistance         Max shot distance
+* @param iPenetration       The amount of penetration
+* @param iBulletType        Bullet type, look at the enum with name Bullet in cssdk_const.inc
+* @param iDamage            Damage amount
+* @param flRangeModifier    Damage range modifier
+* @param bPistol            Pistol shot
+* @param shared_rand        Use player's random seed, get circular gaussian spread
 *
-* @return Float:[3]		The result spread
+* @return Float:[3]         The spread result
 *
 * native Float:[3] rg_fire_bullets3(const inflictor, const attacker, Float:vecSrc[3], Float:vecDirShooting[3], const Float:vecSpread, const Float:flDistance, const iPenetration, const Bullet:iBulletType, const iDamage, const Float:flRangeModifier, const bool:bPistol, const shared_rand);
 */
@@ -372,17 +428,16 @@ struct {
 };
 
 /*
-* Complete the round
+* Forces the round to end.
 *
-* @param tmDelay		Delay before the onset of a new round.
-* @param st			Which team won
-* @param event			The event is the end of the round
-* @param message		The message on round end
-* @param sentence		The sound at the end of the round
+* @param tmDelay    Delay before the onset of a new round
+* @param st         Which team won
+* @param event      The event is the end of the round
+* @param message    The message on round end
+* @param sentence   The sound at the end of the round
 *
 * @noreturn
-*
-* native rg_round_end(Float:tmDelay, WinStatus:st, ScenarioEventEndRound:event = ROUND_NONE, const message[] = "default", const sentence[] = "default");
+* native rg_round_end(const Float:tmDelay, const WinStatus:st, const ScenarioEventEndRound:event = ROUND_NONE, const message[] = "default", const sentence[] = "default");
 */
 cell AMX_NATIVE_CALL rg_round_end(AMX *amx, cell *params)
 {
@@ -424,14 +479,13 @@ cell AMX_NATIVE_CALL rg_round_end(AMX *amx, cell *params)
 }
 
 /*
-* Update current scores
+* Updates current scores.
 *
-* @param iCtsWins		The amount of wins to won
-* @param iTsWins		The amount of wins to won
-* @param bAdd			Adds the score to the current amount wins.
+* @param iCtsWins   The amount of wins for counter-terrorists
+* @param iTsWins    The amount of wins for terrorists
+* @param bAdd       Adds the score to the current amount
 *
 * @noreturn
-*
 * native rg_update_teamscores(const iCtsWins = 0, const iTsWins = 0, const bool:bAdd = true);
 */
 cell AMX_NATIVE_CALL rg_update_teamscores(AMX *amx, cell *params)
@@ -450,11 +504,12 @@ cell AMX_NATIVE_CALL rg_update_teamscores(AMX *amx, cell *params)
 /*
 * Creates an entity using Counter-Strike's custom CreateNamedEntity wrapper.
 *
-* @param classname		Entity classname
-* @param useHashTable		Use this only for known game entities.
-*				NOTE: Do not use this if you use a custom classname.
+* @param classname      Entity classname
+* @param useHashTable   Use this only for known game entities
 *
-* @return			Index of the created entity or 0 otherwise
+* @note: Do not use this if you use a custom classname
+*
+* @return               Index of the created entity or 0 otherwise
 *
 * native rg_create_entity(const classname[], const bool:useHashTable = false);
 */
@@ -480,12 +535,13 @@ cell AMX_NATIVE_CALL rg_create_entity(AMX *amx, cell *params)
 /*
 * Finds an entity in the world using Counter-Strike's custom FindEntityByString wrapper.
 *
-* @param start_index		Entity index to start searching from. -1 to start from the first entity
-* @param classname		Classname to search for
-* @param useHashTable		Use this only for known game entities.
-*				NOTE: Do not use this if you use a custom classname.
+* @param start_index        Entity index to start searching from. -1 to start from the first entity
+* @param classname          Classname to search for
+* @param useHashTable       Use this only for known game entities
 *
-* @return			Entity index > 0 if found, 0 otherwise
+* @note: Do not use this if you use a custom classname
+*
+* @return                   Entity index > 0 if found, 0 otherwise
 *
 * native rg_find_ent_by_class(start_index, const classname[], const bool:useHashTable = false);
 */
@@ -518,10 +574,10 @@ cell AMX_NATIVE_CALL rg_find_ent_by_class(AMX *amx, cell *params)
 /*
 * Finds an entity in the world using Counter-Strike's custom FindEntityByString wrapper, matching by owner.
 *
-* @param start_index		Entity index to start searching from. -1 to start from the first entity
-* @param classname		Classname to search for
+* @param start_index    Entity index to start searching from. -1 to start from the first entity
+* @param classname      Classname to search for
 *
-* @return			1 if found, 0 otherwise
+* @return               1 if found, 0 otherwise
 *
 * native rg_find_ent_by_owner(&start_index, const classname[], owner);
 */
@@ -556,12 +612,12 @@ cell AMX_NATIVE_CALL rg_find_ent_by_owner(AMX *amx, cell *params)
 }
 
 /*
-* Find the weapon by name in the player's inventory.
+* Finds the weapon by name in the player's inventory.
 *
-* @param index			Client index
-* @param weapon			Weapon name
+* @param index      Client index
+* @param weapon     Weapon name
 *
-* @return			Entity-index of weapon, 0 otherwise
+* @return           Weapon's entity index, 0 otherwise
 *
 * native rg_find_weapon_bpack_by_name(const index, const weapon[]);
 */
@@ -596,20 +652,20 @@ struct {
 	const char* pszItemName;
 	bool(*hasItem)(CBasePlayer* pl);
 } itemInfoStruct[] = {
-	{ "item_thighpack",		[](CBasePlayer* pl) -> bool { return pl->m_bHasDefuser; } },
-	{ "item_longjump",		[](CBasePlayer* pl) -> bool { return pl->m_fLongJump == TRUE; } },
-	{ "item_assaultsuit",		[](CBasePlayer* pl) -> bool { return pl->m_iKevlar == ARMOR_VESTHELM; } },
-	{ "item_kevlar",		[](CBasePlayer* pl) -> bool { return pl->m_iKevlar == ARMOR_KEVLAR; } },
-	{ "weapon_shield",		[](CBasePlayer* pl) -> bool { return pl->m_bOwnsShield; } },
+	{ "item_thighpack",     [](CBasePlayer* pl) -> bool { return pl->m_bHasDefuser; } },
+	{ "item_longjump",      [](CBasePlayer* pl) -> bool { return pl->m_fLongJump == TRUE; } },
+	{ "item_assaultsuit",   [](CBasePlayer* pl) -> bool { return pl->m_iKevlar == ARMOR_VESTHELM; } },
+	{ "item_kevlar",        [](CBasePlayer* pl) -> bool { return pl->m_iKevlar == ARMOR_KEVLAR; } },
+	{ "weapon_shield",      [](CBasePlayer* pl) -> bool { return pl->m_bOwnsShield; } },
 };
 
 /*
-* Check if the player already have this item.
+* Checks if the player has the item.
 *
-* @param index			Client index
-* @param item			Item name
+* @param index      Client index
+* @param item       Item name
 *
-* @return			1 if successfully, 0 otherwise
+* @return           true if he does, false otherwise
 *
 * native bool:rg_has_item_by_name(const index, const item[]);
 */
@@ -632,7 +688,7 @@ cell AMX_NATIVE_CALL rg_has_item_by_name(AMX *amx, cell *params)
 
 	// weapon_*
 	auto pInfo = g_ReGameApi->GetWeaponSlot(pszItemName);
-	if (pInfo != nullptr)
+	if (pInfo)
 	{
 		auto pItem = pPlayer->m_rgpPlayerItems[ pInfo->slot ];
 		while (pItem)
@@ -649,13 +705,13 @@ cell AMX_NATIVE_CALL rg_has_item_by_name(AMX *amx, cell *params)
 }
 
 /*
-* Returns some information about a weapon.
+* Returns specific information about the weapon.
 *
-* @param weapon name or id	Weapon id, see WEAPON_* constants or weapon_* name
-* @param WpnInfo:type		Info type, see WI_* constants
+* @param weapon name or id      Weapon id, see WEAPON_* constants, WeaponIdType or weapon_* name
+* @param WpnInfo:type           Info type, see WI_* constants
 *
-* @return			Weapon information value
-* @error			If weapon_id and type are out of bound, an error will be thrown.
+* @return                       Weapon information
+* @error                        If weapon_id or type are out of bounds, an error will be thrown
 *
 * native any:rg_get_weapon_info(any:...);
 */
@@ -663,16 +719,16 @@ cell AMX_NATIVE_CALL rg_get_weapon_info(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_weapon_id, arg_type, arg_3, arg_4 };
 
-	WeaponIdType weaponID = static_cast<WeaponIdType>(*getAmxAddr(amx, params[arg_weapon_id]));
+	WeaponIdType weaponId = static_cast<WeaponIdType>(*getAmxAddr(amx, params[arg_weapon_id]));
 	WpnInfo info_type = static_cast<WpnInfo>(*getAmxAddr(amx, params[arg_type]));
 
-	if (!GetWeaponInfoRange(weaponID, false) && info_type != WI_ID)
+	if (!GetWeaponInfoRange(weaponId, false) && info_type != WI_ID)
 	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid weapon id %i", __FUNCTION__, weaponID);
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid weapon id %i", __FUNCTION__, weaponId);
 		return 0;
 	}
 
-	WeaponInfoStruct* info = g_ReGameApi->GetWeaponInfo(weaponID);
+	WeaponInfoStruct* info = g_ReGameApi->GetWeaponInfo(weaponId);
 	char* szWeaponName = getAmxString(amx, params[arg_weapon_id]);
 
 	switch (info_type)
@@ -743,12 +799,12 @@ cell AMX_NATIVE_CALL rg_get_weapon_info(AMX *amx, cell *params)
 }
 
 /*
-* Sets specific values of weapons info.
+* Sets specific weapon info values.
 *
-* @param weapon_id	Weapon id, see WEAPON_* constants
-* @param type		Info type, see WI_* constants
+* @param weapon_id      Weapon id, see WEAPON_* constants
+* @param type           Info type, see WI_* constants
 *
-* @return		1 if successfully, 0 otherwise
+* @return               1 on success, 0 otherwise
 *
 * native rg_set_weapon_info(const {WeaponIdType,_}:weapon_id, WpnInfo:type, any:...);
 */
@@ -756,15 +812,15 @@ cell AMX_NATIVE_CALL rg_set_weapon_info(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_weapon_id, arg_type, arg_value };
 
-	WeaponIdType weaponID = static_cast<WeaponIdType>(params[arg_weapon_id]);
-	if (!GetWeaponInfoRange(weaponID, true))
+	WeaponIdType weaponId = static_cast<WeaponIdType>(params[arg_weapon_id]);
+	if (!GetWeaponInfoRange(weaponId, true))
 	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid weapon id %i", __FUNCTION__, weaponID);
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid weapon id %i", __FUNCTION__, weaponId);
 		return 0;
 	}
 
 	cell* value = getAmxAddr(amx, params[arg_value]);
-	WeaponInfoStruct *info = g_ReGameApi->GetWeaponInfo(weaponID);
+	WeaponInfoStruct *info = g_ReGameApi->GetWeaponInfo(weaponId);
 	WpnInfo info_type = static_cast<WpnInfo>(params[arg_type]);
 
 	switch (info_type)
@@ -776,9 +832,17 @@ cell AMX_NATIVE_CALL rg_set_weapon_info(AMX *amx, cell *params)
 		info->clipCost = *value;
 		break;
 	case WI_BUY_CLIP_SIZE:
+		info->buyClipSize = *value;
+		break;
 	case WI_GUN_CLIP_SIZE:
+		info->gunClipSize= *value;
+		break;
 	case WI_MAX_ROUNDS:
+		info->maxRounds = *value;
+		break;
 	case WI_AMMO_TYPE:
+		info->ammoType = *value;
+		break;
 	case WI_AMMO_NAME:
 	case WI_NAME:
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: this change will have no effect, type statement %i", __FUNCTION__, info_type);
@@ -792,12 +856,12 @@ cell AMX_NATIVE_CALL rg_set_weapon_info(AMX *amx, cell *params)
 }
 
 /*
-* Remove all the player's stuff by specific slot.
+* Remove all the player's stuff in a specific slot.
 *
-* @param index		Client index
-* @param slot		Specific slot for remove of each item.
+* @param index  Client index
+* @param slot   The slot that will be emptied
 *
-* @return		1 if successfully, 0 otherwise
+* @return       1 on success, 0 otherwise
 *
 * native rg_remove_items_by_slot(const index, const InventorySlotType:slot);
 */
@@ -838,10 +902,10 @@ cell AMX_NATIVE_CALL rg_remove_items_by_slot(AMX *amx, cell *params)
 /*
 * Drop to floor all the player's stuff by specific slot.
 *
-* @param index		Client index
-* @param slot		Specific slot for remove of each item.
+* @param index      Client index
+* @param slot       Specific slot for remove of each item.
 *
-* @return		1 if successfully, 0 otherwise
+* @return           1 on success, 0 otherwise
 *
 * native rg_drop_items_by_slot(const index, const InventorySlotType:slot);
 */
@@ -863,12 +927,12 @@ cell AMX_NATIVE_CALL rg_drop_items_by_slot(AMX *amx, cell *params)
 }
 
 /*
-* Remove all the player's stuff
+* Remove all of the player's items.
 *
-* @param index		Client index
-* @param removeSuit	Remove suit
+* @param index      Client index
+* @param removeSuit Remove suit
 *
-* @return		1 if successfully, 0 otherwise
+* @return           1 on success, 0 otherwise
 *
 * native rg_remove_all_items(const index, const bool:removeSuit = false);
 */
@@ -886,12 +950,12 @@ cell AMX_NATIVE_CALL rg_remove_all_items(AMX *amx, cell *params)
 }
 
 /*
-* Drop specifed the player's item by classname.
+* Forces the player to drop the specified item classname.
 *
-* @param index		Client index
-* @param item_name	Classname of item
+* @param index      Client index
+* @param item_name  Item classname
 *
-* @return		1 if successfully, 0 otherwise
+* @return           1 on success, 0 otherwise
 *
 * native rg_drop_item(const index, const item_name[]);
 */
@@ -909,13 +973,13 @@ cell AMX_NATIVE_CALL rg_drop_item(AMX *amx, cell *params)
 }
 
 /*
-* Execute a client command on the gamedll side.
+* Executes a client command on the gamedll side.
 *
-* @param index		Client index
-* @param command	Client command to execute on
-* @param arg		Optional command arguments
+* @param index      Client index
+* @param command    Client command to execute
+* @param arg        Optional command arguments
 *
-* @return		1 if successfully, 0 otherwise
+* @return           1 on success, 0 otherwise
 *
 * native rg_internal_cmd(const index, const cmd[], const arg[] = "");
 */
@@ -937,12 +1001,12 @@ cell AMX_NATIVE_CALL rg_internal_cmd(AMX *amx, cell *params)
 }
 
 /*
-* Remove specifed the player's item by classname.
+* Removes the specified item classname from the player
 *
-* @param index		Client index
-* @param item_name	Classname of item
+* @param index      Client index
+* @param item_name  Item classname
 *
-* @return		1 if successfully, 0 otherwise
+* @return           1 if found and remove, 0 otherwise
 *
 * native rg_remove_item(const index, const item_name[]);
 */
@@ -964,48 +1028,11 @@ cell AMX_NATIVE_CALL rg_remove_item(AMX *amx, cell *params)
 }
 
 /*
-* Returns amount of ammo in the client's backpack for a specific weapon.
+* Sets the amount of ammo in the client's backpack for a specific weapon.
 *
-* @param index		Client index
-* @param weapon		Weapon id
-*
-* @return		Amount of ammo in backpack
-*
-* native rg_get_user_bpammo(const index, WeaponIdType:weapon);
-*/
-cell AMX_NATIVE_CALL rg_get_user_bpammo(AMX *amx, cell *params)
-{
-	enum args_e { arg_count, arg_index, arg_weapon };
-
-	CHECK_ISPLAYER(arg_index);
-
-	CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_index]);
-	CHECK_CONNECTED(pPlayer, arg_index);
-
-	WeaponIdType weaponId = static_cast<WeaponIdType>(params[arg_weapon]);
-	if (weaponId < WEAPON_P228 || weaponId > WEAPON_P90 || weaponId == WEAPON_KNIFE)
-	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "Invalid weapon id %d", params[arg_weapon]);
-		return FALSE;
-	}
-
-	auto itemFound = (CBasePlayerWeapon *)pPlayer->ForEachItem([pPlayer, weaponId](CBasePlayerItem *pItem) {
-		return pItem->m_iId == weaponId;
-	});
-
-	if (itemFound) {
-		return (cell)pPlayer->m_rgAmmo[ itemFound->m_iPrimaryAmmoType ];
-	}
-
-	return FALSE;
-}
-
-/*
-* Sets amount of ammo in the client's backpack for a specific weapon.
-*
-* @param index		Client index
-* @param weapon		Weapon id
-* @param amount		New backpack ammo amount to set
+* @param index      Client index
+* @param weapon     Weapon id
+* @param amount     New backpack ammo amount to set
 *
 * @noreturn
 *
@@ -1013,27 +1040,132 @@ cell AMX_NATIVE_CALL rg_get_user_bpammo(AMX *amx, cell *params)
 */
 cell AMX_NATIVE_CALL rg_set_user_bpammo(AMX *amx, cell *params)
 {
-	enum args_e { arg_count, arg_index, arg_weapon, arg_amount };
+	enum args_e { arg_count, arg_index, arg_weapon_id, arg_amount };
 
 	CHECK_ISPLAYER(arg_index);
 
 	CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_index]);
 	CHECK_CONNECTED(pPlayer, arg_index);
 
-	WeaponIdType weaponId = static_cast<WeaponIdType>(params[arg_weapon]);
-	if (weaponId < WEAPON_P228 || weaponId > WEAPON_P90 || weaponId == WEAPON_KNIFE)
-	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "Invalid weapon id %d", params[arg_weapon]);
+	auto pInfo = g_ReGameApi->GetWeaponSlot(static_cast<WeaponIdType>(params[arg_weapon_id]));
+	if (!pInfo) {
 		return FALSE;
 	}
 
-	auto itemFound = (CBasePlayerWeapon *)pPlayer->ForEachItem([pPlayer, weaponId](CBasePlayerItem *pItem) {
-		return pItem->m_iId == weaponId;
+	auto pWeapon = pPlayer->ForEachItem<CBasePlayerWeapon>([pPlayer, pInfo](CBasePlayerWeapon *pWeapon) {
+		return (pWeapon->IsWeapon() && pWeapon->m_iId == pInfo->id);
 	});
 
-	if (itemFound) {
-		pPlayer->m_rgAmmo[ itemFound->m_iPrimaryAmmoType ] = params[arg_amount];
+	if (pWeapon) {
+		pPlayer->m_rgAmmo[ pWeapon->m_iPrimaryAmmoType ] = params[arg_amount];
 		return TRUE;
+	}
+
+	return FALSE;
+}
+
+/*
+* Returns the amount of ammo in the client's backpack for a specific weapon.
+*
+* @param index      Client index
+* @param weapon     Weapon id
+*
+* @return           Amount of ammo in backpack
+*
+* native rg_get_user_bpammo(const index, WeaponIdType:weapon);
+*/
+cell AMX_NATIVE_CALL rg_get_user_bpammo(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_weapon_id };
+
+	CHECK_ISPLAYER(arg_index);
+
+	CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_index]);
+	CHECK_CONNECTED(pPlayer, arg_index);
+
+	auto pInfo = g_ReGameApi->GetWeaponSlot(static_cast<WeaponIdType>(params[arg_weapon_id]));
+	if (!pInfo) {
+		return FALSE;
+	}
+
+	auto pWeapon = pPlayer->ForEachItem<CBasePlayerWeapon>([pPlayer, pInfo](CBasePlayerWeapon *pWeapon) {
+		return (pWeapon->IsWeapon() && pWeapon->m_iId == pInfo->id);
+	});
+
+	if (pWeapon) {
+		return (cell)pPlayer->m_rgAmmo[ pWeapon->m_iPrimaryAmmoType ];
+	}
+
+	return FALSE;
+}
+
+/*
+* Sets the amount of clip ammo for a specific weapon.
+*
+* @param index      Client index
+* @param weapon     Weapon id
+* @param amount     New clip ammo amount to set
+*
+* @noreturn
+*
+* native rg_set_user_ammo(const index, WeaponIdType:weapon, amount);
+*/
+cell AMX_NATIVE_CALL rg_set_user_ammo(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_weapon_id, arg_amount };
+
+	CHECK_ISPLAYER(arg_index);
+
+	CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_index]);
+	CHECK_CONNECTED(pPlayer, arg_index);
+
+	auto pInfo = g_ReGameApi->GetWeaponSlot(static_cast<WeaponIdType>(params[arg_weapon_id]));
+	if (!pInfo) {
+		return FALSE;
+	}
+
+	auto pWeapon = pPlayer->ForEachItem<CBasePlayerWeapon>(pInfo->slot, [pPlayer, pInfo](CBasePlayerWeapon *pWeapon) {
+		return (pWeapon->IsWeapon() && pWeapon->m_iId == pInfo->id);
+	});
+
+	if (pWeapon) {
+		pWeapon->m_iClip = params[arg_amount];
+		return TRUE;
+	}
+
+	return FALSE;
+}
+
+/*
+* Returns the amount of clip ammo for a specific weapon.
+*
+* @param index      Client index
+* @param weapon     Weapon id
+*
+* @return           Amount of clip ammo
+*
+* native rg_get_user_ammo(const index, WeaponIdType:weapon);
+*/
+cell AMX_NATIVE_CALL rg_get_user_ammo(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_weapon_id, arg_amount };
+
+	CHECK_ISPLAYER(arg_index);
+
+	CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_index]);
+	CHECK_CONNECTED(pPlayer, arg_index);
+
+	auto pInfo = g_ReGameApi->GetWeaponSlot(static_cast<WeaponIdType>(params[arg_weapon_id]));
+	if (!pInfo) {
+		return FALSE;
+	}
+
+	auto pWeapon = pPlayer->ForEachItem<CBasePlayerWeapon>(pInfo->slot, [pPlayer, pInfo](CBasePlayerWeapon *pWeapon) {
+		return (pWeapon->IsWeapon() && pWeapon->m_iId == pInfo->id);
+	});
+
+	if (pWeapon) {
+		return (cell)pWeapon->m_iClip;
 	}
 
 	return FALSE;
@@ -1042,11 +1174,11 @@ cell AMX_NATIVE_CALL rg_set_user_bpammo(AMX *amx, cell *params)
 /*
 * Sets the client's defusekit status and allows to set a custom HUD icon and color.
 *
-* @param index		Client index
-* @param defusekit	If nonzero the client will have a defusekit, otherwise it will be removed
-* @param color		Color RGB
-* @param icon		HUD sprite to use as icon
-* @param flash		If nonzero the icon will flash red
+* @param index      Client index
+* @param defusekit  If nonzero the client will have a defusekit, otherwise it will be removed
+* @param color      Color RGB
+* @param icon       HUD sprite to use as an icon
+* @param flash      If nonzero the icon will flash red
 *
 * @noreturn
 *
@@ -1096,12 +1228,12 @@ cell AMX_NATIVE_CALL rg_give_defusekit(AMX *amx, cell *params)
 /*
 * Returns the client's armor value and retrieves the type of armor.
 *
-* @param index		Client index
-* @param armortype	Variable to store armor type in
+* @param index        Client index
+* @param armortype    Variable to store armor type in
 *
-* @return		Amount of armor, 0 if client has no armor
+* @return             Amount of armor, 0 if the client has no armor
 *
-* native rg_get_user_armor(const index, &ArmorType:armortype);
+* native rg_get_user_armor(const index, &ArmorType:armortype = ARMOR_NONE);
 */
 cell AMX_NATIVE_CALL rg_get_user_armor(AMX *amx, cell *params)
 {
@@ -1117,11 +1249,11 @@ cell AMX_NATIVE_CALL rg_get_user_armor(AMX *amx, cell *params)
 }
 
 /*
-* Sets the client's armor value the type of armor.
+* Sets the client's armor value and the type of armor.
 *
-* @param index		Client index
-* @param armorvalue	Amount of armor to set
-* @param armortype	Armor type
+* @param index          Client index
+* @param armorvalue     Amount of armor to set
+* @param armortype      Armor type to set
 *
 * @noreturn
 *
@@ -1151,17 +1283,17 @@ cell AMX_NATIVE_CALL rg_set_user_armor(AMX *amx, cell *params)
 }
 
 /*
-* Sets the client's team without killing the player, and sets the client model.
-* @note To obtain of TeamName use the following:
-*	new TeamName:team = get_member(id, m_iTeam);
+* Sets the client's team without killing the player and sets the client's model.
+* @note To obtain a TeamName use the following:
+*       new TeamName:team = get_member(id, m_iTeam);
 *
-* @param index		Client index
-* @param team		Team id
-* @param model		Internal model, use MODEL_AUTO for a random appearance or if MODEL_UNASSIGNED not update it.
+* @param index          Client index
+* @param team           Team id
+* @param model          Internal model, use MODEL_AUTO for a random appearance or MODEL_UNASSIGNED to not update it
 *
-* @param send_teaminfo	If true, a TeamInfo message will be sent
+* @param send_teaminfo  If true, a TeamInfo message will be sent
 *
-* @return		1 if successfully, 0 otherwise
+* @return               1 on success, 0 otherwise
 *
 * native rg_set_user_team(const index, {TeamName,_}:team, {ModelName,_}:model = MODEL_AUTO, const bool:send_teaminfo = true);
 */
@@ -1246,11 +1378,11 @@ cell AMX_NATIVE_CALL rg_set_user_team(AMX *amx, cell *params)
 /*
 * Sets the client's player model.
 *
-* @param index		Client index
-* @param model		Model name
-* @param update_index	If true, the modelindex is updated as well
+* @param index          Client index
+* @param model          Model name
+* @param update_index   If true, the modelindex is updated as well
 *
-* @return		1 if successfully, 0 otherwise
+* @return               1 on success, 0 otherwise
 *
 * native rg_set_user_model(const index, const model[], const bool:update_index = false);
 */
@@ -1283,12 +1415,12 @@ cell AMX_NATIVE_CALL rg_set_user_model(AMX *amx, cell *params)
 }
 
 /*
-* Reset model user
+* Resets the client's model.
 *
-* @param index		Client index
-* @param update_index	If true, the modelindex is reseted as well
+* @param index          Client index
+* @param update_index   If true, the modelindex is reset as well
 *
-* @return		1 if successfully, 0 otherwise
+* @return               1 on success, 0 otherwise
 *
 * native rg_reset_user_model(const index, const bool:update_index = false);
 */
@@ -1318,12 +1450,12 @@ cell AMX_NATIVE_CALL rg_reset_user_model(AMX *amx, cell *params)
 }
 
 /*
-* Enable/Disable footsteps of the player.
+* Enable/Disable player's footsteps.
 *
-* @param index		Client index
-* @param silent		To enable silent footsteps of player's
+* @param index      Client index
+* @param silent     To enable silent footsteps
 *
-* @return		1 if successfully, 0 otherwise
+* @return           1 on success, 0 otherwise
 *
 * native rg_set_user_footsteps(const index, bool:silent = false);
 */
@@ -1348,11 +1480,11 @@ cell AMX_NATIVE_CALL rg_set_user_footsteps(AMX *amx, cell *params)
 }
 
 /*
-* Get the current state footsteps of the player.
+* Get the current footsteps state of the player.
 *
-* @param index		Client index
+* @param index      Client index
 *
-* @return		1 if have silent footsteps, 0 otherwise
+* @return           1 if the player has silent footsteps, 0 otherwise
 *
 * native rg_get_user_footsteps(const index);
 */
@@ -1369,12 +1501,12 @@ cell AMX_NATIVE_CALL rg_get_user_footsteps(AMX *amx, cell *params)
 }
 
 /*
-* Transfer C4 to player
+* Transfers C4 from one player to another.
 *
-* @param index		Client index
-* @param receiver	Receiver index, if 0 so will transfer a random to player
+* @param index      Client index
+* @param receiver   Receiver index, if 0 it will transfer to a random player
 *
-* @return		1 if successfully, 0 otherwise
+* @return           1 on success, 0 otherwise
 *
 * native rg_transfer_c4(const index, const receiver = 0);
 */
@@ -1414,12 +1546,12 @@ cell AMX_NATIVE_CALL rg_transfer_c4(AMX *amx, cell *params)
 }
 
 /*
-* Instant reload weapons
+* Instantly reload client's weapons.
 *
-* @param index		Client index
-* @param weapon		Weapon entity-index, if 0 then all the weapons
+* @param index      Client index
+* @param weapon     Weapon entity-index, if 0 then all weapons will be reloaded
 *
-* @return		1 if successfully, 0 otherwise
+* @return           1 on success, 0 otherwise
 *
 * native rg_instant_reload_weapons(const index, const weapon = 0);
 */
@@ -1436,7 +1568,7 @@ cell AMX_NATIVE_CALL rg_instant_reload_weapons(AMX *amx, cell *params)
 	if (params[arg_weapon] != 0)
 	{
 		pWeapon = getPrivate<CBasePlayerWeapon>(params[arg_weapon]);
-		if (pWeapon == nullptr || !pWeapon->IsWeapon()) {
+		if (!pWeapon || !pWeapon->IsWeapon()) {
 			MF_LogError(amx, AMX_ERR_NATIVE, "%s: Invalid entity weapon", __FUNCTION__);
 			return FALSE;
 		}
@@ -1449,8 +1581,8 @@ cell AMX_NATIVE_CALL rg_instant_reload_weapons(AMX *amx, cell *params)
 /*
 * Sets the amount of reward in the game account for all players.
 *
-* @param rules_index	Look at the enum's with name RewardRules
-* @param amount		The amount money
+* @param rules_index    Look at the enum with name RewardRules
+* @param amount         The money amount
 *
 * @noreturn
 *
@@ -1467,11 +1599,11 @@ cell AMX_NATIVE_CALL rg_set_account_rules(AMX *amx, cell *params)
 }
 
 /*
-* Get the amount of reward from account
+* Gets the specified reward rule's money amount.
 *
-* @param rules_index	Look at the enum's with name RewardRules
+* @param rules_index    Look at the enum with name RewardRules
 *
-* @return		The amount of reward from account
+* @return               The amount of reward
 *
 * native rg_get_account_rules(const RewardRules:rules_index);
 */
@@ -1485,9 +1617,9 @@ cell AMX_NATIVE_CALL rg_get_account_rules(AMX *amx, cell *params)
 }
 
 /*
-* If the bomb is planted
+* Checks if the bomb is planted.
 *
-* @return		true if bomb is planted, false otherwise
+* @return           true if the bomb is planted, false otherwise
 *
 * native bool:rg_is_bomb_planted();
 */
@@ -1499,12 +1631,12 @@ cell AMX_NATIVE_CALL rg_is_bomb_planted(AMX *amx, cell *params)
 }
 
 /*
-* Join team
+* Forces a player to join a team.
 *
-* @param index		Client index
-* @param team		Team id
+* @param index      Client index
+* @param team       Team id
 *
-* @return		1 if successfully joined the team, 0 otherwise
+* @return           1 on success, 0 otherwise
 *
 * native rg_join_team(const index, const TeamName:team);
 */
@@ -1521,7 +1653,7 @@ cell AMX_NATIVE_CALL rg_join_team(AMX *amx, cell *params)
 }
 
 /*
-* Instantly balances the team.
+* Instantly balances the teams.
 *
 * @noreturn
 *
@@ -1536,7 +1668,7 @@ cell AMX_NATIVE_CALL rg_balance_teams(AMX *amx, cell *params)
 }
 
 /*
-* To swap players, without reset frags/deaths and the amount wins.
+* Swaps players' teams without reseting frags, deaths and wins.
 *
 * @noreturn
 *
@@ -1551,10 +1683,10 @@ cell AMX_NATIVE_CALL rg_swap_all_players(AMX *amx, cell *params)
 }
 
 /*
-* Instantly switches to the opposite team for one player.
-* @note Switch from CT to TERRORIST also opposite.
+* Instantly switches the player to his opposite team.
+* @note Switch from CT to TERRORIST is also opposite.
 *
-* @param index		Client index
+* @param index      Client index
 *
 * @noreturn
 *
@@ -1574,12 +1706,12 @@ cell AMX_NATIVE_CALL rg_switch_team(AMX *amx, cell *params)
 }
 
 /*
-* Switch to specific weapon
+* Forces the player to switch to a specific weapon.
 *
-* @param index		Client index
-* @param weapon		Weapon entity-index
+* @param index      Client index
+* @param weapon     Weapon entity-index
 *
-* @return		1 if successfully switched, 0 otherwise
+* @return           1 on success, 0 otherwise
 *
 * native rg_switch_weapon(const index, const weapon);
 */
@@ -1602,9 +1734,9 @@ cell AMX_NATIVE_CALL rg_switch_weapon(AMX *amx, cell *params)
 }
 
 /*
-* To get which team has a high priority to join.
+* Gets which team has a higher join priority.
 *
-* @return		Returns the Team Name
+* @return           Returns the Team Name
 *
 * native TeamName:rg_get_join_team_priority();
 */
@@ -1616,12 +1748,12 @@ cell AMX_NATIVE_CALL rg_get_join_team_priority(AMX *amx, cell *params)
 }
 
 /*
-* Can this player take damage from this attacker?
+* Checks whether the player can take damage from the attacker.
 *
-* @param index		Client index
-* @param attacker	Attacker index
+* @param index      Client index
+* @param attacker   Attacker index
 *
-* @return		true if can take a damage, false otherwise
+* @return           true if he can take damage, false otherwise
 *
 * native bool:rg_is_player_can_takedamage(const index, const attacker);
 */
@@ -1645,11 +1777,11 @@ cell AMX_NATIVE_CALL rg_is_player_can_takedamage(AMX *amx, cell *params)
 }
 
 /*
-* To get WeaponIdType from weaponbox
+* Gets WeaponIdType from weaponbox
 *
-* @param entity		Weaponbox entity
+* @param entity     Weaponbox entity
 *
-* @return		return enum's of WeaponIdType
+* @return           return enum of WeaponIdType
 *
 * native WeaponIdType:rg_get_weaponbox_id(const entity);
 */
@@ -1675,9 +1807,9 @@ cell AMX_NATIVE_CALL rg_get_weaponbox_id(AMX *amx, cell *params)
 }
 
 /*
-* Respawn on round for players/bots
+* Respawn on round for players/bots.
 *
-* @param index		Client index
+* @param index      Client index
 *
 * @noreturn
 *
@@ -1695,9 +1827,9 @@ cell AMX_NATIVE_CALL rg_round_respawn(AMX *amx, cell *params)
 }
 
 /*
-* Reset player maxspeed
+* Resets player's maxspeed.
 *
-* @param index		Client index
+* @param index      Client index
 *
 * @noreturn
 *
@@ -1715,12 +1847,12 @@ cell AMX_NATIVE_CALL rg_reset_maxspeed(AMX *amx, cell *params)
 }
 
 /*
-* Draws a HUD progress bar which is fills from 0% to 100% for the time duration seconds.
-* NOTE: Set Duration to 0 to hide the bar.
+* Draws a HUD progress bar which fills from 0% to 100% for the time duration in seconds.
+* @note: Set the duration to 0 to hide the bar.
 *
-* @param index		Client index
-* @param time		Duration
-* @param observer	Send for everyone observer player
+* @param index      Client index
+* @param time       Duration
+* @param observer   Send for everyone who is observing the player
 *
 * @noreturn
 *
@@ -1748,10 +1880,10 @@ cell AMX_NATIVE_CALL rg_send_bartime(AMX *amx, cell *params)
 /*
 * Same as BarTime, but StartPercent specifies how much of the bar is (already) filled.
 *
-* @param index		Client index
-* @param time		Duration
-* @param startPercent	Start percent
-* @param observer	Send for everyone observer player
+* @param index          Client index
+* @param time           Duration
+* @param startPercent   Start percent
+* @param observer       Send for everyone who is observing the player
 *
 * @noreturn
 *
@@ -1778,11 +1910,11 @@ cell AMX_NATIVE_CALL rg_send_bartime2(AMX *amx, cell *params)
 }
 
 /*
-* Sends the message SendAudio - plays the specified audio
+* Sends the SendAudio message - plays the specified audio.
 *
-* @param index		Receiver index or use 0 for everyone
-* @param sample		Sound file to play
-* @param pitch		Sound pitch
+* @param index      Receiver index or use 0 for everyone
+* @param sample     Sound file to play
+* @param pitch      Sound pitch
 *
 * @noreturn
 *
@@ -1810,83 +1942,86 @@ cell AMX_NATIVE_CALL rg_send_audio(AMX *amx, cell *params)
 
 AMX_NATIVE_INFO Misc_Natives_RG[] =
 {
-	{ "rg_set_animation", rg_set_animation },
-	{ "rg_add_account", rg_add_account },
-	{ "rg_give_item", rg_give_item },
-	{ "rg_give_default_items", rg_give_default_items },
-	{ "rg_give_shield", rg_give_shield },
+	{ "rg_set_animation",             rg_set_animation             },
+	{ "rg_add_account",               rg_add_account               },
+	{ "rg_give_item",                 rg_give_item                 },
+	{ "rg_give_custom_item",          rg_give_custom_item          },
+	{ "rg_give_default_items",        rg_give_default_items        },
+	{ "rg_give_shield",               rg_give_shield               },
 
-	{ "rg_dmg_radius", rg_dmg_radius },
-	{ "rg_multidmg_clear", rg_multidmg_clear },
-	{ "rg_multidmg_apply", rg_multidmg_apply },
-	{ "rg_multidmg_add", rg_multidmg_add },
+	{ "rg_dmg_radius",                rg_dmg_radius                },
+	{ "rg_multidmg_clear",            rg_multidmg_clear            },
+	{ "rg_multidmg_apply",            rg_multidmg_apply            },
+	{ "rg_multidmg_add",              rg_multidmg_add              },
 
-	{ "rg_fire_bullets", rg_fire_bullets },
-	{ "rg_fire_bullets3", rg_fire_bullets3 },
+	{ "rg_fire_bullets",              rg_fire_bullets              },
+	{ "rg_fire_bullets3",             rg_fire_bullets3             },
 
-	{ "rg_round_end", rg_round_end },
-	{ "rg_update_teamscores", rg_update_teamscores },
+	{ "rg_round_end",                 rg_round_end                 },
+	{ "rg_update_teamscores",         rg_update_teamscores         },
 
-	{ "rg_create_entity", rg_create_entity },
-	{ "rg_find_ent_by_class", rg_find_ent_by_class },
-	{ "rg_find_ent_by_owner", rg_find_ent_by_owner },
+	{ "rg_create_entity",             rg_create_entity             },
+	{ "rg_find_ent_by_class",         rg_find_ent_by_class         },
+	{ "rg_find_ent_by_owner",         rg_find_ent_by_owner         },
 	{ "rg_find_weapon_bpack_by_name", rg_find_weapon_bpack_by_name },
-	{ "rg_has_item_by_name", rg_has_item_by_name },
+	{ "rg_has_item_by_name",          rg_has_item_by_name          },
 
-	{ "rg_get_weapon_info", rg_get_weapon_info },
-	{ "rg_set_weapon_info", rg_set_weapon_info },
+	{ "rg_get_weapon_info",           rg_get_weapon_info           },
+	{ "rg_set_weapon_info",           rg_set_weapon_info           },
 
-	{ "rg_remove_items_by_slot", rg_remove_items_by_slot },
-	{ "rg_drop_items_by_slot", rg_drop_items_by_slot },
+	{ "rg_remove_items_by_slot",      rg_remove_items_by_slot      },
+	{ "rg_drop_items_by_slot",        rg_drop_items_by_slot        },
 
-	{ "rg_remove_all_items", rg_remove_all_items },
-	{ "rg_remove_item", rg_remove_item },
-	{ "rg_drop_item", rg_drop_item },
-	{ "rg_internal_cmd", rg_internal_cmd },
+	{ "rg_remove_all_items",          rg_remove_all_items          },
+	{ "rg_remove_item",               rg_remove_item               },
+	{ "rg_drop_item",                 rg_drop_item                 },
+	{ "rg_internal_cmd",              rg_internal_cmd              },
 
-	{ "rg_give_defusekit", rg_give_defusekit },
+	{ "rg_give_defusekit",            rg_give_defusekit            },
 
-	{ "rg_get_user_bpammo", rg_get_user_bpammo },
-	{ "rg_set_user_bpammo", rg_set_user_bpammo },
+	{ "rg_set_user_bpammo",           rg_set_user_bpammo           },
+	{ "rg_get_user_bpammo",           rg_get_user_bpammo           },
+	{ "rg_set_user_ammo",             rg_set_user_ammo             },
+	{ "rg_get_user_ammo",             rg_get_user_ammo             },
 
-	{ "rg_get_user_armor", rg_get_user_armor },
-	{ "rg_set_user_armor", rg_set_user_armor },
-	{ "rg_set_user_team", rg_set_user_team },
-	{ "rg_set_user_model", rg_set_user_model },
-	{ "rg_reset_user_model", rg_reset_user_model },
+	{ "rg_get_user_armor",            rg_get_user_armor            },
+	{ "rg_set_user_armor",            rg_set_user_armor            },
+	{ "rg_set_user_team",             rg_set_user_team             },
+	{ "rg_set_user_model",            rg_set_user_model            },
+	{ "rg_reset_user_model",          rg_reset_user_model          },
 
-	{ "rg_set_user_footsteps", rg_set_user_footsteps },
-	{ "rg_get_user_footsteps", rg_get_user_footsteps },
+	{ "rg_set_user_footsteps",        rg_set_user_footsteps        },
+	{ "rg_get_user_footsteps",        rg_get_user_footsteps        },
 
-	{ "rg_transfer_c4", rg_transfer_c4 },
-	{ "rg_instant_reload_weapons", rg_instant_reload_weapons },
+	{ "rg_transfer_c4",               rg_transfer_c4               },
+	{ "rg_instant_reload_weapons",    rg_instant_reload_weapons    },
 
-	{ "rg_set_account_rules", rg_set_account_rules },
-	{ "rg_get_account_rules", rg_get_account_rules },
+	{ "rg_set_account_rules",         rg_set_account_rules         },
+	{ "rg_get_account_rules",         rg_get_account_rules         },
 
-	{ "rg_is_bomb_planted", rg_is_bomb_planted },
-	{ "rg_join_team", rg_join_team },
-	{ "rg_balance_teams", rg_balance_teams },
-	{ "rg_swap_all_players", rg_swap_all_players },
-	{ "rg_switch_team", rg_switch_team },
-	{ "rg_switch_weapon", rg_switch_weapon },
-	{ "rg_get_join_team_priority", rg_get_join_team_priority },
-	{ "rg_is_player_can_takedamage", rg_is_player_can_takedamage },
-	{ "rg_get_weaponbox_id", rg_get_weaponbox_id },
-	{ "rg_round_respawn", rg_round_respawn },
-	{ "rg_reset_maxspeed", rg_reset_maxspeed },
+	{ "rg_is_bomb_planted",           rg_is_bomb_planted           },
+	{ "rg_join_team",                 rg_join_team                 },
+	{ "rg_balance_teams",             rg_balance_teams             },
+	{ "rg_swap_all_players",          rg_swap_all_players          },
+	{ "rg_switch_team",               rg_switch_team               },
+	{ "rg_switch_weapon",             rg_switch_weapon             },
+	{ "rg_get_join_team_priority",    rg_get_join_team_priority    },
+	{ "rg_is_player_can_takedamage",  rg_is_player_can_takedamage  },
+	{ "rg_get_weaponbox_id",          rg_get_weaponbox_id          },
+	{ "rg_round_respawn",             rg_round_respawn             },
+	{ "rg_reset_maxspeed",            rg_reset_maxspeed            },
 
-	{ "rg_send_bartime", rg_send_bartime },
-	{ "rg_send_bartime2", rg_send_bartime2 },
-	{ "rg_send_audio", rg_send_audio },
+	{ "rg_send_bartime",              rg_send_bartime              },
+	{ "rg_send_bartime2",             rg_send_bartime2             },
+	{ "rg_send_audio",                rg_send_audio                },
 
 	{ nullptr, nullptr }
 };
 
 /*
-* Set name of the map
+* Sets the name of the map.
 *
-* @param mapname	Change the name of the map.
+* @param mapname     New map name.
 *
 * @noreturn
 *
@@ -1905,12 +2040,12 @@ cell AMX_NATIVE_CALL rh_set_mapname(AMX *amx, cell *params)
 enum MapNameType { MNT_TRUE, MNT_SET };
 
 /*
-* Get name of the map
+* Gets the name of the map.
 *
-* @param output		Buffer to copy mapname to
-* @param len		Maximum buffer size
-* @param type		MNT_SET return the name of the current map
-*			MNT_TRUE return true the name of the current map independently of the set via rh_set_mapname
+* @param output     Buffer to copy map name to
+* @param len        Maximum buffer size
+* @param type       MNT_SET will return the name of the current map
+*                   MNT_TRUE will return the original map name independant of the name set with via rh_set_mapname
 *
 * @noreturn
 *
@@ -1937,7 +2072,7 @@ cell AMX_NATIVE_CALL rh_get_mapname(AMX *amx, cell *params)
 }
 
 /*
-* Reset to true map name
+* Reverts back the original map name.
 *
 * @noreturn
 *
@@ -1953,20 +2088,20 @@ cell AMX_NATIVE_CALL rh_reset_mapname(AMX *amx, cell *params)
 /*
 * Emits a sound from an entity from the engine.
 *
-* @param entity		Entity index or use 0 to emit from worldspawn at the specified position
-* @param recipients	Recipient index or use 0 to heard for all clients
-* @param channel	Channel to emit from
-* @param sample		Sound file to emit
-* @param vol		Volume in percent
-* @param attn		Sound attenuation
-* @param flags		Emit flags
-* @param pitch		Sound pitch
-* @param emitFlags	Additional Emit2 flags, look at the defines like SND_EMIT2_*
-* @param origin		Specify origin and only on "param" entity worldspawn that is 0
+* @param entity     Entity index or use 0 to emit from worldspawn at the specified position
+* @param recipient  Recipient index or use 0 to make all clients hear it
+* @param channel    Channel to emit from
+* @param sample     Sound file to emit
+* @param vol        Volume in percents
+* @param attn       Sound attenuation
+* @param flags      Emit flags
+* @param pitch      Sound pitch
+* @param emitFlags  Additional Emit2 flags, look at the defines like SND_EMIT2_*
+* @param origin     Specify origin and only on "param" entity worldspawn that is 0
 *
-* @return		1 if successfully sounds are emitted, 0 otherwise
+* @return           true if the emission was successfull, false otherwise
 *
-* native rh_emit_sound2(const entity, const recipient, const channel, const sample[], Float:vol = VOL_NORM, Float:attn = ATTN_NORM, const flags = 0, const pitch = PITCH_NORM, emitFlags = 0, const Float:origin[3] = {0.0,0.0,0.0});
+* native bool:rh_emit_sound2(const entity, const recipient, const channel, const sample[], Float:vol = VOL_NORM, Float:attn = ATTN_NORM, const flags = 0, const pitch = PITCH_NORM, emitFlags = 0, const Float:origin[3] = {0.0,0.0,0.0});
 */
 cell AMX_NATIVE_CALL rh_emit_sound2(AMX *amx, cell *params)
 {
@@ -1985,16 +2120,16 @@ cell AMX_NATIVE_CALL rh_emit_sound2(AMX *amx, cell *params)
 
 	return (cell)g_RehldsFuncs->SV_EmitSound2
 	(
-		args[arg_entity],	// entity
+		args[arg_entity],		// entity
 		args[arg_recipient],	// recipient
-		args[arg_channel],	// channel
-		sample,			// sample
-		args[arg_vol],		// volume
-		args[arg_attn],		// attn
-		args[arg_flags],	// flags
-		args[arg_pitch],	// pitch
+		args[arg_channel],		// channel
+		sample,					// sample
+		args[arg_vol],			// volume
+		args[arg_attn],			// attn
+		args[arg_flags],		// flags
+		args[arg_pitch],		// pitch
 		args[arg_emitFlags],	// emitFlags
-		args[arg_origin]	// pOrigin
+		args[arg_origin]		// pOrigin
 	);
 }
 
@@ -2014,10 +2149,10 @@ cell AMX_NATIVE_CALL rh_update_user_info(AMX *amx, cell *params)
 
 AMX_NATIVE_INFO Misc_Natives_RH[] =
 {
-	{ "rh_set_mapname", rh_set_mapname },
-	{ "rh_get_mapname", rh_get_mapname },
-	{ "rh_reset_mapname", rh_reset_mapname },
-	{ "rh_emit_sound2", rh_emit_sound2 },
+	{ "rh_set_mapname",      rh_set_mapname      },
+	{ "rh_get_mapname",      rh_get_mapname      },
+	{ "rh_reset_mapname",    rh_reset_mapname    },
+	{ "rh_emit_sound2",      rh_emit_sound2      },
 	{ "rh_update_user_info", rh_update_user_info },
 
 	{ nullptr, nullptr }

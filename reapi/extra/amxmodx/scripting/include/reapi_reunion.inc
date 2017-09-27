@@ -45,6 +45,5 @@ native client_auth_type:REU_GetAuthtype(const index);
 * @param index  Client index
 *
 * @return       1/0
-*
 */
 native bool:REU_IsRevemuWithoutAdminRights(const index);

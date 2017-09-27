@@ -4,7 +4,7 @@
 * Compares the entity to specified a classname.
 * @note This native also checks the validity of an entity.
 *
-* @return		true/false
+* @return       true/false
 *
 * native bool:FClassnameIs(const entityIndex, const className[]);
 */
@@ -196,7 +196,7 @@ AMX_NATIVE_INFO Natives_Common[] =
 /*
 * Check if the entity is valid
 *
-* @return		true/false
+* @return       true/false
 *
 * native bool:is_entity(const entityIndex);
 */
@@ -225,7 +225,7 @@ cell AMX_NATIVE_CALL is_entity(AMX *amx, cell *params)
 /*
 * Check if the rehlds is available
 *
-* @return		true/false
+* @return       true/false
 *
 * native bool:is_rehlds();
 */
@@ -237,7 +237,7 @@ cell AMX_NATIVE_CALL is_rehlds(AMX *amx, cell *params)
 /*
 * Check if the regamedll is available
 *
-* @return		true/false
+* @return       true/false
 *
 * native bool:is_regamedll();
 */
@@ -249,7 +249,7 @@ cell AMX_NATIVE_CALL is_regamedll(AMX *amx, cell *params)
 /*
 * Check if the reunion is available
 *
-* @return		true/false
+* @return       true/false
 *
 * native bool:has_reunion();
 */
@@ -261,7 +261,7 @@ cell AMX_NATIVE_CALL has_reunion(AMX *amx, cell *params)
 /*
 * Check if the vtc is available
 *
-* @return		true/false
+* @return       true/false
 *
 * native bool:has_vtc();
 */
@@ -273,7 +273,7 @@ cell AMX_NATIVE_CALL has_vtc(AMX *amx, cell *params)
 /*
 * Check if the rechecker is available
 *
-* @return		true/false
+* @return       true/false
 *
 * native bool:has_rechecker();
 */

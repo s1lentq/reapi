@@ -1,6 +1,14 @@
 #include "precompiled.h"
 
-// native set_member(_index, any:_member, any:...);
+/*
+* Sets a value to an entity's member.
+*
+* @param index      Entity index
+* @param member     The specified member, look at the enums with name *_Members
+*
+* @return           1 on success.
+* native set_member(const index, any:member, any:...);
+*/
 cell AMX_NATIVE_CALL set_member(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_index, arg_member, arg_value, arg_elem };
@@ -32,7 +40,16 @@ cell AMX_NATIVE_CALL set_member(AMX *amx, cell *params)
 	return set_member(pEdict->pvPrivateData, member, value, element);
 }
 
-// native any:get_member(_index, any:_member, any:...);
+/*
+* Returns a value from an entity's member.
+*
+* @param index      Entity index
+* @param member     The specified member, look at the enums with name *_Members
+*
+* @return           If an integer or boolean or one byte, array or everything else is passed via the 3rd argument and more, look at the argument list for the specified member
+*
+* native any:get_member(const index, any:member, any:...);
+*/
 cell AMX_NATIVE_CALL get_member(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_index, arg_member, arg_3, arg_4, arg_5 };
@@ -98,7 +115,15 @@ cell AMX_NATIVE_CALL get_member(AMX *amx, cell *params)
 	return get_member(pEdict->pvPrivateData, member, dest, element, length);
 }
 
-// native set_member_game(any:_member, any:...);
+/*
+* Sets a value to CSGameRules_Members members.
+*
+* @param member     The specified member, look at the enums with name CSGameRules_Members
+*
+* @return           1 on success.
+*
+* native set_member_game(CSGameRules_Members:member, any:...);
+*/
 cell AMX_NATIVE_CALL set_member_game(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_member, arg_value, arg_elem };
@@ -117,7 +142,15 @@ cell AMX_NATIVE_CALL set_member_game(AMX *amx, cell *params)
 	return set_member(g_pGameRules, member, value, element);
 }
 
-// native get_member_game(any:_member, any:...);
+/*
+* Returns a value from CSGameRules_Members members
+*
+* @param member     The specified member, look at the enums with name CSGameRules_Members
+*
+* @return           If an integer or boolean or one byte, array or everything else is passed via the 3rd argument and more, look at the argument list for the specified member
+*
+* native any:get_member_game(CSGameRules_Members:member, any:...);
+*/
 cell AMX_NATIVE_CALL get_member_game(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_member, arg_2 };
@@ -155,7 +188,12 @@ cell AMX_NATIVE_CALL get_member_game(AMX *amx, cell *params)
 	return get_member(g_pGameRules, member, dest, element, length);
 }
 
-// native set_entvar(const index, const EntVars:var, any:...);
+/*
+* Sets entvars data for an entity.
+* Use the var_* EntVars enum
+*
+* native set_entvar(const index, const EntVars:var, any:...);
+*/
 cell AMX_NATIVE_CALL set_entvar(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_index, arg_var, arg_value, arg_elem };
@@ -179,7 +217,12 @@ cell AMX_NATIVE_CALL set_entvar(AMX *amx, cell *params)
 	return set_member(&pEdict->v, member, value, element);
 }
 
-// native any:get_entvar(const index, const EntVars:var, any:...);
+/*
+* Returns entvar data from an entity.
+* Use the var_* EntVars enum
+*
+* native any:get_entvar(const index, const EntVars:var, any:...);
+*/
 cell AMX_NATIVE_CALL get_entvar(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_index, arg_var, arg_3, arg_4 };
@@ -236,7 +279,15 @@ cell AMX_NATIVE_CALL get_entvar(AMX *amx, cell *params)
 	return get_member(&pEdict->v, member, dest, element, length);
 }
 
-// native set_pmove(const PlayerMove:pmove, any:...);
+/*
+* Sets playermove var.
+*
+* @param var        The specified playermove, look at the enum PlayerMove
+*
+* @return           1 on success.
+*
+* native set_pmove(const PlayerMove:var, any:...);
+*/
 cell AMX_NATIVE_CALL set_pmove(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_var, arg_value, arg_elem };
@@ -253,7 +304,15 @@ cell AMX_NATIVE_CALL set_pmove(AMX *amx, cell *params)
 	return set_member(g_pMove, member, value, element);
 }
 
-// native any:get_pmove(const PlayerMove:pmove, any:...);
+/*
+* Returns a playermove var.
+*
+* @param var        The specified playermove var, look at the enums PlayerMove
+*
+* @return           If an integer or boolean or one byte, array or everything else is passed via the 3rd argument and more, look at the argument list for the specified mvar
+*
+* native any:get_pmove(const PlayerMove:var, any:...);
+*/
 cell AMX_NATIVE_CALL get_pmove(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_var, arg_2, arg_3 };
@@ -288,7 +347,15 @@ cell AMX_NATIVE_CALL get_pmove(AMX *amx, cell *params)
 	return get_member(g_pMove, member, dest, element, length);
 }
 
-// native set_movevar(const MoveVars:var, any:...);
+/*
+* Sets a movevar value to a playermove.
+*
+* @param var        The specified mvar, look at the enum MoveVars
+*
+* @return           1 on success.
+*
+* native set_movevar(const MoveVars:var, any:...);
+*/
 cell AMX_NATIVE_CALL set_movevar(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_var, arg_value };
@@ -303,7 +370,15 @@ cell AMX_NATIVE_CALL set_movevar(AMX *amx, cell *params)
 	return set_member(g_pMove->movevars, member, value, 0);
 }
 
-// native any:get_movevar(const MoveVars:var, any:...);
+/*
+* Returns a movevar value from a playermove.
+*
+* @param var        The specified mvar, look at the enum MoveVars
+*
+* @return           If an integer or boolean or one byte, array or everything else is passed via the 3rd argument and more, look at the argument list for the specified mvar
+*
+* native any:get_movevar(const MoveVars:var, any:...);
+*/
 cell AMX_NATIVE_CALL get_movevar(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_var, arg_2, arg_3 };
@@ -332,7 +407,12 @@ cell AMX_NATIVE_CALL get_movevar(AMX *amx, cell *params)
 	return get_member(g_pMove->movevars, member, dest, element, length);
 }
 
-// native set_ucmd(const cmd, const UserCmd:var, any:...);
+/*
+* Sets usercmd data.
+* Use the ucmd_* UCmd enum
+*
+* native set_ucmd(const ucmd, const UCmd:var, any:...);
+*/
 cell AMX_NATIVE_CALL set_ucmd(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_cmd, arg_var, arg_value };
@@ -348,7 +428,12 @@ cell AMX_NATIVE_CALL set_ucmd(AMX *amx, cell *params)
 	return set_member(cmd, member, value, 0);
 }
 
-// native any:get_ucmd(const cmd, const UserCmd:var, any:...);
+/*
+* Returns entvar data from an entity.
+* Use the ucmd_* UCmd enum
+*
+* native any:get_ucmd(const ucmd, const UCmd:var, any:...);
+*/
 cell AMX_NATIVE_CALL get_ucmd(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_cmd, arg_var, arg_3, arg_4 };
@@ -375,7 +460,15 @@ cell AMX_NATIVE_CALL get_ucmd(AMX *amx, cell *params)
 	return get_member(cmd, member, dest, element);
 }
 
-// native set_pmtrace(const tr, const PMTrace:var, any:...);
+/*
+* Sets a pmtrace var.
+*
+* @param var        The specified mvar, look at the enum PMTrace
+*
+* @return           1 on success.
+*
+* native set_pmtrace(const tracehandle, const PMTrace:var, any:...);
+*/
 cell AMX_NATIVE_CALL set_pmtrace(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_tr, arg_var, arg_value };
@@ -391,7 +484,15 @@ cell AMX_NATIVE_CALL set_pmtrace(AMX *amx, cell *params)
 	return set_member(tr, member, value, 0);
 }
 
-// native any:get_pmtrace(const tr, const PMTrace:var, any:...);
+/*
+* Returns a pmtrace var
+*
+* @param var        The specified mvar, look at the enum PMTrace
+*
+* @return           If an integer or boolean or one byte, array or everything else is passed via the 3rd argument and more, look at the argument list for the specified mvar
+*
+* native any:get_pmtrace(const tracehandle, const PMTrace:var, any:...);
+*/
 cell AMX_NATIVE_CALL get_pmtrace(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_tr, arg_var, arg_3, arg_4 };
@@ -418,6 +519,62 @@ cell AMX_NATIVE_CALL get_pmtrace(AMX *amx, cell *params)
 	return get_member(tr, member, dest, element);
 }
 
+/*
+* Sets a RebuyStruct member.
+*
+* @param var        The specified RebuyStruct, look at the enum RebuyStruct
+*
+* @return           1 on success.
+*
+* native set_rebuy(const rebuyhandle, const RebuyStruct:member, value);
+*/
+cell AMX_NATIVE_CALL set_rebuy(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_handle, arg_member, arg_value };
+
+	member_t *member = memberlist[params[arg_member]];
+	if (unlikely(member == nullptr)) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_member]);
+		return FALSE;
+	}
+
+	cell *handle = (cell *)params[arg_handle];
+	if (unlikely(handle == nullptr)) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid rebuy handle", __FUNCTION__);
+		return FALSE;
+	}
+
+	return set_member(handle, member, &params[arg_value], 0);
+}
+
+/*
+* Returns a RebuyStruct member
+*
+* @param var        The specified RebuyStruct, look at the enum RebuyStruct
+*
+* @return           If an integer or boolean or one byte, array or everything else is passed via the 3rd argument and more, look at the argument list for the specified RebuyStruct
+*
+* native get_rebuy(const rebuyhandle, RebuyStruct:member);
+*/
+cell AMX_NATIVE_CALL get_rebuy(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_handle, arg_member };
+
+	member_t *member = memberlist[params[arg_member]];
+	if (unlikely(member == nullptr)) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_member]);
+		return FALSE;
+	}
+
+	cell *handle = (cell *)params[arg_handle];
+	if (unlikely(handle == nullptr)) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid rebuy handle", __FUNCTION__);
+		return FALSE;
+	}
+
+	return get_member(handle, member, nullptr, 0);
+}
+
 AMX_NATIVE_INFO EngineVars_Natives[] =
 {
 	{ "set_entvar", set_entvar },
@@ -425,6 +582,9 @@ AMX_NATIVE_INFO EngineVars_Natives[] =
 
 	{ "set_ucmd", set_ucmd },
 	{ "get_ucmd", get_ucmd },
+
+	{ "set_rebuy", set_rebuy },
+	{ "get_rebuy", get_rebuy },
 
 	{ nullptr, nullptr }
 };
@@ -560,6 +720,12 @@ BOOL set_member(void* pdata, const member_t *member, cell* value, size_t element
 			set_member<double>(pdata, member->offset, *(float *)value, element);
 			return TRUE;
 		}
+	case MEMBER_TRACERESULT:
+		{
+			// native set_member(_index, any:_member, any:_value, _elem);
+			set_member<TraceResult>(pdata, member->offset, *(TraceResult *)value, element);
+			return TRUE;
+		}
 
 	case MEMBER_ENTITY:
 	case MEMBER_EVARS:
@@ -582,20 +748,20 @@ cell get_member(void* pdata, const member_t *member, cell* dest, size_t element,
 		{
 			// native any:get_member(_index, any:_member, element);
 			auto& pEntity = get_member<CBaseEntity *>(pdata, member->offset, element);
-			return pEntity ? indexOfEdict(pEntity->pev) : -1;
+			return pEntity ? indexOfEdict(pEntity->pev) : AMX_NULLENT;
 		}
 	case MEMBER_EHANDLE:
 		{
 			// native any:get_member(_index, any:_member, element);
 			EHANDLE ehandle = get_member<EHANDLE>(pdata, member->offset, element);
 			edict_t *pEntity = ehandle.Get();
-			return pEntity ? indexOfEdict(pEntity) : -1;
+			return pEntity ? indexOfEdict(pEntity) : AMX_NULLENT;
 		}
 	case MEMBER_EDICT:
 		{
 			// native any:get_member(_index, any:_member, element);
 			edict_t *pEntity = get_member<edict_t *>(pdata, member->offset, element);
-			return pEntity ? indexOfEdict(pEntity) : -1;
+			return pEntity ? indexOfEdict(pEntity) : AMX_NULLENT;
 		}
 	case MEMBER_VECTOR:
 		{
@@ -684,16 +850,15 @@ cell get_member(void* pdata, const member_t *member, cell* dest, size_t element,
 
 	case MEMBER_ENTITY:
 	case MEMBER_EVARS:
-	case MEBMER_REBUYSTRUCT:
 		return 0;
-
+	case MEMBER_TRACERESULT:
+		return (cell)get_member_direct<TraceResult>(pdata, member->offset, element);
+	case MEBMER_REBUYSTRUCT:
+		return (cell)get_member_direct<RebuyStruct>(pdata, member->offset, element);
 	case MEMBER_PMTRACE:
-		// native any:get_member(_index, any:_member, element);
 		return (cell)get_member_direct<pmtrace_s>(pdata, member->offset, element);
 	case MEBMER_USERCMD:
-		// native any:get_member(_index, any:_member, element);
 		return (cell)get_member_direct<usercmd_s>(pdata, member->offset, element);
-
 	default: break;
 	}
 

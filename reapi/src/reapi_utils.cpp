@@ -63,3 +63,32 @@ void CTempStrings::pop(size_t count)
 {
 	m_current -= count;
 }
+
+CBaseEntity *GiveNamedItemInternal(AMX *amx, CBasePlayer *pPlayer, const char *pszItemName)
+{
+	edict_t *pEdict = CREATE_NAMED_ENTITY(ALLOC_STRING(pszItemName));
+	if (FNullEnt(pEdict))
+	{
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: Item \"%s\" failed to create!\n", __FUNCTION__, pszItemName);
+		return nullptr;
+	}
+
+	pEdict->v.origin = pPlayer->pev->origin;
+	pEdict->v.spawnflags |= SF_NORESPAWN;
+
+	MDLL_Spawn(pEdict);
+	MDLL_Touch(pEdict, ENT(pPlayer->pev));
+
+	CBaseEntity *pEntity = getPrivate<CBaseEntity>(pEdict);
+
+	// not allow the item to fall to the ground.
+	if (FNullEnt(pEntity->pev->owner) || pEntity->pev->owner != pPlayer->edict())
+	{
+		pEntity->pev->targetname = iStringNull;
+		pEntity->pev->flags |= FL_KILLME;
+
+		return nullptr;
+	}
+
+	return pEntity;
+}

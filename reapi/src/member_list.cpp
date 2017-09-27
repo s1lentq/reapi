@@ -14,73 +14,108 @@
 
 #define CLASS_MEMBERS(cx, mx, postf, pref) ((!(postf & (MAX_REGION_RANGE - 1)) ? regmember::current_cell = 1, true : false) || (postf & (MAX_REGION_RANGE - 1)) == regmember::current_cell++) ? regmember([](member_t* ptr){ decltypefx(cx, pref, ., mx) f = {};ptr->size = getTypeSize(f);ptr->max_size = sizeof(f);ptr->offset = offsetof(##cx, ##pref##mx);ptr->type = getMemberType(f);ptr->name = #postf;}) : regmember(#pref#mx)
 
-#define GM_MEMBERS(mx)			CLASS_MEMBERS(CHalfLifeMultiplay, mx, mx,)
-#define GM_VOICE_MEMBERS(mx)	CLASS_MEMBERS(CHalfLifeMultiplay, mx, mx, m_VoiceGameMgr.)
-#define BASE_MEMBERS(mx)		CLASS_MEMBERS(CBaseEntity, mx, mx,)
-#define ANIM_MEMBERS(mx)		CLASS_MEMBERS(CBaseAnimating, mx, mx,)
-#define MONST_MEMBERS(mx)		CLASS_MEMBERS(CBaseMonster, mx, mx,)
-#define PL_MEMBERS(mx)			CLASS_MEMBERS(CBasePlayer, mx, mx,)
-#define EVAR_MEMBERS(mx)		CLASS_MEMBERS(com_entvars, mx, var_##mx,)
-#define PMOVE_MEMBERS(mx)		CLASS_MEMBERS(com_playermove, mx, pm_##mx,)
-#define MOVEVAR_MEMBERS(mx)		CLASS_MEMBERS(movevars_t, mx, mv_##mx,)
-#define UCMD_MEMBERS(mx)		CLASS_MEMBERS(usercmd_s, mx, ucmd_##mx,)
-#define PMTRACE_MEMBERS(mx)		CLASS_MEMBERS(pmtrace_s, mx, pmt_##mx,)
-#define CSPL_MEMBERS(mx)		CLASS_MEMBERS(CCSPlayer, mx, mx,)
-#define BASEITEM_MEMBERS(mx)	CLASS_MEMBERS(CBasePlayerItem, mx, mx,)
-#define BASEWPN_MEMBERS(mx)		CLASS_MEMBERS(CBasePlayerWeapon, mx, m_Weapon_##mx, m_)
-#define WPNBOX_MEMBERS(mx)		CLASS_MEMBERS(CWeaponBox, mx, m_WeaponBox_##mx, m_)
-#define ARMOURY_MEMBERS(mx)		CLASS_MEMBERS(CArmoury, mx, m_Armoury_##mx, m_)
+#define GM_MEMBERS(mx)           CLASS_MEMBERS(CHalfLifeMultiplay, mx, mx,)
+#define GM_VOICE_MEMBERS(mx)     CLASS_MEMBERS(CHalfLifeMultiplay, mx, mx, m_VoiceGameMgr.)
+#define BASE_MEMBERS(mx)         CLASS_MEMBERS(CBaseEntity, mx, mx,)
+#define ANIM_MEMBERS(mx)         CLASS_MEMBERS(CBaseAnimating, mx, mx,)
+#define MONST_MEMBERS(mx)        CLASS_MEMBERS(CBaseMonster, mx, mx,)
+#define PL_MEMBERS(mx)           CLASS_MEMBERS(CBasePlayer, mx, mx,)
+#define EVAR_MEMBERS(mx)         CLASS_MEMBERS(com_entvars, mx, var_##mx,)
+#define PMOVE_MEMBERS(mx)        CLASS_MEMBERS(com_playermove, mx, pm_##mx,)
+#define MOVEVAR_MEMBERS(mx)      CLASS_MEMBERS(movevars_t, mx, mv_##mx,)
+#define UCMD_MEMBERS(mx)         CLASS_MEMBERS(usercmd_s, mx, ucmd_##mx,)
+#define PMTRACE_MEMBERS(mx)      CLASS_MEMBERS(pmtrace_s, mx, pmt_##mx,)
+#define CSPL_MEMBERS(mx)         CLASS_MEMBERS(CCSPlayer, mx, mx,)
+#define BASEITEM_MEMBERS(mx)     CLASS_MEMBERS(CBasePlayerItem, mx, mx,)
+#define BASEWPN_MEMBERS(mx)      CLASS_MEMBERS(CBasePlayerWeapon, mx, m_Weapon_##mx, m_)
+#define WPNBOX_MEMBERS(mx)       CLASS_MEMBERS(CWeaponBox, mx, m_WeaponBox_##mx, m_)
+#define ARMOURY_MEMBERS(mx)      CLASS_MEMBERS(CArmoury, mx, m_Armoury_##mx, m_)
+#define GRENADE_MEMBERS(mx)      CLASS_MEMBERS(CGrenade, mx, m_Grenade_##mx, m_)
+#define P228_MEMBERS(mx)         CLASS_MEMBERS(CP228, mx, m_P228_##mx, m_)
+#define SCOUT_MEMBERS(mx)        CLASS_MEMBERS(CSCOUT, mx, m_SCOUT_##mx, m_)
+#define HEGREN_MEMBERS(mx)       CLASS_MEMBERS(CHEGrenade, mx, m_HEGrenade_##mx, m_)
+#define XM1014_MEMBERS(mx)       CLASS_MEMBERS(CXM1014, mx, m_XM1014_##mx, m_)
+#define C4_MEMBERS(mx)           CLASS_MEMBERS(CC4, mx, m_C4_##mx, m_)
+#define MAC10_MEMBERS(mx)        CLASS_MEMBERS(CMAC10, mx, m_MAC10_##mx, m_)
+#define AUG_MEMBERS(mx)          CLASS_MEMBERS(CAUG, mx, m_AUG_##mx, m_)
+#define SMOKEGREN_MEMBERS(mx)    CLASS_MEMBERS(CSmokeGrenade, mx, m_SmokeGrenade_##mx, m_)
+#define ELITE_MEMBERS(mx)        CLASS_MEMBERS(CELITE, mx, m_ELITE_##mx, m_)
+#define FIVESEVEN_MEMBERS(mx)    CLASS_MEMBERS(CFiveSeven, mx, m_FiveSeven_##mx, m_)
+#define UMP45_MEMBERS(mx)        CLASS_MEMBERS(CUMP45, mx, m_UMP45_##mx, m_)
+#define SG550_MEMBERS(mx)        CLASS_MEMBERS(CSG550, mx, m_SG550_##mx, m_)
+#define GALIL_MEMBERS(mx)        CLASS_MEMBERS(CGalil, mx, m_Galil_##mx, m_)
+#define FAMAS_MEMBERS(mx)        CLASS_MEMBERS(CFamas, mx, m_Famas_##mx, m_)
+#define USP_MEMBERS(mx)          CLASS_MEMBERS(CUSP, mx, m_USP_##mx, m_)
+#define GLOCK18_MEMBERS(mx)      CLASS_MEMBERS(CGLOCK18, mx, m_GLOCK18_##mx, m_)
+#define AWP_MEMBERS(mx)          CLASS_MEMBERS(CAWP, mx, m_AWP_##mx, m_)
+#define MP5N_MEMBERS(mx)         CLASS_MEMBERS(CMP5N, mx, m_MP5N_##mx, m_)
+#define M249_MEMBERS(mx)         CLASS_MEMBERS(CM249, mx, m_M249_##mx, m_)
+#define M3_MEMBERS(mx)           CLASS_MEMBERS(CM3, mx, m_M3_##mx, m_)
+#define M4A1_MEMBERS(mx)         CLASS_MEMBERS(CM4A1, mx, m_M4A1_##mx, m_)
+#define TMP_MEMBERS(mx)          CLASS_MEMBERS(CTMP, mx, m_TMP_##mx, m_)
+#define G3SG1_MEMBERS(mx)        CLASS_MEMBERS(CG3SG1, mx, m_G3SG1_##mx, m_)
+#define DEAGLE_MEMBERS(mx)       CLASS_MEMBERS(CDEAGLE, mx, m_DEAGLE_##mx, m_)
+#define SG552_MEMBERS(mx)        CLASS_MEMBERS(CSG552, mx, m_SG552_##mx, m_)
+#define AK47_MEMBERS(mx)         CLASS_MEMBERS(CAK47, mx, m_AK47_##mx, m_)
+#define KNIFE_MEMBERS(mx)        CLASS_MEMBERS(CKnife, mx, m_Knife_##mx, m_)
+#define P90_MEMBERS(mx)          CLASS_MEMBERS(CP90, mx, m_P90_##mx, m_)
+#define SHIELD_MEMBERS(mx)       CLASS_MEMBERS(CWShield, mx, m_Shield_##mx, m_)
+#define REBUYSTRUCT_MEMBERS(mx)  CLASS_MEMBERS(RebuyStruct, mx, mx,)
+#define MAPINFO_MEMBERS(mx)      CLASS_MEMBERS(CMapInfo, mx, m_MapInfo_##mx, m_)
 
-inline MType getMemberType(float*)				{ return MEMBER_FLOAT; }
-inline MType getMemberType(float)				{ return MEMBER_FLOAT; }
+inline MType getMemberType(float*)              { return MEMBER_FLOAT; }
+inline MType getMemberType(float)               { return MEMBER_FLOAT; }
 
-inline MType getMemberType(double)				{ return MEMBER_DOUBLE; }
+inline MType getMemberType(double)              { return MEMBER_DOUBLE; }
 
-inline MType getMemberType(CBasePlayer**)		{ return MEMBER_CLASSPTR; }
-inline MType getMemberType(CBasePlayer*)		{ return MEMBER_CLASSPTR; }
-inline MType getMemberType(CBasePlayerItem**)	{ return MEMBER_CLASSPTR; }
-inline MType getMemberType(CBasePlayerItem*)	{ return MEMBER_CLASSPTR; }
-inline MType getMemberType(CBaseEntity*)		{ return MEMBER_CLASSPTR; }
+inline MType getMemberType(CBasePlayer**)       { return MEMBER_CLASSPTR; }
+inline MType getMemberType(CBasePlayer*)        { return MEMBER_CLASSPTR; }
+inline MType getMemberType(CBasePlayerItem**)   { return MEMBER_CLASSPTR; }
+inline MType getMemberType(CBasePlayerItem*)    { return MEMBER_CLASSPTR; }
+inline MType getMemberType(CBaseEntity*)        { return MEMBER_CLASSPTR; }
 
-inline MType getMemberType(EHANDLE)				{ return MEMBER_EHANDLE; }
-inline MType getMemberType(entvars_t*)			{ return MEMBER_EVARS; }
-inline MType getMemberType(edict_t*)			{ return MEMBER_EDICT; }
+inline MType getMemberType(EHANDLE)             { return MEMBER_EHANDLE; }
+inline MType getMemberType(entvars_t*)          { return MEMBER_EVARS; }
+inline MType getMemberType(edict_t*)            { return MEMBER_EDICT; }
 
-inline MType getMemberType(Vector*)				{ return MEMBER_VECTOR; }
-inline MType getMemberType(Vector)				{ return MEMBER_VECTOR; }
+inline MType getMemberType(Vector*)             { return MEMBER_VECTOR; }
+inline MType getMemberType(Vector)              { return MEMBER_VECTOR; }
 
-inline MType getMemberType(char*)				{ return MEMBER_STRING; }
-inline MType getMemberType(string_t)			{ return MEMBER_QSTRING; }
-inline MType getMemberType(string_t*)			{ return MEMBER_QSTRING; }
-inline MType getMemberType(qstring_t)			{ return MEMBER_QSTRING; }
-inline MType getMemberType(qstring_t*)			{ return MEMBER_QSTRING; }
+inline MType getMemberType(char*)               { return MEMBER_STRING; }
+inline MType getMemberType(string_t)            { return MEMBER_QSTRING; }
+inline MType getMemberType(string_t*)           { return MEMBER_QSTRING; }
+inline MType getMemberType(qstring_t)           { return MEMBER_QSTRING; }
+inline MType getMemberType(qstring_t*)          { return MEMBER_QSTRING; }
 
-inline MType getMemberType(char)				{ return MEMBER_BYTE; }
-inline MType getMemberType(byte)				{ return MEMBER_BYTE; }
-inline MType getMemberType(byte*)				{ return MEMBER_BYTE; }
+inline MType getMemberType(char)                { return MEMBER_BYTE; }
+inline MType getMemberType(byte)                { return MEMBER_BYTE; }
+inline MType getMemberType(byte*)               { return MEMBER_BYTE; }
 
-inline MType getMemberType(int*)				{ return MEMBER_INTEGER; }
-inline MType getMemberType(int)					{ return MEMBER_INTEGER; }
-inline MType getMemberType(unsigned)			{ return MEMBER_INTEGER; }
-inline MType getMemberType(TeamName)			{ return MEMBER_INTEGER; }
-inline MType getMemberType(JoinState)			{ return MEMBER_INTEGER; }
-inline MType getMemberType(ModelName)			{ return MEMBER_INTEGER; }
-inline MType getMemberType(_Menu)				{ return MEMBER_INTEGER; }
-inline MType getMemberType(MusicState)			{ return MEMBER_INTEGER; }
-inline MType getMemberType(Activity)			{ return MEMBER_INTEGER; }
-inline MType getMemberType(MONSTERSTATE)		{ return MEMBER_INTEGER; }
-inline MType getMemberType(ArmorType)			{ return MEMBER_INTEGER; }
-inline MType getMemberType(ArmouryItemPack)		{ return MEMBER_INTEGER; }
+inline MType getMemberType(int*)                { return MEMBER_INTEGER; }
+inline MType getMemberType(int)                 { return MEMBER_INTEGER; }
+inline MType getMemberType(unsigned)            { return MEMBER_INTEGER; }
+inline MType getMemberType(TeamName)            { return MEMBER_INTEGER; }
+inline MType getMemberType(JoinState)           { return MEMBER_INTEGER; }
+inline MType getMemberType(ModelName)           { return MEMBER_INTEGER; }
+inline MType getMemberType(_Menu)               { return MEMBER_INTEGER; }
+inline MType getMemberType(MusicState)          { return MEMBER_INTEGER; }
+inline MType getMemberType(Activity)            { return MEMBER_INTEGER; }
+inline MType getMemberType(MONSTERSTATE)        { return MEMBER_INTEGER; }
+inline MType getMemberType(ArmorType)           { return MEMBER_INTEGER; }
+inline MType getMemberType(ArmouryItemPack)     { return MEMBER_INTEGER; }
+inline MType getMemberType(InfoMapBuyParam)     { return MEMBER_INTEGER; }
 
-inline MType getMemberType(short)				{ return MEMBER_SHORT; }
-inline MType getMemberType(unsigned short)		{ return MEMBER_SHORT; }
+inline MType getMemberType(TraceResult)         { return MEMBER_TRACERESULT; }
 
-inline MType getMemberType(bool)				{ return MEMBER_BOOL; }
-inline MType getMemberType(CUnifiedSignals)		{ return MEMBER_SIGNALS; }
-inline MType getMemberType(RebuyStruct)			{ return MEBMER_REBUYSTRUCT; }
+inline MType getMemberType(short)               { return MEMBER_SHORT; }
+inline MType getMemberType(unsigned short)      { return MEMBER_SHORT; }
 
-inline MType getMemberType(pmtrace_t)			{ return MEMBER_PMTRACE; }
-inline MType getMemberType(usercmd_s)			{ return MEBMER_USERCMD; }
+inline MType getMemberType(bool)                { return MEMBER_BOOL; }
+inline MType getMemberType(CUnifiedSignals)     { return MEMBER_SIGNALS; }
+inline MType getMemberType(RebuyStruct)         { return MEBMER_REBUYSTRUCT; }
+
+inline MType getMemberType(pmtrace_t)           { return MEMBER_PMTRACE; }
+inline MType getMemberType(usercmd_s)           { return MEBMER_USERCMD; }
 
 template<typename T>
 inline MType getMemberType(T) { static_assert(false, "Not implemented overload"); }
@@ -748,6 +783,210 @@ member_t memberlist_armoury[] = {
 	ARMOURY_MEMBERS(bAlreadyCounted),
 };
 
+member_t memberlist_grenade[] = {
+	GRENADE_MEMBERS(bStartDefuse),
+	GRENADE_MEMBERS(bIsC4),
+	GRENADE_MEMBERS(pBombDefuser),
+	GRENADE_MEMBERS(flDefuseCountDown),
+	GRENADE_MEMBERS(flC4Blow),
+	GRENADE_MEMBERS(flNextFreqInterval),
+	GRENADE_MEMBERS(flNextBeep),
+	GRENADE_MEMBERS(flNextFreq),
+	GRENADE_MEMBERS(sBeepName),
+	GRENADE_MEMBERS(fAttenu),
+	GRENADE_MEMBERS(flNextBlink),
+	GRENADE_MEMBERS(fNextDefuse),
+	GRENADE_MEMBERS(bJustBlew),
+	GRENADE_MEMBERS(iTeam),
+	GRENADE_MEMBERS(iCurWave),
+	GRENADE_MEMBERS(pentCurBombTarget),
+	GRENADE_MEMBERS(SGSmoke),
+	GRENADE_MEMBERS(angle),
+	GRENADE_MEMBERS(usEvent),
+	GRENADE_MEMBERS(bLightSmoke),
+	GRENADE_MEMBERS(bDetonated),
+	GRENADE_MEMBERS(vSmokeDetonate),
+	GRENADE_MEMBERS(iBounceCount),
+	GRENADE_MEMBERS(fRegisteredSound),
+};
+
+member_t memberlist_p228[] = {
+	P228_MEMBERS(iShell),
+	P228_MEMBERS(usFire),
+};
+
+member_t memberlist_scout[] = {
+	SCOUT_MEMBERS(iShell),
+	SCOUT_MEMBERS(usFire),
+};
+
+member_t memberlist_hegrenade[] = {
+	HEGREN_MEMBERS(usCreate),
+};
+
+member_t memberlist_xm1014[] = {
+	XM1014_MEMBERS(iShell),
+	XM1014_MEMBERS(flPumpTime),
+	XM1014_MEMBERS(usFire),
+};
+
+member_t memberlist_c4[] = {
+	C4_MEMBERS(bStartedArming),
+	C4_MEMBERS(bBombPlacedAnimation),
+	C4_MEMBERS(fArmedTime),
+	C4_MEMBERS(bHasShield),
+};
+
+member_t memberlist_mac10[] = {
+	MAC10_MEMBERS(iShell),
+	MAC10_MEMBERS(iShellOn),
+	MAC10_MEMBERS(usFire),
+};
+
+member_t memberlist_aug[] = {
+	AUG_MEMBERS(iShell),
+	AUG_MEMBERS(iShellOn),
+	AUG_MEMBERS(usFire),
+};
+
+member_t memberlist_smokegrenade[] = {
+	SMOKEGREN_MEMBERS(usCreate),
+};
+
+member_t memberlist_elite[] = {
+	ELITE_MEMBERS(iShell),
+	ELITE_MEMBERS(usFire_LEFT),
+	ELITE_MEMBERS(usFire_RIGHT),
+};
+
+member_t memberlist_fiveseven[] = {
+	FIVESEVEN_MEMBERS(iShell),
+	FIVESEVEN_MEMBERS(usFire),
+};
+
+member_t memberlist_ump45[] = {
+	UMP45_MEMBERS(iShell),
+	UMP45_MEMBERS(iShellOn),
+	UMP45_MEMBERS(usFire),
+};
+
+member_t memberlist_sg550[] = {
+	SG550_MEMBERS(iShell),
+	SG550_MEMBERS(usFire),
+};
+
+member_t memberlist_galil[] = {
+	GALIL_MEMBERS(iShell),
+	GALIL_MEMBERS(iShellOn),
+	GALIL_MEMBERS(usFire),
+};
+
+member_t memberlist_famas[] = {
+	FAMAS_MEMBERS(iShell),
+	FAMAS_MEMBERS(iShellOn),
+};
+
+member_t memberlist_usp[] = {
+	USP_MEMBERS(iShell),
+	USP_MEMBERS(usFire),
+};
+
+member_t memberlist_glock18[] = {
+	GLOCK18_MEMBERS(iShell),
+	GLOCK18_MEMBERS(bBurstFire),
+};
+
+member_t memberlist_awp[] = {
+	AWP_MEMBERS(iShell),
+	AWP_MEMBERS(usFire),
+};
+
+member_t memberlist_mp5n[] = {
+	MP5N_MEMBERS(iShell),
+	MP5N_MEMBERS(iShellOn),
+	MP5N_MEMBERS(usFire),
+};
+
+member_t memberlist_m249[] = {
+	M249_MEMBERS(iShell),
+	M249_MEMBERS(iShellOn),
+	M249_MEMBERS(usFire),
+};
+
+member_t memberlist_m3[] = {
+	M3_MEMBERS(iShell),
+	M3_MEMBERS(flPumpTime),
+	M3_MEMBERS(usFire),
+};
+
+member_t memberlist_m4a1[] = {
+	M4A1_MEMBERS(iShell),
+	M4A1_MEMBERS(iShellOn),
+	M4A1_MEMBERS(usFire),
+};
+
+member_t memberlist_tmp[] = {
+	TMP_MEMBERS(iShell),
+	TMP_MEMBERS(iShellOn),
+	TMP_MEMBERS(usFire),
+};
+
+member_t memberlist_g3sg1[] = {
+	G3SG1_MEMBERS(iShell),
+	G3SG1_MEMBERS(usFire),
+};
+
+member_t memberlist_deagle[] = {
+	DEAGLE_MEMBERS(iShell),
+	DEAGLE_MEMBERS(usFire),
+};
+
+member_t memberlist_sg552[] = {
+	SG552_MEMBERS(iShell),
+	SG552_MEMBERS(iShellOn),
+	SG552_MEMBERS(usFire),
+};
+
+member_t memberlist_ak47[] = {
+	AK47_MEMBERS(iShell),
+	AK47_MEMBERS(iShellOn),
+	AK47_MEMBERS(usFire),
+};
+
+member_t memberlist_knife[] = {
+	KNIFE_MEMBERS(trHit),
+	KNIFE_MEMBERS(usKnife),
+};
+
+member_t memberlist_p90[] = {
+	P90_MEMBERS(iShell),
+	P90_MEMBERS(iShellOn),
+	P90_MEMBERS(usFire),
+};
+
+member_t memberlist_shield[] = {
+	SHIELD_MEMBERS(hEntToIgnoreTouchesFrom),
+	SHIELD_MEMBERS(flTimeToIgnoreTouches),
+};
+
+member_t memberlist_rebuystruct[] = {
+	REBUYSTRUCT_MEMBERS(m_primaryWeapon),
+	REBUYSTRUCT_MEMBERS(m_primaryAmmo),
+	REBUYSTRUCT_MEMBERS(m_secondaryWeapon),
+	REBUYSTRUCT_MEMBERS(m_secondaryAmmo),
+	REBUYSTRUCT_MEMBERS(m_heGrenade),
+	REBUYSTRUCT_MEMBERS(m_flashbang),
+	REBUYSTRUCT_MEMBERS(m_smokeGrenade),
+	REBUYSTRUCT_MEMBERS(m_defuser),
+	REBUYSTRUCT_MEMBERS(m_nightVision),
+	REBUYSTRUCT_MEMBERS(m_armor),
+};
+
+member_t memberlist_mapinfo[] = {
+	MAPINFO_MEMBERS(iBuyingStatus),
+	MAPINFO_MEMBERS(flBombRadius),
+};
+
 memberlist_t memberlist;
 
 member_t *memberlist_t::operator[](size_t members) const
@@ -773,6 +1012,38 @@ member_t *memberlist_t::operator[](size_t members) const
 		CASE(baseweapon)
 		CASE(weaponbox)
 		CASE(armoury)
+		CASE(grenade)
+		CASE(p228)
+		CASE(scout)
+		CASE(hegrenade)
+		CASE(xm1014)
+		CASE(c4)
+		CASE(mac10)
+		CASE(aug)
+		CASE(smokegrenade)
+		CASE(elite)
+		CASE(fiveseven)
+		CASE(ump45)
+		CASE(sg550)
+		CASE(galil)
+		CASE(famas)
+		CASE(usp)
+		CASE(glock18)
+		CASE(awp)
+		CASE(mp5n)
+		CASE(m249)
+		CASE(m3)
+		CASE(m4a1)
+		CASE(tmp)
+		CASE(g3sg1)
+		CASE(deagle)
+		CASE(sg552)
+		CASE(ak47)
+		CASE(knife)
+		CASE(p90)
+		CASE(shield)
+		CASE(rebuystruct)
+		CASE(mapinfo)
 	}
 
 	return nullptr;

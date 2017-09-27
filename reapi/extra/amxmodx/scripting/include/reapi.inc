@@ -39,7 +39,39 @@ enum members_tables_e
 	mt_baseitem,
 	mt_baseweapon,
 	mt_weaponbox,
-	mt_armoury
+	mt_armoury,
+	mt_grenade,
+	mt_p228,
+	mt_scout,
+	mt_hegrenade,
+	mt_xm1014,
+	mt_c4,
+	mt_mac10,
+	mt_aug,
+	mt_smokegrenade,
+	mt_elite,
+	mt_fiveseven,
+	mt_ump45,
+	mt_sg550,
+	mt_galil,
+	mt_famas,
+	mt_usp,
+	mt_glock18,
+	mt_awp,
+	mt_mp5n,
+	mt_m249,
+	mt_m3,
+	mt_m4a1,
+	mt_tmp,
+	mt_g3sg1,
+	mt_deagle,
+	mt_sg552,
+	mt_ak47,
+	mt_knife,
+	mt_p90,
+	mt_shield,
+	mt_rebuystruct,
+	mt_mapinfo,
 };
 
 // Is like FNullEnt
@@ -94,7 +126,6 @@ enum HookChain
 * @param post       Whether or not to forward this in post
 *
 * @return           Returns a hook handle. Use EnableHookChain/DisableHookChain to toggle the forward on or off
-*
 */
 native HookChain:RegisterHookChain({EngineFunc, GamedllFunc, GamedllFunc_CBaseAnimating, GamedllFunc_CBasePlayer, GamedllFunc_CSGameRules, ReCheckerFunc}:function_id, const callback[], post = 0);
 
@@ -114,7 +145,6 @@ native bool:DisableHookChain(HookChain:hook);
 * @param hook       The hook to re-enable
 *
 * @return           Returns true if the function is successfully executed, otherwise false
-*
 */
 native bool:EnableHookChain(HookChain:hook);
 
@@ -135,7 +165,6 @@ native SetHookChainReturn(AType:type, any:...);
 * @param [maxlen]   Max length of string (optional)
 *
 * @return           If an integer or boolean or one byte or float, array or everything else is passed via 1st argument and more
-*
 */
 native any:GetHookChainReturn(AType:type, any:...);
 
@@ -148,7 +177,6 @@ native any:GetHookChainReturn(AType:type, any:...);
 * @param [maxlen]   Max length of string (optional)
 *
 * @return           Returns true if the function is successfully executed, otherwise false
-*
 */
 native SetHookChainArg(number, AType:type, any:...);
 
@@ -157,7 +185,6 @@ native SetHookChainArg(number, AType:type, any:...);
 * @note This native also checks the validity of an entity.
 *
 * @return       true/false
-*
 */
 native bool:FClassnameIs(const entityIndex, const className[]);
 
@@ -192,7 +219,6 @@ native get_viewent(const index);
 * Check if the entity is valid.
 *
 * @return       true/false
-*
 */
 native bool:is_entity(const entityIndex);
 
@@ -200,7 +226,6 @@ native bool:is_entity(const entityIndex);
 * Check if ReHLDS is available.
 *
 * @return       true/false
-*
 */
 native bool:is_rehlds();
 
@@ -208,7 +233,6 @@ native bool:is_rehlds();
 * Check if ReGameDLL is available.
 *
 * @return       true/false
-*
 */
 native bool:is_regamedll();
 
@@ -224,7 +248,6 @@ native bool:has_reunion();
 * Check if VTC is available.
 *
 * @return       true/false
-*
 */
 native bool:has_vtc();
 
@@ -232,7 +255,6 @@ native bool:has_vtc();
 * Check if Rechecker is available.
 *
 * @return       true/false
-*
 */
 native bool:has_rechecker();
 

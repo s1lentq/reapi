@@ -36,7 +36,7 @@
 #include "items.h"
 
 #define REGAMEDLL_API_VERSION_MAJOR 5
-#define REGAMEDLL_API_VERSION_MINOR 0
+#define REGAMEDLL_API_VERSION_MINOR 3
 
 // CBasePlayer::Spawn hook
 typedef IVoidHookChainClass<class CBasePlayer> IReGameHook_CBasePlayer_Spawn;
@@ -87,8 +87,8 @@ typedef IHookChainClass<BOOL, class CBasePlayer, class CBasePlayerItem *> IReGam
 typedef IHookChainRegistryClass<BOOL, class CBasePlayer, class CBasePlayerItem *> IReGameHookRegistry_CBasePlayer_RemovePlayerItem;
 
 // CBasePlayer::GiveAmmo hook
-typedef IHookChainClass<int, class CBasePlayer, int , char *, int> IReGameHook_CBasePlayer_GiveAmmo;
-typedef IHookChainRegistryClass<int, class CBasePlayer, int , char *, int> IReGameHookRegistry_CBasePlayer_GiveAmmo;
+typedef IHookChainClass<int, class CBasePlayer, int , const char *, int> IReGameHook_CBasePlayer_GiveAmmo;
+typedef IHookChainRegistryClass<int, class CBasePlayer, int , const char *, int> IReGameHookRegistry_CBasePlayer_GiveAmmo;
 
 // CBasePlayer::ResetMaxSpeed hook
 typedef IVoidHookChainClass<class CBasePlayer> IReGameHook_CBasePlayer_ResetMaxSpeed;
@@ -354,6 +354,14 @@ typedef IVoidHookChainRegistry<> IReGameHookRegistry_CSGameRules_BalanceTeams;
 typedef IVoidHookChain<> IReGameHook_CSGameRules_OnRoundFreezeEnd;
 typedef IVoidHookChainRegistry<> IReGameHookRegistry_CSGameRules_OnRoundFreezeEnd;
 
+// PM_UpdateStepSound hook
+typedef IVoidHookChain<> IReGameHook_PM_UpdateStepSound;
+typedef IVoidHookChainRegistry<> IReGameHookRegistry_PM_UpdateStepSound;
+
+// CBasePlayer::StartDeathCam hook
+typedef IVoidHookChainClass<class CBasePlayer> IReGameHook_CBasePlayer_StartDeathCam;
+typedef IVoidHookChainRegistryClass<class CBasePlayer> IReGameHookRegistry_CBasePlayer_StartDeathCam;
+
 class IReGameHookchains {
 public:
 	virtual ~IReGameHookchains() {}
@@ -442,6 +450,8 @@ public:
 	virtual IReGameHookRegistry_CSGameRules_GoToIntermission* CSGameRules_GoToIntermission() = 0;
 	virtual IReGameHookRegistry_CSGameRules_BalanceTeams* CSGameRules_BalanceTeams() = 0;
 	virtual IReGameHookRegistry_CSGameRules_OnRoundFreezeEnd* CSGameRules_OnRoundFreezeEnd() = 0;
+	virtual IReGameHookRegistry_PM_UpdateStepSound* PM_UpdateStepSound() = 0;
+	virtual IReGameHookRegistry_CBasePlayer_StartDeathCam* CBasePlayer_StartDeathCam() = 0;
 };
 
 struct ReGameFuncs_t {

@@ -1,15 +1,16 @@
 #include "precompiled.h"
 
 /*
-* Hook API function that are available into enum
-* Look at the enum's for parameter lists.
+* Hook API function that are available into enum.
+* Look at the enums for parameter lists.
 *
-* @param function	The function to hook.
-* @param callback	The forward to call.
-* @param post		Whether or not to forward this in post.
-* @return 		Returns a handle to the hook. Use EnableHookChain/DisableHookChain to toggle the forward on or off.
+* @param function   The function to hook
+* @param callback   The forward to call
+* @param post       Whether or not to forward this in post
 *
-* native RegisterHookChain(any:function_id, const callback[], post = 0);
+* @return           Returns a hook handle. Use EnableHookChain/DisableHookChain to toggle the forward on or off
+*
+* native HookChain:RegisterHookChain(any:function_id, const callback[], post = 0);
 */
 cell AMX_NATIVE_CALL RegisterHookChain(AMX *amx, cell *params)
 {
@@ -50,13 +51,14 @@ cell AMX_NATIVE_CALL RegisterHookChain(AMX *amx, cell *params)
 }
 
 /*
-* Enable hook by handle.
+* Starts a hook back up.
 * Use the return value from RegisterHookChain as the parameter here!
 *
-* @param fwd		The hook to re-enable.
-* @return		Returns if the function is successful executed true otherwise false
+* @param hook       The hook to re-enable
 *
-* native bool:EnableHookChain(any:fwd);
+* @return           Returns true if the function is successfully executed, otherwise false
+*
+* native bool:EnableHookChain(HookChain:hook);
 */
 cell AMX_NATIVE_CALL EnableHookChain(AMX *amx, cell *params)
 {
@@ -75,12 +77,12 @@ cell AMX_NATIVE_CALL EnableHookChain(AMX *amx, cell *params)
 }
 
 /*
-* Disable hook by handle.
+* Stops a hook from triggering.
 * Use the return value from RegisterHookChain as the parameter here!
 *
-* @param fwd		The hook to stop.
+* @param hook       The hook to stop
 *
-* native bool:DisableHookChain(any:fwd);
+* native bool:DisableHookChain(HookChain:hook);
 */
 cell AMX_NATIVE_CALL DisableHookChain(AMX *amx, cell *params)
 {
@@ -101,8 +103,8 @@ cell AMX_NATIVE_CALL DisableHookChain(AMX *amx, cell *params)
 /*
 * Sets the return value of a hookchain.
 *
-* @param type		To specify the type ATYPE_*, look at the enum AType
-* @param value		The value to set the return to.
+* @param type       To specify the ATYPE_* parameter, look at the enum AType
+* @param value      The value to set the return to
 *
 * native SetHookChainReturn(AType:type, any:...);
 */
@@ -163,9 +165,10 @@ cell AMX_NATIVE_CALL SetHookChainReturn(AMX *amx, cell *params)
 * Gets the return value of the current hookchain.
 * This has no effect in pre hookchain.
 *
-* @param type		To specify the type ATYPE_*, look at the enum AType
-* @param [maxlen]	Max length of string (optional)
-* @return		If an integer or boolean or one byte or float, array or everything else is passed via 1rd argument and more
+* @param type       To specify the ATYPE_* parameter, look at the enum AType
+* @param [maxlen]   Max length of string (optional)
+*
+* @return           If an integer or boolean or one byte or float, array or everything else is passed via 1st argument and more
 *
 * native any:GetHookChainReturn(AType:type, any:...);
 */
@@ -224,10 +227,11 @@ cell AMX_NATIVE_CALL GetHookChainReturn(AMX *amx, cell *params)
 * Set hookchain argument.
 * This has no effect in post hookchain.
 *
-* @param number		Number of argument
-* @param value		New value
-* @param [maxlen]	Max length of string (optional)
-* @return		Returns if the function is successful executed true otherwise false
+* @param number     Number of argument
+* @param value      New value
+* @param [maxlen]   Max length of string (optional)
+*
+* @return           Returns true if the function is successfully executed, otherwise false
 *
 * native SetHookChainArg(number, AType:type, any:...);
 */

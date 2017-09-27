@@ -3,8 +3,9 @@
 /*
 * Get client protocol
 *
-* @param index		Client index
-* @return		client protocol
+* @param index  Client index
+*
+* @return       Client protocol
 *
 * native REU_GetProtocol(const index);
 */
@@ -20,8 +21,9 @@ cell AMX_NATIVE_CALL REU_GetProtocol(AMX *amx, cell *params)
 /*
 * Get client auth type
 *
-* @param index		Client index
-* @return		client auth type
+* @param index  Client index
+*
+* @return       Client auth type
 *
 * native REU_GetAuthtype(const index);
 */
@@ -35,10 +37,11 @@ cell AMX_NATIVE_CALL REU_GetAuthtype(AMX *amx, cell *params)
 }
 
 /*
-* Check if client running RevEmu with limited user rights
+* Check if the client is running RevEmu with limited user rights.
 *
-* @param index		Client index
-* @return		1/0
+* @param index  Client index
+*
+* @return       1/0
 *
 * native REU_IsRevemuWithoutAdminRights(const index);
 */

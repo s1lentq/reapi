@@ -61,7 +61,6 @@ native set_key_value(const pbuffer, const key[], const value[]);
 * @param mapname     New map name.
 *
 * @noreturn
-*
 */
 native rh_set_mapname(const mapname[]);
 
@@ -74,7 +73,6 @@ native rh_set_mapname(const mapname[]);
 *                   MNT_TRUE will return the original map name independant of the name set with via rh_set_mapname
 *
 * @noreturn
-*
 */
 native rh_get_mapname(output[], len, MapNameType:type = MNT_SET);
 
@@ -82,7 +80,6 @@ native rh_get_mapname(output[], len, MapNameType:type = MNT_SET);
 * Reverts back the original map name.
 *
 * @noreturn
-*
 */
 native rh_reset_mapname();
 
@@ -101,7 +98,6 @@ native rh_reset_mapname();
 * @param origin     Specify origin and only on "param" entity worldspawn that is 0
 *
 * @return           true if the emission was successfull, false otherwise
-*
 */
 native bool:rh_emit_sound2(const entity, const recipient, const channel, const sample[], Float:vol = VOL_NORM, Float:attn = ATTN_NORM, const flags = 0, const pitch = PITCH_NORM, emitFlags = 0, const Float:origin[3] = {0.0,0.0,0.0});
 

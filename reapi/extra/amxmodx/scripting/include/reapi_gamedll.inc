@@ -21,7 +21,6 @@ native set_member_game(CSGameRules_Members:member, any:...);
 * @param member     The specified member, look at the enums with name CSGameRules_Members
 *
 * @return           If an integer or boolean or one byte, array or everything else is passed via the 3rd argument and more, look at the argument list for the specified member
-*
 */
 native any:get_member_game(CSGameRules_Members:member, any:...);
 
@@ -33,9 +32,7 @@ native any:get_member_game(CSGameRules_Members:member, any:...);
 *
 * @return           1 on success.
 */
-native set_member(const index, {CBaseEntity_Members, CBaseAnimating_Members, CBaseMonster_Members,
-	CBasePlayer_Members, CCSPlayer_Members, CBasePlayerItem_Members, CBasePlayerWeapon_Members,
-	CWeaponBox_Members, CArmoury_Members}:member, any:...);
+native set_member(const index, any:member, any:...);
 
 /*
 * Returns a value from an entity's member.
@@ -45,9 +42,7 @@ native set_member(const index, {CBaseEntity_Members, CBaseAnimating_Members, CBa
 *
 * @return           If an integer or boolean or one byte, array or everything else is passed via the 3rd argument and more, look at the argument list for the specified member
 */
-native any:get_member(const index, {CBaseEntity_Members, CBaseAnimating_Members, CBaseMonster_Members,
-	CBasePlayer_Members, CCSPlayer_Members, CBasePlayerItem_Members, CBasePlayerWeapon_Members,
-	CWeaponBox_Members, CArmoury_Members}:member, any:...);
+native any:get_member(const index, any:member, any:...);
 
 /*
 * Sets playermove var.
@@ -104,6 +99,24 @@ native set_pmtrace(const tracehandle, const PMTrace:var, any:...);
 native any:get_pmtrace(const tracehandle, const PMTrace:var, any:...);
 
 /*
+* Sets a RebuyStruct member.
+*
+* @param var        The specified RebuyStruct, look at the enum RebuyStruct
+*
+* @return           1 on success.
+*/
+native set_rebuy(const RebuyHandle:rebuyhandle, const RebuyStruct:member, value);
+
+/*
+* Returns a RebuyStruct member
+*
+* @param var        The specified RebuyStruct, look at the enum RebuyStruct
+*
+* @return           If an integer or boolean or one byte, array or everything else is passed via the 3rd argument and more, look at the argument list for the specified RebuyStruct
+*/
+native get_rebuy(const RebuyHandle:rebuyhandle, RebuyStruct:member);
+
+/*
 * Assign the number of the player's animation.
 *
 * @param index          Client index
@@ -134,6 +147,20 @@ native rg_add_account(const index, amount, AccountSet:typeSet = AS_ADD, const bo
 * @return           Index of entity if successfull, -1 otherwise
 */
 native rg_give_item(const index, const pszName[], GiveType:type = GT_APPEND);
+
+/*
+* Gives the player an custom item, this means that don't handled API things.
+*
+* @example rg_give_custom_item(id, "weapon_c4"); doesn't sets the member m_bHasC4 to true, as the rg_give_item does.
+*
+* @param index      Client index
+* @param pszName    Item classname
+* @param type       Look at the enums with name GiveType
+*
+* @return           Index of entity if successfull, -1 otherwise
+*
+*/
+native rg_give_custom_item(const index, const pszName[], GiveType:type = GT_APPEND);
 
 /*
 * Give the default items to a player.
@@ -269,7 +296,6 @@ native rg_update_teamscores(const iCtsWins = 0, const iTsWins = 0, const bool:bA
 * @note: Do not use this if you use a custom classname
 *
 * @return               Index of the created entity or 0 otherwise
-*
 */
 native rg_create_entity(const classname[], const bool:useHashTable = false);
 
@@ -283,7 +309,6 @@ native rg_create_entity(const classname[], const bool:useHashTable = false);
 * @note: Do not use this if you use a custom classname
 *
 * @return                   Entity index > 0 if found, 0 otherwise
-*
 */
 native rg_find_ent_by_class(start_index, const classname[], const bool:useHashTable = false);
 
@@ -294,7 +319,6 @@ native rg_find_ent_by_class(start_index, const classname[], const bool:useHashTa
 * @param classname      Classname to search for
 *
 * @return               1 if found, 0 otherwise
-*
 */
 native rg_find_ent_by_owner(&start_index, const classname[], owner);
 
@@ -305,7 +329,6 @@ native rg_find_ent_by_owner(&start_index, const classname[], owner);
 * @param weapon     Weapon name
 *
 * @return           Weapon's entity index, 0 otherwise
-*
 */
 native rg_find_weapon_bpack_by_name(const index, const weapon[]);
 
@@ -316,7 +339,6 @@ native rg_find_weapon_bpack_by_name(const index, const weapon[]);
 * @param item       Item name
 *
 * @return           true if he does, false otherwise
-*
 */
 native bool:rg_has_item_by_name(const index, const item[]);
 
@@ -328,7 +350,6 @@ native bool:rg_has_item_by_name(const index, const item[]);
 *
 * @return                       Weapon information
 * @error                        If weapon_id or type are out of bounds, an error will be thrown
-*
 */
 native any:rg_get_weapon_info(any:...);
 
@@ -339,7 +360,6 @@ native any:rg_get_weapon_info(any:...);
 * @param type           Info type, see WI_* constants
 *
 * @return               1 on success, 0 otherwise
-*
 */
 native rg_set_weapon_info(const {WeaponIdType,_}:weapon_id, WpnInfo:type, any:...);
 
@@ -350,7 +370,6 @@ native rg_set_weapon_info(const {WeaponIdType,_}:weapon_id, WpnInfo:type, any:..
 * @param slot   The slot that will be emptied
 *
 * @return       1 on success, 0 otherwise
-*
 */
 native rg_remove_items_by_slot(const index, const InventorySlotType:slot);
 
@@ -361,7 +380,6 @@ native rg_remove_items_by_slot(const index, const InventorySlotType:slot);
 * @param slot       Specific slot for remove of each item.
 *
 * @return           1 on success, 0 otherwise
-*
 */
 native rg_drop_items_by_slot(const index, const InventorySlotType:slot);
 
@@ -372,7 +390,6 @@ native rg_drop_items_by_slot(const index, const InventorySlotType:slot);
 * @param removeSuit Remove suit
 *
 * @return           1 on success, 0 otherwise
-*
 */
 native rg_remove_all_items(const index, const bool:removeSuit = false);
 
@@ -395,7 +412,6 @@ native rg_drop_item(const index, const item_name[]);
 * @param arg        Optional command arguments
 *
 * @return           1 on success, 0 otherwise
-*
 */
 native rg_internal_cmd(const index, const cmd[], const arg[] = "");
 
@@ -406,20 +422,8 @@ native rg_internal_cmd(const index, const cmd[], const arg[] = "");
 * @param item_name  Item classname
 *
 * @return           1 if found and remove, 0 otherwise
-*
 */
 native rg_remove_item(const index, const item_name[]);
-
-/*
-* Returns the amount of ammo in the client's backpack for a specific weapon.
-*
-* @param index      Client index
-* @param weapon     Weapon id
-*
-* @return           Amount of ammo in backpack
-*
-*/
-native rg_get_user_bpammo(const index, WeaponIdType:weapon);
 
 /*
 * Sets the amount of ammo in the client's backpack for a specific weapon.
@@ -429,9 +433,39 @@ native rg_get_user_bpammo(const index, WeaponIdType:weapon);
 * @param amount     New backpack ammo amount to set
 *
 * @noreturn
-*
 */
 native rg_set_user_bpammo(const index, WeaponIdType:weapon, amount);
+
+/*
+* Returns the amount of ammo in the client's backpack for a specific weapon.
+*
+* @param index      Client index
+* @param weapon     Weapon id
+*
+* @return           Amount of ammo in backpack
+*/
+native rg_get_user_bpammo(const index, WeaponIdType:weapon);
+
+/*
+* Sets the amount of clip ammo for a specific weapon.
+*
+* @param index      Client index
+* @param weapon     Weapon id
+* @param amount     New clip ammo amount to set
+*
+* @noreturn
+*/
+native rg_set_user_ammo(const index, WeaponIdType:weapon, amount);
+
+/*
+* Returns the amount of clip ammo for a specific weapon.
+*
+* @param index      Client index
+* @param weapon     Weapon id
+*
+* @return           Amount of clip ammo
+*/
+native rg_get_user_ammo(const index, WeaponIdType:weapon);
 
 /*
 * Sets the client's defusekit status and allows to set a custom HUD icon and color.
@@ -443,7 +477,6 @@ native rg_set_user_bpammo(const index, WeaponIdType:weapon, amount);
 * @param flash      If nonzero the icon will flash red
 *
 * @noreturn
-*
 */
 native rg_give_defusekit(const index, const bool:bDefusekit = true, const Float:color[] = {0.0, 160.0, 0.0}, const icon[] = "defuser", const bool:bFlash = false);
 
@@ -454,9 +487,8 @@ native rg_give_defusekit(const index, const bool:bDefusekit = true, const Float:
 * @param armortype    Variable to store armor type in
 *
 * @return             Amount of armor, 0 if the client has no armor
-*
 */
-native rg_get_user_armor(const index, &ArmorType:armortype);
+native rg_get_user_armor(const index, &ArmorType:armortype = ARMOR_NONE);
 
 /*
 * Sets the client's armor value and the type of armor.
@@ -466,7 +498,6 @@ native rg_get_user_armor(const index, &ArmorType:armortype);
 * @param armortype      Armor type to set
 *
 * @noreturn
-*
 */
 native rg_set_user_armor(const index, armorvalue, ArmorType:armortype);
 
@@ -482,7 +513,6 @@ native rg_set_user_armor(const index, armorvalue, ArmorType:armortype);
 * @param send_teaminfo  If true, a TeamInfo message will be sent
 *
 * @return               1 on success, 0 otherwise
-*
 */
 native rg_set_user_team(const index, {TeamName,_}:team, {ModelName,_}:model = MODEL_AUTO, const bool:send_teaminfo = true);
 
@@ -494,7 +524,6 @@ native rg_set_user_team(const index, {TeamName,_}:team, {ModelName,_}:model = MO
 * @param update_index   If true, the modelindex is updated as well
 *
 * @return               1 on success, 0 otherwise
-*
 */
 native rg_set_user_model(const index, const model[], const bool:update_index = false);
 
@@ -505,7 +534,6 @@ native rg_set_user_model(const index, const model[], const bool:update_index = f
 * @param update_index   If true, the modelindex is reset as well
 *
 * @return               1 on success, 0 otherwise
-*
 */
 native rg_reset_user_model(const index, const bool:update_index = false);
 
@@ -516,7 +544,6 @@ native rg_reset_user_model(const index, const bool:update_index = false);
 * @param silent     To enable silent footsteps
 *
 * @return           1 on success, 0 otherwise
-*
 */
 native rg_set_user_footsteps(const index, bool:silent = false);
 
@@ -526,7 +553,6 @@ native rg_set_user_footsteps(const index, bool:silent = false);
 * @param index      Client index
 *
 * @return           1 if the player has silent footsteps, 0 otherwise
-*
 */
 native rg_get_user_footsteps(const index);
 
@@ -537,7 +563,6 @@ native rg_get_user_footsteps(const index);
 * @param receiver   Receiver index, if 0 it will transfer to a random player
 *
 * @return           1 on success, 0 otherwise
-*
 */
 native rg_transfer_c4(const index, const receiver = 0);
 
@@ -548,7 +573,6 @@ native rg_transfer_c4(const index, const receiver = 0);
 * @param weapon     Weapon entity-index, if 0 then all weapons will be reloaded
 *
 * @return           1 on success, 0 otherwise
-*
 */
 native rg_instant_reload_weapons(const index, const weapon = 0);
 
@@ -559,7 +583,6 @@ native rg_instant_reload_weapons(const index, const weapon = 0);
 * @param amount         The money amount
 *
 * @noreturn
-*
 */
 native rg_set_account_rules(const RewardRules:rules_index, const amount);
 
@@ -577,7 +600,6 @@ native rg_get_account_rules(const RewardRules:rules_index);
 * Checks if the bomb is planted.
 *
 * @return           true if the bomb is planted, false otherwise
-*
 */
 native bool:rg_is_bomb_planted();
 
@@ -588,7 +610,6 @@ native bool:rg_is_bomb_planted();
 * @param team       Team id
 *
 * @return           1 on success, 0 otherwise
-*
 */
 native rg_join_team(const index, const TeamName:team);
 
@@ -596,7 +617,6 @@ native rg_join_team(const index, const TeamName:team);
 * Instantly balances the teams.
 *
 * @noreturn
-*
 */
 native rg_balance_teams();
 
@@ -604,7 +624,6 @@ native rg_balance_teams();
 * Swaps players' teams without reseting frags, deaths and wins.
 *
 * @noreturn
-*
 */
 native rg_swap_all_players();
 
@@ -615,7 +634,6 @@ native rg_swap_all_players();
 * @param index      Client index
 *
 * @noreturn
-*
 */
 native rg_switch_team(const index);
 
@@ -626,7 +644,6 @@ native rg_switch_team(const index);
 * @param weapon     Weapon entity-index
 *
 * @return           1 on success, 0 otherwise
-*
 */
 native rg_switch_weapon(const index, const weapon);
 
@@ -634,7 +651,6 @@ native rg_switch_weapon(const index, const weapon);
 * Gets which team has a higher join priority.
 *
 * @return           Returns the Team Name
-*
 */
 native TeamName:rg_get_join_team_priority();
 
@@ -645,7 +661,6 @@ native TeamName:rg_get_join_team_priority();
 * @param attacker   Attacker index
 *
 * @return           true if he can take damage, false otherwise
-*
 */
 native bool:rg_is_player_can_takedamage(const index, const attacker);
 
@@ -655,7 +670,6 @@ native bool:rg_is_player_can_takedamage(const index, const attacker);
 * @param entity     Weaponbox entity
 *
 * @return           return enum of WeaponIdType
-*
 */
 native WeaponIdType:rg_get_weaponbox_id(const entity);
 
@@ -665,7 +679,6 @@ native WeaponIdType:rg_get_weaponbox_id(const entity);
 * @param index      Client index
 *
 * @noreturn
-*
 */
 native rg_round_respawn(const index);
 
@@ -675,7 +688,6 @@ native rg_round_respawn(const index);
 * @param index      Client index
 *
 * @noreturn
-*
 */
 native rg_reset_maxspeed(const index);
 
@@ -688,7 +700,6 @@ native rg_reset_maxspeed(const index);
 * @param observer   Send for everyone who is observing the player
 *
 * @noreturn
-*
 */
 native rg_send_bartime(const index, const duration, const bool:observer = true);
 
@@ -701,7 +712,6 @@ native rg_send_bartime(const index, const duration, const bool:observer = true);
 * @param observer       Send for everyone who is observing the player
 *
 * @noreturn
-*
 */
 native rg_send_bartime2(const index, const duration, const startPercent, const bool:observer = true);
 
@@ -713,6 +723,5 @@ native rg_send_bartime2(const index, const duration, const startPercent, const b
 * @param pitch      Sound pitch
 *
 * @noreturn
-*
 */
 native rg_send_audio(const index, const sample[], const pitch = PITCH_NORM);

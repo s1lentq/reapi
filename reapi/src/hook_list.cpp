@@ -1,25 +1,25 @@
 #include "precompiled.h"
 
-inline size_t getFwdParamType(void(*)(int))						{ return FP_CELL; }
-inline size_t getFwdParamType(void(*)(size_t))					{ return FP_CELL; }
-inline size_t getFwdParamType(void(*)(short))					{ return FP_CELL; }
-inline size_t getFwdParamType(void(*)(bool))					{ return FP_CELL; }
-inline size_t getFwdParamType(void(*)(Vector&))					{ return FP_ARRAY; }
-inline size_t getFwdParamType(void(*)(PLAYER_ANIM))				{ return FP_CELL; }
-inline size_t getFwdParamType(void(*)(WeaponIdType))			{ return FP_CELL; }
-inline size_t getFwdParamType(void(*)(RewardType))				{ return FP_CELL; }
-inline size_t getFwdParamType(void(*)(ScenarioEventEndRound))	{ return FP_CELL; }
-inline size_t getFwdParamType(void(*)(ItemID))					{ return FP_CELL; }
-inline size_t getFwdParamType(void(*)(ItemRestType))			{ return FP_CELL; }
-inline size_t getFwdParamType(void(*)(ResourceType_e))			{ return FP_CELL; }
-inline size_t getFwdParamType(void(*)(float))					{ return FP_FLOAT; }
-inline size_t getFwdParamType(void(*)(float&))					{ return FP_FLOAT; }
-inline size_t getFwdParamType(void(*)(const char *))			{ return FP_STRING; }
-inline size_t getFwdParamType(void(*)(char *))					{ return FP_STRING; }
-inline size_t getFwdParamType(void(*)(IResourceBuffer*))		{ return FP_CELL; }
+inline size_t getFwdParamType(void(*)(int))                     { return FP_CELL;   }
+inline size_t getFwdParamType(void(*)(size_t))                  { return FP_CELL;   }
+inline size_t getFwdParamType(void(*)(short))                   { return FP_CELL;   }
+inline size_t getFwdParamType(void(*)(bool))                    { return FP_CELL;   }
+inline size_t getFwdParamType(void(*)(Vector&))                 { return FP_ARRAY;  }
+inline size_t getFwdParamType(void(*)(PLAYER_ANIM))             { return FP_CELL;   }
+inline size_t getFwdParamType(void(*)(WeaponIdType))            { return FP_CELL;   }
+inline size_t getFwdParamType(void(*)(RewardType))              { return FP_CELL;   }
+inline size_t getFwdParamType(void(*)(ScenarioEventEndRound))   { return FP_CELL;   }
+inline size_t getFwdParamType(void(*)(ItemID))                  { return FP_CELL;   }
+inline size_t getFwdParamType(void(*)(ItemRestType))            { return FP_CELL;   }
+inline size_t getFwdParamType(void(*)(ResourceType_e))          { return FP_CELL;   }
+inline size_t getFwdParamType(void(*)(float))                   { return FP_FLOAT;  }
+inline size_t getFwdParamType(void(*)(float&))                  { return FP_FLOAT;  }
+inline size_t getFwdParamType(void(*)(const char *))            { return FP_STRING; }
+inline size_t getFwdParamType(void(*)(char *))                  { return FP_STRING; }
+inline size_t getFwdParamType(void(*)(IResourceBuffer*))        { return FP_CELL;   }
 
 template<typename T>
-inline size_t getFwdParamType(void(*)(T *))						{ return FP_CELL; }
+inline size_t getFwdParamType(void(*)(T *))                     { return FP_CELL;   }
 
 template<size_t current = 0>
 void setupParamTypes(size_t param_types[], void (*)())
@@ -140,6 +140,7 @@ hook_t hooklist_player[] = {
 	DLL(CBasePlayer_MakeBomber),
 	DLL(CBasePlayer_StartObserver),
 	DLL(CBasePlayer_GetIntoGame),
+	DLL(CBasePlayer_StartDeathCam),
 };
 
 hook_t hooklist_gamerules[] = {

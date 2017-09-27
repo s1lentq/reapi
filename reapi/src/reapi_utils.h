@@ -18,15 +18,11 @@ inline void EWRITE_COORD(float flValue) { (*g_pengfuncsTable->pfnWriteCoord)(flV
 inline void EWRITE_STRING(const char *sz) { (*g_pengfuncsTable->pfnWriteString)(sz); }
 inline void EWRITE_ENTITY(int iValue) { (*g_pengfuncsTable->pfnWriteEntity)(iValue); }
 
-#ifndef _WIN32
-#define _strlwr(p) for (int i = 0; p[i] != 0; i++) p[i] = tolower(p[i]);
-#endif
-
-inline bool GetWeaponInfoRange(WeaponIdType wpnid, bool set_info)
+inline bool GetWeaponInfoRange(WeaponIdType wpnid, bool set_info = false)
 {
 	if (wpnid == WEAPON_SHIELDGUN)
 		return true;
-	
+
 	if (set_info && (wpnid == WEAPON_KNIFE || wpnid == WEAPON_C4))
 		return false;
 
@@ -55,5 +51,6 @@ void Broadcast(const char *sentence);
 void UpdateTeamScores();
 ModelName GetModelAuto(TeamName team);
 void UTIL_ServerPrint(const char *fmt, ...);
+CBaseEntity *GiveNamedItemInternal(AMX *amx, CBasePlayer *pPlayer, const char *pszItemName);
 
 extern void __declspec(noreturn) UTIL_SysError(const char *fmt, ...);

@@ -331,12 +331,9 @@ public:
 	virtual void WeaponIdle() = 0;
 	virtual BOOL UseDecrement() = 0;
 	virtual BOOL IsPistol() = 0;
-
 public:
 	int m_iShell;
-	unsigned short GetEventID() const { return m_usFireUSP; }
-private:
-	unsigned short m_usFireUSP;
+	unsigned short m_usFire;
 };
 
 class CMP5N: public CBasePlayerWeapon {
@@ -353,10 +350,8 @@ public:
 	virtual BOOL UseDecrement() = 0;
 public:
 	int m_iShell;
-	int iShellOn;
-	unsigned short GetEventID() const { return m_usFireMP5N; }
-private:
-	unsigned short m_usFireMP5N;
+	int m_iShellOn;
+	unsigned short m_usFire;
 };
 
 class CSG552: public CBasePlayerWeapon {
@@ -374,10 +369,8 @@ public:
 	virtual BOOL UseDecrement() = 0;
 public:
 	int m_iShell;
-	int iShellOn;
-	unsigned short GetEventID() const { return m_usFireSG552; }
-private:
-	unsigned short m_usFireSG552;
+	int m_iShellOn;
+	unsigned short m_usFire;
 };
 
 class CAK47: public CBasePlayerWeapon {
@@ -395,10 +388,8 @@ public:
 	virtual BOOL UseDecrement() = 0;
 public:
 	int m_iShell;
-	int iShellOn;
-	unsigned short GetEventID() const { return m_usFireAK47; }
-private:
-	unsigned short m_usFireAK47;
+	int m_iShellOn;
+	unsigned short m_usFire;
 };
 
 class CAUG: public CBasePlayerWeapon {
@@ -416,10 +407,8 @@ public:
 	virtual BOOL UseDecrement() = 0;
 public:
 	int m_iShell;
-	int iShellOn;
-	unsigned short GetEventID() const { return m_usFireAug; }
-private:
-	unsigned short m_usFireAug;
+	int m_iShellOn;
+	unsigned short m_usFire;
 };
 
 class CAWP: public CBasePlayerWeapon {
@@ -437,9 +426,7 @@ public:
 	virtual BOOL UseDecrement() = 0;
 public:
 	int m_iShell;
-	unsigned short GetEventID() const { return m_usFireAWP; }
-private:
-	unsigned short m_usFireAWP;
+	unsigned short m_usFire;
 };
 
 // for usermsg BombDrop
@@ -464,8 +451,6 @@ public:
 	bool m_bStartedArming;
 	bool m_bBombPlacedAnimation;
 	float m_fArmedTime;
-	bool HasShield() const { return m_bHasShield; }
-private:
 	bool m_bHasShield;
 };
 
@@ -485,9 +470,7 @@ public:
 	virtual BOOL IsPistol() = 0;
 public:
 	int m_iShell;
-	unsigned short GetEventID() const { return m_usFireDeagle; }
-private:
-	unsigned short m_usFireDeagle;
+	unsigned short m_usFire;
 };
 
 class CFlashbang: public CBasePlayerWeapon {
@@ -523,9 +506,7 @@ public:
 	virtual BOOL UseDecrement() = 0;
 public:
 	int m_iShell;
-	unsigned short GetEventID() const { return m_usFireG3SG1; }
-private:
-	unsigned short m_usFireG3SG1;
+	unsigned short m_usFire;
 };
 
 class CGLOCK18: public CBasePlayerWeapon {
@@ -563,7 +544,7 @@ public:
 	virtual void WeaponIdle() = 0;
 	virtual BOOL UseDecrement() = 0;
 public:
-	unsigned short m_usCreateExplosion;
+	unsigned short m_usCreate;
 };
 
 class CKnife: public CBasePlayerWeapon {
@@ -599,10 +580,8 @@ public:
 	virtual BOOL UseDecrement() = 0;
 public:
 	int m_iShell;
-	int iShellOn;
-	unsigned short GetEventID() const { return m_usFireM249; }
-private:
-	unsigned short m_usFireM249;
+	int m_iShellOn;
+	unsigned short m_usFire;
 };
 
 class CM3: public CBasePlayerWeapon {
@@ -620,9 +599,7 @@ public:
 public:
 	int m_iShell;
 	float m_flPumpTime;
-	unsigned short GetEventID() const { return m_usFireM3; }
-private:
-	unsigned short m_usFireM3;
+	unsigned short m_usFire;
 };
 
 class CM4A1: public CBasePlayerWeapon {
@@ -640,10 +617,8 @@ public:
 	virtual BOOL UseDecrement() = 0;
 public:
 	int m_iShell;
-	int iShellOn;
-	unsigned short GetEventID() const { return m_usFireM4A1; }
-private:
-	unsigned short m_usFireM4A1;
+	int m_iShellOn;
+	unsigned short m_usFire;
 };
 
 class CMAC10: public CBasePlayerWeapon {
@@ -660,10 +635,8 @@ public:
 	virtual BOOL UseDecrement() = 0;
 public:
 	int m_iShell;
-	int iShellOn;
-	unsigned short GetEventID() const { return m_usFireMAC10; }
-private:
-	unsigned short m_usFireMAC10;
+	int m_iShellOn;
+	unsigned short m_usFire;
 };
 
 class CP228: public CBasePlayerWeapon {
@@ -682,9 +655,7 @@ public:
 	virtual BOOL IsPistol() = 0;
 public:
 	int m_iShell;
-	unsigned short GetEventID() const { return m_usFireP228; }
-private:
-	unsigned short m_usFireP228;
+	unsigned short m_usFire;
 };
 
 class CP90: public CBasePlayerWeapon {
@@ -701,10 +672,8 @@ public:
 	virtual BOOL UseDecrement() = 0;
 public:
 	int m_iShell;
-	int iShellOn;
-	unsigned short GetEventID() const { return m_usFireP90; }
-private:
-	unsigned short m_usFireP90;
+	int m_iShellOn;
+	unsigned short m_usFire;
 };
 
 class CSCOUT: public CBasePlayerWeapon {
@@ -722,9 +691,7 @@ public:
 	virtual BOOL UseDecrement() = 0;
 public:
 	int m_iShell;
-	unsigned short GetEventID() const { return m_usFireScout; }
-private:
-	unsigned short m_usFireScout;
+	unsigned short m_usFire;
 };
 
 class CSmokeGrenade: public CBasePlayerWeapon {
@@ -743,7 +710,7 @@ public:
 	virtual void WeaponIdle() = 0;
 	virtual BOOL UseDecrement() = 0;
 public:
-	unsigned short m_usCreateSmoke;
+	unsigned short m_usCreate;
 };
 
 class CTMP: public CBasePlayerWeapon {
@@ -760,10 +727,8 @@ public:
 	virtual BOOL UseDecrement() = 0;
 public:
 	int m_iShell;
-	int iShellOn;
-	unsigned short GetEventID() const { return m_usFireTMP; }
-private:
-	unsigned short m_usFireTMP;
+	int m_iShellOn;
+	unsigned short m_usFire;
 };
 
 class CXM1014: public CBasePlayerWeapon {
@@ -781,9 +746,7 @@ public:
 public:
 	int m_iShell;
 	float m_flPumpTime;
-	unsigned short GetEventID() const { return m_usFireXM1014; }
-private:
-	unsigned short m_usFireXM1014;
+	unsigned short m_usFire;
 };
 
 class CELITE: public CBasePlayerWeapon {
@@ -801,11 +764,8 @@ public:
 	virtual BOOL IsPistol() = 0;
 public:
 	int m_iShell;
-	unsigned short GetEventID_Left() const { return m_usFireELITE_LEFT; }
-	unsigned short GetEventID_Right() const { return m_usFireELITE_RIGHT; }
-private:
-	unsigned short m_usFireELITE_LEFT;
-	unsigned short m_usFireELITE_RIGHT;
+	unsigned short m_usFire_LEFT;
+	unsigned short m_usFire_RIGHT;
 };
 
 class CFiveSeven: public CBasePlayerWeapon {
@@ -824,9 +784,7 @@ public:
 	virtual BOOL IsPistol() = 0;
 public:
 	int m_iShell;
-	unsigned short GetEventID() const { return m_usFireFiveSeven; }
-private:
-	unsigned short m_usFireFiveSeven;
+	unsigned short m_usFire;
 };
 
 class CUMP45: public CBasePlayerWeapon {
@@ -843,10 +801,8 @@ public:
 	virtual BOOL UseDecrement() = 0;
 public:
 	int m_iShell;
-	int iShellOn;
-	unsigned short GetEventID() const { return m_usFireUMP45; }
-private:
-	unsigned short m_usFireUMP45;
+	int m_iShellOn;
+	unsigned short m_usFire;
 };
 
 class CSG550: public CBasePlayerWeapon {
@@ -864,9 +820,7 @@ public:
 	virtual BOOL UseDecrement() = 0;
 public:
 	int m_iShell;
-	unsigned short GetEventID() const { return m_usFireSG550; }
-private:
-	unsigned short m_usFireSG550;
+	unsigned short m_usFire;
 };
 
 class CGalil: public CBasePlayerWeapon {
@@ -884,10 +838,8 @@ public:
 	virtual BOOL UseDecrement() = 0;
 public:
 	int m_iShell;
-	int iShellOn;
-	unsigned short GetEventID() const { return m_usFireGalil; }
-private:
-	unsigned short m_usFireGalil;
+	int m_iShellOn;
+	unsigned short m_usFire;
 };
 
 class CFamas: public CBasePlayerWeapon {
@@ -905,5 +857,5 @@ public:
 	virtual BOOL UseDecrement() = 0;
 public:
 	int m_iShell;
-	int iShellOn;
+	int m_iShellOn;
 };

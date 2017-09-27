@@ -25,6 +25,7 @@
 #include <pm_movevars.h>
 #include <com_progdefs.h>
 #include <gamerules.h>
+#include <mapinfo.h>
 
 // metamod SDK
 #include <meta_api.h>

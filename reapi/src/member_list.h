@@ -24,6 +24,7 @@ enum MType
 	MEBMER_REBUYSTRUCT,		// struct RebuyStruct
 	MEMBER_PMTRACE,			// struct pmtrace_t
 	MEBMER_USERCMD,			// struct usercmd_s
+	MEMBER_TRACERESULT,		// struct TraceResult
 };
 
 struct memberlist_t
@@ -46,7 +47,39 @@ struct memberlist_t
 		mt_baseitem,
 		mt_baseweapon,
 		mt_weaponbox,
-		mt_armoury
+		mt_armoury,
+		mt_grenade,
+		mt_p228,
+		mt_scout,
+		mt_hegrenade,
+		mt_xm1014,
+		mt_c4,
+		mt_mac10,
+		mt_aug,
+		mt_smokegrenade,
+		mt_elite,
+		mt_fiveseven,
+		mt_ump45,
+		mt_sg550,
+		mt_galil,
+		mt_famas,
+		mt_usp,
+		mt_glock18,
+		mt_awp,
+		mt_mp5n,
+		mt_m249,
+		mt_m3,
+		mt_m4a1,
+		mt_tmp,
+		mt_g3sg1,
+		mt_deagle,
+		mt_sg552,
+		mt_ak47,
+		mt_knife,
+		mt_p90,
+		mt_shield,
+		mt_rebuystruct,
+		mt_mapinfo,
 	};
 };
 
@@ -108,21 +141,21 @@ enum CSGameRules_Members
 	m_nMaxPlayers,
 	m_UpdateInterval,
 
-	m_flRestartRoundTime,			// The global time when the round is supposed to end, if this is not 0 (deprecated name m_fTeamCount)
+	m_flRestartRoundTime,		// The global time when the round is supposed to end, if this is not 0 (deprecated name m_fTeamCount)
 	m_flCheckWinConditions,
 	m_fRoundStartTime,			// Time round has started (deprecated name m_fRoundCount)
 	m_iRoundTime,				// (From mp_roundtime) - How many seconds long this round is.
 	m_iRoundTimeSecs,
 	m_iIntroRoundTime,			// (From mp_freezetime) - How many seconds long the intro round (when players are frozen) is.
-	m_fRoundStartTimeReal,			// The global time when the intro round ends and the real one starts
-						// wrote the original "m_flRoundTime" comment for this variable).
+	m_fRoundStartTimeReal,		// The global time when the intro round ends and the real one starts
+								// wrote the original "m_flRoundTime" comment for this variable).
 	m_iAccountTerrorist,
 	m_iAccountCT,
 	m_iNumTerrorist,			// The number of terrorists on the team (this is generated at the end of a round)
-	m_iNumCT,				// The number of CTs on the team (this is generated at the end of a round)
+	m_iNumCT,					// The number of CTs on the team (this is generated at the end of a round)
 	m_iNumSpawnableTerrorist,
 	m_iNumSpawnableCT,
-	m_iSpawnPointCount_Terrorist,		// Number of Terrorist spawn points
+	m_iSpawnPointCount_Terrorist,	// Number of Terrorist spawn points
 	m_iSpawnPointCount_CT,			// Number of CT spawn points
 	m_iHostagesRescued,
 	m_iHostagesTouched,
@@ -139,11 +172,11 @@ enum CSGameRules_Members
 	m_bMapHasVIPSafetyZone,			// 0 = uninitialized,   1 = has VIP safety zone,   2 = DOES not have VIP safetyzone
 	m_bMapHasCameras,
 	m_iC4Timer,
-	m_iC4Guy,				// The current Terrorist who has the C4.
-	m_iLoserBonus,				// the amount of money the losing team gets. This scales up as they lose more rounds in a row
-	m_iNumConsecutiveCTLoses,		// the number of rounds the CTs have lost in a row.
+	m_iC4Guy,							// The current Terrorist who has the C4.
+	m_iLoserBonus,						// the amount of money the losing team gets. This scales up as they lose more rounds in a row
+	m_iNumConsecutiveCTLoses,			// the number of rounds the CTs have lost in a row.
 	m_iNumConsecutiveTerroristLoses,	// the number of rounds the Terrorists have lost in a row.
-	m_fMaxIdlePeriod,			// For the idle kick functionality. This is tha max amount of time that the player has to be idle before being kicked
+	m_fMaxIdlePeriod,					// For the idle kick functionality. This is tha max amount of time that the player has to be idle before being kicked
 	m_iLimitTeams,
 	m_bLevelInitialized,
 	m_bRoundTerminating,
@@ -158,7 +191,7 @@ enum CSGameRules_Members
 	m_iTotalGunCount,
 	m_iTotalGrenadeCount,
 	m_iTotalArmourCount,
-	m_iUnBalancedRounds,			// keeps track of the # of consecutive rounds that have gone by where one team outnumbers the other team by more than 2
+	m_iUnBalancedRounds,		// keeps track of the # of consecutive rounds that have gone by where one team outnumbers the other team by more than 2
 	m_iNumEscapeRounds,			// keeps track of the # of consecutive rounds of escape played.. Teams will be swapped after 8 rounds
 	m_iMapVotes,
 	m_iLastPick,
@@ -629,9 +662,9 @@ enum PlayerMove
 	pm_numphysent,
 
 	/* physent_t physents[MAX_PHYSENTS];
-	pm_nummoveent;					// Number of momvement entities (ladders)
+	pm_nummoveent;							// Number of momvement entities (ladders)
 	physent_t moveents[MAX_MOVEENTS];		// just a list of ladders
-	pm_numvisent;					// All things being rendered, for tracing against things you don't actually collide with
+	pm_numvisent;							// All things being rendered, for tracing against things you don't actually collide with
 	physent_t visents[MAX_PHYSENTS];*/
 
 	pm_cmd,
@@ -770,4 +803,240 @@ enum CArmoury_Members
 	m_Armoury_iCount,
 	m_Armoury_iInitialCount,
 	m_Armoury_bAlreadyCounted,
+};
+
+enum CGrenade_Members
+{
+	m_Grenade_bStartDefuse = BEGIN_MEMBER_REGION(grenade),
+	m_Grenade_bIsC4,
+	m_Grenade_pBombDefuser,
+	m_Grenade_flDefuseCountDown,
+	m_Grenade_flC4Blow,
+	m_Grenade_flNextFreqInterval,
+	m_Grenade_flNextBeep,
+	m_Grenade_flNextFreq,
+	m_Grenade_sBeepName,
+	m_Grenade_fAttenu,
+	m_Grenade_flNextBlink,
+	m_Grenade_fNextDefuse,
+	m_Grenade_bJustBlew,
+	m_Grenade_iTeam,
+	m_Grenade_iCurWave,
+	m_Grenade_pentCurBombTarget,
+	m_Grenade_SGSmoke,
+	m_Grenade_angle,
+	m_Grenade_usEvent,
+	m_Grenade_bLightSmoke,
+	m_Grenade_bDetonated,
+	m_Grenade_vSmokeDetonate,
+	m_Grenade_iBounceCount,
+	m_Grenade_fRegisteredSound,
+};
+
+enum CP228_Members
+{
+	m_P228_iShell = BEGIN_MEMBER_REGION(p228),
+	m_P228_usFire,
+};
+
+enum CSCOUT_Members
+{
+	m_SCOUT_iShell = BEGIN_MEMBER_REGION(scout),
+	m_SCOUT_usFire,
+};
+
+enum CHEGrenade_Members
+{
+	m_HEGrenade_usCreate = BEGIN_MEMBER_REGION(hegrenade),
+};
+
+enum CXM1014_Members
+{
+	m_XM1014_iShell = BEGIN_MEMBER_REGION(xm1014),
+	m_XM1014_flPumpTime,
+	m_XM1014_usFire,
+};
+
+enum CC4_Members
+{
+	m_C4_bStartedArming = BEGIN_MEMBER_REGION(c4),
+	m_C4_bBombPlacedAnimation,
+	m_C4_fArmedTime,
+	m_C4_bHasShield,
+};
+
+enum CMAC10_Members
+{
+	m_MAC10_iShell = BEGIN_MEMBER_REGION(mac10),
+	m_MAC10_iShellOn,
+	m_MAC10_usFire,
+};
+
+enum CAUG_Members
+{
+	m_AUG_iShell = BEGIN_MEMBER_REGION(aug),
+	m_AUG_iShellOn,
+	m_AUG_usFire,
+};
+
+enum CSmokeGrenade_Members
+{
+	m_SmokeGrenade_usCreate = BEGIN_MEMBER_REGION(smokegrenade),
+};
+
+enum CELITE_Members
+{
+	m_ELITE_iShell = BEGIN_MEMBER_REGION(elite),
+	m_ELITE_usFire_LEFT,
+	m_ELITE_usFire_RIGHT,
+};
+
+enum CFiveSeven_Members
+{
+	m_FiveSeven_iShell = BEGIN_MEMBER_REGION(fiveseven),
+	m_FiveSeven_usFire,
+};
+
+enum CUMP45_Members
+{
+	m_UMP45_iShell = BEGIN_MEMBER_REGION(ump45),
+	m_UMP45_iShellOn,
+	m_UMP45_usFire,
+};
+
+enum CSG550_Members
+{
+	m_SG550_iShell = BEGIN_MEMBER_REGION(sg550),
+	m_SG550_usFire,
+};
+
+enum CGalil_Members
+{
+	m_Galil_iShell = BEGIN_MEMBER_REGION(galil),
+	m_Galil_iShellOn,
+	m_Galil_usFire,
+};
+
+enum CFamas_Members
+{
+	m_Famas_iShell = BEGIN_MEMBER_REGION(famas),
+	m_Famas_iShellOn,
+};
+
+enum CUSP_Members
+{
+	m_USP_iShell = BEGIN_MEMBER_REGION(usp),
+	m_USP_usFire,
+};
+
+enum CGLOCK18_Members
+{
+	m_GLOCK18_iShell = BEGIN_MEMBER_REGION(glock18),
+	m_GLOCK18_bBurstFire,
+};
+
+enum CAWP_Members
+{
+	m_AWP_iShell = BEGIN_MEMBER_REGION(awp),
+	m_AWP_usFire,
+};
+
+enum CMP5N_Members
+{
+	m_MP5N_iShell = BEGIN_MEMBER_REGION(mp5n),
+	m_MP5N_iShellOn,
+	m_MP5N_usFire,
+};
+
+enum CM249_Members
+{
+	m_M249_iShell = BEGIN_MEMBER_REGION(m249),
+	m_M249_iShellOn,
+	m_M249_usFire,
+};
+
+enum CM3_Members
+{
+	m_M3_iShell = BEGIN_MEMBER_REGION(m3),
+	m_M3_flPumpTime,
+	m_M3_usFire,
+};
+
+enum CM4A1_Members
+{
+	m_M4A1_iShell = BEGIN_MEMBER_REGION(m4a1),
+	m_M4A1_iShellOn,
+	m_M4A1_usFire,
+};
+
+enum CTMP_Members
+{
+	m_TMP_iShell = BEGIN_MEMBER_REGION(tmp),
+	m_TMP_iShellOn,
+	m_TMP_usFire,
+};
+
+enum CG3SG1_Members
+{
+	m_G3SG1_iShell = BEGIN_MEMBER_REGION(g3sg1),
+	m_G3SG1_usFire,
+};
+
+enum CDEAGLE_Members
+{
+	m_DEAGLE_iShell = BEGIN_MEMBER_REGION(deagle),
+	m_DEAGLE_usFire,
+};
+
+enum CSG552_Members
+{
+	m_SG552_iShell = BEGIN_MEMBER_REGION(sg552),
+	m_SG552_iShellOn,
+	m_SG552_usFire,
+};
+
+enum CAK47_Members
+{
+	m_AK47_iShell = BEGIN_MEMBER_REGION(ak47),
+	m_AK47_iShellOn,
+	m_AK47_usFire,
+};
+
+enum CKnife_Members
+{
+	m_Knife_trHit = BEGIN_MEMBER_REGION(knife),
+	m_Knife_usKnife,
+};
+
+enum CP90_Members
+{
+	m_P90_iShell = BEGIN_MEMBER_REGION(p90),
+	m_P90_iShellOn,
+	m_P90_usFire,
+};
+
+enum CShield_Members
+{
+	m_Shield_hEntToIgnoreTouchesFrom = BEGIN_MEMBER_REGION(shield),
+	m_Shield_flTimeToIgnoreTouches,
+};
+
+enum RebuyStruct_Members
+{
+	m_primaryWeapon = BEGIN_MEMBER_REGION(rebuystruct),
+	m_primaryAmmo,
+	m_secondaryWeapon,
+	m_secondaryAmmo,
+	m_heGrenade,
+	m_flashbang,
+	m_smokeGrenade,
+	m_defuser,
+	m_nightVision,
+	m_armor,
+};
+
+enum MapInfo_Members
+{
+	m_MapInfo_iBuyingStatus = BEGIN_MEMBER_REGION(mapinfo),
+	m_MapInfo_flBombRadius,
 };

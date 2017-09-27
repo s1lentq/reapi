@@ -486,8 +486,13 @@ enum GamedllFunc_CBasePlayer
 	* Return type:      bool
 	* Params:           (const this)
 	*/
-	RG_CBasePlayer_GetIntoGame
+	RG_CBasePlayer_GetIntoGame,
 
+	/*
+	* Description:      Called when a player dying and goes into observer mode like StartObserver
+	* Params:           (const this)
+	*/
+	RG_CBasePlayer_StartDeathCam
 };
 
 enum GamedllFunc_CSGameRules
@@ -2792,8 +2797,8 @@ enum CBasePlayer_Members
 	/*
 	* Description:      -
 	* Member type:      class Vector
-	* Get params:       get_member(index, member, element);
-	* Set params:       set_member(index, member, value, element);
+	* Get params:       get_member(index, member, Float:output[3]);
+	* Set params:       set_member(index, member, Float:dest[3]);
 	*/
 	m_vecAutoAim,
 
@@ -2928,8 +2933,8 @@ enum CBasePlayer_Members
 	/*
 	* Description:      -
 	* Member type:      class Vector
-	* Get params:       get_member(index, member, element);
-	* Set params:       set_member(index, member, value, element);
+	* Get params:       get_member(index, member, Float:output[3]);
+	* Set params:       set_member(index, member, Float:dest[3]);
 	*/
 	m_prevgaitorigin,
 
@@ -3088,7 +3093,7 @@ enum CBasePlayer_Members
 	/*
 	* Description:      -
 	* Member type:      struct RebuyStruct
-	* Get params:       get_member(index, member);
+	* Get params:       RebuyHandle:get_member(index, member);
 	* Set params:       set_member(index, member, value);
 	*/
 	m_rebuyStruct,
@@ -3188,6 +3193,89 @@ enum CBasePlayer_Members
 	* Set params:       set_member(index, member, Float:value, element);
 	*/
 	m_flLastCommandTime
+};
+
+enum RebuyStruct
+{
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_rebuy(RebuyHandle:handle, RebuyStruct:member);
+	* Set params:       set_rebuy(RebuyHandle:handle, RebuyStruct:member, value);
+	*/
+	m_primaryWeapon = BEGIN_MEMBER_REGION(rebuystruct),
+
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_rebuy(RebuyHandle:handle, RebuyStruct:member);
+	* Set params:       set_rebuy(RebuyHandle:handle, RebuyStruct:member, value);
+	*/
+	m_primaryAmmo,
+
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_rebuy(RebuyHandle:handle, RebuyStruct:member);
+	* Set params:       set_rebuy(RebuyHandle:handle, RebuyStruct:member, value);
+	*/
+	m_secondaryWeapon,
+
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_rebuy(RebuyHandle:handle, RebuyStruct:member);
+	* Set params:       set_rebuy(RebuyHandle:handle, RebuyStruct:member, value);
+	*/
+	m_secondaryAmmo,
+
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_rebuy(RebuyHandle:handle, RebuyStruct:member);
+	* Set params:       set_rebuy(RebuyHandle:handle, RebuyStruct:member, value);
+	*/
+	m_heGrenade,
+
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_rebuy(RebuyHandle:handle, RebuyStruct:member);
+	* Set params:       set_rebuy(RebuyHandle:handle, RebuyStruct:member, value);
+	*/
+	m_flashbang,
+
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_rebuy(RebuyHandle:handle, RebuyStruct:member);
+	* Set params:       set_rebuy(RebuyHandle:handle, RebuyStruct:member, value);
+	*/
+	m_smokeGrenade,
+
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_rebuy(RebuyHandle:handle, RebuyStruct:member);
+	* Set params:       set_rebuy(RebuyHandle:handle, RebuyStruct:member, value);
+	*/
+	m_defuser,
+
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_rebuy(RebuyHandle:handle, RebuyStruct:member);
+	* Set params:       set_rebuy(RebuyHandle:handle, RebuyStruct:member, value);
+	*/
+	m_nightVision,
+
+	/*
+	* Description:      enum ArmorType
+	* Member type:      int
+	* Get params:       get_rebuy(RebuyHandle:handle, RebuyStruct:member);
+	* Set params:       set_rebuy(RebuyHandle:handle, RebuyStruct:member, value);
+	*/
+	m_armor,
 };
 
 enum PlayerMove
@@ -3375,7 +3463,7 @@ enum PlayerMove
 	* Set params:       set_pmove(const PlayerMove:var, Float:value);
 	*/
 	pm_flNextPrimaryAttack,
-	
+
 	/*
 	* Description:      -
 	* Member type:      int
@@ -3383,7 +3471,7 @@ enum PlayerMove
 	* Set params:       set_pmove(const PlayerMove:var, value);
 	*/
 	pm_effects,
-	
+
 	/*
 	* Description:      -
 	* Member type:      int
@@ -3391,7 +3479,7 @@ enum PlayerMove
 	* Set params:       set_pmove(const PlayerMove:var, value);
 	*/
 	pm_flags,
-	
+
 	/*
 	* Description:      -
 	* Member type:      int
@@ -3415,7 +3503,7 @@ enum PlayerMove
 	* Set params:       set_pmove(const PlayerMove:var, Float:value);
 	*/
 	pm_friction,
-	
+
 	/*
 	* Description:      -
 	* Member type:      int
@@ -3431,7 +3519,7 @@ enum PlayerMove
 	* Set params:       set_pmove(const PlayerMove:var, Float:value);
 	*/
 	pm_waterjumptime,
-	
+
 	/*
 	* Description:      -
 	* Member type:      qboolean
@@ -3439,7 +3527,7 @@ enum PlayerMove
 	* Set params:       set_pmove(const PlayerMove:var, value);
 	*/
 	pm_dead,
-	
+
 	/*
 	* Description:      -
 	* Member type:      int
@@ -3447,7 +3535,7 @@ enum PlayerMove
 	* Set params:       set_pmove(const PlayerMove:var, value);
 	*/
 	pm_deadflag,
-	
+
 	/*
 	* Description:      -
 	* Member type:      int
@@ -3455,7 +3543,7 @@ enum PlayerMove
 	* Set params:       set_pmove(const PlayerMove:var, value);
 	*/
 	pm_spectator,
-	
+
 	/*
 	* Description:      -
 	* Member type:      int
@@ -3463,7 +3551,7 @@ enum PlayerMove
 	* Set params:       set_pmove(const PlayerMove:var, value);
 	*/
 	pm_movetype,
-	
+
 	/*
 	* Description:      -
 	* Member type:      int
@@ -3471,7 +3559,7 @@ enum PlayerMove
 	* Set params:       set_pmove(const PlayerMove:var, value);
 	*/
 	pm_onground,
-	
+
 	/*
 	* Description:      -
 	* Member type:      int
@@ -3479,7 +3567,7 @@ enum PlayerMove
 	* Set params:       set_pmove(const PlayerMove:var, value);
 	*/
 	pm_waterlevel,
-	
+
 	/*
 	* Description:      -
 	* Member type:      int
@@ -3487,7 +3575,7 @@ enum PlayerMove
 	* Set params:       set_pmove(const PlayerMove:var, value);
 	*/
 	pm_watertype,
-	
+
 	/*
 	* Description:      -
 	* Member type:      int
@@ -3527,7 +3615,7 @@ enum PlayerMove
 	* Set params:       set_pmove(const PlayerMove:var, Float:value);
 	*/
 	pm_clientmaxspeed,
-	
+
 	/*
 	* Description:      -
 	* Member type:      int
@@ -3535,7 +3623,7 @@ enum PlayerMove
 	* Set params:       set_pmove(const PlayerMove:var, value);
 	*/
 	pm_iuser1,
-	
+
 	/*
 	* Description:      -
 	* Member type:      int
@@ -3543,7 +3631,7 @@ enum PlayerMove
 	* Set params:       set_pmove(const PlayerMove:var, value);
 	*/
 	pm_iuser2,
-	
+
 	/*
 	* Description:      -
 	* Member type:      int
@@ -3551,7 +3639,7 @@ enum PlayerMove
 	* Set params:       set_pmove(const PlayerMove:var, value);
 	*/
 	pm_iuser3,
-	
+
 	/*
 	* Description:      -
 	* Member type:      int
@@ -3623,7 +3711,7 @@ enum PlayerMove
 	* Set params:       set_pmove(const PlayerMove:var, Float:dest[3]);
 	*/
 	pm_vuser4,
-	
+
 	/*
 	* Description:      -
 	* Member type:      int
@@ -3631,7 +3719,7 @@ enum PlayerMove
 	* Set params:       set_pmove(const PlayerMove:var, value);
 	*/
 	pm_numphysent,
-	
+
 	/*
 	* Description:      -
 	* Member type:      struct usercmd_s *
@@ -4353,4 +4441,900 @@ enum CArmoury_Members
 	* Set params:       set_member(index, member, value);
 	*/
 	m_Armoury_bAlreadyCounted,
+};
+
+// CGrenade
+enum CGrenade_Members
+{
+	/*
+	* Description:      -
+	* Member type:      bool
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_Grenade_bStartDefuse = BEGIN_MEMBER_REGION(grenade),
+
+	/*
+	* Description:      -
+	* Member type:      bool
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_Grenade_bIsC4,
+
+	/*
+	* Description:      -
+	* Member type:      class EHANDLE
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_Grenade_pBombDefuser,
+
+	/*
+	* Description:      -
+	* Member type:      float
+	* Get params:       Float:get_member(index, member);
+	* Set params:       set_member(index, member, Float:value);
+	*/
+	m_Grenade_flDefuseCountDown,
+
+	/*
+	* Description:      -
+	* Member type:      float
+	* Get params:       Float:get_member(index, member);
+	* Set params:       set_member(index, member, Float:value);
+	*/
+	m_Grenade_flC4Blow,
+
+	/*
+	* Description:      -
+	* Member type:      float
+	* Get params:       Float:get_member(index, member);
+	* Set params:       set_member(index, member, Float:value);
+	*/
+	m_Grenade_flNextFreqInterval,
+
+	/*
+	* Description:      -
+	* Member type:      float
+	* Get params:       Float:get_member(index, member);
+	* Set params:       set_member(index, member, Float:value);
+	*/
+	m_Grenade_flNextBeep,
+
+	/*
+	* Description:      -
+	* Member type:      float
+	* Get params:       Float:get_member(index, member);
+	* Set params:       set_member(index, member, Float:value);
+	*/
+	m_Grenade_flNextFreq,
+
+	/*
+	* Description:      -
+	* Member type:      char *
+	* Get params:       get_member(index, member, dest[], const lenght);
+	* Set params:       set_member(index, member, const source[]);
+	*/
+	m_Grenade_sBeepName,
+
+	/*
+	* Description:      -
+	* Member type:      float
+	* Get params:       Float:get_member(index, member);
+	* Set params:       set_member(index, member, Float:value);
+	*/
+	m_Grenade_fAttenu,
+
+	/*
+	* Description:      -
+	* Member type:      float
+	* Get params:       Float:get_member(index, member);
+	* Set params:       set_member(index, member, Float:value);
+	*/
+	m_Grenade_flNextBlink,
+
+	/*
+	* Description:      -
+	* Member type:      float
+	* Get params:       Float:get_member(index, member);
+	* Set params:       set_member(index, member, Float:value);
+	*/
+	m_Grenade_fNextDefuse,
+
+	/*
+	* Description:      -
+	* Member type:      bool
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_Grenade_bJustBlew,
+
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_Grenade_iTeam,
+
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_Grenade_iCurWave,
+
+	/*
+	* Description:      -
+	* Member type:      struct edict_s *
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_Grenade_pentCurBombTarget,
+
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_Grenade_SGSmoke,
+
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_Grenade_angle,
+
+	/*
+	* Description:      -
+	* Member type:      unsigned short
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_Grenade_usEvent,
+
+	/*
+	* Description:      -
+	* Member type:      bool
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_Grenade_bLightSmoke,
+
+	/*
+	* Description:      -
+	* Member type:      bool
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_Grenade_bDetonated,
+
+	/*
+	* Description:      -
+	* Member type:      class Vector
+	* Get params:       get_member(index, member, Float:output[3]);
+	* Set params:       set_member(index, member, Float:dest[3]);
+	*/
+	m_Grenade_vSmokeDetonate,
+
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_Grenade_iBounceCount,
+
+	/*
+	* Description:      Whether or not this grenade has issued its DANGER sound to the world sound list yet.
+	* Member type:      BOOL
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_Grenade_fRegisteredSound,
+};
+
+// CP228
+enum CP228_Members
+{
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_P228_iShell = BEGIN_MEMBER_REGION(p228),
+
+	/*
+	* Description:      -
+	* Member type:      unsigned short
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_P228_usFire,
+};
+
+// CSCOUT
+enum CSCOUT_Members
+{
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_SCOUT_iShell = BEGIN_MEMBER_REGION(scout),
+
+	/*
+	* Description:      -
+	* Member type:      unsigned short
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_SCOUT_usFire,
+};
+
+// CHEGrenade
+enum CHEGrenade_Members
+{
+	/*
+	* Description:      -
+	* Member type:      unsigned short
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_HEGrenade_usCreate = BEGIN_MEMBER_REGION(hegrenade),
+};
+
+// CXM1014
+enum CXM1014_Members
+{
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_XM1014_iShell = BEGIN_MEMBER_REGION(xm1014),
+
+	/*
+	* Description:      -
+	* Member type:      float
+	* Get params:       Float:get_member(index, member);
+	* Set params:       set_member(index, member, Float:value);
+	*/
+	m_XM1014_flPumpTime,
+
+	/*
+	* Description:      -
+	* Member type:      unsigned short
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_XM1014_usFire,
+};
+
+// CC4
+enum CC4_Members
+{
+	/*
+	* Description:      -
+	* Member type:      bool
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_C4_bStartedArming = BEGIN_MEMBER_REGION(c4),
+
+	/*
+	* Description:      -
+	* Member type:      bool
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_C4_bBombPlacedAnimation,
+
+	/*
+	* Description:      -
+	* Member type:      float
+	* Get params:       Float:get_member(index, member);
+	* Set params:       set_member(index, member, Float:value);
+	*/
+	m_C4_fArmedTime,
+
+	/*
+	* Description:      -
+	* Member type:      bool
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_C4_bHasShield,
+};
+
+// CMAC10
+enum CMAC10_Members
+{
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_MAC10_iShell = BEGIN_MEMBER_REGION(mac10),
+
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_MAC10_iShellOn,
+
+	/*
+	* Description:      -
+	* Member type:      unsigned short
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_MAC10_usFire,
+};
+
+// CAUG
+enum CAUG_Members
+{
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_AUG_iShell = BEGIN_MEMBER_REGION(aug),
+
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_AUG_iShellOn,
+
+	/*
+	* Description:      -
+	* Member type:      unsigned short
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_AUG_usFire,
+};
+
+// CSmokeGrenade
+enum CSmokeGrenade_Members
+{
+	/*
+	* Description:      -
+	* Member type:      unsigned short
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_SmokeGrenade_usCreate = BEGIN_MEMBER_REGION(smokegrenade),
+};
+
+// CELITE
+enum CELITE_Members
+{
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_ELITE_iShell = BEGIN_MEMBER_REGION(elite),
+
+	/*
+	* Description:      -
+	* Member type:      unsigned short
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_ELITE_usFire_LEFT,
+
+	/*
+	* Description:      -
+	* Member type:      unsigned short
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_ELITE_usFire_RIGHT,
+};
+
+// CFiveSeven
+enum CFiveSeven_Members
+{
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_FiveSeven_iShell = BEGIN_MEMBER_REGION(fiveseven),
+
+	/*
+	* Description:      -
+	* Member type:      unsigned short
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_FiveSeven_usFire,
+};
+
+// CUMP45
+enum CUMP45_Members
+{
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_UMP45_iShell = BEGIN_MEMBER_REGION(ump45),
+
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_UMP45_iShellOn,
+
+	/*
+	* Description:      -
+	* Member type:      unsigned short
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_UMP45_usFire,
+};
+
+// CSG550
+enum CSG550_Members
+{
+	m_SG550_iShell = BEGIN_MEMBER_REGION(sg550),
+
+	/*
+	* Description:      -
+	* Member type:      unsigned short
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_SG550_usFire,
+};
+
+// CGalil
+enum CGalil_Members
+{
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_Galil_iShell = BEGIN_MEMBER_REGION(galil),
+
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_Galil_iShellOn,
+
+	/*
+	* Description:      -
+	* Member type:      unsigned short
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_Galil_usFire,
+};
+
+// CFamas
+enum CFamas_Members
+{
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_Famas_iShell = BEGIN_MEMBER_REGION(famas),
+
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_Famas_iShellOn,
+};
+
+// CUSP
+enum CUSP_Members
+{
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_USP_iShell = BEGIN_MEMBER_REGION(usp),
+
+	/*
+	* Description:      -
+	* Member type:      unsigned short
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_USP_usFire,
+};
+
+// CGLOCK18
+enum CGLOCK18_Members
+{
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_GLOCK18_iShell = BEGIN_MEMBER_REGION(glock18),
+
+	/*
+	* Description:      -
+	* Member type:      bool
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_GLOCK18_bBurstFire,
+};
+
+// CAWP
+enum CAWP_Members
+{
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_AWP_iShell = BEGIN_MEMBER_REGION(awp),
+
+	/*
+	* Description:      -
+	* Member type:      unsigned short
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_AWP_usFire,
+};
+
+// CMP5N
+enum CMP5N_Members
+{
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_MP5N_iShell = BEGIN_MEMBER_REGION(mp5n),
+
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_MP5N_iShellOn,
+
+	/*
+	* Description:      -
+	* Member type:      unsigned short
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_MP5N_usFire,
+};
+
+// CM249
+enum CM249_Members
+{
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_M249_iShell = BEGIN_MEMBER_REGION(m249),
+
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_M249_iShellOn,
+
+	/*
+	* Description:      -
+	* Member type:      unsigned short
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_M249_usFire,
+};
+
+// CM3
+enum CM3_Members
+{
+	m_M3_iShell = BEGIN_MEMBER_REGION(m3),
+
+	/*
+	* Description:      -
+	* Member type:      float
+	* Get params:       Float:get_member(index, member);
+	* Set params:       set_member(index, member, Float:value);
+	*/
+	m_M3_flPumpTime,
+
+	/*
+	* Description:      -
+	* Member type:      unsigned short
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_M3_usFire,
+};
+
+// CM4A1
+enum CM4A1_Members
+{
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_M4A1_iShell = BEGIN_MEMBER_REGION(m4a1),
+
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_M4A1_iShellOn,
+
+	/*
+	* Description:      -
+	* Member type:      unsigned short
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_M4A1_usFire,
+};
+
+// CTMP
+enum CTMP_Members
+{
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_TMP_iShell = BEGIN_MEMBER_REGION(tmp),
+
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_TMP_iShellOn,
+
+	/*
+	* Description:      -
+	* Member type:      unsigned short
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_TMP_usFire,
+};
+
+// CG3SG1
+enum CG3SG1_Members
+{
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_G3SG1_iShell = BEGIN_MEMBER_REGION(g3sg1),
+
+	/*
+	* Description:      -
+	* Member type:      unsigned short
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_G3SG1_usFire,
+};
+
+// CDEAGLE
+enum CDEAGLE_Members
+{
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_DEAGLE_iShell = BEGIN_MEMBER_REGION(deagle),
+
+	/*
+	* Description:      -
+	* Member type:      unsigned short
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_DEAGLE_usFire,
+};
+
+// CSG552
+enum CSG552_Members
+{
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_SG552_iShell = BEGIN_MEMBER_REGION(sg552),
+
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_SG552_iShellOn,
+
+	/*
+	* Description:      -
+	* Member type:      unsigned short
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_SG552_usFire,
+};
+
+// CAK47
+enum CAK47_Members
+{
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_AK47_iShell = BEGIN_MEMBER_REGION(ak47),
+
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_AK47_iShellOn,
+
+	/*
+	* Description:      -
+	* Member type:      unsigned short
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_AK47_usFire,
+};
+
+// CKnife
+enum CKnife_Members
+{
+	/*
+	* Description:      -
+	* Member type:      TraceResult
+	* Get params:       TraceResult:get_member(index, member);
+	* Set params:       set_member(index, member, TraceResult:value);
+	*/
+	m_Knife_trHit = BEGIN_MEMBER_REGION(knife),
+
+	/*
+	* Description:      -
+	* Member type:      unsigned short
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_Knife_usKnife,
+};
+
+// CP90
+enum CP90_Members
+{
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_P90_iShell = BEGIN_MEMBER_REGION(p90),
+
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_P90_iShellOn,
+
+	/*
+	* Description:      -
+	* Member type:      unsigned short
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_P90_usFire,
+};
+
+// CWShield
+enum CShield_Members
+{
+	/*
+	* Description:      -
+	* Member type:      class EHANDLE
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_Shield_hEntToIgnoreTouchesFrom = BEGIN_MEMBER_REGION(shield),
+
+	/*
+	* Description:      -
+	* Member type:      float
+	* Get params:       Float:get_member(index, member);
+	* Set params:       set_member(index, member, Float:value);
+	*/
+	m_Shield_flTimeToIgnoreTouches,
+};
+
+// CMapInfo
+enum CMapInfo_Members
+{
+	/*
+	* Description:      -
+	* Member type:      enum InfoMapBuyParam
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_MapInfo_iBuyingStatus = BEGIN_MEMBER_REGION(mapinfo),
+
+	/*
+	* Description:      -
+	* Member type:      float
+	* Get params:       Float:get_member(index, member);
+	* Set params:       set_member(index, member, Float:value);
+	*/
+	m_MapInfo_flBombRadius,
 };

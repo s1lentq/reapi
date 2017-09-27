@@ -363,28 +363,28 @@ public:
 	CCSPlayer *CSPlayer() const;
 
 	// templates
-	template<typename Functor>
-	CBasePlayerItem *ForEachItem(int slot, const Functor &func)
+	template<typename T = CBasePlayerItem, typename Functor>
+	T *ForEachItem(int slot, const Functor &func)
 	{
 		auto item = m_rgpPlayerItems[ slot ];
 		while (item)
 		{
-			if (func(item))
-				return item;
+			if (func(static_cast<T *>(item)))
+				return static_cast<T *>(item);
 
 			item = item->m_pNext;
 		}
 		return nullptr;
 	}
-	template<typename Functor>
-	CBasePlayerItem *ForEachItem(const Functor &func)
+	template<typename T = CBasePlayerItem, typename Functor>
+	T *ForEachItem(const Functor &func)
 	{
 		for (auto item : m_rgpPlayerItems)
 		{
 			while (item)
 			{
-				if (func(item))
-					return item;
+				if (func(static_cast<T *>(item)))
+					return static_cast<T *>(item);
 
 				item = item->m_pNext;
 			}

@@ -1,10 +1,11 @@
 #include "precompiled.h"
 
 /*
-* Checks whether the player is talking at this moment
+* Checks whether the player is talking at the moment.
 *
-* @param index		Client index
-* @return		true if client is speaking, false otherwise
+* @param index      Client index
+*
+* @return           true if client is speaking, false otherwise
 *
 * native bool:VTC_IsClientSpeaking(const index);
 */
@@ -18,9 +19,10 @@ cell AMX_NATIVE_CALL VTC_IsClientSpeaking(AMX *amx, cell *params)
 }
 
 /*
-* Mutes this player
+* Mutes the player.
 *
-* @param index		Client index
+* @param index      Client index
+*
 * @noreturn
 *
 * native VTC_MuteClient(const index);
@@ -36,9 +38,10 @@ cell AMX_NATIVE_CALL VTC_MuteClient(AMX *amx, cell *params)
 }
 
 /*
-* Unmutes this player
+* Unmutes the player.
 *
-* @param index		Client index
+* @param index      Client index
+*
 * @noreturn
 *
 * native VTC_UnmuteClient(const index);
@@ -54,10 +57,11 @@ cell AMX_NATIVE_CALL VTC_UnmuteClient(AMX *amx, cell *params)
 }
 
 /*
-* Checks whether the player is muted at this moment
+* Checks whether the player is muted at the moment.
 *
-* @param index          Client index
-* @return               true if client is muted, false otherwise
+* @param index      Client index
+*
+* @return           true if client is muted, false otherwise
 *
 * native bool:VTC_IsClientMuted(const index);
 */
@@ -71,10 +75,10 @@ cell AMX_NATIVE_CALL VTC_IsClientMuted(AMX *amx, cell *params)
 }
 
 /*
-* To play the audio file via the voice stream.
+* Play the audio file via the voice stream.
 *
 * @param receiver       Receiver index
-* @param soundFilePath  The path to the sound file.
+* @param soundFilePath  The path to the sound file
 *
 * @note Usage example:
 *       VTC_PlaySound(id, "sound/ambience/Opera.wav");

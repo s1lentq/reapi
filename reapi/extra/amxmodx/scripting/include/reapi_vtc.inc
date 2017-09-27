@@ -9,7 +9,6 @@
 * @param index      Client index
 *
 * @return           true if client is speaking, false otherwise
-*
 */
 native bool:VTC_IsClientSpeaking(const index);
 
@@ -37,7 +36,6 @@ native VTC_UnmuteClient(const index);
 * @param index      Client index
 *
 * @return           true if client is muted, false otherwise
-*
 */
 native bool:VTC_IsClientMuted(const index);
 
@@ -51,7 +49,6 @@ native bool:VTC_IsClientMuted(const index);
 *       VTC_PlaySound(id, "sound/ambience/Opera.wav");
 *
 * @noreturn
-*
 */
 native VTC_PlaySound(const receiver, const soundFilePath[]);
 

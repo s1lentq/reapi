@@ -223,6 +223,17 @@
 #define PFLAG_USING                     (1<<4) // Using a continuous entity
 #define PFLAG_OBSERVER                  (1<<5) // Player is locked in stationary cam mode. Spectators can move, observers can't.
 
+// Player HUD
+// CBasePlayer::m_iHideHUD
+#define HIDEHUD_WEAPONS                 (1<<0)
+#define HIDEHUD_FLASHLIGHT              (1<<1)
+#define HIDEHUD_ALL                     (1<<2)
+#define HIDEHUD_HEALTH                  (1<<3)
+#define HIDEHUD_TIMER                   (1<<4)
+#define HIDEHUD_MONEY                   (1<<5)
+#define HIDEHUD_CROSSHAIR               (1<<6)
+#define HIDEHUD_OBSERVER_CROSSHAIR      (1<<7)
+
 /**
 * @section get_entvar(entity, var_spawnflags) values
 */
@@ -1161,4 +1172,13 @@ enum ItemID
 	ITEM_HEALTHKIT,
 	ITEM_ANTIDOTE,
 	ITEM_BATTERY
+};
+
+// CMapInfo:m_iBuyingStatus
+enum InfoMapBuyParam
+{
+	BUYING_EVERYONE = 0,
+	BUYING_ONLY_CTS,
+	BUYING_ONLY_TERRORISTS,
+	BUYING_NO_ONE,
 };

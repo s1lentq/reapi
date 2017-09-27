@@ -188,9 +188,9 @@ BOOL CBasePlayer_RemovePlayerItem(IReGameHook_CBasePlayer_RemovePlayerItem *chai
 	return callForward<BOOL>(RG_CBasePlayer_RemovePlayerItem, original, indexOfEdict(pthis->pev), indexOfEdict(pItem->pev));
 }
 
-int CBasePlayer_GiveAmmo(IReGameHook_CBasePlayer_GiveAmmo *chain, CBasePlayer *pthis, int iAmount, char *szName, int iMax)
+int CBasePlayer_GiveAmmo(IReGameHook_CBasePlayer_GiveAmmo *chain, CBasePlayer *pthis, int iAmount, const char *szName, int iMax)
 {
-	auto original = [chain](int _pthis, int _iAmount, char *_szName, int _iMax)
+	auto original = [chain](int _pthis, int _iAmount, const char *_szName, int _iMax)
 	{
 		return chain->callNext(getPrivate<CBasePlayer>(_pthis), _iAmount, _szName, _iMax);
 	};
@@ -468,6 +468,16 @@ bool CBasePlayer_GetIntoGame(IReGameHook_CBasePlayer_GetIntoGame *chain, CBasePl
 	};
 
 	return callForward<bool>(RG_CBasePlayer_GetIntoGame, original, indexOfEdict(pthis->pev));
+}
+
+void CBasePlayer_StartDeathCam(IReGameHook_CBasePlayer_StartDeathCam *chain, CBasePlayer *pthis)
+{
+	auto original = [chain](int _pthis)
+	{
+		return chain->callNext(getPrivate<CBasePlayer>(_pthis));
+	};
+
+	callVoidForward(RG_CBasePlayer_StartDeathCam, original, indexOfEdict(pthis->pev));
 }
 
 void CBaseAnimating_ResetSequenceInfo(IReGameHook_CBaseAnimating_ResetSequenceInfo *chain, CBaseAnimating *pthis)
