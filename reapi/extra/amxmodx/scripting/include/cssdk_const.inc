@@ -1,5 +1,5 @@
 #if defined _cssdk_const_included
-#endinput
+	#endinput
 #endif
 #define _cssdk_const_included
 
@@ -12,61 +12,61 @@
 #define MAX_ITEM_TYPES                  6                   // hud item selection slots
 
 #define MAX_EDICT_BITS                  11                  // How many bits to use to encode an edict. # of bits needed to represent max edicts
-#define MAX_EDICTS                      BIT(MAX_EDICT_BITS) // Max # of edicts in a level (2048)
+#define MAX_EDICTS                      (1<<MAX_EDICT_BITS) // Max # of edicts in a level (2048)
 
 /**
 * get_entvar(entity, var_button) or get_entvar(entity, var_oldbuttons) values
 */
-#define IN_ATTACK                       BIT(0)
-#define IN_JUMP                         BIT(1)
-#define IN_DUCK                         BIT(2)
-#define IN_FORWARD                      BIT(3)
-#define IN_BACK                         BIT(4)
-#define IN_USE                          BIT(5)
-#define IN_CANCEL                       BIT(6)
-#define IN_LEFT                         BIT(7)
-#define IN_RIGHT                        BIT(8)
-#define IN_MOVELEFT                     BIT(9)
-#define IN_MOVERIGHT                    BIT(10)
-#define IN_ATTACK2                      BIT(11)
-#define IN_RUN                          BIT(12)
-#define IN_RELOAD                       BIT(13)
-#define IN_ALT1                         BIT(14)
-#define IN_SCORE                        BIT(15) // Used by client.dll for when scoreboard is held down
+#define IN_ATTACK                       (1<<0)
+#define IN_JUMP                         (1<<1)
+#define IN_DUCK                         (1<<2)
+#define IN_FORWARD                      (1<<3)
+#define IN_BACK                         (1<<4)
+#define IN_USE                          (1<<5)
+#define IN_CANCEL                       (1<<6)
+#define IN_LEFT                         (1<<7)
+#define IN_RIGHT                        (1<<8)
+#define IN_MOVELEFT                     (1<<9)
+#define IN_MOVERIGHT                    (1<<10)
+#define IN_ATTACK2                      (1<<11)
+#define IN_RUN                          (1<<12)
+#define IN_RELOAD                       (1<<13)
+#define IN_ALT1                         (1<<14)
+#define IN_SCORE                        (1<<15) // Used by client.dll for when scoreboard is held down
 
 /**
 * get_entvar(entity, var_flags) values
 */
-#define FL_FLY                          BIT(0)  // Changes the SV_Movestep() behavior to not need to be on ground
-#define FL_SWIM                         BIT(1)  // Changes the SV_Movestep() behavior to not need to be on ground (but stay in water)
-#define FL_CONVEYOR                     BIT(2)
-#define FL_CLIENT                       BIT(3)
-#define FL_INWATER                      BIT(4)
-#define FL_MONSTER                      BIT(5)
-#define FL_GODMODE                      BIT(6)
-#define FL_NOTARGET                     BIT(7)
-#define FL_SKIPLOCALHOST                BIT(8)  // Don't send entity to local host, it's predicting this entity itself
-#define FL_ONGROUND                     BIT(9)  // At rest / on the ground
-#define FL_PARTIALGROUND                BIT(10) // Not all corners are valid
-#define FL_WATERJUMP                    BIT(11) // Player jumping out of water
-#define FL_FROZEN                       BIT(12) // Player is frozen for 3rd person camera
-#define FL_FAKECLIENT                   BIT(13) // JAC: fake client, simulated server side; don't send network messages to them
-#define FL_DUCKING                      BIT(14) // Player flag -- Player is fully crouched
-#define FL_FLOAT                        BIT(15) // Apply floating force to this entity when in water
-#define FL_GRAPHED                      BIT(16) // Worldgraph has this ent listed as something that blocks a connection
-#define FL_IMMUNE_WATER                 BIT(17)
-#define FL_IMMUNE_SLIME                 BIT(18)
-#define FL_IMMUNE_LAVA                  BIT(19)
-#define FL_PROXY                        BIT(20) // This is a spectator proxy
-#define FL_ALWAYSTHINK                  BIT(21) // Brush model flag -- call think every frame regardless of nextthink - ltime (for constantly changing velocity/path)
-#define FL_BASEVELOCITY                 BIT(22) // Base velocity has been applied this frame (used to convert base velocity into momentum)
-#define FL_MONSTERCLIP                  BIT(23) // Only collide in with monsters who have FL_MONSTERCLIP set
-#define FL_ONTRAIN                      BIT(24) // Player is _controlling_ a train, so movement commands should be ignored on client during prediction.
-#define FL_WORLDBRUSH                   BIT(25) // Not moveable/removeable brush entity (really part of the world, but represented as an entity for transparency or something)
-#define FL_SPECTATOR                    BIT(26) // This client is a spectator, don't run touch functions, etc.
-#define FL_CUSTOMENTITY                 BIT(29) // This is a custom entity
-#define FL_KILLME                       BIT(30) // This entity is marked for death -- This allows the engine to kill ents at the appropriate time
-#define FL_DORMANT                      BIT(31) // Entity is dormant, no updates to client
+#define FL_FLY                          (1<<0)  // Changes the SV_Movestep() behavior to not need to be on ground
+#define FL_SWIM                         (1<<1)  // Changes the SV_Movestep() behavior to not need to be on ground (but stay in water)
+#define FL_CONVEYOR                     (1<<2)
+#define FL_CLIENT                       (1<<3)
+#define FL_INWATER                      (1<<4)
+#define FL_MONSTER                      (1<<5)
+#define FL_GODMODE                      (1<<6)
+#define FL_NOTARGET                     (1<<7)
+#define FL_SKIPLOCALHOST                (1<<8)  // Don't send entity to local host, it's predicting this entity itself
+#define FL_ONGROUND                     (1<<9)  // At rest / on the ground
+#define FL_PARTIALGROUND                (1<<10) // Not all corners are valid
+#define FL_WATERJUMP                    (1<<11) // Player jumping out of water
+#define FL_FROZEN                       (1<<12) // Player is frozen for 3rd person camera
+#define FL_FAKECLIENT                   (1<<13) // JAC: fake client, simulated server side; don't send network messages to them
+#define FL_DUCKING                      (1<<14) // Player flag -- Player is fully crouched
+#define FL_FLOAT                        (1<<15) // Apply floating force to this entity when in water
+#define FL_GRAPHED                      (1<<16) // Worldgraph has this ent listed as something that blocks a connection
+#define FL_IMMUNE_WATER                 (1<<17)
+#define FL_IMMUNE_SLIME                 (1<<18)
+#define FL_IMMUNE_LAVA                  (1<<19)
+#define FL_PROXY                        (1<<20) // This is a spectator proxy
+#define FL_ALWAYSTHINK                  (1<<21) // Brush model flag -- call think every frame regardless of nextthink - ltime (for constantly changing velocity/path)
+#define FL_BASEVELOCITY                 (1<<22) // Base velocity has been applied this frame (used to convert base velocity into momentum)
+#define FL_MONSTERCLIP                  (1<<23) // Only collide in with monsters who have FL_MONSTERCLIP set
+#define FL_ONTRAIN                      (1<<24) // Player is _controlling_ a train, so movement commands should be ignored on client during prediction.
+#define FL_WORLDBRUSH                   (1<<25) // Not moveable/removeable brush entity (really part of the world, but represented as an entity for transparency or something)
+#define FL_SPECTATOR                    (1<<26) // This client is a spectator, don't run touch functions, etc.
+#define FL_CUSTOMENTITY                 (1<<29) // This is a custom entity
+#define FL_KILLME                       (1<<30) // This entity is marked for death -- This allows the engine to kill ents at the appropriate time
+#define FL_DORMANT                      (1<<31) // Entity is dormant, no updates to client
 
 /**
 * get_entvar(entity, var_movetype) values
@@ -175,30 +175,30 @@
 * message.
 */
 #define DMG_GENERIC                     0           // Generic damage was done
-#define DMG_CRUSH                       BIT(0)      // Crushed by falling or moving object
-#define DMG_BULLET                      BIT(1)      // Shot
-#define DMG_SLASH                       BIT(2)      // Cut, clawed, stabbed
-#define DMG_BURN                        BIT(3)      // Heat burned
-#define DMG_FREEZE                      BIT(4)      // Frozen
-#define DMG_FALL                        BIT(5)      // Fell too far
-#define DMG_BLAST                       BIT(6)      // Explosive blast damage
-#define DMG_CLUB                        BIT(7)      // Crowbar, punch, headbutt
-#define DMG_SHOCK                       BIT(8)      // Electric shock
-#define DMG_SONIC                       BIT(9)      // Sound pulse shockwave
-#define DMG_ENERGYBEAM                  BIT(10)     // Laser or other high energy beam
-#define DMG_NEVERGIB                    BIT(12)     // With this bit OR'd in, no damage type will be able to gib victims upon death
-#define DMG_ALWAYSGIB                   BIT(13)     // With this bit OR'd in, any damage type can be made to gib victims upon death.
-#define DMG_DROWN                       BIT(14)     // Drowning
-#define DMG_PARALYZE                    BIT(15)     // Slows affected creature down
-#define DMG_NERVEGAS                    BIT(16)     // Nerve toxins, very bad
-#define DMG_POISON                      BIT(17)     // Blood poisioning
-#define DMG_RADIATION                   BIT(18)     // Radiation exposure
-#define DMG_DROWNRECOVER                BIT(19)     // Drowning recovery
-#define DMG_ACID                        BIT(20)     // Toxic chemicals or acid burns
-#define DMG_SLOWBURN                    BIT(21)     // In an oven
-#define DMG_SLOWFREEZE                  BIT(22)     // In a subzero freezer
-#define DMG_MORTAR                      BIT(23)     // Hit by air raid (done to distinguish grenade from mortar)
-#define DMG_GRENADE                     BIT(24)     // Counter-Strike only - Hit by HE grenade
+#define DMG_CRUSH                       (1<<0)      // Crushed by falling or moving object
+#define DMG_BULLET                      (1<<1)      // Shot
+#define DMG_SLASH                       (1<<2)      // Cut, clawed, stabbed
+#define DMG_BURN                        (1<<3)      // Heat burned
+#define DMG_FREEZE                      (1<<4)      // Frozen
+#define DMG_FALL                        (1<<5)      // Fell too far
+#define DMG_BLAST                       (1<<6)      // Explosive blast damage
+#define DMG_CLUB                        (1<<7)      // Crowbar, punch, headbutt
+#define DMG_SHOCK                       (1<<8)      // Electric shock
+#define DMG_SONIC                       (1<<9)      // Sound pulse shockwave
+#define DMG_ENERGYBEAM                  (1<<10)     // Laser or other high energy beam
+#define DMG_NEVERGIB                    (1<<12)     // With this bit OR'd in, no damage type will be able to gib victims upon death
+#define DMG_ALWAYSGIB                   (1<<13)     // With this bit OR'd in, any damage type can be made to gib victims upon death.
+#define DMG_DROWN                       (1<<14)     // Drowning
+#define DMG_PARALYZE                    (1<<15)     // Slows affected creature down
+#define DMG_NERVEGAS                    (1<<16)     // Nerve toxins, very bad
+#define DMG_POISON                      (1<<17)     // Blood poisioning
+#define DMG_RADIATION                   (1<<18)     // Radiation exposure
+#define DMG_DROWNRECOVER                (1<<19)     // Drowning recovery
+#define DMG_ACID                        (1<<20)     // Toxic chemicals or acid burns
+#define DMG_SLOWBURN                    (1<<21)     // In an oven
+#define DMG_SLOWFREEZE                  (1<<22)     // In a subzero freezer
+#define DMG_MORTAR                      (1<<23)     // Hit by air raid (done to distinguish grenade from mortar)
+#define DMG_GRENADE                     (1<<24)     // Counter-Strike only - Hit by HE grenade
 #define DMG_TIMEBASED                   (~(0x3fff)) // Mask for time-based damage
 
 // These are the damage types that are allowed to gib corpses
@@ -215,13 +215,13 @@
 
 // Player physics flags bits
 // CBasePlayer::m_afPhysicsFlags
-#define PFLAG_ONLADDER                  BIT(0)
-#define PFLAG_ONSWING                   BIT(0)
-#define PFLAG_ONTRAIN                   BIT(1)
-#define PFLAG_ONBARNACLE                BIT(2)
-#define PFLAG_DUCKING                   BIT(3) // In the process of ducking, but totally squatted yet
-#define PFLAG_USING                     BIT(4) // Using a continuous entity
-#define PFLAG_OBSERVER                  BIT(5) // Player is locked in stationary cam mode. Spectators can move, observers can't.
+#define PFLAG_ONLADDER                  (1<<0)
+#define PFLAG_ONSWING                   (1<<0)
+#define PFLAG_ONTRAIN                   (1<<1)
+#define PFLAG_ONBARNACLE                (1<<2)
+#define PFLAG_DUCKING                   (1<<3) // In the process of ducking, but totally squatted yet
+#define PFLAG_USING                     (1<<4) // Using a continuous entity
+#define PFLAG_OBSERVER                  (1<<5) // Player is locked in stationary cam mode. Spectators can move, observers can't.
 
 /**
 * @section get_entvar(entity, var_spawnflags) values
@@ -230,51 +230,51 @@
 /**
 * func_train
 */
-#define SF_TRAIN_WAIT_RETRIGGER         BIT(0)
-#define SF_TRAIN_START_ON               BIT(2) // Train is initially moving
-#define SF_TRAIN_PASSABLE               BIT(3) // Train is not solid -- used to make water trains
+#define SF_TRAIN_WAIT_RETRIGGER         1
+#define SF_TRAIN_START_ON               4 // Train is initially moving
+#define SF_TRAIN_PASSABLE               8 // Train is not solid -- used to make water trains
 
 /**
 * func_wall_toggle
 */
-#define SF_WALL_TOOGLE_START_OFF        BIT(0)
-#define SF_WALL_TOOGLE_NOTSOLID         BIT(3)
+#define SF_WALL_TOOGLE_START_OFF        0x0001
+#define SF_WALL_TOOGLE_NOTSOLID         0x0008
 
 /**
 * func_converyor
 */
-#define SF_CONVEYOR_VISUAL              BIT(0)
-#define SF_CONVEYOR_NOTSOLID            BIT(1)
+#define SF_CONVEYOR_VISUAL              0x0001
+#define SF_CONVEYOR_NOTSOLID            0x0002
 
 /**
 * func_button
 */
-#define SF_BUTTON_DONTMOVE              BIT(0)
-#define SF_BUTTON_TOGGLE                BIT(5) // Button stays pushed until reactivated
-#define SF_BUTTON_SPARK_IF_OFF          BIT(6) // Button sparks in OFF state
-#define SF_BUTTON_TOUCH_ONLY            BIT(8) // Button only fires as a result of USE key.
+#define SF_BUTTON_DONTMOVE              1
+#define SF_BUTTON_TOGGLE                32  // Button stays pushed until reactivated
+#define SF_BUTTON_SPARK_IF_OFF          64  // Button sparks in OFF state
+#define SF_BUTTON_TOUCH_ONLY            256 // Button only fires as a result of USE key.
 
 /**
 * func_rot_button
 */
-#define SF_ROTBUTTON_NOTSOLID           BIT(0)
-#define SF_ROTBUTTON_BACKWARDS          BIT(1)
+#define SF_ROTBUTTON_NOTSOLID           1
+#define SF_ROTBUTTON_BACKWARDS          2
 
 /**
 * env_global
 */
-#define SF_GLOBAL_SET                   BIT(0) // Set global state to initial state on spawn
+#define SF_GLOBAL_SET                   1  // Set global state to initial state on spawn
 
 /**
 * multisource
 */
 #define MAX_MS_TARGETS                  32 // maximum number of targets a single multisource entity may be assigned.
-#define SF_MULTI_INIT                   BIT(0)
+#define SF_MULTI_INIT                   1
 
 /**
 * momentary_rot_button
 */
-#define SF_MOMENTARY_DOOR               BIT(0) // Make this button behave like a door (HACKHACK)
+#define SF_MOMENTARY_DOOR               0x0001 // Make this button behave like a door (HACKHACK)
                                                // This will disable use and make the button solid
                                                // rotating buttons were made SOLID_NOT by default since their were some
                                                // collision problems with them...
@@ -282,321 +282,322 @@
 /**
 * button_target
 */
-#define SF_BTARGET_USE                  BIT(0)
-#define SF_BTARGET_ON                   BIT(1)
+#define SF_BTARGET_USE                  0x0001
+#define SF_BTARGET_ON                   0x0002
 
 /**
 * func_door, func_water, func_door_rotating, momementary_door
 */
-#define SF_DOOR_START_OPEN              BIT(0)
-#define SF_DOOR_PASSABLE                BIT(3)
-#define SF_DOOR_NO_AUTO_RETURN          BIT(5)
-#define SF_DOOR_USE_ONLY                BIT(8)  // door must be opened by player's use button.
-#define SF_DOOR_TOUCH_ONLY_CLIENTS      BIT(10) // Only clients can touch
-#define SF_DOOR_ACTUALLY_WATER          BIT(31) // This bit marks that func_door are actually func_water
+#define SF_DOOR_START_OPEN              1
+#define SF_DOOR_PASSABLE                8
+#define SF_DOOR_NO_AUTO_RETURN          32
+#define SF_DOOR_USE_ONLY                256        // door must be opened by player's use button.
+#define SF_DOOR_TOUCH_ONLY_CLIENTS      1024       // Only clients can touch
+#define SF_DOOR_ACTUALLY_WATER          0x80000000 // This bit marks that func_door are actually func_water
 
 /**
 * gibshooter
 */
-#define SF_GIBSHOOTER_REPEATABLE        BIT(0) // Allows a gibshooter to be refired
+#define SF_GIBSHOOTER_REPEATABLE        1 // Allows a gibshooter to be refired
 
 /**
 * env_funnel
 */
-#define SF_FUNNEL_REVERSE               BIT(0) // Funnel effect repels particles instead of attracting them
+#define SF_FUNNEL_REVERSE               1 // Funnel effect repels particles instead of attracting them
 
 /**
 * env_bubbles
 */
-#define SF_BUBBLES_STARTOFF             BIT(0)
+#define SF_BUBBLES_STARTOFF             0x0001
 
 /**
 * env_blood
 */
-#define SF_BLOOD_RANDOM                 BIT(0)
-#define SF_BLOOD_STREAM                 BIT(1)
-#define SF_BLOOD_PLAYER                 BIT(2)
-#define SF_BLOOD_DECAL                  BIT(3)
+#define SF_BLOOD_RANDOM                 0x0001
+#define SF_BLOOD_STREAM                 0x0002
+#define SF_BLOOD_PLAYER                 0x0004
+#define SF_BLOOD_DECAL                  0x0008
 
 /**
 * env_shake
 */
-#define SF_SHAKE_EVERYONE               BIT(0) // Don't check radius
-#define SF_SHAKE_DISRUPT                BIT(1) // Disrupt controls
-#define SF_SHAKE_INAIR                  BIT(2) // Shake players in air
+#define SF_SHAKE_EVERYONE               0x0001 // Don't check radius
+#define SF_SHAKE_DISRUPT                0x0002 // Disrupt controls
+#define SF_SHAKE_INAIR                  0x0004 // Shake players in air
 
 /**
 * env_fade
 */
-#define SF_FADE_IN                      BIT(0) // Fade in, not out
-#define SF_FADE_MODULATE                BIT(1) // Modulate, don't blend
-#define SF_FADE_ONLYONE                 BIT(2)
+#define SF_FADE_IN                      0x0001 // Fade in, not out
+#define SF_FADE_MODULATE                0x0002 // Modulate, don't blend
+#define SF_FADE_ONLYONE                 0x0004
 
 /**
 * env_beam, env_lightning
 */
-#define SF_BEAM_STARTON                 BIT(0)
-#define SF_BEAM_TOGGLE                  BIT(1)
-#define SF_BEAM_RANDOM                  BIT(2)
-#define SF_BEAM_RING                    BIT(3)
-#define SF_BEAM_SPARKSTART              BIT(4)
-#define SF_BEAM_SPARKEND                BIT(5)
-#define SF_BEAM_DECALS                  BIT(6)
-#define SF_BEAM_SHADEIN                 BIT(7)
-#define SF_BEAM_SHADEOUT                BIT(8)
-#define SF_BEAM_TEMPORARY               BIT(15)
+#define SF_BEAM_STARTON                 0x0001
+#define SF_BEAM_TOGGLE                  0x0002
+#define SF_BEAM_RANDOM                  0x0004
+#define SF_BEAM_RING                    0x0008
+#define SF_BEAM_SPARKSTART              0x0010
+#define SF_BEAM_SPARKEND                0x0020
+#define SF_BEAM_DECALS                  0x0040
+#define SF_BEAM_SHADEIN                 0x0080
+#define SF_BEAM_SHADEOUT                0x0100
+#define SF_BEAM_TEMPORARY               0x8000
 
 /**
 * env_sprite
 */
-#define SF_SPRITE_STARTON               BIT(0)
-#define SF_SPRITE_ONCE                  BIT(1)
-#define SF_SPRITE_TEMPORARY             BIT(15)
+#define SF_SPRITE_STARTON               0x0001
+#define SF_SPRITE_ONCE                  0x0002
+#define SF_SPRITE_TEMPORARY             0x8000
 
 /**
 * env_message
 */
-#define SF_MESSAGE_ONCE                 BIT(0) // Fade in, not out
-#define SF_MESSAGE_ALL                  BIT(1) // Send to all clients
+#define SF_MESSAGE_ONCE                 0x0001 // Fade in, not out
+#define SF_MESSAGE_ALL                  0x0002 // Send to all clients
 
 /**
 * env_explosion
 */
-#define SF_ENVEXPLOSION_NODAMAGE        BIT(0) // When set, ENV_EXPLOSION will not actually inflict damage
-#define SF_ENVEXPLOSION_REPEATABLE      BIT(1) // Can this entity be refired?
-#define SF_ENVEXPLOSION_NOFIREBALL      BIT(2) // Don't draw the fireball
-#define SF_ENVEXPLOSION_NOSMOKE         BIT(3) // Don't draw the smoke
-#define SF_ENVEXPLOSION_NODECAL         BIT(4) // Don't make a scorch mark
-#define SF_ENVEXPLOSION_NOSPARKS        BIT(5) // Don't make a scorch mark
+#define SF_ENVEXPLOSION_NODAMAGE        (1<<0) // When set, ENV_EXPLOSION will not actually inflict damage
+#define SF_ENVEXPLOSION_REPEATABLE      (1<<1) // Can this entity be refired?
+#define SF_ENVEXPLOSION_NOFIREBALL      (1<<2) // Don't draw the fireball
+#define SF_ENVEXPLOSION_NOSMOKE         (1<<3) // Don't draw the smoke
+#define SF_ENVEXPLOSION_NODECAL         (1<<4) // Don't make a scorch mark
+#define SF_ENVEXPLOSION_NOSPARKS        (1<<5) // Don't make a scorch mark
 
 /**
 * func_tank
 */
-#define SF_TANK_ACTIVE                  BIT(0)
-#define SF_TANK_PLAYER                  BIT(1)
-#define SF_TANK_HUMANS                  BIT(2)
-#define SF_TANK_ALIENS                  BIT(3)
-#define SF_TANK_LINEOFSIGHT             BIT(4)
-#define SF_TANK_CANCONTROL              BIT(5)
-#define SF_TANK_SOUNDON                 BIT(15)
+#define SF_TANK_ACTIVE                  0x0001
+#define SF_TANK_PLAYER                  0x0002
+#define SF_TANK_HUMANS                  0x0004
+#define SF_TANK_ALIENS                  0x0008
+#define SF_TANK_LINEOFSIGHT             0x0010
+#define SF_TANK_CANCONTROL              0x0020
+#define SF_TANK_SOUNDON                 0x8000
 
 /**
 * grenade
 */
-#define SF_DETONATE                     BIT(0) // Grenades flagged with this will be triggered when the owner calls detonateSatchelCharges
+#define SF_DETONATE                     0x0001 // Grenades flagged with this will be triggered when the owner calls detonateSatchelCharges
 
 /**
 * game_score
 */
-#define SF_SCORE_NEGATIVE               BIT(0) // Allow negative scores
-#define SF_SCORE_TEAM                   BIT(1) // Award points to team in teamplay
+#define SF_SCORE_NEGATIVE               0x0001 // Allow negative scores
+#define SF_SCORE_TEAM                   0x0002 // Award points to team in teamplay
 
 /**
 * game_text
 */
-#define SF_ENVTEXT_ALLPLAYERS           BIT(0) // Message will be displayed to all players instead of just the activator.
+#define SF_ENVTEXT_ALLPLAYERS           0x0001 // Message will be displayed to all players instead of just the activator.
 
 /**
 * game_team_master
 */
-#define SF_TEAMMASTER_FIREONCE          BIT(0) // Remove on Fire
-#define SF_TEAMMASTER_ANYTEAM           BIT(1) // Any team until set? -- Any team can use this until the team is set (otherwise no teams can use it)
+#define SF_TEAMMASTER_FIREONCE          0x0001 // Remove on Fire
+#define SF_TEAMMASTER_ANYTEAM           0x0002 // Any team until set? -- Any team can use this until the team is set (otherwise no teams can use it)
 
 /**
 * game_team_set
 */
-#define SF_TEAMSET_FIREONCE             BIT(0) // Remove entity after firing.
-#define SF_TEAMSET_CLEARTEAM            BIT(1) // Clear team -- Sets the team to "NONE" instead of activator
+#define SF_TEAMSET_FIREONCE             0x0001 // Remove entity after firing.
+#define SF_TEAMSET_CLEARTEAM            0x0002 // Clear team -- Sets the team to "NONE" instead of activator
 
 /**
 * game_player_hurt
 */
-#define SF_PKILL_FIREONCE               BIT(0) // Remove entity after firing.
+#define SF_PKILL_FIREONCE               0x0001 // Remove entity after firing.
 
 /**
 * game_counter
 */
-#define SF_GAMECOUNT_FIREONCE           BIT(0) // Remove entity after firing.
-#define SF_GAMECOUNT_RESET              BIT(1) // Reset entity Initial value after fired.
-#define SF_GAMECOUNT_OVER_LIMIT         BIT(2) // Fire a target when initial value is higher than limit value.
+#define SF_GAMECOUNT_FIREONCE           0x0001 // Remove entity after firing.
+#define SF_GAMECOUNT_RESET              0x0002 // Reset entity Initial value after fired.
+#define SF_GAMECOUNT_OVER_LIMIT         0x0004 // Fire a target when initial value is higher than limit value.
 
 /**
 * game_player_equip
 */
 #define MAX_EQUIP                       32
-#define SF_PLAYEREQUIP_USEONLY          BIT(0) // If set, the game_player_equip entity will not equip respawning players,
+#define SF_PLAYEREQUIP_USEONLY          0x0001 // If set, the game_player_equip entity will not equip respawning players,
                                                // but only react to direct triggering, equipping its activator. This makes its master obsolete.
 
 /**
 * game_player_team
 */
-#define SF_PTEAM_FIREONCE               BIT(0) // Remove entity after firing.
-#define SF_PTEAM_KILL                   BIT(1) // Kill Player.
-#define SF_PTEAM_GIB                    BIT(2) // Gib Player.
+#define SF_PTEAM_FIREONCE               0x0001 // Remove entity after firing.
+#define SF_PTEAM_KILL                   0x0002 // Kill Player.
+#define SF_PTEAM_GIB                    0x0004 // Gib Player.
 
 /**
 * func_plat
 */
-#define SF_PLAT_TOGGLE                  BIT(0) // The lift is no more automatically called from top and activated by stepping on it.
+#define SF_PLAT_TOGGLE                  0x0001 // The lift is no more automatically called from top and activated by stepping on it.
                                                // It required trigger to do so.
 
 /**
 * func_trackchange
 */
-#define SF_TRACK_ACTIVATETRAIN          BIT(0)
-#define SF_TRACK_RELINK                 BIT(1)
-#define SF_TRACK_ROTMOVE                BIT(2)
-#define SF_TRACK_STARTBOTTOM            BIT(3)
-#define SF_TRACK_DONT_MOVE              BIT(4)
+#define SF_TRACK_ACTIVATETRAIN          0x00000001
+#define SF_TRACK_RELINK                 0x00000002
+#define SF_TRACK_ROTMOVE                0x00000004
+#define SF_TRACK_STARTBOTTOM            0x00000008
+#define SF_TRACK_DONT_MOVE              0x00000010
 
 /**
 * func_tracktrain
 */
-#define SF_TRACKTRAIN_NOPITCH           BIT(0)
-#define SF_TRACKTRAIN_NOCONTROL         BIT(1)
-#define SF_TRACKTRAIN_FORWARDONLY       BIT(2)
-#define SF_TRACKTRAIN_PASSABLE          BIT(3)
+#define SF_TRACKTRAIN_NOPITCH           0x0001
+#define SF_TRACKTRAIN_NOCONTROL         0x0002
+#define SF_TRACKTRAIN_FORWARDONLY       0x0004
+#define SF_TRACKTRAIN_PASSABLE          0x0008
 
 /**
 * path_track
 */
-#define SF_PATH_DISABLED                BIT(0)
-#define SF_PATH_FIREONCE                BIT(1)
-#define SF_PATH_ALTREVERSE              BIT(2)
-#define SF_PATH_DISABLE_TRAIN           BIT(3)
-#define SF_PATH_ALTERNATE               BIT(15)
+#define SF_PATH_DISABLED                0x00000001
+#define SF_PATH_FIREONCE                0x00000002
+#define SF_PATH_ALTREVERSE              0x00000004
+#define SF_PATH_DISABLE_TRAIN           0x00000008
+#define SF_PATH_ALTERNATE               0x00008000
 
 /**
 * path_corner
 */
-#define SF_CORNER_WAITFORTRIG           BIT(0)
-#define SF_CORNER_TELEPORT              BIT(1)
-#define SF_CORNER_FIREONCE              BIT(2)
+#define SF_CORNER_WAITFORTRIG           0x001
+#define SF_CORNER_TELEPORT              0x002
+#define SF_CORNER_FIREONCE              0x004
 
 /**
 * trigger_push
 */
-#define SF_TRIGGER_PUSH_ONCE            BIT(0)
-#define SF_TRIGGER_PUSH_START_OFF       BIT(1) // Spawnflag that makes trigger_push spawn turned OFF
+#define SF_TRIGGER_PUSH_ONCE            1
+#define SF_TRIGGER_PUSH_START_OFF       2 // Spawnflag that makes trigger_push spawn turned OFF
+
 /**
 * trigger_hurt
 */
-#define SF_TRIGGER_HURT_TARGETONCE      BIT(0) // Only fire hurt target once
-#define SF_TRIGGER_HURT_START_OFF       BIT(1) // Spawnflag that makes trigger_push spawn turned OFF
-#define SF_TRIGGER_HURT_NO_CLIENTS      BIT(3) // Spawnflag that makes trigger_push spawn turned OFF
-#define SF_TRIGGER_HURT_CLIENTONLYFIRE  BIT(4) // Trigger hurt will only fire its target if it is hurting a client
-#define SF_TRIGGER_HURT_CLIENTONLYTOUCH BIT(5) // Only clients may touch this trigger.
+#define SF_TRIGGER_HURT_TARGETONCE      1  // Only fire hurt target once
+#define SF_TRIGGER_HURT_START_OFF       2  // Spawnflag that makes trigger_push spawn turned OFF
+#define SF_TRIGGER_HURT_NO_CLIENTS      8  // Spawnflag that makes trigger_push spawn turned OFF
+#define SF_TRIGGER_HURT_CLIENTONLYFIRE  16 // Trigger hurt will only fire its target if it is hurting a client
+#define SF_TRIGGER_HURT_CLIENTONLYTOUCH 32 // Only clients may touch this trigger.
 
 /**
 * trigger_auto
 */
-#define SF_AUTO_FIREONCE                BIT(0)
-#define SF_AUTO_NORESET                 BIT(1)
+#define SF_AUTO_FIREONCE                0x0001
+#define SF_AUTO_NORESET                 0x0002
 
 /**
 * trigger_relay
 */
-#define SF_RELAY_FIREONCE               BIT(0)
+#define SF_RELAY_FIREONCE               0x0001
 
 /**
 * multi_manager
 */
-#define SF_MULTIMAN_THREAD              BIT(0)
-#define SF_MULTIMAN_CLONE               BIT(31)
+#define SF_MULTIMAN_THREAD              0x00000001
+#define SF_MULTIMAN_CLONE               0x80000000
 
 /**
 * env_render
 * @note These are flags to indicate masking off various render parameters that
 * are usually copied to the targets
 */
-#define SF_RENDER_MASKFX                BIT(0)
-#define SF_RENDER_MASKAMT               BIT(1)
-#define SF_RENDER_MASKMODE              BIT(2)
-#define SF_RENDER_MASKCOLOR             BIT(3)
+#define SF_RENDER_MASKFX                (1<<0)
+#define SF_RENDER_MASKAMT               (1<<1)
+#define SF_RENDER_MASKMODE              (1<<2)
+#define SF_RENDER_MASKCOLOR             (1<<3)
 
 /**
 * trigger_changelevel
 */
-#define SF_CHANGELEVEL_USEONLY          BIT(1)
+#define SF_CHANGELEVEL_USEONLY          0x0002
 
 /**
 * trigger_endsection
 */
-#define SF_ENDSECTION_USEONLY           BIT(0)
+#define SF_ENDSECTION_USEONLY           0x0001
 
 /**
 * trigger_camera
 */
-#define SF_CAMERA_PLAYER_POSITION       BIT(0)
-#define SF_CAMERA_PLAYER_TARGET         BIT(1)
-#define SF_CAMERA_PLAYER_TAKECONTROL    BIT(2)
+#define SF_CAMERA_PLAYER_POSITION       1
+#define SF_CAMERA_PLAYER_TARGET         2
+#define SF_CAMERA_PLAYER_TAKECONTROL    4
 
 /**
 * func_rotating
 */
-#define SF_BRUSH_ROTATE_START_ON        BIT(0)
-#define SF_BRUSH_ROTATE_BACKWARDS       BIT(1)
-#define SF_BRUSH_ROTATE_Z_AXIS          BIT(2)
-#define SF_BRUSH_ROTATE_X_AXIS          BIT(3)
-#define SF_BRUSH_ACCDCC                 BIT(4) // Brush should accelerate and decelerate when toggled
-#define SF_BRUSH_HURT                   BIT(5) // Rotating brush that inflicts pain based on rotation speed
-#define SF_BRUSH_ROTATE_NOT_SOLID       BIT(6) // Some special rotating objects are not solid.
-#define SF_BRUSH_ROTATE_SMALLRADIUS     BIT(7)
-#define SF_BRUSH_ROTATE_MEDIUMRADIUS    BIT(8)
-#define SF_BRUSH_ROTATE_LARGERADIUS     BIT(9)
+#define SF_BRUSH_ROTATE_START_ON        1
+#define SF_BRUSH_ROTATE_BACKWARDS       2
+#define SF_BRUSH_ROTATE_Z_AXIS          4
+#define SF_BRUSH_ROTATE_X_AXIS          8
+#define SF_BRUSH_ACCDCC                 16   // Brush should accelerate and decelerate when toggled
+#define SF_BRUSH_HURT                   32   // Rotating brush that inflicts pain based on rotation speed
+#define SF_BRUSH_ROTATE_NOT_SOLID       64   // Some special rotating objects are not solid.
+#define SF_BRUSH_ROTATE_SMALLRADIUS     128
+#define SF_BRUSH_ROTATE_MEDIUMRADIUS    256
+#define SF_BRUSH_ROTATE_LARGERADIUS     512
 
 /**
 * triggers
 */
-#define SF_TRIGGER_ALLOWMONSTERS        BIT(0) // Monsters allowed to fire this trigger
-#define SF_TRIGGER_NOCLIENTS            BIT(1) // Players not allowed to fire this trigger
-#define SF_TRIGGER_PUSHABLES            BIT(2) // Only pushables can fire this trigger
-#define SF_TRIGGER_NORESET              BIT(6) // It is not allowed to be resetting on a new round
+#define SF_TRIGGER_ALLOWMONSTERS        1  // Monsters allowed to fire this trigger
+#define SF_TRIGGER_NOCLIENTS            2  // Players not allowed to fire this trigger
+#define SF_TRIGGER_PUSHABLES            4  // Only pushables can fire this trigger
+#define SF_TRIGGER_NORESET              64 // It is not allowed to be resetting on a new round
 
 /**
 * trigger_multiple
 */
-#define SF_TRIGGER_MULTIPLE_NOTOUCH     BIT(0)
+#define SF_TRIGGER_MULTIPLE_NOTOUCH     0x0001
 
 /**
 * trigger_counter
 */
-#define SF_TRIGGER_COUNTER_NOMESSAGE    BIT(0)
+#define SF_TRIGGER_COUNTER_NOMESSAGE    0x0001
 
 /**
 * func_breakable
 */
-#define SF_BREAK_TRIGGER_ONLY           BIT(0) // May only be broken by trigger
-#define SF_BREAK_TOUCH                  BIT(1) // Can be 'crashed through' by running player (plate glass)
-#define SF_BREAK_PRESSURE               BIT(2) // Can be broken by a player standing on it
-#define SF_BREAK_CROWBAR                BIT(8) // Instant break if hit with crowbar
+#define SF_BREAK_TRIGGER_ONLY           1   // May only be broken by trigger
+#define SF_BREAK_TOUCH                  2   // Can be 'crashed through' by running player (plate glass)
+#define SF_BREAK_PRESSURE               4   // Can be broken by a player standing on it
+#define SF_BREAK_CROWBAR                256 // Instant break if hit with crowbar
 
 /**
 * func_pushable (also func_breakable, so don't collide with those flags)
 */
-#define SF_PUSH_BREAKABLE               BIT(7)
+#define SF_PUSH_BREAKABLE               128
 
 /**
 * light_spawn
 */
-#define SF_LIGHT_START_OFF              BIT(0)
+#define SF_LIGHT_START_OFF              1
 
 /**
 * info_decal
 */
-#define SF_DECAL_NOTINDEATHMATCH        BIT(11)
+#define SF_DECAL_NOTINDEATHMATCH        2048
 
 /**
 * worldspawn
 */
-#define SF_WORLD_DARK                   BIT(0) // Fade from black at startup
-#define SF_WORLD_TITLE                  BIT(1) // Display game title at startup
-#define SF_WORLD_FORCETEAM              BIT(2) // Force teams
+#define SF_WORLD_DARK                   0x0001 // Fade from black at startup
+#define SF_WORLD_TITLE                  0x0002 // Display game title at startup
+#define SF_WORLD_FORCETEAM              0x0004 // Force teams
 
 /**
 * Set this bit on guns and stuff that should never respawn
 */
-#define SF_NORESPAWN                    BIT(30)
+#define SF_NORESPAWN                    (1<<30)
 
 /**
 * @endsection
@@ -615,36 +616,36 @@
 #define TRAIN_FAST                      0x04
 #define TRAIN_BACK                      0x05
 
-#define FEV_NOTHOST                     BIT(0) // Skip local host for event send.
-#define FEV_RELIABLE                    BIT(1) // Send the event reliably. You must specify the origin and angles
+#define FEV_NOTHOST                     (1<<0) // Skip local host for event send.
+#define FEV_RELIABLE                    (1<<1) // Send the event reliably. You must specify the origin and angles
                                                // for this to work correctly on the server for anything
                                                // that depends on the event origin/angles. I.e., the origin/angles are not
                                                // taken from the invoking edict for reliable events.
 
-#define FEV_GLOBAL                      BIT(2) // Don't restrict to PAS/PVS, send this event to _everybody_ on the server ( useful for stopping CHAN_STATIC
+#define FEV_GLOBAL                      (1<<2) // Don't restrict to PAS/PVS, send this event to _everybody_ on the server ( useful for stopping CHAN_STATIC
                                                // sounds started by client event when client is not in PVS anymore ( hwguy in TFC e.g. ).
 
-#define FEV_UPDATE                      BIT(3) // If this client already has one of these events in its queue, just update the event instead of sending it as a duplicate
-#define FEV_HOSTONLY                    BIT(4) // Only send to entity specified as the invoker
-#define FEV_SERVER                      BIT(5) // Only send if the event was created on the server.
-#define FEV_CLIENT                      BIT(6) // Only issue event client side ( from shared code )
+#define FEV_UPDATE                      (1<<3) // If this client already has one of these events in its queue, just update the event instead of sending it as a duplicate
+#define FEV_HOSTONLY                    (1<<4) // Only send to entity specified as the invoker
+#define FEV_SERVER                      (1<<5) // Only send if the event was created on the server.
+#define FEV_CLIENT                      (1<<6) // Only issue event client side ( from shared code )
 
 /**
 * Cap bits to indicate what an object's capabilities are, currently used for
 * save/restore and level transitions.
 */
-#define FCAP_CUSTOMSAVE                 BIT(0)
-#define FCAP_ACROSS_TRANSITION          BIT(1)  // Should transfer between transitions
-#define FCAP_MUST_SPAWN                 BIT(2)  // Spawn after restore
-#define FCAP_IMPULSE_USE                BIT(3)  // Can be used by the player
-#define FCAP_CONTINUOUS_USE             BIT(4)  // Can be used by the player
-#define FCAP_ONOFF_USE                  BIT(5)  // Can be used by the player
-#define FCAP_DIRECTIONAL_USE            BIT(6)  // Player sends +/- 1 when using (currently only tracktrains)
-#define FCAP_MASTER                     BIT(7)  // Can be used to "master" other entities (like multisource)
-#define FCAP_DONT_SAVE                  BIT(31) // Don't save this
+#define FCAP_CUSTOMSAVE                 0x00000001
+#define FCAP_ACROSS_TRANSITION          0x00000002 // Should transfer between transitions
+#define FCAP_MUST_SPAWN                 0x00000004 // Spawn after restore
+#define FCAP_IMPULSE_USE                0x00000008 // Can be used by the player
+#define FCAP_CONTINUOUS_USE             0x00000010 // Can be used by the player
+#define FCAP_ONOFF_USE                  0x00000020 // Can be used by the player
+#define FCAP_DIRECTIONAL_USE            0x00000040 // Player sends +/- 1 when using (currently only tracktrains)
+#define FCAP_MASTER                     0x00000080 // Can be used to "master" other entities (like multisource)
+#define FCAP_DONT_SAVE                  0x80000000 // Don't save this
 
 // UNDONE: This will ignore transition volumes (trigger_transition), but not the PVS!!!
-#define FCAP_FORCE_TRANSITION           BIT(7)  // ALWAYS goes across transitions
+#define FCAP_FORCE_TRANSITION           0x00000080 // ALWAYS goes across transitions
 
 // All monsters need this data
 #define DONT_BLEED                      -1
