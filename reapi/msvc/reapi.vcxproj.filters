@@ -696,6 +696,12 @@
     <ClInclude Include="..\common\info.h">
       <Filter>common</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\entity_callback.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\amx_hook.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\include\cssdk\common\parsemsg.cpp">
@@ -796,6 +802,9 @@
     </ClCompile>
     <ClCompile Include="..\common\info.cpp">
       <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\entity_callback.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -63,6 +63,7 @@
 #include "api_config.h"
 #include "hook_manager.h"
 #include "hook_callback.h"
+#include "entity_callback.h"
 #include "member_list.h"
 
 // natives

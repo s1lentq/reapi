@@ -255,6 +255,197 @@ cell AMX_NATIVE_CALL amx_GetAttachment(AMX *amx, cell *params)
 	return TRUE;
 }
 
+/*
+* Sets callback for entity
+*
+* @param entity     Entity index
+* @param callback   The forward to call
+* @note Use "" to reset callback
+*
+* @noreturn
+*
+* native SetThink(const ent, const callback[]);
+*/
+cell AMX_NATIVE_CALL amx_SetThink(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_handler };
+
+	CHECK_ISENTITY(arg_index);
+
+	CBaseEntity *pEntity = getPrivate<CBaseEntity>(params[arg_index]);
+	if (unlikely(pEntity == nullptr)) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
+		return FALSE;
+	}
+
+	int funcid;
+	const char *funcname = getAmxString(amx, params[arg_handler]);
+	if (unlikely(funcname == nullptr || funcname[0] == '\0')) {
+		pEntity->SetThink(nullptr);
+		return TRUE;
+	}
+
+	if (unlikely(g_amxxapi.amx_FindPublic(amx, funcname, &funcid) != AMX_ERR_NONE)) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: public function \"%s\" not found.", __FUNCTION__, funcname);
+		return FALSE;
+	}
+
+	return (cell)g_entCallback.SetThink(amx, pEntity, funcname);
+}
+
+/*
+* Sets callback for entity
+*
+* @param entity     Entity index
+* @param callback   The forward to call
+* @note Use "" to reset callback
+*
+* @noreturn
+*
+* native SetTouch(const ent, const callback[]);
+*/
+cell AMX_NATIVE_CALL amx_SetTouch(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_handler };
+
+	CHECK_ISENTITY(arg_index);
+
+	CBaseEntity *pEntity = getPrivate<CBaseEntity>(params[arg_index]);
+	if (unlikely(pEntity == nullptr)) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
+		return FALSE;
+	}
+
+	int funcid;
+	const char *funcname = getAmxString(amx, params[arg_handler]);
+	if (unlikely(funcname == nullptr || funcname[0] == '\0')) {
+		pEntity->SetTouch(nullptr);
+		return TRUE;
+	}
+
+	if (unlikely(g_amxxapi.amx_FindPublic(amx, funcname, &funcid) != AMX_ERR_NONE)) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: public function \"%s\" not found.", __FUNCTION__, funcname);
+		return FALSE;
+	}
+
+	return (cell)g_entCallback.SetTouch(amx, pEntity, funcname);
+}
+
+/*
+* Sets callback for entity
+*
+* @param entity     Entity index
+* @param callback   The forward to call
+* @note Use "" to reset callback
+*
+* @noreturn
+*
+* native SetUse(const ent, const callback[]);
+*/
+cell AMX_NATIVE_CALL amx_SetUse(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_handler };
+
+	CHECK_ISENTITY(arg_index);
+
+	CBaseEntity *pEntity = getPrivate<CBaseEntity>(params[arg_index]);
+	if (unlikely(pEntity == nullptr)) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
+		return FALSE;
+	}
+
+	int funcid;
+	const char *funcname = getAmxString(amx, params[arg_handler]);
+	if (unlikely(funcname == nullptr || funcname[0] == '\0')) {
+		pEntity->SetUse(nullptr);
+		return TRUE;
+	}
+
+	if (unlikely(g_amxxapi.amx_FindPublic(amx, funcname, &funcid) != AMX_ERR_NONE)) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: public function \"%s\" not found.", __FUNCTION__, funcname);
+		return FALSE;
+	}
+
+	return (cell)g_entCallback.SetUse(amx, pEntity, funcname);
+}
+
+/*
+* Sets callback for entity
+*
+* @param entity     Entity index
+* @param callback   The forward to call
+* @note Use "" to reset callback
+*
+* @noreturn
+*
+* native SetBlocked(const ent, const callback[]);
+*/
+cell AMX_NATIVE_CALL amx_SetBlocked(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_handler };
+
+	CHECK_ISENTITY(arg_index);
+
+	CBaseEntity *pEntity = getPrivate<CBaseEntity>(params[arg_index]);
+	if (unlikely(pEntity == nullptr)) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
+		return FALSE;
+	}
+
+	int funcid;
+	const char *funcname = getAmxString(amx, params[arg_handler]);
+	if (unlikely(funcname == nullptr || funcname[0] == '\0')) {
+		pEntity->SetBlocked(nullptr);
+		return TRUE;
+	}
+
+	if (unlikely(g_amxxapi.amx_FindPublic(amx, funcname, &funcid) != AMX_ERR_NONE)) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: public function \"%s\" not found.", __FUNCTION__, funcname);
+		return FALSE;
+	}
+
+	return (cell)g_entCallback.SetBlocked(amx, pEntity, funcname);
+}
+
+/*
+* Sets callback for entity
+* @note Entity should be inherited from CBaseToggle, otherwise server can crash
+*
+* @param entity     Entity index
+* @param callback   The forward to call
+* @note Use "" to reset callback
+*
+* @noreturn
+*
+* native SetMoveDone(const ent, const callback[]);
+*/
+cell AMX_NATIVE_CALL amx_SetMoveDone(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_handler };
+
+	CHECK_ISENTITY(arg_index);
+
+	CBaseEntity *pEntity = getPrivate<CBaseEntity>(params[arg_index]);
+	if (unlikely(pEntity == nullptr)) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
+		return FALSE;
+	}
+
+	int funcid;
+	const char *funcname = getAmxString(amx, params[arg_handler]);
+	if (unlikely(funcname == nullptr || funcname[0] == '\0')) {
+		((CBaseToggle *)pEntity)->SetMoveDone(nullptr);
+		return TRUE;
+	}
+
+	if (unlikely(g_amxxapi.amx_FindPublic(amx, funcname, &funcid) != AMX_ERR_NONE)) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: public function \"%s\" not found.", __FUNCTION__, funcname);
+		return FALSE;
+	}
+
+	return (cell)g_entCallback.SetMoveDone(amx, pEntity, funcname);
+}
+
 AMX_NATIVE_INFO Natives_Common[] =
 {
 	{ "FClassnameIs",    amx_FClassnameIs    },
@@ -265,6 +456,11 @@ AMX_NATIVE_INFO Natives_Common[] =
 	{ "set_key_value",   amx_set_key_value   },
 	{ "GetBonePosition", amx_GetBonePosition },
 	{ "GetAttachment",   amx_GetAttachment   },
+	{ "SetThink",        amx_SetThink        },
+	{ "SetTouch",        amx_SetTouch        },
+	{ "SetUse",          amx_SetUse          },
+	{ "SetBlocked",      amx_SetBlocked      },
+	{ "SetMoveDone",     amx_SetMoveDone     },
 
 	{ nullptr, nullptr }
 };

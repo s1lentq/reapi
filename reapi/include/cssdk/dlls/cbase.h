@@ -110,6 +110,23 @@ public:
 	void (CBaseEntity::*m_pfnUse)(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value);
 	void (CBaseEntity::*m_pfnBlocked)(CBaseEntity *pOther);
 
+	void EXT_FUNC DLLEXPORT SUB_Think();
+	void EXT_FUNC DLLEXPORT SUB_Touch(CBaseEntity *pOther);
+	void EXT_FUNC DLLEXPORT SUB_Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value);
+	void EXT_FUNC DLLEXPORT SUB_Blocked(CBaseEntity *pOther);
+
+	using thinkfn_t = decltype(m_pfnThink);
+	inline void SetThink(thinkfn_t pfn) { m_pfnThink = pfn; }
+
+	using touchfn_t = decltype(m_pfnTouch);
+	inline void SetTouch(touchfn_t pfn) { m_pfnTouch = pfn; }
+
+	using usefn_t = decltype(m_pfnUse);
+	inline void SetUse(usefn_t pfn) { m_pfnUse = pfn; }
+
+	using blockedfn_t = decltype(m_pfnBlocked);
+	inline void SetBlocked(blockedfn_t pfn) { m_pfnBlocked = pfn; }
+
 	virtual void Think() = 0;
 	virtual void Touch(CBaseEntity *pOther) = 0;
 	virtual void Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType = USE_OFF, float value = 0.0f) = 0;
@@ -230,6 +247,8 @@ public:
 	virtual int Restore(CRestore &restore) = 0;
 	virtual int GetToggleState() = 0;
 	virtual float GetDelay() = 0;
+
+	void EXT_FUNC DLLEXPORT SUB_MoveDone();
 public:
 	TOGGLE_STATE m_toggle_state;
 	float m_flActivateFinished;	// like attack_finished, but for doors
@@ -247,7 +266,11 @@ public:
 	int m_cTriggersLeft;		// trigger_counter only, # of activations remaining
 	float m_flHeight;
 	EHANDLE m_hActivator;
+
 	void (CBaseToggle::*m_pfnCallWhenMoveDone)();
+	using movedonefn_t = decltype(m_pfnCallWhenMoveDone);
+	inline void SetMoveDone(movedonefn_t pfn) { m_pfnCallWhenMoveDone = pfn; }
+
 	Vector m_vecFinalDest;
 	Vector m_vecFinalAngle;
 

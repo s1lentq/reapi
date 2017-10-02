@@ -5,22 +5,22 @@
 
 #define BEGIN_FUNC_REGION(x)		(MAX_REGION_RANGE * hooklist_t::hooks_tables_e::ht_##x)
 
-typedef bool (*reqfunc_t)();
-typedef int (*regfunc_t)(AMX *, const char *);
+typedef bool (*reqfunc_t) ();
+typedef int  (*regfunc_t) (AMX *, const char *);
 typedef void (*regchain_t)();
 
 struct hook_t
 {
-	std::vector<class CAmxxHook *> pre;		// pre forwards
-	std::vector<class CAmxxHook *> post;	// post forwards
+	std::vector<class CAmxxHook<> *> pre;   // pre forwards
+	std::vector<class CAmxxHook<> *> post;  // post forwards
 
-	const char *func_name;				// function name
-	const char *depend_name;			// platform dependency
+	const char *func_name;                  // function name
+	const char *depend_name;                // platform dependency
 
 	reqfunc_t checkRequirements;
-	regfunc_t registerForward;			// AMXX forward registration function
-	regchain_t registerHookchain;		// register re* API hook
-	regchain_t unregisterHookchain;		// unregister re* API hook
+	regfunc_t registerForward;              // AMXX forward registration function
+	regchain_t registerHookchain;           // register re* API hook
+	regchain_t unregisterHookchain;         // unregister re* API hook
 
 	void clear();
 };

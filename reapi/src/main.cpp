@@ -69,6 +69,7 @@ void ServerDeactivate_Post()
 	api_cfg.ServerDeactivate();
 	g_hookManager.Clear();
 	g_queryFileManager.Clear();
+	g_entCallback.Clear();
 
 	g_pFunctionTable->pfnSpawn = DispatchSpawn;
 	g_pFunctionTable->pfnKeyValue = KeyValue;
@@ -116,5 +117,16 @@ void ResetGlobalState()
 		g_pFunctionTable->pfnResetGlobalState = nullptr;
 	}
 
+	SET_META_RESULT(MRES_IGNORED);
+}
+
+void OnFreeEntPrivateData(edict_t *pEdict)
+{
+	CBaseEntity *pEntity = getPrivate<CBaseEntity>(pEdict);
+	if (!pEntity){
+		return;
+	}
+
+	g_entCallback.Clear(pEntity);
 	SET_META_RESULT(MRES_IGNORED);
 }

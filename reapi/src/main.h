@@ -13,6 +13,7 @@ void OnAmxxAttach();
 bool OnMetaAttach();
 void OnMetaDetach();
 
+void OnFreeEntPrivateData(edict_t *pEdict);
 void ServerActivate_Post(edict_t *pEdictList, int edictCount, int clientMax);
 void ServerDeactivate_Post();
 int DispatchSpawn(edict_t* pEntity);

@@ -502,24 +502,4 @@ inline cell* getAmxAddr(AMX *amx, cell amx_addr)
 	return (cell *)(amx->base + (int)(((AMX_HEADER *)amx->base)->dat + amx_addr));
 }
 
-struct getAmxString
-{
-	getAmxString(cell* src, size_t* len = nullptr)
-	{
-		getAmxStringTemp(src, temp, sizeof temp - 1, len);
-	}
-
-	getAmxString(AMX* amx, cell addr, size_t* len = nullptr)
-	{
-		getAmxStringTemp(getAmxAddr(amx, addr), temp, sizeof temp - 1, len);
-	}
-
-	operator char *()
-	{
-		return temp;
-	}
-
-	char temp[1024];
-};
-
 #endif // __AMXXMODULE_H__

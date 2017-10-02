@@ -202,7 +202,9 @@
     <ClInclude Include="..\include\reunion_api.h" />
     <ClInclude Include="..\include\vtc_api.h" />
     <ClInclude Include="..\src\amxxmodule.h" />
+    <ClInclude Include="..\src\amx_hook.h" />
     <ClInclude Include="..\src\api_config.h" />
+    <ClInclude Include="..\src\entity_callback.h" />
     <ClInclude Include="..\src\hook_manager.h" />
     <ClInclude Include="..\src\hook_callback.h" />
     <ClInclude Include="..\src\hook_list.h" />
@@ -246,6 +248,7 @@
     <ClCompile Include="..\src\api_config.cpp" />
     <ClCompile Include="..\src\dllapi.cpp" />
     <ClCompile Include="..\src\engine_api.cpp" />
+    <ClCompile Include="..\src\entity_callback.cpp" />
     <ClCompile Include="..\src\hook_manager.cpp" />
     <ClCompile Include="..\src\hook_callback.cpp" />
     <ClCompile Include="..\src\hook_list.cpp" />

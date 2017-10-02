@@ -7,6 +7,62 @@
 #include <reapi_gamedll_const>
 
 /*
+* Sets callback for entity
+*
+* @param entity     Entity index
+* @param callback   The forward to call
+* @note Use "" to reset callback
+*
+* @noreturn
+*/
+native SetThink(const ent, const callback[]);
+
+/*
+* Sets callback for entity
+*
+* @param entity     Entity index
+* @param callback   The forward to call
+* @note Use "" to reset callback
+*
+* @noreturn
+*/
+native SetTouch(const ent, const callback[]);
+
+/*
+* Sets callback for entity
+*
+* @param entity     Entity index
+* @param callback   The forward to call
+* @note Use "" to reset callback
+*
+* @noreturn
+*/
+native SetUse(const ent, const callback[]);
+
+/*
+* Sets callback for entity
+*
+* @param entity     Entity index
+* @param callback   The forward to call
+* @note Use "" to reset callback
+*
+* @noreturn
+*/
+native SetBlocked(const ent, const callback[]);
+
+/*
+* Sets callback for entity
+* @note Entity should be inherited from CBaseToggle, otherwise server can crash
+*
+* @param entity     Entity index
+* @param callback   The forward to call
+* @note Use "" to reset callback
+*
+* @noreturn
+*/
+native SetMoveDone(const ent, const callback[]);
+
+/*
 * Sets a value to CSGameRules_Members members.
 *
 * @param member     The specified member, look at the enums with name CSGameRules_Members

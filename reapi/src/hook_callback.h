@@ -5,8 +5,8 @@ enum HookChainState
 {
 	HC_CONTINUE = 0,	// plugin didn't take any action
 	HC_SUPERCEDE,		// skip real function, use my return value
-	HC_BREAK		// skip all forwards and real function, use my return value
-				// @note Warning: Be very careful using this type of return will skip calls for all following AMXX the plugins.
+	HC_BREAK			// skip all forwards and real function, use my return value
+						// @note Warning: Be very careful using this type of return will skip calls for all following AMXX the plugins.
 };
 
 // api types

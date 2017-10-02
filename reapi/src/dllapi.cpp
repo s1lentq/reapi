@@ -109,6 +109,15 @@ DLL_FUNCTIONS gFunctionTable_Post =
 	NULL,					// pfnAllowLagCompensation
 };
 
+NEW_DLL_FUNCTIONS g_NewDLLFuncTable =
+{
+	&OnFreeEntPrivateData,					//! pfnOnFreeEntPrivateData()	Called right before the object's memory is freed.  Calls its destructor.
+	NULL,					//! pfnGameShutdown()
+	NULL,					//! pfnShouldCollide()
+	NULL,					//! pfnCvarValue()
+	NULL,					//! pfnCvarValue2()
+};
+
 C_DLLEXPORT int GetEntityAPI2(DLL_FUNCTIONS *pFunctionTable, int *interfaceVersion)
 {
 	if (!pFunctionTable)
@@ -147,5 +156,25 @@ C_DLLEXPORT int GetEntityAPI2_Post(DLL_FUNCTIONS *pFunctionTable, int *interface
 	}
 
 	memcpy(pFunctionTable, &gFunctionTable_Post, sizeof(DLL_FUNCTIONS));
+	return TRUE;
+}
+
+C_DLLEXPORT int GetNewDLLFunctions(NEW_DLL_FUNCTIONS *pNewFunctionTable, int *interfaceVersion)
+{
+	if (!pNewFunctionTable)
+	{
+		ALERT(at_logged, "GetNewDLLFunctions called with null pNewFunctionTable");
+		return(FALSE);
+	}
+
+	if (*interfaceVersion != NEW_DLL_FUNCTIONS_VERSION)
+	{
+		ALERT(at_logged, "GetNewDLLFunctions version mismatch; requested=%d ours=%d", *interfaceVersion, NEW_DLL_FUNCTIONS_VERSION);
+		//! Tell metamod what version we had, so it can figure out who is out of date.
+		*interfaceVersion = NEW_DLL_FUNCTIONS_VERSION;
+		return FALSE;
+	}
+
+	memcpy(pNewFunctionTable, &g_NewDLLFuncTable, sizeof(NEW_DLL_FUNCTIONS));
 	return TRUE;
 }
