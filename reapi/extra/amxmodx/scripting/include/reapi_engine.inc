@@ -56,6 +56,34 @@ native get_key_value(const pbuffer, const key[], const value[], const maxlen);
 native set_key_value(const pbuffer, const key[], const value[]);
 
 /*
+* Gets the position of the bone
+*
+* @param entity     Entity index
+* @param bone       Number of the bone
+* @param vecOrigin  Array to store origin in
+* @param vecAngles  Array to store angles in
+*
+* @return           1 on success, 0 otherwise
+* @error            If the index is not within the range of 1 to maxEntities or
+*                   the entity is not valid, an error will be thrown.
+*/
+native GetBonePosition(const entity, const bone, Float:vecOrigin[3], Float:vecAngles[3] = {0.0, 0.0, 0.0});
+
+/*
+* Gets the position of the attachment
+*
+* @param entity     Entity index
+* @param attachment Number of the attachment
+* @param vecOrigin  Array to store origin in
+* @param vecAngles  Array to store angles in
+*
+* @return           1 on success, 0 otherwise
+* @error            If the index is not within the range of 1 to maxEntities or
+*                   the entity is not valid, an error will be thrown.
+*/
+native GetAttachment(const entity, const attachment, Float:vecOrigin[3], Float:vecAngles[3] = {0.0, 0.0, 0.0});
+
+/*
 * Sets the name of the map.
 *
 * @param mapname     New map name.

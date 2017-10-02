@@ -653,6 +653,8 @@
 #define FCAP_ONOFF_USE                  0x00000020 // Can be used by the player
 #define FCAP_DIRECTIONAL_USE            0x00000040 // Player sends +/- 1 when using (currently only tracktrains)
 #define FCAP_MASTER                     0x00000080 // Can be used to "master" other entities (like multisource)
+#define FCAP_MUST_RESET                 0x00000100 // Should reset on the new round
+#define FCAP_MUST_RELEASE               0x00000200 // Should release on the new round
 #define FCAP_DONT_SAVE                  0x80000000 // Don't save this
 
 // UNDONE: This will ignore transition volumes (trigger_transition), but not the PVS!!!
@@ -713,7 +715,18 @@ enum ArmouryItemPack
 	ARMOURY_HEGRENADE,
 	ARMOURY_KEVLAR,
 	ARMOURY_ASSAULT,
-	ARMOURY_SMOKEGRENADE
+	ARMOURY_SMOKEGRENADE,
+	ARMOURY_SHIELD,
+	ARMOURY_FAMAS,
+	ARMOURY_SG550,
+	ARMOURY_GALIL,
+	ARMOURY_UMP45,
+	ARMOURY_GLOCK18,
+	ARMOURY_USP,
+	ARMOURY_ELITE,
+	ARMOURY_FIVESEVEN,
+	ARMOURY_P228,
+	ARMOURY_DEAGLE,
 };
 
 enum RewardType

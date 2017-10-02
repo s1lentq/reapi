@@ -26,6 +26,7 @@
 #include <com_progdefs.h>
 #include <gamerules.h>
 #include <mapinfo.h>
+#include <studio.h>
 
 // metamod SDK
 #include <meta_api.h>

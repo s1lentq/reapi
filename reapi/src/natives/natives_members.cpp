@@ -618,7 +618,7 @@ void RegisterNatives_Members()
 	g_amxxapi.AddNatives(EngineVars_Natives);
 }
 
-BOOL set_member(void* pdata, const member_t *member, cell* value, size_t element)
+cell set_member(void* pdata, const member_t *member, cell* value, size_t element)
 {
 	switch (member->type) {
 	case MEMBER_CLASSPTR:
@@ -674,7 +674,7 @@ BOOL set_member(void* pdata, const member_t *member, cell* value, size_t element
 			char *source = getAmxString(value);
 			string_t newstr = (source && source[0] != '\0') ? ALLOC_STRING(source) : iStringNull;
 			set_member<string_t>(pdata, member->offset, newstr, element);
-			return TRUE;
+			return (cell)newstr;
 		}
 	case MEMBER_FLOAT:
 	case MEMBER_INTEGER:
@@ -806,7 +806,7 @@ cell get_member(void* pdata, const member_t *member, cell* dest, size_t element,
 			}
 
 			setAmxString(dest, STRING(str), length);
-			return 1;
+			return (cell)str;
 		}
 	case MEMBER_FLOAT:
 	case MEMBER_INTEGER:

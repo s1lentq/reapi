@@ -181,14 +181,90 @@ cell AMX_NATIVE_CALL amx_set_key_value(AMX *amx, cell *params)
 	return TRUE;
 }
 
+/*
+* Gets the position of the bone
+*
+* @param entity     Entity index
+* @param bone       Number of the bone
+* @param vecOrigin  Array to store origin in
+* @param vecAngles  Array to store angles in
+*
+* @return           1 on success, 0 otherwise
+* @error            If the index is not within the range of 1 to maxEntities or
+*                   the entity is not valid, an error will be thrown.
+*
+* native GetBonePosition(const entity, const bone, Float:vecOrigin[3], Float:vecAngles[3] = {0.0, 0.0, 0.0});
+*/
+cell AMX_NATIVE_CALL amx_GetBonePosition(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_bone, arg_origin, arg_angles };
+
+	CHECK_ISENTITY(arg_index);
+
+	CBaseEntity *pEntity = getPrivate<CBaseEntity>(params[arg_index]);
+	if (unlikely(pEntity == nullptr)) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
+		return FALSE;
+	}
+
+	if (FNullEnt(params[arg_index])) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: worldspawn not allowed", __FUNCTION__);
+		return FALSE;
+	}
+
+	Vector *pVecOrigin = (Vector *)getAmxAddr(amx, params[arg_origin]);
+	Vector *pVecAngles = (PARAMS_COUNT == 4) ? (Vector *)getAmxAddr(amx, params[arg_angles]) : nullptr;
+	GetBonePosition(pEntity, params[arg_bone], pVecOrigin, pVecAngles);
+	return TRUE;
+}
+
+/*
+* Gets the position of the attachment
+*
+* @param entity     Entity index
+* @param attachment Number of the attachment
+* @param vecOrigin  Array to store origin in
+* @param vecAngles  Array to store angles in
+*
+* @return           1 on success, 0 otherwise
+* @error            If the index is not within the range of 1 to maxEntities or
+*                   the entity is not valid, an error will be thrown.
+*
+* native GetAttachment(const entity, const attachment, Float:vecOrigin[3], Float:vecAngles[3] = {0.0, 0.0, 0.0});
+*/
+cell AMX_NATIVE_CALL amx_GetAttachment(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_bone, arg_attachment, arg_angles };
+
+	CHECK_ISENTITY(arg_index);
+
+	CBaseEntity *pEntity = getPrivate<CBaseEntity>(params[arg_index]);
+	if (unlikely(pEntity == nullptr)) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
+		return FALSE;
+	}
+
+	if (FNullEnt(params[arg_index])) {
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: worldspawn not allowed", __FUNCTION__);
+		return FALSE;
+	}
+
+	Vector *pVecOrigin = (Vector *)getAmxAddr(amx, params[arg_attachment]);
+	Vector *pVecAngles = (PARAMS_COUNT == 4) ? (Vector *)getAmxAddr(amx, params[arg_angles]) : nullptr;
+	GetAttachment(pEntity, params[arg_bone], pVecOrigin, pVecAngles);
+	return TRUE;
+}
+
 AMX_NATIVE_INFO Natives_Common[] =
 {
-	{ "FClassnameIs",   amx_FClassnameIs   },
-	{ "GetGrenadeType", amx_GetGrenadeType },
-	{ "engset_view",    amx_engset_view    },
-	{ "get_viewent",    amx_get_viewent    },
-	{ "get_key_value",  amx_get_key_value  },
-	{ "set_key_value",  amx_set_key_value  },
+	{ "FClassnameIs",    amx_FClassnameIs    },
+	{ "GetGrenadeType",  amx_GetGrenadeType  },
+	{ "engset_view",     amx_engset_view     },
+	{ "get_viewent",     amx_get_viewent     },
+	{ "get_key_value",   amx_get_key_value   },
+	{ "set_key_value",   amx_set_key_value   },
+	{ "GetBonePosition", amx_GetBonePosition },
+	{ "GetAttachment",   amx_GetAttachment   },
 
 	{ nullptr, nullptr }
 };

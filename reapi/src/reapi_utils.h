@@ -53,4 +53,7 @@ ModelName GetModelAuto(TeamName team);
 void UTIL_ServerPrint(const char *fmt, ...);
 CBaseEntity *GiveNamedItemInternal(AMX *amx, CBasePlayer *pPlayer, const char *pszItemName);
 
+void GetBonePosition(CBaseEntity *pEntity, int iBone, Vector *vecOrigin, Vector *vecAngles);
+void GetAttachment(CBaseEntity *pEntity, int iBone, Vector *pVecOrigin, Vector *pVecAngles);
+
 extern void __declspec(noreturn) UTIL_SysError(const char *fmt, ...);

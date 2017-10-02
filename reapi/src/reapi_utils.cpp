@@ -92,3 +92,109 @@ CBaseEntity *GiveNamedItemInternal(AMX *amx, CBasePlayer *pPlayer, const char *p
 
 	return pEntity;
 }
+
+void StudioFrameAdvanceEnt(edict_t *pEdict)
+{
+	float flInterval = gpGlobals->time - pEdict->v.animtime;
+	if (flInterval <= 0.001f) {
+		pEdict->v.animtime = gpGlobals->time;
+		return;
+	}
+
+	if (pEdict->v.animtime == 0.0f) {
+		flInterval = 0.0f;
+	}
+
+	studiohdr_t *pstudiohdr = static_cast<studiohdr_t *>(GET_MODEL_PTR(pEdict));
+	if (!pstudiohdr) {
+		return;
+	}
+
+	if (pEdict->v.sequence >= pstudiohdr->numseq || pEdict->v.sequence < 0) {
+		return;
+	}
+
+	float flFrameRate = 256.0f;
+	mstudioseqdesc_t *pseqdesc = (mstudioseqdesc_t *)((byte *)pstudiohdr + pstudiohdr->seqindex) + int(pEdict->v.sequence);
+	if (pseqdesc->numframes > 1)
+	{
+		flFrameRate = pseqdesc->fps * 256.0f / (pseqdesc->numframes - 1);
+	}
+
+	pEdict->v.frame += flInterval * flFrameRate * pEdict->v.framerate;
+	pEdict->v.animtime = gpGlobals->time;
+
+	if (pEdict->v.frame < 0.0f || pEdict->v.frame >= 256.0f)
+	{
+		// true if the sequence loops
+		if (pseqdesc->flags & STUDIO_LOOPING)
+			pEdict->v.frame -= int(pEdict->v.frame / 256.0f) * 256.0f;
+		else
+			pEdict->v.frame = (pEdict->v.frame < 0.0f) ? 0.0f : 255.0f;
+	}
+}
+
+void FixupAngles(edict_t *pEdict, Vector &vecSrc)
+{
+	vecSrc.x -= pEdict->v.origin.x;
+	vecSrc.y -= pEdict->v.origin.y;
+
+	float x = vecSrc.x;
+	float y = vecSrc.y;
+	float c = cos((pEdict->v.angles.y * M_PI / 180.0));
+	float s = sin((pEdict->v.angles.y * M_PI / 180.0));
+
+	vecSrc.x = x * c - y * s;
+	vecSrc.y = y * c + x * s;
+
+	vecSrc.x += pEdict->v.origin.x;
+	vecSrc.y += pEdict->v.origin.y;
+}
+
+void GetBonePosition(CBaseEntity *pEntity, int iBone, Vector *pVecOrigin, Vector *pVecAngles)
+{
+	Vector vecOrigin, vecAngles;
+	edict_t *pEdict = pEntity->edict();
+
+	// force to update frame
+	StudioFrameAdvanceEnt(pEdict);
+
+	pEntity->pev->angles.x = -pEntity->pev->angles.x;
+	GET_BONE_POSITION(pEdict, iBone, vecOrigin, vecAngles);
+	pEntity->pev->angles.x = -pEntity->pev->angles.x;
+
+	if (!pEntity->IsPlayer()) {
+		FixupAngles(pEdict, vecOrigin);
+	}
+
+	if (pVecOrigin) {
+		*pVecOrigin = vecOrigin;
+	}
+
+	if (pVecAngles) {
+		*pVecAngles = vecAngles;
+	}
+}
+
+void GetAttachment(CBaseEntity *pEntity, int iBone, Vector *pVecOrigin, Vector *pVecAngles)
+{
+	Vector vecOrigin, vecAngles;
+	edict_t *pEdict = pEntity->edict();
+
+	// force to update frame
+	StudioFrameAdvanceEnt(pEdict);
+
+	GET_ATTACHMENT(pEdict, iBone, vecOrigin, vecAngles);
+
+	if (!pEntity->IsPlayer()) {
+		FixupAngles(pEdict, vecOrigin);
+	}
+
+	if (pVecOrigin) {
+		*pVecOrigin = vecOrigin;
+	}
+
+	if (pVecAngles) {
+		*pVecAngles = vecAngles;
+	}
+}
