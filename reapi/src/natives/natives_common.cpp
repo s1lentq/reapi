@@ -256,19 +256,21 @@ cell AMX_NATIVE_CALL amx_GetAttachment(AMX *amx, cell *params)
 }
 
 /*
-* Sets callback for entity
+* Sets Think callback for entity
 *
 * @param entity     Entity index
 * @param callback   The forward to call
+*
 * @note Use "" to reset callback
+* @note Callback should be contains passing arguments as "public Think_Callback(const ent)"
 *
 * @noreturn
 *
-* native SetThink(const ent, const callback[]);
+* native SetThink(const ent, const callback[], const params[] = "", const len = 0);
 */
 cell AMX_NATIVE_CALL amx_SetThink(AMX *amx, cell *params)
 {
-	enum args_e { arg_count, arg_index, arg_handler };
+	enum args_e { arg_count, arg_index, arg_handler, arg_params, arg_len };
 
 	CHECK_ISENTITY(arg_index);
 
@@ -290,23 +292,26 @@ cell AMX_NATIVE_CALL amx_SetThink(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	return (cell)g_entCallback.SetThink(amx, pEntity, funcname);
+	cell *pParams = (PARAMS_COUNT >= 3) ? getAmxAddr(amx, params[arg_params]) : nullptr;
+	return (cell)g_entCallback.SetThink(amx, pEntity, funcname, pParams, params[arg_len]);
 }
 
 /*
-* Sets callback for entity
+* Sets Touch callback for entity
 *
 * @param entity     Entity index
 * @param callback   The forward to call
+*
 * @note Use "" to reset callback
+* @note Callback should be contains passing arguments as "public Touch_Callback(const ent, const other)"
 *
 * @noreturn
 *
-* native SetTouch(const ent, const callback[]);
+* native SetTouch(const ent, const callback[], const params[] = "", const len = 0);
 */
 cell AMX_NATIVE_CALL amx_SetTouch(AMX *amx, cell *params)
 {
-	enum args_e { arg_count, arg_index, arg_handler };
+	enum args_e { arg_count, arg_index, arg_handler, arg_params, arg_len };
 
 	CHECK_ISENTITY(arg_index);
 
@@ -328,23 +333,26 @@ cell AMX_NATIVE_CALL amx_SetTouch(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	return (cell)g_entCallback.SetTouch(amx, pEntity, funcname);
+	cell *pParams = (PARAMS_COUNT >= 3) ? getAmxAddr(amx, params[arg_params]) : nullptr;
+	return (cell)g_entCallback.SetTouch(amx, pEntity, funcname, pParams, params[arg_len]);
 }
 
 /*
-* Sets callback for entity
+* Sets Use callback for entity
 *
 * @param entity     Entity index
 * @param callback   The forward to call
+*
 * @note Use "" to reset callback
+* @note Callback should be contains passing arguments as "public Use_Callback(const ent, const activator, const caller, USE_TYPE:useType, Float:value)"
 *
 * @noreturn
 *
-* native SetUse(const ent, const callback[]);
+* native SetUse(const ent, const callback[], const params[] = "", const len = 0);
 */
 cell AMX_NATIVE_CALL amx_SetUse(AMX *amx, cell *params)
 {
-	enum args_e { arg_count, arg_index, arg_handler };
+	enum args_e { arg_count, arg_index, arg_handler, arg_params, arg_len };
 
 	CHECK_ISENTITY(arg_index);
 
@@ -366,23 +374,26 @@ cell AMX_NATIVE_CALL amx_SetUse(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	return (cell)g_entCallback.SetUse(amx, pEntity, funcname);
+	cell *pParams = (PARAMS_COUNT >= 3) ? getAmxAddr(amx, params[arg_params]) : nullptr;
+	return (cell)g_entCallback.SetUse(amx, pEntity, funcname, pParams, params[arg_len]);
 }
 
 /*
-* Sets callback for entity
+* Sets Blocked callback for entity
 *
 * @param entity     Entity index
 * @param callback   The forward to call
+*
 * @note Use "" to reset callback
+* @note Callback should be contains passing arguments as "public Blocked_Callback(const ent, const other)"
 *
 * @noreturn
 *
-* native SetBlocked(const ent, const callback[]);
+* native SetBlocked(const ent, const callback[], const params[] = "", const len = 0);
 */
 cell AMX_NATIVE_CALL amx_SetBlocked(AMX *amx, cell *params)
 {
-	enum args_e { arg_count, arg_index, arg_handler };
+	enum args_e { arg_count, arg_index, arg_handler, arg_params, arg_len };
 
 	CHECK_ISENTITY(arg_index);
 
@@ -404,24 +415,27 @@ cell AMX_NATIVE_CALL amx_SetBlocked(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	return (cell)g_entCallback.SetBlocked(amx, pEntity, funcname);
+	cell *pParams = (PARAMS_COUNT >= 3) ? getAmxAddr(amx, params[arg_params]) : nullptr;
+	return (cell)g_entCallback.SetBlocked(amx, pEntity, funcname, pParams, params[arg_len]);
 }
 
 /*
-* Sets callback for entity
-* @note Entity should be inherited from CBaseToggle, otherwise server can crash
+* Sets MoveDone callback for entity
 *
 * @param entity     Entity index
 * @param callback   The forward to call
+*
 * @note Use "" to reset callback
+* @note Entity should be inherited from CBaseToggle, otherwise server can crash
+* @note Callback should be contains passing arguments as "public MoveDone_Callback(const ent, const other)"
 *
 * @noreturn
 *
-* native SetMoveDone(const ent, const callback[]);
+* native SetMoveDone(const ent, const callback[], const params[] = "", const len = 0);
 */
 cell AMX_NATIVE_CALL amx_SetMoveDone(AMX *amx, cell *params)
 {
-	enum args_e { arg_count, arg_index, arg_handler };
+	enum args_e { arg_count, arg_index, arg_handler, arg_params, arg_len };
 
 	CHECK_ISENTITY(arg_index);
 
@@ -443,7 +457,8 @@ cell AMX_NATIVE_CALL amx_SetMoveDone(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	return (cell)g_entCallback.SetMoveDone(amx, pEntity, funcname);
+	cell *pParams = (PARAMS_COUNT >= 3) ? getAmxAddr(amx, params[arg_params]) : nullptr;
+	return (cell)g_entCallback.SetMoveDone(amx, pEntity, funcname, pParams, params[arg_len]);
 }
 
 AMX_NATIVE_INFO Natives_Common[] =

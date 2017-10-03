@@ -8,7 +8,7 @@ enum fwdstate
 	FSTATE_STOPPED
 };
 
-template <typename T = int>
+template <typename T = void>
 class CAmxxHook
 {
 public:
@@ -18,9 +18,11 @@ public:
 			g_amxxapi.UnregisterSPForward(m_index);
 			m_index = -1;
 		}
+
+		delete m_uniqueData;
 	}
 
-	CAmxxHook(AMX *amx, const char *funcname, int index, T data = (T)0) :
+	CAmxxHook(AMX *amx, const char *funcname, int index, T *data = nullptr) :
 		m_index(index),
 		m_state(FSTATE_ENABLED),
 		m_amx(amx),
@@ -29,7 +31,7 @@ public:
 		Q_strlcpy(m_CallbackName, funcname);
 	};
 
-	T GetUnique()                 const;
+	T *GetUnique()                 const;
 	int GetIndex()                const;
 	fwdstate GetState()           const;
 	AMX *GetAmx()                 const;
@@ -38,7 +40,7 @@ public:
 	void SetState(fwdstate st);
 
 private:
-	T m_uniqueData;
+	T *m_uniqueData;
 	int m_index;
 	char m_CallbackName[64];
 	fwdstate m_state;
@@ -47,7 +49,7 @@ private:
 
 // Inlines
 template <typename T>
-inline T CAmxxHook<T>::GetUnique() const
+inline T *CAmxxHook<T>::GetUnique() const
 {
 	return m_uniqueData;
 }

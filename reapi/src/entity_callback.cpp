@@ -7,10 +7,10 @@ void CEntityCallback::PurgeCallbacks(CBaseEntity *pEntity, CallbackType_e type)
 	auto it = m_callbacks.begin();
 	while (it != m_callbacks.end())
 	{
-		EntityCallback_t data = (*it)->GetUnique();
+		eCallback_t *pUnique = (*it)->GetUnique();
 
 		// this callback was already sets, need to unregister the current forward
-		if (data.m_callbackType == type && data.m_entity == pEntity) {
+		if (pUnique->m_callbackType == type && pUnique->m_entity == pEntity) {
 			delete (*it);
 			it = m_callbacks.erase(it);
 		} else {
@@ -26,8 +26,8 @@ void CEntityCallback::Clear(CBaseEntity *pEntity)
 		auto it = m_callbacks.begin();
 		while (it != m_callbacks.end())
 		{
-			EntityCallback_t data = (*it)->GetUnique();
-			if (data.m_entity == pEntity) {
+			eCallback_t *pUnique = (*it)->GetUnique();
+			if (pUnique->m_entity == pEntity) {
 				delete (*it);
 				it = m_callbacks.erase(it);
 			} else {
@@ -45,82 +45,107 @@ void CEntityCallback::Clear(CBaseEntity *pEntity)
 	}
 }
 
-bool CEntityCallback::SetThink(AMX *amx, CBaseEntity *pEntity, const char *pszCallback)
+bool CEntityCallback::SetThink(AMX *amx, CBaseEntity *pEntity, const char *pszCallback, const cell *pParams, size_t iParamsLen)
 {
 	PurgeCallbacks(pEntity, CType_Think);
 
-	int fwdid = g_amxxapi.RegisterSPForwardByName(amx, pszCallback, FP_CELL, FP_DONE);
+	int fwdid;
+	if (iParamsLen > 0) {
+		fwdid = g_amxxapi.RegisterSPForwardByName(amx, pszCallback, FP_CELL, FP_ARRAY, FP_DONE);
+	} else {
+		fwdid = g_amxxapi.RegisterSPForwardByName(amx, pszCallback, FP_CELL, FP_DONE);
+	}
+
 	if (fwdid == -1) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: failed to register forward.", __FUNCTION__);
 		return false;
 	}
 
-	EntityCallback_t entry(pEntity, CType_Think);
-	m_callbacks.push_back(new CAmxxHook<EntityCallback_t>(amx, pszCallback, fwdid, entry));
+	m_callbacks.push_back(new CAmxxHook<eCallback_t>(amx, pszCallback, fwdid, new eCallback_t(pEntity, pParams, iParamsLen, CType_Think)));
 	pEntity->SetThink(&CBaseEntity::SUB_Think);
 	return true;
 }
 
-bool CEntityCallback::SetTouch(AMX *amx, CBaseEntity *pEntity, const char *pszCallback)
+bool CEntityCallback::SetTouch(AMX *amx, CBaseEntity *pEntity, const char *pszCallback, const cell *pParams, size_t iParamsLen)
 {
 	PurgeCallbacks(pEntity, CType_Touch);
 
-	int fwdid = g_amxxapi.RegisterSPForwardByName(amx, pszCallback, FP_CELL, FP_CELL, FP_DONE);
+	int fwdid;
+	if (iParamsLen > 0) {
+		fwdid = g_amxxapi.RegisterSPForwardByName(amx, pszCallback, FP_CELL, FP_CELL, FP_ARRAY, FP_DONE);
+	} else {
+		fwdid = g_amxxapi.RegisterSPForwardByName(amx, pszCallback, FP_CELL, FP_CELL, FP_DONE);
+	}
+
 	if (fwdid == -1) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: failed to register forward.", __FUNCTION__);
 		return false;
 	}
 
-	EntityCallback_t entry(pEntity, CType_Touch);
-	m_callbacks.push_back(new CAmxxHook<EntityCallback_t>(amx, pszCallback, fwdid, entry));
+	m_callbacks.push_back(new CAmxxHook<eCallback_t>(amx, pszCallback, fwdid, new eCallback_t(pEntity, pParams, iParamsLen, CType_Touch)));
 	pEntity->SetTouch(&CBaseEntity::SUB_Touch);
 	return true;
 }
 
-bool CEntityCallback::SetUse(AMX *amx, CBaseEntity *pEntity, const char *pszCallback)
+bool CEntityCallback::SetUse(AMX *amx, CBaseEntity *pEntity, const char *pszCallback, const cell *pParams, size_t iParamsLen)
 {
 	PurgeCallbacks(pEntity, CType_Use);
 
-	int fwdid = g_amxxapi.RegisterSPForwardByName(amx, pszCallback, FP_CELL, FP_CELL, FP_CELL, FP_CELL, FP_FLOAT, FP_DONE);
+	int fwdid;
+	if (iParamsLen > 0) {
+		fwdid = g_amxxapi.RegisterSPForwardByName(amx, pszCallback, FP_CELL, FP_CELL, FP_CELL, FP_CELL, FP_FLOAT, FP_ARRAY, FP_DONE);
+	} else {
+		fwdid = g_amxxapi.RegisterSPForwardByName(amx, pszCallback, FP_CELL, FP_CELL, FP_CELL, FP_CELL, FP_FLOAT, FP_DONE);
+	}
+
 	if (fwdid == -1) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: failed to register forward.", __FUNCTION__);
 		return false;
 	}
 
-	EntityCallback_t entry(pEntity, CType_Use);
-	m_callbacks.push_back(new CAmxxHook<EntityCallback_t>(amx, pszCallback, fwdid, entry));
+	m_callbacks.push_back(new CAmxxHook<eCallback_t>(amx, pszCallback, fwdid, new eCallback_t(pEntity, pParams, iParamsLen, CType_Use)));
 	pEntity->SetUse(&CBaseEntity::SUB_Use);
 	return true;
 }
 
-bool CEntityCallback::SetBlocked(AMX *amx, CBaseEntity *pEntity, const char *pszCallback)
+bool CEntityCallback::SetBlocked(AMX *amx, CBaseEntity *pEntity, const char *pszCallback, const cell *pParams, size_t iParamsLen)
 {
 	PurgeCallbacks(pEntity, CType_Blocked);
 
-	int fwdid = g_amxxapi.RegisterSPForwardByName(amx, pszCallback, FP_CELL, FP_CELL, FP_DONE);
+	int fwdid;
+	if (iParamsLen > 0) {
+		fwdid = g_amxxapi.RegisterSPForwardByName(amx, pszCallback, FP_CELL, FP_CELL, FP_ARRAY, FP_DONE);
+	} else {
+		fwdid = g_amxxapi.RegisterSPForwardByName(amx, pszCallback, FP_CELL, FP_CELL, FP_DONE);
+	}
+
 	if (fwdid == -1) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: failed to register forward.", __FUNCTION__);
 		return false;
 	}
 
-	EntityCallback_t entry(pEntity, CType_Blocked);
-	m_callbacks.push_back(new CAmxxHook<EntityCallback_t>(amx, pszCallback, fwdid, entry));
+	m_callbacks.push_back(new CAmxxHook<eCallback_t>(amx, pszCallback, fwdid, new eCallback_t(pEntity, pParams, iParamsLen, CType_Blocked)));
 	pEntity->SetTouch(&CBaseEntity::SUB_Blocked);
 	return true;
 }
 
-bool CEntityCallback::SetMoveDone(AMX *amx, CBaseEntity *pEntity, const char *pszCallback)
+bool CEntityCallback::SetMoveDone(AMX *amx, CBaseEntity *pEntity, const char *pszCallback, const cell *pParams, size_t iParamsLen)
 {
 	PurgeCallbacks(pEntity, CType_MoveDone);
 
-	int fwdid = g_amxxapi.RegisterSPForwardByName(amx, pszCallback, FP_CELL, FP_DONE);
+	int fwdid;
+	if (iParamsLen > 0) {
+		fwdid = g_amxxapi.RegisterSPForwardByName(amx, pszCallback, FP_CELL, FP_ARRAY, FP_DONE);
+	} else {
+		fwdid = g_amxxapi.RegisterSPForwardByName(amx, pszCallback, FP_CELL, FP_DONE);
+	}
+
 	if (fwdid == -1) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: failed to register forward.", __FUNCTION__);
 		return false;
 	}
 
-	EntityCallback_t entry(pEntity, CType_MoveDone);
-	m_callbacks.push_back(new CAmxxHook<EntityCallback_t>(amx, pszCallback, fwdid, entry));
+	m_callbacks.push_back(new CAmxxHook<eCallback_t>(amx, pszCallback, fwdid, new eCallback_t(pEntity, pParams, iParamsLen, CType_MoveDone)));
 
 	// TODO: Make sure that the entity actually inherited from CBaseToggle
 	((CBaseToggle *)pEntity)->SetMoveDone(&CBaseToggle::SUB_MoveDone);

@@ -7,60 +7,70 @@
 #include <reapi_gamedll_const>
 
 /*
-* Sets callback for entity
+* Sets Think callback for entity
 *
 * @param entity     Entity index
 * @param callback   The forward to call
+*
 * @note Use "" to reset callback
+* @note Callback should be contains passing arguments as "public Think_Callback(const ent)"
 *
 * @noreturn
 */
-native SetThink(const ent, const callback[]);
+native SetThink(const ent, const callback[], const params[] = "", const len = 0);
 
 /*
-* Sets callback for entity
+* Sets Touch callback for entity
 *
 * @param entity     Entity index
 * @param callback   The forward to call
+*
 * @note Use "" to reset callback
+* @note Callback should be contains passing arguments as "public Touch_Callback(const ent, const other)"
 *
 * @noreturn
 */
-native SetTouch(const ent, const callback[]);
+native SetTouch(const ent, const callback[], const params[] = "", const len = 0);
 
 /*
-* Sets callback for entity
+* Sets Use callback for entity
 *
 * @param entity     Entity index
 * @param callback   The forward to call
+*
 * @note Use "" to reset callback
+* @note Callback should be contains passing arguments as "public Use_Callback(const ent, const activator, const caller, USE_TYPE:useType, Float:value)"
 *
 * @noreturn
 */
-native SetUse(const ent, const callback[]);
+native SetUse(const ent, const callback[], const params[] = "", const len = 0);
 
 /*
-* Sets callback for entity
+* Sets Blocked callback for entity
 *
 * @param entity     Entity index
 * @param callback   The forward to call
+*
 * @note Use "" to reset callback
+* @note Callback should be contains passing arguments as "public Blocked_Callback(const ent, const other)"
 *
 * @noreturn
 */
-native SetBlocked(const ent, const callback[]);
+native SetBlocked(const ent, const callback[], const params[] = "", const len = 0);
 
 /*
-* Sets callback for entity
+* Sets MoveDone callback for entity
+*
+* @param entity     Entity index
+* @param callback   The forward to call
+*
+* @note Use "" to reset callback
 * @note Entity should be inherited from CBaseToggle, otherwise server can crash
-*
-* @param entity     Entity index
-* @param callback   The forward to call
-* @note Use "" to reset callback
+* @note Callback should be contains passing arguments as "public MoveDone_Callback(const ent, const other)"
 *
 * @noreturn
 */
-native SetMoveDone(const ent, const callback[]);
+native SetMoveDone(const ent, const callback[], const params[] = "", const len = 0);
 
 /*
 * Sets a value to CSGameRules_Members members.

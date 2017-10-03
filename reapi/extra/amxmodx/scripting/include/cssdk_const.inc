@@ -1195,3 +1195,11 @@ enum InfoMapBuyParam
 	BUYING_ONLY_TERRORISTS,
 	BUYING_NO_ONE,
 };
+
+enum USE_TYPE
+{
+	USE_OFF,
+	USE_ON,
+	USE_SET,
+	USE_TOGGLE
+};
