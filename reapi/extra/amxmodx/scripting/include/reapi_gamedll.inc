@@ -11,6 +11,8 @@
 *
 * @param entity     Entity index
 * @param callback   The forward to call
+* @param params     Optional set of data to pass through to callback
+* @param len        Optional size of data
 *
 * @note Use "" to reset callback
 * @note Callback should be contains passing arguments as "public Think_Callback(const ent)"
@@ -24,6 +26,8 @@ native SetThink(const ent, const callback[], const params[] = "", const len = 0)
 *
 * @param entity     Entity index
 * @param callback   The forward to call
+* @param params     Optional set of data to pass through to callback
+* @param len        Optional size of data
 *
 * @note Use "" to reset callback
 * @note Callback should be contains passing arguments as "public Touch_Callback(const ent, const other)"
@@ -37,6 +41,8 @@ native SetTouch(const ent, const callback[], const params[] = "", const len = 0)
 *
 * @param entity     Entity index
 * @param callback   The forward to call
+* @param params     Optional set of data to pass through to callback
+* @param len        Optional size of data
 *
 * @note Use "" to reset callback
 * @note Callback should be contains passing arguments as "public Use_Callback(const ent, const activator, const caller, USE_TYPE:useType, Float:value)"
@@ -50,6 +56,8 @@ native SetUse(const ent, const callback[], const params[] = "", const len = 0);
 *
 * @param entity     Entity index
 * @param callback   The forward to call
+* @param params     Optional set of data to pass through to callback
+* @param len        Optional size of data
 *
 * @note Use "" to reset callback
 * @note Callback should be contains passing arguments as "public Blocked_Callback(const ent, const other)"
@@ -63,10 +71,12 @@ native SetBlocked(const ent, const callback[], const params[] = "", const len = 
 *
 * @param entity     Entity index
 * @param callback   The forward to call
+* @param params     Optional set of data to pass through to callback
+* @param len        Optional size of data
 *
 * @note Use "" to reset callback
 * @note Entity should be inherited from CBaseToggle, otherwise server can crash
-* @note Callback should be contains passing arguments as "public MoveDone_Callback(const ent, const other)"
+* @note Callback should be contains passing arguments as "public MoveDone_Callback(const ent)"
 *
 * @noreturn
 */
