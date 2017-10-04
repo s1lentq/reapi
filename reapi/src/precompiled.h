@@ -59,7 +59,6 @@
 
 // reapi main
 #include "main.h"
-#include "reapi_utils.h"
 #include "api_config.h"
 #include "hook_manager.h"
 #include "hook_callback.h"
@@ -77,3 +76,5 @@
 #include "natives_vtc.h"
 #include "natives_reunion.h"
 #include "natives_rechecker.h"
+
+#include "reapi_utils.h"

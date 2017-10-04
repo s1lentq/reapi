@@ -722,6 +722,7 @@ member_t memberlist_pmtrace[] = {
 member_t memberlist_csplayer[] = {
 	CSPL_MEMBERS(m_szModel),
 	CSPL_MEMBERS(m_bForceShowMenu),
+	CSPL_MEMBERS(m_flRespawnPending),
 };
 
 member_t memberlist_baseitem[] = {

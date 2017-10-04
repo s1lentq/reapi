@@ -51,9 +51,10 @@ void Broadcast(const char *sentence);
 void UpdateTeamScores();
 ModelName GetModelAuto(TeamName team);
 void UTIL_ServerPrint(const char *fmt, ...);
-CBaseEntity *GiveNamedItemInternal(AMX *amx, CBasePlayer *pPlayer, const char *pszItemName);
+CBaseEntity *GiveNamedItemInternal(AMX *amx, CBasePlayer *pPlayer, const char *pszItemName, const size_t uid = 0);
 
 void GetBonePosition(CBaseEntity *pEntity, int iBone, Vector *vecOrigin, Vector *vecAngles);
 void GetAttachment(CBaseEntity *pEntity, int iBone, Vector *pVecOrigin, Vector *pVecAngles);
+void RemoveOrDropItem(CBasePlayer *pPlayer, CBasePlayerItem *pItem, GiveType type);
 
 extern void __declspec(noreturn) UTIL_SysError(const char *fmt, ...);

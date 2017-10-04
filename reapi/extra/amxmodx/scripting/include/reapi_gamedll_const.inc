@@ -25,6 +25,7 @@
 	#define RG_CSGameRules_CheckWinConditions RG_CSGameRules_CheckWinCond
 	#define RG_CBasePlayer_SetClientUserInfoModel RG_CBasePlayer_SetUserInfoModel
 	#define RG_CBasePlayer_SetClientUserInfoName RG_CBasePlayer_SetUserInfoName
+	#define m_Shield_hEntToIgnoreTouchesFrom m_Shield_EntToIgnoreTouchesFrom
 #endif
 
 enum UnifiedSignals
@@ -4065,6 +4066,14 @@ enum CCSPlayer_Members
 	* Set params:       set_member(index, member, value);
 	*/
 	m_bForceShowMenu,
+
+	/*
+	* Description:      -
+	* Member type:      float
+	* Get params:       Float:get_member(index, member);
+	* Set params:       set_member(index, member, Float:value);
+	*/
+	m_flRespawnPending,
 };
 
 // CBasePlayerItem

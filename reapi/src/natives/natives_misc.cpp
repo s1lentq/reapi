@@ -53,8 +53,6 @@ cell AMX_NATIVE_CALL rg_add_account(AMX *amx, cell *params)
 	return TRUE;
 }
 
-enum GiveType { GT_APPEND, GT_REPLACE, GT_DROP_AND_REPLACE };
-
 /*
 * Gives the player an item.
 *
@@ -83,23 +81,8 @@ cell AMX_NATIVE_CALL rg_give_item(AMX *amx, cell *params)
 		auto pInfo = g_ReGameApi->GetWeaponSlot(itemName);
 		if (pInfo)
 		{
-			pPlayer->ForEachItem(pInfo->slot, [pPlayer, pInfo, type](CBasePlayerItem *pItem)
-			{
-				switch (type)
-				{
-				case GT_DROP_AND_REPLACE:
-					pPlayer->CSPlayer()->DropPlayerItem(STRING(pItem->pev->classname));
-					break;
-				case GT_REPLACE:
-					pPlayer->pev->weapons &= ~(1 << pItem->m_iId);
-					pPlayer->RemovePlayerItem(pItem);
-					pItem->Kill();
-					break;
-				case GT_APPEND:
-				default:
-					break;
-				}
-
+			pPlayer->ForEachItem(pInfo->slot, [pPlayer, type](CBasePlayerItem *pItem) {
+				RemoveOrDropItem(pPlayer, pItem, type);
 				return false;
 			});
 		}
@@ -120,14 +103,15 @@ cell AMX_NATIVE_CALL rg_give_item(AMX *amx, cell *params)
 * @param index      Client index
 * @param pszName    Item classname
 * @param type       Look at the enums with name GiveType
+* @param uid        Sets a unique index for the entity
 *
 * @return           Index of entity if successfull, -1 otherwise
 *
-* native rg_give_custom_item(const index, const pszName[], GiveType:type = GT_APPEND);
+* native rg_give_custom_item(const index, const pszName[], GiveType:type = GT_APPEND, const uid = 0);
 */
 cell AMX_NATIVE_CALL rg_give_custom_item(AMX *amx, cell *params)
 {
-	enum args_e { arg_count, arg_index, arg_item, arg_type };
+	enum args_e { arg_count, arg_index, arg_item, arg_type, arg_uid };
 
 	CHECK_ISPLAYER(arg_index);
 
@@ -142,29 +126,14 @@ cell AMX_NATIVE_CALL rg_give_custom_item(AMX *amx, cell *params)
 		auto pInfo = g_ReGameApi->GetWeaponSlot(itemName);
 		if (pInfo)
 		{
-			pPlayer->ForEachItem(pInfo->slot, [pPlayer, pInfo, type](CBasePlayerItem *pItem)
-			{
-				switch (type)
-				{
-				case GT_DROP_AND_REPLACE:
-					pPlayer->CSPlayer()->DropPlayerItem(STRING(pItem->pev->classname));
-					break;
-				case GT_REPLACE:
-					pPlayer->pev->weapons &= ~(1 << pItem->m_iId);
-					pPlayer->RemovePlayerItem(pItem);
-					pItem->Kill();
-					break;
-				case GT_APPEND:
-				default:
-					break;
-				}
-
+			pPlayer->ForEachItem(pInfo->slot, [pPlayer, type](CBasePlayerItem *pItem) {
+				RemoveOrDropItem(pPlayer, pItem, type);
 				return false;
 			});
 		}
 	}
 
-	auto pEntity = GiveNamedItemInternal(amx, pPlayer, itemName);
+	auto pEntity = GiveNamedItemInternal(amx, pPlayer, itemName, params[arg_uid]);
 	if (pEntity)
 		return indexOfPDataAmx(pEntity);
 
@@ -874,8 +843,8 @@ cell AMX_NATIVE_CALL rg_remove_items_by_slot(AMX *amx, cell *params)
 	CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_index]);
 	CHECK_CONNECTED(pPlayer, arg_index);
 
-	pPlayer->ForEachItem(params[arg_slot], [pPlayer](CBasePlayerItem *pItem) {
-
+	pPlayer->ForEachItem(params[arg_slot], [pPlayer](CBasePlayerItem *pItem)
+	{
 		if (pItem->IsWeapon()) {
 			if (pItem == pPlayer->m_pActiveItem) {
 				((CBasePlayerWeapon *)pItem)->RetireWeapon();

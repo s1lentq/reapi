@@ -50,11 +50,17 @@ inline AType getApiType(T *) { return ATYPE_INTEGER; }
 
 inline bool hasStringArgs() { return false; }
 
+extern void __declspec(noreturn) UTIL_SysError(const char *fmt, ...);
+
 template <typename T, typename ...f_args>
 bool hasStringArgs(T, f_args... args)
 {
-	if (sizeof(T) > sizeof(int)) UTIL_SysError("%s: invalid hookchain argument size (%i > %i)", __FUNCTION__, sizeof(T), sizeof(int));
-	if (getApiType(T()) == ATYPE_STRING) return true;
+	if (sizeof(T) > sizeof(int))
+		UTIL_SysError("%s: invalid hookchain argument size (%i > %i)", __FUNCTION__, sizeof(T), sizeof(int));
+
+	if (getApiType(T()) == ATYPE_STRING)
+		return true;
+
 	return hasStringArgs(args...);
 }
 

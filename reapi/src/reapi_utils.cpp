@@ -64,7 +64,7 @@ void CTempStrings::pop(size_t count)
 	m_current -= count;
 }
 
-CBaseEntity *GiveNamedItemInternal(AMX *amx, CBasePlayer *pPlayer, const char *pszItemName)
+CBaseEntity *GiveNamedItemInternal(AMX *amx, CBasePlayer *pPlayer, const char *pszItemName, const size_t uid)
 {
 	edict_t *pEdict = CREATE_NAMED_ENTITY(ALLOC_STRING(pszItemName));
 	if (FNullEnt(pEdict))
@@ -75,6 +75,10 @@ CBaseEntity *GiveNamedItemInternal(AMX *amx, CBasePlayer *pPlayer, const char *p
 
 	pEdict->v.origin = pPlayer->pev->origin;
 	pEdict->v.spawnflags |= SF_NORESPAWN;
+
+	// In some cases, we must to sets unique id
+	// for the entity before it will triggered a spawn.
+	pEdict->v.impulse = uid;
 
 	MDLL_Spawn(pEdict);
 	MDLL_Touch(pEdict, ENT(pPlayer->pev));
@@ -196,5 +200,24 @@ void GetAttachment(CBaseEntity *pEntity, int iBone, Vector *pVecOrigin, Vector *
 
 	if (pVecAngles) {
 		*pVecAngles = vecAngles;
+	}
+}
+
+void RemoveOrDropItem(CBasePlayer *pPlayer, CBasePlayerItem *pItem, GiveType type)
+{
+	switch (type)
+	{
+	case GT_DROP_AND_REPLACE:
+		pPlayer->CSPlayer()->DropPlayerItem(STRING(pItem->pev->classname));
+		break;
+	case GT_REPLACE:
+		printf("	-> KILL: (%s)\n", STRING(pItem->pev->classname));
+		pPlayer->pev->weapons &= ~(1 << pItem->m_iId);
+		pPlayer->RemovePlayerItem(pItem);
+		pItem->Kill();
+		break;
+	case GT_APPEND:
+	default:
+		break;
 	}
 }
