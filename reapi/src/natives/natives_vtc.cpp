@@ -93,7 +93,8 @@ cell AMX_NATIVE_CALL VTC_PlaySound(AMX *amx, cell *params)
 
 	CHECK_ISPLAYER(arg_index);
 
-	g_pVoiceTranscoderApi->PlaySound((size_t)params[arg_index], getAmxString(amx, params[arg_audio_pathfile]));
+	char pathfile[MAX_PATH];
+	g_pVoiceTranscoderApi->PlaySound((size_t)params[arg_index], getAmxString(amx, params[arg_audio_pathfile], pathfile));
 	return TRUE;
 }
 

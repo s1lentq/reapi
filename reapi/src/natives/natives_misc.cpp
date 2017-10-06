@@ -73,9 +73,10 @@ cell AMX_NATIVE_CALL rg_give_item(AMX *amx, cell *params)
 	CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_index]);
 	CHECK_CONNECTED(pPlayer, arg_index);
 
-	GiveType type = static_cast<GiveType>(params[arg_type]);
-	const char *itemName = getAmxString(amx, params[arg_item]);
+	char namebuf[256];
+	const char *itemName = getAmxString(amx, params[arg_item], namebuf);
 
+	GiveType type = static_cast<GiveType>(params[arg_type]);
 	if (type > GT_APPEND)
 	{
 		auto pInfo = g_ReGameApi->GetWeaponSlot(itemName);
@@ -118,9 +119,10 @@ cell AMX_NATIVE_CALL rg_give_custom_item(AMX *amx, cell *params)
 	CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_index]);
 	CHECK_CONNECTED(pPlayer, arg_index);
 
-	GiveType type = static_cast<GiveType>(params[arg_type]);
-	const char *itemName = getAmxString(amx, params[arg_item]);
+	char namebuf[256];
+	const char *itemName = getAmxString(amx, params[arg_item], namebuf);
 
+	GiveType type = static_cast<GiveType>(params[arg_type]);
 	if (type > GT_APPEND)
 	{
 		auto pInfo = g_ReGameApi->GetWeaponSlot(itemName);
@@ -420,29 +422,25 @@ cell AMX_NATIVE_CALL rg_round_end(AMX *amx, cell *params)
 		return FALSE;
 	}
 
+	char sentencebuf[190], messagebuf[190];
+	const char *sentence = getAmxString(amx, params[arg_sentence], sentencebuf);
+	const char *message  = getAmxString(amx, params[arg_message], messagebuf);
+
 	ScenarioEventEndRound event = static_cast<ScenarioEventEndRound>(params[arg_event]);
-
-	char sentence[190], message[190];
-	Q_strlcpy(sentence, getAmxString(amx, params[arg_sentence]));
-	Q_strlcpy(message,  getAmxString(amx, params[arg_message]));
-
-	const char *_sentence = sentence;
-	const char *_message = message;
-
 	if (event != ROUND_NONE) {
 		auto& lst = msg_sentence_list[event];
-		if (strcmp(_sentence, "default") == 0)
-			_sentence = lst.sentence;
+		if (strcmp(sentence, "default") == 0)
+			sentence = lst.sentence;
 		if (strcmp(message, "default") == 0)
-			_message = lst.msg;
+			message = lst.msg;
 	}
 
-	if (_sentence[0] != '\0')
+	if (sentence[0] != '\0')
 	{
-		Broadcast(_sentence);
+		Broadcast(sentence);
 	}
 
-	CSGameRules()->EndRoundMessage(_message, event);
+	CSGameRules()->EndRoundMessage(message, event);
 	CSGameRules()->TerminateRound(CAmxArg(amx, params[arg_delay]), winstatus);
 	return TRUE;
 }
@@ -486,7 +484,8 @@ cell AMX_NATIVE_CALL rg_create_entity(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_classname, arg_hashtable };
 
-	string_t iClass = g_engfuncs.pfnAllocString(getAmxString(amx, params[arg_classname]));
+	char classname[256];
+	string_t iClass = g_engfuncs.pfnAllocString(getAmxString(amx, params[arg_classname], classname));
 
 	edict_t	*pEntity;
 	if (params[arg_hashtable] != 0)
@@ -518,7 +517,8 @@ cell AMX_NATIVE_CALL rg_find_ent_by_class(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_start_index, arg_classname, arg_hashtable };
 
-	const char* value = getAmxString(amx, params[arg_classname]);
+	char classname[256];
+	const char* value = getAmxString(amx, params[arg_classname], classname);
 
 	if (params[arg_hashtable] != 0)
 	{
@@ -556,8 +556,10 @@ cell AMX_NATIVE_CALL rg_find_ent_by_owner(AMX *amx, cell *params)
 
 	CHECK_ISENTITY(arg_onwer);
 
+	char classname[256];
+
 	cell& startIndex = *getAmxAddr(amx, params[arg_start_index]);
-	const char* value = getAmxString(amx, params[arg_classname]);
+	const char* value = getAmxString(amx, params[arg_classname], classname);
 	edict_t* pOwner = edictByIndexAmx(params[arg_onwer]);
 	edict_t* pEntity = g_pEdicts + startIndex;
 
@@ -599,7 +601,8 @@ cell AMX_NATIVE_CALL rg_find_weapon_bpack_by_name(AMX *amx, cell *params)
 	CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_index]);
 	CHECK_CONNECTED(pPlayer, arg_index);
 
-	const char *pszWeaponName = getAmxString(amx, params[arg_weapon]);
+	char wname[256];
+	const char *pszWeaponName = getAmxString(amx, params[arg_weapon], wname);
 	auto pInfo = g_ReGameApi->GetWeaponSlot(pszWeaponName);
 	if (pInfo != nullptr)
 	{
@@ -647,7 +650,8 @@ cell AMX_NATIVE_CALL rg_has_item_by_name(AMX *amx, cell *params)
 	CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_index]);
 	CHECK_CONNECTED(pPlayer, arg_index);
 
-	const char *pszItemName = getAmxString(amx, params[arg_item]);
+	char iname[256];
+	const char *pszItemName = getAmxString(amx, params[arg_item], iname);
 	// item_* and weapon_shield
 	for (auto& inf : itemInfoStruct) {
 		if (FStrEq(inf.pszItemName, pszItemName)) {
@@ -697,8 +701,9 @@ cell AMX_NATIVE_CALL rg_get_weapon_info(AMX *amx, cell *params)
 		return 0;
 	}
 
+	char wname[256];
+	const char* szWeaponName = getAmxString(amx, params[arg_weapon_id], wname);
 	WeaponInfoStruct* info = g_ReGameApi->GetWeaponInfo(weaponId);
-	char* szWeaponName = getAmxString(amx, params[arg_weapon_id]);
 
 	switch (info_type)
 	{
@@ -937,7 +942,8 @@ cell AMX_NATIVE_CALL rg_drop_item(AMX *amx, cell *params)
 	CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_index]);
 	CHECK_CONNECTED(pPlayer, arg_index);
 
-	pPlayer->CSPlayer()->DropPlayerItem(getAmxString(amx, params[arg_item_name]));
+	char item[256];
+	pPlayer->CSPlayer()->DropPlayerItem(getAmxString(amx, params[arg_item_name], item));
 	return TRUE;
 }
 
@@ -963,9 +969,8 @@ cell AMX_NATIVE_CALL rg_internal_cmd(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	char command[128];
-	Q_strlcpy(command, getAmxString(amx, params[arg_cmd]));
-	pPlayer->CSPlayer()->ClientCommand(command, getAmxString(amx, params[arg_arg]));
+	char cmd[256], arg[256];
+	pPlayer->CSPlayer()->ClientCommand(getAmxString(amx, params[arg_cmd], cmd), getAmxString(amx, params[arg_arg], arg));
 	return TRUE;
 }
 
@@ -988,7 +993,8 @@ cell AMX_NATIVE_CALL rg_remove_item(AMX *amx, cell *params)
 	CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_index]);
 	CHECK_CONNECTED(pPlayer, arg_index);
 
-	const char* szItemName = getAmxString(amx, params[arg_item_name]);
+	char iname[256];
+	const char* szItemName = getAmxString(amx, params[arg_item_name], iname);
 	if (pPlayer->CSPlayer()->RemovePlayerItem(szItemName)) {
 		return TRUE;
 	}
@@ -1173,7 +1179,9 @@ cell AMX_NATIVE_CALL rg_give_defusekit(AMX *amx, cell *params)
 	if (params[arg_def] != 0)
 	{
 		Vector* color = (Vector *)getAmxAddr(amx, params[arg_color]);
-		const char* icon = getAmxString(amx, params[arg_icon]);
+
+		char iconbuf[256];
+		const char* icon = getAmxString(amx, params[arg_icon], iconbuf);
 
 		MESSAGE_BEGIN(MSG_ONE, gmsgStatusIcon, nullptr, pPlayer->pev);
 			WRITE_BYTE(params[arg_flash] != 0 ? STATUSICON_FLASH : STATUSICON_SHOW);
@@ -1369,7 +1377,8 @@ cell AMX_NATIVE_CALL rg_set_user_model(AMX *amx, cell *params)
 	CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_index]);
 	CHECK_CONNECTED(pPlayer, arg_index);
 
-	const char* newModel = getAmxString(amx, params[arg_model]);
+	char modelbuf[256];
+	const char* newModel = getAmxString(amx, params[arg_model], modelbuf);
 	if (*newModel == '\0') {
 		MF_LogError(amx, AMX_ERR_NATIVE, "Model can not be empty");
 		return FALSE;
@@ -1902,7 +1911,8 @@ cell AMX_NATIVE_CALL rg_send_audio(AMX *amx, cell *params)
 	if (nIndex < 0)
 		nIndex = 0;
 
-	const char *szSample = getAmxString(amx, params[arg_sample]);
+	char sample[256];
+	const char *szSample = getAmxString(amx, params[arg_sample], sample);
 	auto pEdict = (nIndex == 0) ? nullptr : edictByIndexAmx(nIndex);
 
 	EMESSAGE_BEGIN(nIndex ? MSG_ONE_UNRELIABLE : MSG_BROADCAST, gmsgSendAudio, nullptr, pEdict);
@@ -2005,7 +2015,8 @@ cell AMX_NATIVE_CALL rh_set_mapname(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_mapname };
 
-	const char *mapname = getAmxString(amx, params[arg_mapname]);
+	char mapbuf[256];
+	const char *mapname = getAmxString(amx, params[arg_mapname], mapbuf);
 	g_RehldsData->SetName(mapname);
 	g_pFunctionTable->pfnResetGlobalState = ResetGlobalState;
 	return TRUE;
@@ -2090,7 +2101,8 @@ cell AMX_NATIVE_CALL rh_emit_sound2(AMX *amx, cell *params)
 	}
 
 	CAmxArgs args(amx, params);
-	const char *sample = getAmxString(amx, params[arg_sample]);
+	char samplebuf[256];
+	const char *sample = getAmxString(amx, params[arg_sample], samplebuf);
 
 	return (cell)g_RehldsFuncs->SV_EmitSound2
 	(

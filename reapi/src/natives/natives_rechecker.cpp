@@ -33,22 +33,23 @@ cell AMX_NATIVE_CALL RegisterQueryFile(AMX *amx, cell *params)
 	}
 
 	char filename[MAX_PATH];
-	const char *file = getAmxString(amx, params[arg_file]);
+	const char *file = getAmxString(amx, params[arg_file], filename);
 	if (!file || file[0] == '\0') {
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: file can not be empty.", __FUNCTION__);
 		return FALSE;
 	}
-	Q_strlcpy(filename, file);
 
+	char funcname[256];
+	const char *func = getAmxString(amx, params[arg_handler], funcname);
+	
 	int funcid;
-	const char *funcname = getAmxString(amx, params[arg_handler]);
-	if (unlikely(g_amxxapi.amx_FindPublic(amx, funcname, &funcid) != AMX_ERR_NONE))
+	if (unlikely(g_amxxapi.amx_FindPublic(amx, func, &funcid) != AMX_ERR_NONE))
 	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: public function \"%s\" not found.", __FUNCTION__, funcname);
+		MF_LogError(amx, AMX_ERR_NATIVE, "%s: public function \"%s\" not found.", __FUNCTION__, func);
 		return FALSE;
 	}
 
-	return g_queryFileManager.Add(amx, filename, funcname, flag, params[arg_hash]);
+	return g_queryFileManager.Add(amx, filename, func, flag, params[arg_hash]);
 }
 
 /*

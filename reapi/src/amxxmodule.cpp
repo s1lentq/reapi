@@ -240,7 +240,7 @@ NOINLINE void AMXX_Error(AMX *amx, const char *fmt, ...)
 	g_amxxapi.Log("[%s] %s", scriptName, msg);
 }
 
-char* getAmxStringTemp(cell* src, char* dest, size_t max, size_t* len)
+char* getAmxString(cell* src, char* dest, size_t max, size_t* len)
 {
 	char* start = dest;
 

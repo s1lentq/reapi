@@ -494,12 +494,12 @@ extern amxxapi_t g_amxxapi;
 void MF_Log(const char *fmt, ...);
 void MF_LogError(AMX *amx, int err, const char *fmt, ...);
 void AMXX_Error(AMX *amx, const char *fmt, ...);
-char* getAmxStringTemp(cell* src, char* dest, size_t max, size_t* len = nullptr);
+char* getAmxString(cell* src, char* dest, size_t max, size_t* len = nullptr);
 void setAmxString(cell* dest, const char* string, size_t max);
 
 inline cell* getAmxAddr(AMX *amx, cell amx_addr)
 {
-	return (cell *)(amx->base + (int)(((AMX_HEADER *)amx->base)->dat + amx_addr));
+	return (cell *)(amx->base + (size_t)(((AMX_HEADER *)amx->base)->dat + amx_addr));
 }
 
 #endif // __AMXXMODULE_H__

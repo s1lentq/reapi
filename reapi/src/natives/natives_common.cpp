@@ -17,8 +17,10 @@ cell AMX_NATIVE_CALL amx_FClassnameIs(AMX *amx, cell *params)
 		return FALSE;
 	}
 
+	char classname[256];
+
 	edict_t *pEdict = edictByIndex(nEntityIndex);
-	if (pEdict && FClassnameIs(pEdict, getAmxString(amx, params[arg_classname]))) {
+	if (pEdict && FClassnameIs(pEdict, getAmxString(amx, params[arg_classname], classname))) {
 		return TRUE;
 	}
 
@@ -136,8 +138,8 @@ cell AMX_NATIVE_CALL amx_get_key_value(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	char key[MAX_KV_LEN];
-	Q_strlcpy(key, getAmxString(amx, params[arg_key]));
+	char keybuf[MAX_KV_LEN];
+	auto key = getAmxString(amx, params[arg_key], keybuf);
 
 	return g_amxxapi.SetAmxString(amx, params[arg_value], g_engfuncs.pfnInfoKeyValue(buffer, key), params[arg_maxlen]);
 }
@@ -164,9 +166,9 @@ cell AMX_NATIVE_CALL amx_set_key_value(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	char key[MAX_KV_LEN], value[MAX_KV_LEN];
-	Q_strlcpy(key,    getAmxString(amx, params[arg_key]));
-	Q_strlcpy(value,  getAmxString(amx, params[arg_value]));
+	char keybuf[MAX_KV_LEN], valuebuf[MAX_KV_LEN];
+	auto key = getAmxString(amx, params[arg_key], keybuf);
+	auto value = getAmxString(amx, params[arg_value], valuebuf);
 
 	if (!key[0])
 	{
@@ -282,13 +284,14 @@ cell AMX_NATIVE_CALL amx_SetThink(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	int funcid;
-	const char *funcname = getAmxString(amx, params[arg_handler]);
+	char namebuf[256];
+	const char *funcname = getAmxString(amx, params[arg_handler], namebuf);
 	if (unlikely(funcname == nullptr || funcname[0] == '\0')) {
 		pEntity->SetThink(nullptr);
 		return TRUE;
 	}
 
+	int funcid;
 	if (unlikely(g_amxxapi.amx_FindPublic(amx, funcname, &funcid) != AMX_ERR_NONE)) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: public function \"%s\" not found.", __FUNCTION__, funcname);
 		return FALSE;
@@ -325,13 +328,14 @@ cell AMX_NATIVE_CALL amx_SetTouch(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	int funcid;
-	const char *funcname = getAmxString(amx, params[arg_handler]);
+	char namebuf[256];
+	const char *funcname = getAmxString(amx, params[arg_handler], namebuf);
 	if (unlikely(funcname == nullptr || funcname[0] == '\0')) {
 		pEntity->SetTouch(nullptr);
 		return TRUE;
 	}
 
+	int funcid;
 	if (unlikely(g_amxxapi.amx_FindPublic(amx, funcname, &funcid) != AMX_ERR_NONE)) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: public function \"%s\" not found.", __FUNCTION__, funcname);
 		return FALSE;
@@ -368,13 +372,14 @@ cell AMX_NATIVE_CALL amx_SetUse(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	int funcid;
-	const char *funcname = getAmxString(amx, params[arg_handler]);
+	char namebuf[256];
+	const char *funcname = getAmxString(amx, params[arg_handler], namebuf);
 	if (unlikely(funcname == nullptr || funcname[0] == '\0')) {
 		pEntity->SetUse(nullptr);
 		return TRUE;
 	}
 
+	int funcid;
 	if (unlikely(g_amxxapi.amx_FindPublic(amx, funcname, &funcid) != AMX_ERR_NONE)) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: public function \"%s\" not found.", __FUNCTION__, funcname);
 		return FALSE;
@@ -411,13 +416,14 @@ cell AMX_NATIVE_CALL amx_SetBlocked(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	int funcid;
-	const char *funcname = getAmxString(amx, params[arg_handler]);
+	char namebuf[256];
+	const char *funcname = getAmxString(amx, params[arg_handler], namebuf);
 	if (unlikely(funcname == nullptr || funcname[0] == '\0')) {
 		pEntity->SetBlocked(nullptr);
 		return TRUE;
 	}
 
+	int funcid;
 	if (unlikely(g_amxxapi.amx_FindPublic(amx, funcname, &funcid) != AMX_ERR_NONE)) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: public function \"%s\" not found.", __FUNCTION__, funcname);
 		return FALSE;
@@ -455,13 +461,14 @@ cell AMX_NATIVE_CALL amx_SetMoveDone(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	int funcid;
-	const char *funcname = getAmxString(amx, params[arg_handler]);
+	char namebuf[256];
+	const char *funcname = getAmxString(amx, params[arg_handler], namebuf);
 	if (unlikely(funcname == nullptr || funcname[0] == '\0')) {
 		((CBaseToggle *)pEntity)->SetMoveDone(nullptr);
 		return TRUE;
 	}
 
+	int funcid;
 	if (unlikely(g_amxxapi.amx_FindPublic(amx, funcname, &funcid) != AMX_ERR_NONE)) {
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: public function \"%s\" not found.", __FUNCTION__, funcname);
 		return FALSE;

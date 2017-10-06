@@ -98,25 +98,17 @@ private:
 	cell*	m_params;
 };
 
-struct getAmxString
+template<size_t N>
+const char* getAmxString(cell* src, char (&dest)[N], size_t* len = nullptr)
 {
-	getAmxString(cell* src, size_t* len = nullptr)
-	{
-		getAmxStringTemp(src, temp, sizeof temp - 1, len);
-	}
+	return getAmxString(src, dest, N - 1, len);
+}
 
-	getAmxString(AMX* amx, cell addr, size_t* len = nullptr)
-	{
-		getAmxStringTemp(getAmxAddr(amx, addr), temp, sizeof temp - 1, len);
-	}
-
-	operator char *()
-	{
-		return temp;
-	}
-
-	char temp[1024];
-};
+template<size_t N>
+const char* getAmxString(AMX* amx, cell addr, char (&dest)[N], size_t* len = nullptr)
+{
+	return getAmxString(getAmxAddr(amx, addr), dest, N - 1, len);
+}
 
 inline void fillNatives(AMX_NATIVE_INFO* table, cell (AMX_NATIVE_CALL with)(AMX *, cell *))
 {

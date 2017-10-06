@@ -32,8 +32,10 @@ cell AMX_NATIVE_CALL RegisterHookChain(AMX *amx, cell *params)
 		return INVALID_HOOKCHAIN;
 	}
 
+	char namebuf[256];
+	const char *funcname = getAmxString(amx, params[arg_handler], namebuf);
+
 	int funcid;
-	const char *funcname = getAmxString(amx, params[arg_handler]);
 	if (unlikely(g_amxxapi.amx_FindPublic(amx, funcname, &funcid) != AMX_ERR_NONE))
 	{
 		MF_LogError(amx, AMX_ERR_NATIVE, "%s: public function \"%s\" not found.", __FUNCTION__, funcname);
@@ -125,6 +127,7 @@ cell AMX_NATIVE_CALL SetHookChainReturn(AMX *amx, cell *params)
 		return FALSE;
 	}
 
+	char string[2048];
 	cell* srcAddr = getAmxAddr(amx, params[arg_value]);
 
 	switch (retVal.type)
@@ -140,7 +143,7 @@ cell AMX_NATIVE_CALL SetHookChainReturn(AMX *amx, cell *params)
 			delete[] retVal._string;
 
 		size_t len;
-		const char *dest = getAmxString(srcAddr, &len);
+		const char *dest = getAmxString(srcAddr, string, &len);
 		retVal._string = strcpy(new char[len + 1], dest);
 		break;
 	}
@@ -270,7 +273,7 @@ cell AMX_NATIVE_CALL SetHookChainArg(AMX *amx, cell *params)
 		*(cell *)destAddr = *srcAddr;
 		break;
 	case ATYPE_STRING:
-		*(char **)destAddr = getAmxStringTemp(srcAddr, g_hookCtx->get_temp_string(amx), CTempStrings::STRING_LEN);
+		*(char **)destAddr = getAmxString(srcAddr, g_hookCtx->get_temp_string(amx), CTempStrings::STRING_LEN);
 		break;
 	case ATYPE_CLASSPTR:
 		*(CBaseEntity **)destAddr = getPrivate<CBaseEntity>(*srcAddr);

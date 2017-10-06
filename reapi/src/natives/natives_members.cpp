@@ -620,6 +620,8 @@ void RegisterNatives_Members()
 
 cell set_member(void* pdata, const member_t *member, cell* value, size_t element)
 {
+	char string[2048];
+
 	switch (member->type) {
 	case MEMBER_CLASSPTR:
 		{
@@ -655,14 +657,14 @@ cell set_member(void* pdata, const member_t *member, cell* value, size_t element
 			// native set_member(_index, any:_member, const source[]);
 			if (member->max_size > sizeof(char*)) {
 				// char []
-				char *source = getAmxString(value);
+				const char *source = getAmxString(value, string);
 				char *dest = get_member_direct<char>(pdata, member->offset);
 				strncpy(dest, source, member->max_size - 1);
 				dest[member->max_size - 1] = '\0';
 
 			} else {
 				// char *
-				char *source = getAmxString(value);
+				const char *source = getAmxString(value, string);
 				char *&dest = get_member<char *>(pdata, member->offset);
 				g_ReGameFuncs->ChangeString(dest, source);
 			}
@@ -671,7 +673,7 @@ cell set_member(void* pdata, const member_t *member, cell* value, size_t element
 		}
 	case MEMBER_QSTRING:
 		{
-			char *source = getAmxString(value);
+			const char *source = getAmxString(value, string);
 			string_t newstr = (source && source[0] != '\0') ? ALLOC_STRING(source) : iStringNull;
 			set_member<string_t>(pdata, member->offset, newstr, element);
 			return (cell)newstr;
