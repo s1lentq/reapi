@@ -211,7 +211,6 @@ void RemoveOrDropItem(CBasePlayer *pPlayer, CBasePlayerItem *pItem, GiveType typ
 		pPlayer->CSPlayer()->DropPlayerItem(STRING(pItem->pev->classname));
 		break;
 	case GT_REPLACE:
-		printf("	-> KILL: (%s)\n", STRING(pItem->pev->classname));
 		pPlayer->pev->weapons &= ~(1 << pItem->m_iId);
 		pPlayer->RemovePlayerItem(pItem);
 		pItem->Kill();
