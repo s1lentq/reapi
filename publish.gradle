@@ -27,7 +27,7 @@ task publishPrepareFiles << {
 
 	_copyFileToDir('publish/reapi_amxx.dll', 'publish/publishRoot/reapi/addons/amxmodx/modules/')
 	//_copyFileToDir('publish/reapi_amxx.pdb', 'publish/publishRoot/reapi/addons/amxmodx/modules/')
-	_copyFile('publish/libreapi_amxx_i386.so', 'publish/publishRoot/reapi/addons/amxmodx/modules/reapi_amxx_i386.so')
+	_copyFile('publish/reapi_amxx_i386.so', 'publish/publishRoot/reapi/addons/amxmodx/modules/reapi_amxx_i386.so')
 
 	copy {
 		from 'reapi/extra'
