@@ -4,9 +4,9 @@
 
 #define _reapi_gamedll_const_included
 
-// Returns 1 if round ended by expired time
+// Returns true if round has ended by expired time
 // @note: Use this for hookchain RG_RoundEnd with the parameter ScenarioEventEndRound:event
-#define HadRoundExpired(event) (1<<_:event) & ((1<<_:ROUND_TARGET_SAVED) | (1<<_:ROUND_HOSTAGE_NOT_RESCUED) | (1<<_:ROUND_TERRORISTS_NOT_ESCAPED) | (1<<_:ROUND_VIP_NOT_ESCAPED) | (1<<_:ROUND_GAME_OVER))
+#define IsRoundExpireEvent(%0) (((1<<_:(%0) + ScenarioEventEndRound:0)) & ((1<<_:ROUND_TARGET_SAVED) | (1<<_:ROUND_HOSTAGE_NOT_RESCUED) | (1<<_:ROUND_TERRORISTS_NOT_ESCAPED) | (1<<_:ROUND_VIP_NOT_ESCAPED) | (1<<_:ROUND_GAME_OVER))) != 0)
 
 // suppress warning: 200 on amxmodx 1.8.2
 #if AMXX_VERSION_NUM < 183
