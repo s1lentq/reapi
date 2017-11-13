@@ -584,8 +584,8 @@ enum GamedllFunc_CSGameRules
 
 	/*
 	* Description:      Recreate all the map entities from the map data (preserving their indices),
-	*			then remove everything else except the players.
-	*			Also get rid of all world decals.
+	*                   then remove everything else except the players.
+	*                   Also get rid of all world decals.
 	* Params:           ()
 	*/
 	RG_CSGameRules_CleanUpMap,

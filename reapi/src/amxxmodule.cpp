@@ -233,11 +233,11 @@ NOINLINE void AMXX_Error(AMX *amx, const char *fmt, ...)
 	auto scriptName = g_amxxapi.GetAmxScriptName(g_amxxapi.FindAmxScriptByAmx(amx));
 	if (scriptName)
 	{
-		if ((scriptName = strrchr(scriptName, '/')))
+		if ((scriptName = strrchr(scriptName, CORRECT_PATH_SEPARATOR)))
 			scriptName++;
 	}
 
-	g_amxxapi.Log("[%s] %s", scriptName, msg);
+	g_amxxapi.LogError(amx, AMX_ERR_ASSERT, "[%s] %s", scriptName, msg);
 }
 
 char* getAmxString(cell* src, char* dest, size_t max, size_t* len)
