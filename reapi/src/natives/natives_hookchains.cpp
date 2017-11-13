@@ -22,13 +22,13 @@ cell AMX_NATIVE_CALL RegisterHookChain(AMX *amx, cell *params)
 
 	if (unlikely(hook == nullptr))
 	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: function with id (%d) doesn't exist in current API version.", __FUNCTION__, func);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: function with id (%d) doesn't exist in current API version.", __FUNCTION__, func);
 		return INVALID_HOOKCHAIN;
 	}
 
 	if (unlikely(!hook->checkRequirements()))
 	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: function (%s) is not available, %s required.", __FUNCTION__, hook->func_name, hook->depend_name);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: function (%s) is not available, %s required.", __FUNCTION__, hook->func_name, hook->depend_name);
 		return INVALID_HOOKCHAIN;
 	}
 
@@ -38,14 +38,14 @@ cell AMX_NATIVE_CALL RegisterHookChain(AMX *amx, cell *params)
 	int funcid;
 	if (unlikely(g_amxxapi.amx_FindPublic(amx, funcname, &funcid) != AMX_ERR_NONE))
 	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: public function \"%s\" not found.", __FUNCTION__, funcname);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: public function \"%s\" not found.", __FUNCTION__, funcname);
 		return INVALID_HOOKCHAIN;
 	}
 
 	int fwid = hook->registerForward(amx, funcname);
 	if (unlikely(fwid == -1))
 	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: register forward failed.", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: register forward failed.", __FUNCTION__);
 		return INVALID_HOOKCHAIN;
 	}
 
@@ -70,7 +70,7 @@ cell AMX_NATIVE_CALL EnableHookChain(AMX *amx, cell *params)
 
 	if (unlikely(hook == nullptr))
 	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid HookChain handle.", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid HookChain handle.", __FUNCTION__);
 		return FALSE;
 	}
 
@@ -94,7 +94,7 @@ cell AMX_NATIVE_CALL DisableHookChain(AMX *amx, cell *params)
 
 	if (unlikely(hook == nullptr))
 	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid HookChain handle.", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid HookChain handle.", __FUNCTION__);
 		return FALSE;
 	}
 
@@ -114,7 +114,7 @@ cell AMX_NATIVE_CALL SetHookChainReturn(AMX *amx, cell *params)
 {
 	if (unlikely(!g_hookCtx))
 	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: trying to set return value without active hook.", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: trying to set return value without active hook.", __FUNCTION__);
 		return FALSE;
 	}
 
@@ -123,7 +123,7 @@ cell AMX_NATIVE_CALL SetHookChainReturn(AMX *amx, cell *params)
 
 	if (unlikely(params[arg_type] != retVal.type))
 	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: trying to set return value with incompatible type.", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: trying to set return value with incompatible type.", __FUNCTION__);
 		return FALSE;
 	}
 
@@ -179,7 +179,7 @@ cell AMX_NATIVE_CALL GetHookChainReturn(AMX *amx, cell *params)
 {
 	if (unlikely(!g_hookCtx))
 	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: trying to get return value without active hook.", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: trying to get return value without active hook.", __FUNCTION__);
 		return FALSE;
 	}
 
@@ -188,13 +188,13 @@ cell AMX_NATIVE_CALL GetHookChainReturn(AMX *amx, cell *params)
 
 	if (unlikely(params[arg_type] != retVal.type))
 	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: trying to set return value with incompatible type.", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: trying to set return value with incompatible type.", __FUNCTION__);
 		return FALSE;
 	}
 
 	if (unlikely(!retVal.set))
 	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: return value isn't set.", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: return value isn't set.", __FUNCTION__);
 		return FALSE;
 	}
 
@@ -242,7 +242,7 @@ cell AMX_NATIVE_CALL SetHookChainArg(AMX *amx, cell *params)
 {
 	if (unlikely(!g_hookCtx))
 	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: trying to get return value without active hook.", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: trying to get return value without active hook.", __FUNCTION__);
 		return FALSE;
 	}
 
@@ -251,7 +251,7 @@ cell AMX_NATIVE_CALL SetHookChainArg(AMX *amx, cell *params)
 
 	if (unlikely(number >= g_hookCtx->args_count))
 	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: can't set argument %i of hookchain with %i args.", __FUNCTION__, params[arg_number], g_hookCtx->args_count);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: can't set argument %i of hookchain with %i args.", __FUNCTION__, params[arg_number], g_hookCtx->args_count);
 		return FALSE;
 	}
 
@@ -259,7 +259,7 @@ cell AMX_NATIVE_CALL SetHookChainArg(AMX *amx, cell *params)
 
 	if (unlikely(params[arg_type] != type))
 	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid argument type provided.", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid argument type provided.", __FUNCTION__);
 		return FALSE;
 	}
 
@@ -307,7 +307,7 @@ AMX_NATIVE_INFO HookChain_Natives[] =
 void RegisterNatives_HookChains()
 {
 	if (!api_cfg.hasReHLDS() && !api_cfg.hasReGameDLL())
-		fillNatives(HookChain_Natives, [](AMX *amx, cell *params) -> cell { MF_LogError(amx, AMX_ERR_NATIVE, "You need ReHlds or ReGameDll for use hookchains"); return FALSE; });
+		fillNatives(HookChain_Natives, [](AMX *amx, cell *params) -> cell { AMXX_LogError(amx, AMX_ERR_NATIVE, "You need ReHlds or ReGameDll for use hookchains"); return FALSE; });
 
 	g_amxxapi.AddNatives(HookChain_Natives);
 }

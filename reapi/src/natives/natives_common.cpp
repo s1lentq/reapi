@@ -106,7 +106,7 @@ cell AMX_NATIVE_CALL amx_get_viewent(AMX *amx, cell *params)
 	client_t *pClient = clientOfIndex(params[arg_index]);
 	if (unlikely(pClient == nullptr || !(pClient->active | pClient->spawned | pClient->connected)))
 	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
 		return FALSE;
 	}
 
@@ -134,7 +134,7 @@ cell AMX_NATIVE_CALL amx_get_key_value(AMX *amx, cell *params)
 	char *buffer = reinterpret_cast<char *>(params[arg_buffer]);
 	if (!buffer)
 	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: Invalid buffer", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: Invalid buffer", __FUNCTION__);
 		return FALSE;
 	}
 
@@ -162,7 +162,7 @@ cell AMX_NATIVE_CALL amx_set_key_value(AMX *amx, cell *params)
 	char *buffer = reinterpret_cast<char *>(params[arg_buffer]);
 	if (!buffer)
 	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: Invalid buffer", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: Invalid buffer", __FUNCTION__);
 		return FALSE;
 	}
 
@@ -205,12 +205,12 @@ cell AMX_NATIVE_CALL amx_GetBonePosition(AMX *amx, cell *params)
 
 	CBaseEntity *pEntity = getPrivate<CBaseEntity>(params[arg_index]);
 	if (unlikely(pEntity == nullptr)) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
 		return FALSE;
 	}
 
 	if (FNullEnt(params[arg_index])) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: worldspawn not allowed", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: worldspawn not allowed", __FUNCTION__);
 		return FALSE;
 	}
 
@@ -242,12 +242,12 @@ cell AMX_NATIVE_CALL amx_GetAttachment(AMX *amx, cell *params)
 
 	CBaseEntity *pEntity = getPrivate<CBaseEntity>(params[arg_index]);
 	if (unlikely(pEntity == nullptr)) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
 		return FALSE;
 	}
 
 	if (FNullEnt(params[arg_index])) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: worldspawn not allowed", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: worldspawn not allowed", __FUNCTION__);
 		return FALSE;
 	}
 
@@ -280,7 +280,7 @@ cell AMX_NATIVE_CALL amx_SetThink(AMX *amx, cell *params)
 
 	CBaseEntity *pEntity = getPrivate<CBaseEntity>(params[arg_index]);
 	if (unlikely(pEntity == nullptr)) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
 		return FALSE;
 	}
 
@@ -293,7 +293,7 @@ cell AMX_NATIVE_CALL amx_SetThink(AMX *amx, cell *params)
 
 	int funcid;
 	if (unlikely(g_amxxapi.amx_FindPublic(amx, funcname, &funcid) != AMX_ERR_NONE)) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: public function \"%s\" not found.", __FUNCTION__, funcname);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: public function \"%s\" not found.", __FUNCTION__, funcname);
 		return FALSE;
 	}
 
@@ -324,7 +324,7 @@ cell AMX_NATIVE_CALL amx_SetTouch(AMX *amx, cell *params)
 
 	CBaseEntity *pEntity = getPrivate<CBaseEntity>(params[arg_index]);
 	if (unlikely(pEntity == nullptr)) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
 		return FALSE;
 	}
 
@@ -337,7 +337,7 @@ cell AMX_NATIVE_CALL amx_SetTouch(AMX *amx, cell *params)
 
 	int funcid;
 	if (unlikely(g_amxxapi.amx_FindPublic(amx, funcname, &funcid) != AMX_ERR_NONE)) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: public function \"%s\" not found.", __FUNCTION__, funcname);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: public function \"%s\" not found.", __FUNCTION__, funcname);
 		return FALSE;
 	}
 
@@ -368,7 +368,7 @@ cell AMX_NATIVE_CALL amx_SetUse(AMX *amx, cell *params)
 
 	CBaseEntity *pEntity = getPrivate<CBaseEntity>(params[arg_index]);
 	if (unlikely(pEntity == nullptr)) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
 		return FALSE;
 	}
 
@@ -381,7 +381,7 @@ cell AMX_NATIVE_CALL amx_SetUse(AMX *amx, cell *params)
 
 	int funcid;
 	if (unlikely(g_amxxapi.amx_FindPublic(amx, funcname, &funcid) != AMX_ERR_NONE)) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: public function \"%s\" not found.", __FUNCTION__, funcname);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: public function \"%s\" not found.", __FUNCTION__, funcname);
 		return FALSE;
 	}
 
@@ -412,7 +412,7 @@ cell AMX_NATIVE_CALL amx_SetBlocked(AMX *amx, cell *params)
 
 	CBaseEntity *pEntity = getPrivate<CBaseEntity>(params[arg_index]);
 	if (unlikely(pEntity == nullptr)) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
 		return FALSE;
 	}
 
@@ -425,7 +425,7 @@ cell AMX_NATIVE_CALL amx_SetBlocked(AMX *amx, cell *params)
 
 	int funcid;
 	if (unlikely(g_amxxapi.amx_FindPublic(amx, funcname, &funcid) != AMX_ERR_NONE)) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: public function \"%s\" not found.", __FUNCTION__, funcname);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: public function \"%s\" not found.", __FUNCTION__, funcname);
 		return FALSE;
 	}
 
@@ -457,7 +457,7 @@ cell AMX_NATIVE_CALL amx_SetMoveDone(AMX *amx, cell *params)
 
 	CBaseEntity *pEntity = getPrivate<CBaseEntity>(params[arg_index]);
 	if (unlikely(pEntity == nullptr)) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
 		return FALSE;
 	}
 
@@ -470,7 +470,7 @@ cell AMX_NATIVE_CALL amx_SetMoveDone(AMX *amx, cell *params)
 
 	int funcid;
 	if (unlikely(g_amxxapi.amx_FindPublic(amx, funcname, &funcid) != AMX_ERR_NONE)) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: public function \"%s\" not found.", __FUNCTION__, funcname);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: public function \"%s\" not found.", __FUNCTION__, funcname);
 		return FALSE;
 	}
 

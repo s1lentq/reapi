@@ -15,13 +15,13 @@ cell AMX_NATIVE_CALL set_member(AMX *amx, cell *params)
 	member_t *member = memberlist[params[arg_member]];
 
 	if (unlikely(member == nullptr)) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_member]);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_member]);
 		return FALSE;
 	}
 
 	edict_t *pEdict = edictByIndexAmx(params[arg_index]);
 	if (unlikely(pEdict == nullptr || pEdict->pvPrivateData == nullptr)) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
 		return FALSE;
 	}
 
@@ -56,13 +56,13 @@ cell AMX_NATIVE_CALL get_member(AMX *amx, cell *params)
 	member_t *member = memberlist[params[arg_member]];
 
 	if (unlikely(member == nullptr)) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_member]);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_member]);
 		return FALSE;
 	}
 
 	edict_t *pEdict = edictByIndexAmx(params[arg_index]);
 	if (unlikely(pEdict == nullptr || pEdict->pvPrivateData == nullptr)) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
 		return FALSE;
 	}
 
@@ -132,7 +132,7 @@ cell AMX_NATIVE_CALL set_member_game(AMX *amx, cell *params)
 
 	member_t *member = memberlist[params[arg_member]];
 	if (unlikely(member == nullptr)) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_member]);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_member]);
 		return FALSE;
 	}
 
@@ -159,7 +159,7 @@ cell AMX_NATIVE_CALL get_member_game(AMX *amx, cell *params)
 
 	member_t *member = memberlist[params[arg_member]];
 	if (unlikely(member == nullptr)) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_member]);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_member]);
 		return FALSE;
 	}
 
@@ -200,14 +200,14 @@ cell AMX_NATIVE_CALL set_entvar(AMX *amx, cell *params)
 	member_t *member = memberlist[params[arg_var]];
 
 	if (unlikely(member == nullptr)) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_var]);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_var]);
 		return FALSE;
 	}
 	CHECK_ISENTITY(arg_index);
 
 	edict_t *pEdict = edictByIndexAmx(params[arg_index]);
 	if (unlikely(pEdict == nullptr || pEdict->pvPrivateData == nullptr)) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
 		return FALSE;
 	}
 
@@ -229,7 +229,7 @@ cell AMX_NATIVE_CALL get_entvar(AMX *amx, cell *params)
 	member_t *member = memberlist[params[arg_var]];
 
 	if (unlikely(member == nullptr)) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_var]);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_var]);
 		return FALSE;
 	}
 
@@ -237,7 +237,7 @@ cell AMX_NATIVE_CALL get_entvar(AMX *amx, cell *params)
 
 	edict_t *pEdict = edictByIndexAmx(params[arg_index]);
 	if (unlikely(pEdict == nullptr || &pEdict->v == nullptr)) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
 		return FALSE;
 	}
 
@@ -294,7 +294,7 @@ cell AMX_NATIVE_CALL set_pmove(AMX *amx, cell *params)
 	member_t *member = memberlist[params[arg_var]];
 
 	if (unlikely(member == nullptr)) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_var]);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_var]);
 		return FALSE;
 	}
 
@@ -319,7 +319,7 @@ cell AMX_NATIVE_CALL get_pmove(AMX *amx, cell *params)
 	member_t *member = memberlist[params[arg_var]];
 
 	if (unlikely(member == nullptr)) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_var]);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_var]);
 		return FALSE;
 	}
 
@@ -362,7 +362,7 @@ cell AMX_NATIVE_CALL set_movevar(AMX *amx, cell *params)
 	member_t *member = memberlist[params[arg_var]];
 
 	if (unlikely(member == nullptr)) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_var]);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_var]);
 		return FALSE;
 	}
 
@@ -385,7 +385,7 @@ cell AMX_NATIVE_CALL get_movevar(AMX *amx, cell *params)
 	member_t *member = memberlist[params[arg_var]];
 
 	if (unlikely(member == nullptr)) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_var]);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_var]);
 		return FALSE;
 	}
 
@@ -419,7 +419,7 @@ cell AMX_NATIVE_CALL set_ucmd(AMX *amx, cell *params)
 	member_t *member = memberlist[params[arg_var]];
 
 	if (unlikely(member == nullptr)) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_var]);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_var]);
 		return FALSE;
 	}
 
@@ -440,7 +440,7 @@ cell AMX_NATIVE_CALL get_ucmd(AMX *amx, cell *params)
 	member_t *member = memberlist[params[arg_var]];
 
 	if (unlikely(member == nullptr)) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_var]);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_var]);
 		return FALSE;
 	}
 
@@ -475,7 +475,7 @@ cell AMX_NATIVE_CALL set_pmtrace(AMX *amx, cell *params)
 	member_t *member = memberlist[params[arg_var]];
 
 	if (unlikely(member == nullptr)) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_var]);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_var]);
 		return FALSE;
 	}
 
@@ -499,7 +499,7 @@ cell AMX_NATIVE_CALL get_pmtrace(AMX *amx, cell *params)
 	member_t *member = memberlist[params[arg_var]];
 
 	if (unlikely(member == nullptr)) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_var]);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_var]);
 		return FALSE;
 	}
 
@@ -534,13 +534,13 @@ cell AMX_NATIVE_CALL set_rebuy(AMX *amx, cell *params)
 
 	member_t *member = memberlist[params[arg_member]];
 	if (unlikely(member == nullptr)) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_member]);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_member]);
 		return FALSE;
 	}
 
 	cell *handle = (cell *)params[arg_handle];
 	if (unlikely(handle == nullptr)) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid rebuy handle", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid rebuy handle", __FUNCTION__);
 		return FALSE;
 	}
 
@@ -562,13 +562,13 @@ cell AMX_NATIVE_CALL get_rebuy(AMX *amx, cell *params)
 
 	member_t *member = memberlist[params[arg_member]];
 	if (unlikely(member == nullptr)) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_member]);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_member]);
 		return FALSE;
 	}
 
 	cell *handle = (cell *)params[arg_handle];
 	if (unlikely(handle == nullptr)) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid rebuy handle", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid rebuy handle", __FUNCTION__);
 		return FALSE;
 	}
 
@@ -612,7 +612,7 @@ AMX_NATIVE_INFO ReGameVars_Natives[] =
 void RegisterNatives_Members()
 {
 	if (!api_cfg.hasReGameDLL())
-		fillNatives(ReGameVars_Natives, [](AMX *amx, cell *params) -> cell { MF_LogError(amx, AMX_ERR_NATIVE, "%s: isn't available", "ReGameDll"); return FALSE; });
+		fillNatives(ReGameVars_Natives, [](AMX *amx, cell *params) -> cell { AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: isn't available", "ReGameDll"); return FALSE; });
 
 	g_amxxapi.AddNatives(ReGameVars_Natives);
 	g_amxxapi.AddNatives(EngineVars_Natives);

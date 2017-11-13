@@ -57,7 +57,7 @@ bool CEntityCallback::SetThink(AMX *amx, CBaseEntity *pEntity, const char *pszCa
 	}
 
 	if (fwdid == -1) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: failed to register forward.", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: failed to register forward.", __FUNCTION__);
 		return false;
 	}
 
@@ -78,7 +78,7 @@ bool CEntityCallback::SetTouch(AMX *amx, CBaseEntity *pEntity, const char *pszCa
 	}
 
 	if (fwdid == -1) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: failed to register forward.", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: failed to register forward.", __FUNCTION__);
 		return false;
 	}
 
@@ -99,7 +99,7 @@ bool CEntityCallback::SetUse(AMX *amx, CBaseEntity *pEntity, const char *pszCall
 	}
 
 	if (fwdid == -1) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: failed to register forward.", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: failed to register forward.", __FUNCTION__);
 		return false;
 	}
 
@@ -120,7 +120,7 @@ bool CEntityCallback::SetBlocked(AMX *amx, CBaseEntity *pEntity, const char *psz
 	}
 
 	if (fwdid == -1) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: failed to register forward.", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: failed to register forward.", __FUNCTION__);
 		return false;
 	}
 
@@ -141,7 +141,7 @@ bool CEntityCallback::SetMoveDone(AMX *amx, CBaseEntity *pEntity, const char *ps
 	}
 
 	if (fwdid == -1) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: failed to register forward.", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: failed to register forward.", __FUNCTION__);
 		return false;
 	}
 

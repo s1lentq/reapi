@@ -271,7 +271,7 @@ cell AMX_NATIVE_CALL rg_multidmg_add(AMX *amx, cell *params)
 	CHECK_ISENTITY(arg_victim);
 
 	if (params[arg_victim] < 0) { // null
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: victim == null", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: victim == null", __FUNCTION__);
 		return FALSE;
 	}
 
@@ -418,7 +418,7 @@ cell AMX_NATIVE_CALL rg_round_end(AMX *amx, cell *params)
 
 	auto winstatus = params[arg_win];
 	if (winstatus <= 0) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown win status %i", __FUNCTION__, winstatus);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: unknown win status %i", __FUNCTION__, winstatus);
 		return FALSE;
 	}
 
@@ -697,7 +697,7 @@ cell AMX_NATIVE_CALL rg_get_weapon_info(AMX *amx, cell *params)
 
 	if (!GetWeaponInfoRange(weaponId, false) && info_type != WI_ID)
 	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid weapon id %i", __FUNCTION__, weaponId);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid weapon id %i", __FUNCTION__, weaponId);
 		return 0;
 	}
 
@@ -731,7 +731,7 @@ cell AMX_NATIVE_CALL rg_get_weapon_info(AMX *amx, cell *params)
 	case WI_AMMO_NAME:
 		{
 			if (PARAMS_COUNT != arg_4) {
-				MF_LogError(amx, AMX_ERR_NATIVE, "%s: bad parameter count, got %i, expected %i", __FUNCTION__, PARAMS_COUNT, arg_4);
+				AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: bad parameter count, got %i, expected %i", __FUNCTION__, PARAMS_COUNT, arg_4);
 				return -1;
 			}
 
@@ -750,7 +750,7 @@ cell AMX_NATIVE_CALL rg_get_weapon_info(AMX *amx, cell *params)
 	case WI_NAME:
 		{
 			if (PARAMS_COUNT != arg_4) {
-				MF_LogError(amx, AMX_ERR_NATIVE, "%s: bad parameter count, got %i, expected %i", __FUNCTION__, PARAMS_COUNT, arg_4);
+				AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: bad parameter count, got %i, expected %i", __FUNCTION__, PARAMS_COUNT, arg_4);
 				return -1;
 			}
 
@@ -767,7 +767,7 @@ cell AMX_NATIVE_CALL rg_get_weapon_info(AMX *amx, cell *params)
 			return 1;
 		}
 	default:
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown type statement %i, params count %i", __FUNCTION__, info_type, PARAMS_COUNT);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: unknown type statement %i, params count %i", __FUNCTION__, info_type, PARAMS_COUNT);
 		return -1;
 	}
 }
@@ -789,7 +789,7 @@ cell AMX_NATIVE_CALL rg_set_weapon_info(AMX *amx, cell *params)
 	WeaponIdType weaponId = static_cast<WeaponIdType>(params[arg_weapon_id]);
 	if (!GetWeaponInfoRange(weaponId, true))
 	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid weapon id %i", __FUNCTION__, weaponId);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid weapon id %i", __FUNCTION__, weaponId);
 		return 0;
 	}
 
@@ -819,10 +819,10 @@ cell AMX_NATIVE_CALL rg_set_weapon_info(AMX *amx, cell *params)
 		break;
 	case WI_AMMO_NAME:
 	case WI_NAME:
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: this change will have no effect, type statement %i", __FUNCTION__, info_type);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: this change will have no effect, type statement %i", __FUNCTION__, info_type);
 		return 0;
 	default:
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: unknown type statement %i, params count %i", __FUNCTION__, info_type, PARAMS_COUNT);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: unknown type statement %i, params count %i", __FUNCTION__, info_type, PARAMS_COUNT);
 		return 0;
 	}
 
@@ -1380,7 +1380,7 @@ cell AMX_NATIVE_CALL rg_set_user_model(AMX *amx, cell *params)
 	char modelbuf[256];
 	const char* newModel = getAmxString(amx, params[arg_model], modelbuf);
 	if (*newModel == '\0') {
-		MF_LogError(amx, AMX_ERR_NATIVE, "Model can not be empty");
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "Model can not be empty");
 		return FALSE;
 	}
 
@@ -1552,7 +1552,7 @@ cell AMX_NATIVE_CALL rg_instant_reload_weapons(AMX *amx, cell *params)
 	{
 		pWeapon = getPrivate<CBasePlayerWeapon>(params[arg_weapon]);
 		if (!pWeapon || !pWeapon->IsWeapon()) {
-			MF_LogError(amx, AMX_ERR_NATIVE, "%s: Invalid entity weapon", __FUNCTION__);
+			AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: Invalid entity weapon", __FUNCTION__);
 			return FALSE;
 		}
 	}
@@ -1709,7 +1709,7 @@ cell AMX_NATIVE_CALL rg_switch_weapon(AMX *amx, cell *params)
 
 	auto pWeapon = getPrivate<CBasePlayerWeapon>(params[arg_weapon]);
 	if (pWeapon == nullptr || !pWeapon->IsWeapon()) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: Invalid entity weapon", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: Invalid entity weapon", __FUNCTION__);
 		return FALSE;
 	}
 
@@ -1752,7 +1752,7 @@ cell AMX_NATIVE_CALL rg_is_player_can_takedamage(AMX *amx, cell *params)
 
 	CBaseEntity *pAttacker = getPrivate<CBaseEntity>(params[arg_attacker]);
 	if (!pAttacker) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: Invalid entity attacker", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: Invalid entity attacker", __FUNCTION__);
 		return FALSE;
 	}
 
@@ -1776,7 +1776,7 @@ cell AMX_NATIVE_CALL rg_get_weaponbox_id(AMX *amx, cell *params)
 
 	CWeaponBox *pEntityBox = getPrivate<CWeaponBox>(params[arg_entity]);
 	if (pEntityBox == nullptr) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: Invalid entity weaponbox", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: Invalid entity weaponbox", __FUNCTION__);
 		return FALSE;
 	}
 
@@ -2147,10 +2147,10 @@ AMX_NATIVE_INFO Misc_Natives_RH[] =
 void RegisterNatives_Misc()
 {
 	if (!api_cfg.hasReGameDLL())
-		fillNatives(Misc_Natives_RG, [](AMX *amx, cell *params) -> cell { MF_LogError(amx, AMX_ERR_NATIVE, "%s: isn't available", "ReGameDll"); return FALSE; });
+		fillNatives(Misc_Natives_RG, [](AMX *amx, cell *params) -> cell { AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: isn't available", "ReGameDll"); return FALSE; });
 
 	if (!api_cfg.hasReHLDS())
-		fillNatives(Misc_Natives_RH, [](AMX *amx, cell *params) -> cell { MF_LogError(amx, AMX_ERR_NATIVE, "%s: isn't available", "ReHlds"); return FALSE; });
+		fillNatives(Misc_Natives_RH, [](AMX *amx, cell *params) -> cell { AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: isn't available", "ReHlds"); return FALSE; });
 
 	g_amxxapi.AddNatives(Misc_Natives_RG);
 	g_amxxapi.AddNatives(Misc_Natives_RH);

@@ -199,8 +199,7 @@ C_DLLEXPORT void AMXX_PluginsUnloading()
 {
 }
 
-// Advanced MF functions
-NOINLINE void MF_Log(const char *fmt, ...)
+NOINLINE void AMXX_Log(const char *fmt, ...)
 {
 	char msg[2048];
 	va_list arglst;
@@ -211,7 +210,7 @@ NOINLINE void MF_Log(const char *fmt, ...)
 	g_amxxapi.Log("[%s] %s", g_ModuleInfo.logtag, msg);
 }
 
-NOINLINE void MF_LogError(AMX *amx, int err, const char *fmt, ...)
+NOINLINE void AMXX_LogError(AMX *amx, int err, const char *fmt, ...)
 {
 	char msg[2048];
 	va_list arglst;
@@ -222,7 +221,7 @@ NOINLINE void MF_LogError(AMX *amx, int err, const char *fmt, ...)
 	g_amxxapi.LogError(amx, err, "[%s] %s", g_ModuleInfo.logtag, msg);
 }
 
-NOINLINE void AMXX_Error(AMX *amx, const char *fmt, ...)
+NOINLINE void AMXX_Assert(AMX *amx, const char *fmt, ...)
 {
 	char msg[2048];
 	va_list arglst;

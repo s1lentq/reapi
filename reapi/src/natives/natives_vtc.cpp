@@ -112,7 +112,7 @@ AMX_NATIVE_INFO VTC_Natives[] =
 void RegisterNatives_VTC()
 {
 	if (!api_cfg.hasVTC())
-		fillNatives(VTC_Natives, [](AMX *amx, cell *params) -> cell { MF_LogError(amx, AMX_ERR_NATIVE, "%s: isn't available", "VTC"); return FALSE; });
+		fillNatives(VTC_Natives, [](AMX *amx, cell *params) -> cell { AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: isn't available", "VTC"); return FALSE; });
 
 	g_amxxapi.AddNatives(VTC_Natives);
 }

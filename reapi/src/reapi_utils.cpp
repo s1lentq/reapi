@@ -52,7 +52,7 @@ CTempStrings::CTempStrings()
 char* CTempStrings::push(AMX* amx)
 {
 	if (m_current == STRINGS_MAX) {
-		MF_LogError(amx, AMX_ERR_NATIVE, "temp strings limit exceeded, contact reapi authors");
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "temp strings limit exceeded, contact reapi authors");
 		return nullptr;
 	}
 
@@ -69,7 +69,7 @@ CBaseEntity *GiveNamedItemInternal(AMX *amx, CBasePlayer *pPlayer, const char *p
 	edict_t *pEdict = CREATE_NAMED_ENTITY(ALLOC_STRING(pszItemName));
 	if (FNullEnt(pEdict))
 	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: Item \"%s\" failed to create!\n", __FUNCTION__, pszItemName);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: Item \"%s\" failed to create!\n", __FUNCTION__, pszItemName);
 		return nullptr;
 	}
 

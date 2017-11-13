@@ -78,7 +78,7 @@ AMX_NATIVE_INFO Reunion_Natives[] =
 void RegisterNatives_Reunion()
 {
 	if (!api_cfg.hasReunion())
-		fillNatives(Reunion_Natives, [](AMX *amx, cell *params) -> cell { MF_LogError(amx, AMX_ERR_NATIVE, "%s: isn't available", "Reunion"); return FALSE; });
+		fillNatives(Reunion_Natives, [](AMX *amx, cell *params) -> cell { AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: isn't available", "Reunion"); return FALSE; });
 
 	g_amxxapi.AddNatives(Reunion_Natives);
 }

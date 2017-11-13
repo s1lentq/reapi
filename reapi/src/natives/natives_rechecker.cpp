@@ -21,7 +21,7 @@ cell AMX_NATIVE_CALL RegisterQueryFile(AMX *amx, cell *params)
 	{
 	case RES_TYPE_NONE:
 	case RES_TYPE_IGNORE:
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: invalid flag type \"%i\".", __FUNCTION__, flag);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid flag type \"%i\".", __FUNCTION__, flag);
 		break;
 	case RES_TYPE_EXISTS:
 		if (params[arg_hash] == -1) {
@@ -35,7 +35,7 @@ cell AMX_NATIVE_CALL RegisterQueryFile(AMX *amx, cell *params)
 	char filename[MAX_PATH];
 	const char *file = getAmxString(amx, params[arg_file], filename);
 	if (!file || file[0] == '\0') {
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: file can not be empty.", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: file can not be empty.", __FUNCTION__);
 		return FALSE;
 	}
 
@@ -45,7 +45,7 @@ cell AMX_NATIVE_CALL RegisterQueryFile(AMX *amx, cell *params)
 	int funcid;
 	if (unlikely(g_amxxapi.amx_FindPublic(amx, func, &funcid) != AMX_ERR_NONE))
 	{
-		MF_LogError(amx, AMX_ERR_NATIVE, "%s: public function \"%s\" not found.", __FUNCTION__, func);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: public function \"%s\" not found.", __FUNCTION__, func);
 		return FALSE;
 	}
 
@@ -79,7 +79,7 @@ AMX_NATIVE_INFO Rechecker_Natives[] =
 void RegisterNatives_Rechecker()
 {
 	if (!api_cfg.hasRechecker())
-		fillNatives(Rechecker_Natives, [](AMX *amx, cell *params) -> cell { MF_LogError(amx, AMX_ERR_NATIVE, "%s: isn't available", "Rechecker"); return FALSE; });
+		fillNatives(Rechecker_Natives, [](AMX *amx, cell *params) -> cell { AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: isn't available", "Rechecker"); return FALSE; });
 
 	g_amxxapi.AddNatives(Rechecker_Natives);
 }
