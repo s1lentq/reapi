@@ -28,16 +28,12 @@ cell AMX_NATIVE_CALL set_member(AMX *amx, cell *params)
 	cell* value = getAmxAddr(amx, params[arg_value]);
 	size_t element = (PARAMS_COUNT == 4) ? *getAmxAddr(amx, params[arg_elem]) : 0;
 
-	if (member->hasTable(params[arg_member], memberlist_t::mt_csplayer)) {
-		CBasePlayer *pPlayer = (CBasePlayer *)pEdict->pvPrivateData;
-		if (unlikely(pPlayer->CSPlayer() == nullptr)) {
-			return FALSE;
-		}
-
-		return set_member(pPlayer->CSPlayer(), member, value, element);
-	}
-
-	return set_member(pEdict->pvPrivateData, member, value, element);
+	return set_member(
+		get_pdata_custom(getPrivate<CBaseEntity>(pEdict), params[arg_member]),
+		member,
+		value,
+		element
+	);
 }
 
 /*
@@ -103,16 +99,13 @@ cell AMX_NATIVE_CALL get_member(AMX *amx, cell *params)
 		break;
 	}
 
-	if (member->hasTable(params[arg_member], memberlist_t::mt_csplayer)) {
-		CBasePlayer *pPlayer = (CBasePlayer *)pEdict->pvPrivateData;
-		if (unlikely(pPlayer->CSPlayer() == nullptr)) {
-			return FALSE;
-		}
-
-		return get_member(pPlayer->CSPlayer(), member, dest, element, length);
-	}
-
-	return get_member(pEdict->pvPrivateData, member, dest, element, length);
+	return get_member(
+		get_pdata_custom(getPrivate<CBaseEntity>(pEdict), params[arg_member]),
+		member,
+		dest,
+		element,
+		length
+	);
 }
 
 /*
@@ -620,8 +613,11 @@ void RegisterNatives_Members()
 
 cell set_member(void* pdata, const member_t *member, cell* value, size_t element)
 {
-	char string[2048];
+	if (!pdata) {
+		return FALSE;
+	}
 
+	char string[2048];
 	switch (member->type) {
 	case MEMBER_CLASSPTR:
 		{
@@ -744,6 +740,10 @@ cell set_member(void* pdata, const member_t *member, cell* value, size_t element
 
 cell get_member(void* pdata, const member_t *member, cell* dest, size_t element, size_t length)
 {
+	if (!pdata) {
+		return 0;
+	}
+
 	switch (member->type)
 	{
 	case MEMBER_CLASSPTR:
@@ -865,4 +865,23 @@ cell get_member(void* pdata, const member_t *member, cell* dest, size_t element,
 	}
 
 	return 0;
+}
+
+void *get_pdata_custom(CBaseEntity *pEntity, cell member)
+{
+	const auto table = memberlist_t::members_tables_e(member / MAX_REGION_RANGE);
+	switch (table) {
+	case memberlist_t::mt_csplayer:
+	case memberlist_t::mt_csplayerweapon: {
+		if (unlikely(pEntity->m_pEntity == nullptr)) {
+			return nullptr;
+		}
+
+		return pEntity->m_pEntity;
+	}
+	default:
+		break;
+	}
+
+	return pEntity;
 }

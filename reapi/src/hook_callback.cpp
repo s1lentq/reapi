@@ -378,24 +378,24 @@ bool CBasePlayer_HasRestrictItem(IReGameHook_CBasePlayer_HasRestrictItem *chain,
 	return callForward<bool>(RG_CBasePlayer_HasRestrictItem, original, indexOfEdict(pthis->pev), item, type);
 }
 
-void CBasePlayer_DropPlayerItem(IReGameHook_CBasePlayer_DropPlayerItem *chain, CBasePlayer *pthis, const char *pszItemName)
+CBaseEntity *CBasePlayer_DropPlayerItem(IReGameHook_CBasePlayer_DropPlayerItem *chain, CBasePlayer *pthis, const char *pszItemName)
 {
 	auto original = [chain](int _pthis, const char *_pszItemName)
 	{
-		chain->callNext(getPrivate<CBasePlayer>(_pthis), _pszItemName);
+		return indexOfPDataAmx(chain->callNext(getPrivate<CBasePlayer>(_pthis), _pszItemName));
 	};
 
-	callVoidForward(RG_CBasePlayer_DropPlayerItem, original, indexOfEdict(pthis->pev), pszItemName);
+	return getPrivate<CBaseEntity>(callForward<size_t>(RG_CBasePlayer_DropPlayerItem, original, indexOfEdict(pthis->pev), pszItemName));
 }
 
-void CBasePlayer_DropShield(IReGameHook_CBasePlayer_DropShield *chain, CBasePlayer *pthis, bool bDeploy)
+CBaseEntity *CBasePlayer_DropShield(IReGameHook_CBasePlayer_DropShield *chain, CBasePlayer *pthis, bool bDeploy)
 {
 	auto original = [chain](int _pthis, bool _bDeploy)
 	{
-		chain->callNext(getPrivate<CBasePlayer>(_pthis), _bDeploy);
+		return indexOfPDataAmx(chain->callNext(getPrivate<CBasePlayer>(_pthis), _bDeploy));
 	};
 
-	callVoidForward(RG_CBasePlayer_DropShield, original, indexOfEdict(pthis->pev), bDeploy);
+	return getPrivate<CBaseEntity>(callForward<size_t>(RG_CBasePlayer_DropShield, original, indexOfEdict(pthis->pev), bDeploy));
 }
 
 void CBasePlayer_OnSpawnEquip(IReGameHook_CBasePlayer_OnSpawnEquip *chain, CBasePlayer *pthis, bool addDefault, bool equipGame)

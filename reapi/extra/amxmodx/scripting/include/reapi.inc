@@ -72,6 +72,7 @@ enum members_tables_e
 	mt_shield,
 	mt_rebuystruct,
 	mt_mapinfo,
+	mt_csplayerweapon
 };
 
 // Is like FNullEnt
@@ -93,7 +94,9 @@ enum members_tables_e
 #include <reapi_reunion>
 #include <reapi_rechecker>
 
-// hookchain return type
+/**
+* Hookchain return types
+*/
 enum
 {
 	HC_CONTINUE = 0, // Plugin didn't take any action
@@ -102,7 +105,9 @@ enum
                      // @note Warning: Be very careful, using this type of return will skip calls for all following AMXX plugins
 };
 
-// hookchain types
+/**
+* Hookchain argument types
+*/
 enum AType
 {
 	ATYPE_INTEGER = 0,

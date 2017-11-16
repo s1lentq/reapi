@@ -25,9 +25,11 @@
 *    version.
 *
 */
+
 #pragma once
 
 #include "util.h"
+#include "schedule.h"
 #include "monsterevent.h"
 
 class CSave;
@@ -116,16 +118,24 @@ public:
 	void EXT_FUNC DLLEXPORT SUB_Blocked(CBaseEntity *pOther);
 
 	using thinkfn_t = decltype(m_pfnThink);
-	inline void SetThink(thinkfn_t pfn) { m_pfnThink = pfn; }
+	template <typename T>
+	void SetThink(void (T::*pfn)());
+	void SetThink(std::nullptr_t);
 
 	using touchfn_t = decltype(m_pfnTouch);
-	inline void SetTouch(touchfn_t pfn) { m_pfnTouch = pfn; }
+	template <typename T>
+	void SetTouch(void (T::*pfn)(CBaseEntity *pOther));
+	void SetTouch(std::nullptr_t);
 
 	using usefn_t = decltype(m_pfnUse);
-	inline void SetUse(usefn_t pfn) { m_pfnUse = pfn; }
+	template <typename T>
+	void SetUse(void (T::*pfn)(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value));
+	void SetUse(std::nullptr_t);
 
 	using blockedfn_t = decltype(m_pfnBlocked);
-	inline void SetBlocked(blockedfn_t pfn) { m_pfnBlocked = pfn; }
+	template <typename T>
+	void SetBlocked(void (T::*pfn)(CBaseEntity *pOther));
+	void SetBlocked(std::nullptr_t);
 
 	virtual void Think() = 0;
 	virtual void Touch(CBaseEntity *pOther) = 0;
@@ -188,6 +198,53 @@ public:
 	// client has left the game
 	bool has_disconnected;
 };
+
+// Inlines
+inline BOOL FNullEnt(CBaseEntity *ent) { return (ent == NULL || FNullEnt(ent->edict())); }
+
+template <typename T>
+inline void CBaseEntity::SetThink(void (T::*pfn)())
+{
+	m_pfnThink = static_cast<thinkfn_t>(pfn);
+}
+
+inline void CBaseEntity::SetThink(std::nullptr_t)
+{
+	m_pfnThink = nullptr;
+}
+
+template <typename T>
+inline void CBaseEntity::SetTouch(void (T::*pfn)(CBaseEntity *pOther))
+{
+	m_pfnTouch = static_cast<touchfn_t>(pfn);
+}
+
+inline void CBaseEntity::SetTouch(std::nullptr_t)
+{
+	m_pfnTouch = nullptr;
+}
+
+template <typename T>
+inline void CBaseEntity::SetUse(void (T::*pfn)(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value))
+{
+	m_pfnUse = static_cast<usefn_t>(pfn);
+}
+
+inline void CBaseEntity::SetUse(std::nullptr_t)
+{
+	m_pfnUse = nullptr;
+}
+
+template <typename T>
+inline void CBaseEntity::SetBlocked(void (T::*pfn)(CBaseEntity *pOther))
+{
+	m_pfnBlocked = static_cast<blockedfn_t>(pfn);
+}
+
+inline void CBaseEntity::SetBlocked(std::nullptr_t)
+{
+	m_pfnBlocked = nullptr;
+}
 
 class CPointEntity: public CBaseEntity {
 public:
@@ -266,25 +323,37 @@ public:
 	int m_cTriggersLeft;		// trigger_counter only, # of activations remaining
 	float m_flHeight;
 	EHANDLE m_hActivator;
-
 	void (CBaseToggle::*m_pfnCallWhenMoveDone)();
+
 	using movedonefn_t = decltype(m_pfnCallWhenMoveDone);
-	inline void SetMoveDone(movedonefn_t pfn) { m_pfnCallWhenMoveDone = pfn; }
+	template <typename T>
+	void SetMoveDone(void (T::*pfn)());
+	void SetMoveDone(std::nullptr_t);
 
 	Vector m_vecFinalDest;
 	Vector m_vecFinalAngle;
 
 	int m_bitsDamageInflict;	// DMG_ damage type that the door or tigger does
 
-	string_t m_sMaster;		// If this button has a master switch, this is the targetname.
-						// A master switch must be of the multisource type. If all
-						// of the switches in the multisource have been triggered, then
-						// the button will be allowed to operate. Otherwise, it will be
-						// deactivated.
+	string_t m_sMaster;			// If this button has a master switch, this is the targetname.
+								// A master switch must be of the multisource type. If all
+								// of the switches in the multisource have been triggered, then
+								// the button will be allowed to operate. Otherwise, it will be
+								// deactivated.
 };
 
+template <typename T>
+inline void CBaseToggle::SetMoveDone(void (T::*pfn)())
+{
+	m_pfnCallWhenMoveDone = static_cast<movedonefn_t>(pfn);
+}
+
+inline void CBaseToggle::SetMoveDone(std::nullptr_t)
+{
+	m_pfnCallWhenMoveDone = nullptr;
+}
+
 #include "basemonster.h"
-#include "weapons.h"
 #include "player.h"
 
 // Generic Button

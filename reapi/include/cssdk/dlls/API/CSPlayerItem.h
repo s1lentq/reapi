@@ -28,24 +28,25 @@
 
 #pragma once
 
-#include "../game_shared/GameEvent.h"
-#include "../game_shared/bot/bot_util.h"
-#include "../game_shared/bot/simple_state_machine.h"
-#include "../game_shared/steam_util.h"
-#include "../game_shared/counter.h"
-#include "../game_shared/bot/bot_manager.h"
-#include "../game_shared/bot/bot_constants.h"
-#include "../game_shared/bot/bot.h"
-#include "../game_shared/shared_util.h"
-#include "../game_shared/bot/bot_profile.h"
+class CBasePlayerItem;
+class CCSPlayerItem: public CCSAnimating
+{
+public:
+	CCSPlayerItem()
+	{
+		Q_memset(&m_ItemInfo, 0, sizeof(m_ItemInfo));
+	}
 
-#include "../game_shared/bot/improv.h"
-#include "../game_shared/bot/nav.h"
-#include "../game_shared/bot/nav_node.h"
-#include "../game_shared/bot/nav_area.h"
-#include "../game_shared/bot/nav_path.h"
+	virtual void SetItemInfo(ItemInfo *pInfo);
 
-#include "../dlls/hostage/hostage.h"
-#include "../dlls/hostage/hostage_localnav.h"
+	CBasePlayerItem *BasePlayerItem() const;
 
-#include "../dlls/bot/cs_bot.h"
+public:
+	ItemInfo m_ItemInfo;
+};
+
+// Inlines
+inline CBasePlayerItem *CCSPlayerItem::BasePlayerItem() const
+{
+	return reinterpret_cast<CBasePlayerItem *>(this->m_pContainingEntity);
+}

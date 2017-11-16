@@ -340,7 +340,7 @@ enum InventorySlotType
 	GRENADE_SLOT,
 	C4_SLOT,
 };
- 
+
 enum Bullet
 {
 	BULLET_NONE,
@@ -406,7 +406,10 @@ struct WeaponInfoStruct
 	int maxRounds;
 	int ammoType;
 	char *entityName;
-	const char *ammoName;
+
+	// custom
+	const char *ammoName1;
+	const char *ammoName2;
 };
 
 struct WeaponSlotInfo

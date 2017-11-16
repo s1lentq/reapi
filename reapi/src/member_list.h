@@ -80,12 +80,12 @@ struct memberlist_t
 		mt_shield,
 		mt_rebuystruct,
 		mt_mapinfo,
+		mt_csplayerweapon,
 	};
 };
 
 struct member_t
 {
-	bool hasTable(size_t members, memberlist_t::members_tables_e tbl) const;
 	bool isTypeReturnable() const;
 
 	size_t size;
@@ -94,15 +94,6 @@ struct member_t
 	const char *name;
 	MType type;
 };
-
-inline bool member_t::hasTable(size_t members, memberlist_t::members_tables_e tbl) const
-{
-	const auto table = memberlist_t::members_tables_e(members / MAX_REGION_RANGE);
-	if (likely(table != tbl))
-		return false;
-
-	return true;
-}
 
 inline bool member_t::isTypeReturnable() const
 {
@@ -1040,4 +1031,9 @@ enum MapInfo_Members
 {
 	m_MapInfo_iBuyingStatus = BEGIN_MEMBER_REGION(mapinfo),
 	m_MapInfo_flBombRadius,
+};
+
+enum CSPlayerWeapon_Members
+{
+	m_Weapon_bHasSecondaryAttack = BEGIN_MEMBER_REGION(csplayerweapon),
 };

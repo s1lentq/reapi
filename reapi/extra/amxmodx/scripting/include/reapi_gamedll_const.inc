@@ -40,7 +40,9 @@ enum AccountSet
 	AS_ADD  // Adds a value to the account
 };
 
-// Weapon info types for use with rg_get_weapon_info()
+/**
+* Weapon info types for use with rg_set_weapon_info/rg_get_weapon_info()
+*/
 enum WpnInfo
 {
 	/*
@@ -71,7 +73,7 @@ enum WpnInfo
 	* Description:      -
 	* Return type:      int
 	* Get params:       rg_get_weapon_info(const weapon_id, WI_BUY_CLIP_SIZE);
-	* Set params:       -
+	* Set params:       rg_set_weapon_info(const weapon_id, WI_BUY_CLIP_SIZE, const value);
 	*/
 	WI_BUY_CLIP_SIZE,
 
@@ -79,7 +81,7 @@ enum WpnInfo
 	* Description:      -
 	* Return type:      int
 	* Get params:       rg_get_weapon_info(const weapon_id, WI_GUN_CLIP_SIZE);
-	* Set params:       -
+	* Set params:       rg_set_weapon_info(const weapon_id, WI_GUN_CLIP_SIZE, const value);
 	*/
 	WI_GUN_CLIP_SIZE,
 
@@ -87,7 +89,7 @@ enum WpnInfo
 	* Description:      -
 	* Return type:      int
 	* Get params:       rg_get_weapon_info(const weapon_id, WI_MAX_ROUNDS);
-	* Set params:       -
+	* Set params:       rg_set_weapon_info(const weapon_id, WI_MAX_ROUNDS, const value);
 	*/
 	WI_MAX_ROUNDS,
 
@@ -95,7 +97,7 @@ enum WpnInfo
 	* Description:      -
 	* Return type:      int
 	* Get params:       rg_get_weapon_info(const weapon_id, WI_AMMO_TYPE);
-	* Set params:       -
+	* Set params:       rg_set_weapon_info(const weapon_id, WI_AMMO_TYPE, const value);
 	*/
 	WI_AMMO_TYPE,
 
@@ -116,7 +118,103 @@ enum WpnInfo
 	WI_NAME
 };
 
-// Use with rg_give_item
+/**
+* Item's info types for use with rg_set_iteminfo/rg_get_iteminfo()
+*/
+enum ItemInfo
+{
+	/*
+	* Description:      -
+	* Return type:      int
+	* Get params:       rg_get_iteminfo(const ent, ItemInfo_iSlot);
+	* Set params:       rg_set_iteminfo(const ent, ItemInfo_iSlot, const value);
+	*/
+	ItemInfo_iSlot,
+
+	/*
+	* Description:      -
+	* Return type:      int
+	* Get params:       rg_get_iteminfo(const ent, ItemInfo_iPosition);
+	* Set params:       rg_set_iteminfo(const ent, ItemInfo_iPosition, const value);
+	*/
+	ItemInfo_iPosition,
+
+	/*
+	* Description:      -
+	* Return type:      -
+	* Get params:       rg_get_iteminfo(const ent, ItemInfo_pszAmmo1, const output[], maxlenght);
+	* Set params:       rg_set_iteminfo(const ent, ItemInfo_pszAmmo1, const value[]);
+	*/
+	ItemInfo_pszAmmo1,
+
+	/*
+	* Description:      -
+	* Return type:      int
+	* Get params:       rg_get_iteminfo(const ent, ItemInfo_iMaxAmmo1);
+	* Set params:       rg_set_iteminfo(const ent, ItemInfo_iMaxAmmo1, const value);
+	*/
+	ItemInfo_iMaxAmmo1,
+
+	/*
+	* Description:      -
+	* Return type:      -
+	* Get params:       rg_get_iteminfo(const ent, ItemInfo_pszAmmo2, const output[], maxlenght);
+	* Set params:       rg_set_iteminfo(const ent, ItemInfo_pszAmmo2, const value[]);
+	*/
+	ItemInfo_pszAmmo2,
+
+	/*
+	* Description:      -
+	* Return type:      int
+	* Get params:       rg_get_iteminfo(const ent, ItemInfo_iMaxAmmo2);
+	* Set params:       rg_set_iteminfo(const ent, ItemInfo_iMaxAmmo2, const value);
+	*/
+	ItemInfo_iMaxAmmo2,
+
+	/*
+	* Description:      -
+	* Return type:      -
+	* Get params:       rg_get_iteminfo(const ent, ItemInfo_pszName, const output[], maxlenght);
+	* Set params:       rg_set_iteminfo(const ent, ItemInfo_pszName, const value[]);
+	*/
+	ItemInfo_pszName,
+
+	/*
+	* Description:      -
+	* Return type:      int
+	* Get params:       rg_get_iteminfo(const ent, ItemInfo_iMaxClip);
+	* Set params:       rg_set_iteminfo(const ent, ItemInfo_iMaxClip, const value);
+	*/
+	ItemInfo_iMaxClip,
+
+	/*
+	* Description:      -
+	* Return type:      int
+	* Get params:       rg_get_iteminfo(const ent, ItemInfo_iId);
+	* Set params:       rg_set_iteminfo(const ent, ItemInfo_iId, const value);
+	*/
+	ItemInfo_iId,
+
+	/*
+	* Description:      -
+	* Return type:      int
+	* Get params:       rg_get_iteminfo(const ent, ItemInfo_iFlags);
+	* Set params:       rg_set_iteminfo(const ent, ItemInfo_iFlags, const value);
+	*/
+	ItemInfo_iFlags,
+
+	/*
+	* Description:      -
+	* Return type:      int
+	* Get params:       rg_get_iteminfo(const ent, ItemInfo_iWeight);
+	* Set params:       rg_set_iteminfo(const ent, ItemInfo_iWeight, const value);
+	*/
+	ItemInfo_iWeight
+};
+
+/**
+* Use with rg_give_item
+*/
 enum GiveType
 {
 	GT_APPEND,          // Just give item
@@ -428,6 +526,7 @@ enum GamedllFunc_CBasePlayer
 
 	/*
 	* Description:      -
+	* Return type:      CBaseEntity * (Entity index of item)
 	* Params:           (const this, const pszItemName[])
 	*/
 	RG_CBasePlayer_DropPlayerItem,
@@ -440,6 +539,7 @@ enum GamedllFunc_CBasePlayer
 
 	/*
 	* Description:      Called when a player throws the shield on the ground.
+	* Return type:      CBaseEntity * (Entity index of shield)
 	* Params:           (const this, bool:deploy)
 	*/
 	RG_CBasePlayer_DropShield,
@@ -639,7 +739,9 @@ enum GamedllFunc_CSGameRules
 	RG_CSGameRules_OnRoundFreezeEnd
 };
 
-// CSGameRules
+/**
+* CSGameRules Members
+*/
 enum CSGameRules_Members
 {
 	/*
@@ -870,7 +972,7 @@ enum CSGameRules_Members
 	* Description:      Whether or not the bomb has been defused.
 	* Member type:      bool
 	* Get params:       get_member_game(member);
-	* Set params:       set_member_game(member, value);
+	* Set params:       set_member_game(member, bool:value);
 	*/
 	m_bBombDefused,
 
@@ -878,7 +980,7 @@ enum CSGameRules_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member_game(member);
-	* Set params:       set_member_game(member, value);
+	* Set params:       set_member_game(member, bool:value);
 	*/
 	m_bMapHasBombTarget,
 
@@ -886,7 +988,7 @@ enum CSGameRules_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member_game(member);
-	* Set params:       set_member_game(member, value);
+	* Set params:       set_member_game(member, bool:value);
 	*/
 	m_bMapHasBombZone,
 
@@ -894,7 +996,7 @@ enum CSGameRules_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member_game(member);
-	* Set params:       set_member_game(member, value);
+	* Set params:       set_member_game(member, bool:value);
 	*/
 	m_bMapHasBuyZone,
 
@@ -902,7 +1004,7 @@ enum CSGameRules_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member_game(member);
-	* Set params:       set_member_game(member, value);
+	* Set params:       set_member_game(member, bool:value);
 	*/
 	m_bMapHasRescueZone,
 
@@ -910,7 +1012,7 @@ enum CSGameRules_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member_game(member);
-	* Set params:       set_member_game(member, value);
+	* Set params:       set_member_game(member, bool:value);
 	*/
 	m_bMapHasEscapeZone,
 
@@ -990,7 +1092,7 @@ enum CSGameRules_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member_game(member);
-	* Set params:       set_member_game(member, value);
+	* Set params:       set_member_game(member, bool:value);
 	*/
 	m_bLevelInitialized,
 
@@ -998,7 +1100,7 @@ enum CSGameRules_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member_game(member);
-	* Set params:       set_member_game(member, value);
+	* Set params:       set_member_game(member, bool:value);
 	*/
 	m_bRoundTerminating,
 
@@ -1006,7 +1108,7 @@ enum CSGameRules_Members
 	* Description:      Set to TRUE to have the scores reset next time round restarts.
 	* Member type:      bool
 	* Get params:       get_member_game(member);
-	* Set params:       set_member_game(member, value);
+	* Set params:       set_member_game(member, bool:value);
 	*/
 	m_bCompleteReset,
 
@@ -1038,7 +1140,7 @@ enum CSGameRules_Members
 	* Description:      Who can and can't buy.
 	* Member type:      bool
 	* Get params:       get_member_game(member);
-	* Set params:       set_member_game(member, value);
+	* Set params:       set_member_game(member, bool:value);
 	*/
 	m_bCTCantBuy,
 
@@ -1046,7 +1148,7 @@ enum CSGameRules_Members
 	* Description:      Who can and can't buy.
 	* Member type:      bool
 	* Get params:       get_member_game(member);
-	* Set params:       set_member_game(member, value);
+	* Set params:       set_member_game(member, bool:value);
 	*/
 	m_bTCantBuy,
 
@@ -1239,7 +1341,7 @@ enum CSGameRules_Members
 	* Description:      TRUE = the game commencing when there is at least one CT and T, FALSE = scoring will not start until both teams have players (deprecated name m_bFirstConnected)
 	* Member type:      bool
 	* Get params:       get_member_game(member);
-	* Set params:       set_member_game(member, value);
+	* Set params:       set_member_game(member, bool:value);
 	*/
 	m_bGameStarted,
 
@@ -1247,7 +1349,7 @@ enum CSGameRules_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member_game(member);
-	* Set params:       set_member_game(member, value);
+	* Set params:       set_member_game(member, bool:value);
 	*/
 	m_bInCareerGame,
 
@@ -1287,7 +1389,7 @@ enum CSGameRules_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member_game(member);
-	* Set params:       set_member_game(member, value);
+	* Set params:       set_member_game(member, bool:value);
 	*/
 	m_bSkipSpawn,
 
@@ -1295,7 +1397,7 @@ enum CSGameRules_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member_game(member);
-	* Set params:       set_member_game(member, value);
+	* Set params:       set_member_game(member, bool:value);
 	*/
 	m_bSkipShowMenu,
 
@@ -1303,7 +1405,7 @@ enum CSGameRules_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member_game(member);
-	* Set params:       set_member_game(member, value);
+	* Set params:       set_member_game(member, bool:value);
 	*/
 	m_bNeededPlayers,
 
@@ -1316,7 +1418,9 @@ enum CSGameRules_Members
 	m_flEscapeRatio
 };
 
-// CBaseEntity
+/**
+* CBaseEntity Members
+*/
 enum CBaseEntity_Members
 {
 	/*
@@ -1515,12 +1619,14 @@ enum CBaseEntity_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	has_disconnected,
 };
 
-// CBaseAnimating
+/**
+* CBaseAnimating Members
+*/
 enum CBaseAnimating_Members
 {
 	/*
@@ -1564,7 +1670,9 @@ enum CBaseAnimating_Members
 	m_fSequenceLoops,
 };
 
-// CBaseMonster
+/**
+* CBaseMonster Members
+*/
 enum CBaseMonster_Members
 {
 	/*
@@ -1696,7 +1804,9 @@ enum CBaseMonster_Members
 	m_vecEnemyLKP,
 };
 
-// CBasePlayer
+/**
+* CBasePlayer Members
+*/
 enum CBasePlayer_Members
 {
 	/*
@@ -1751,7 +1861,7 @@ enum CBasePlayer_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_bObserverHasDefuser,
 
@@ -1783,7 +1893,7 @@ enum CBasePlayer_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_bHighDamage,
 
@@ -1807,7 +1917,7 @@ enum CBasePlayer_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_bResumeZoom,
 
@@ -1831,7 +1941,7 @@ enum CBasePlayer_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_bNotKilled,
 
@@ -1855,7 +1965,7 @@ enum CBasePlayer_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_bHasPrimary,
 
@@ -1887,7 +1997,7 @@ enum CBasePlayer_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_bJustConnected,
 
@@ -1895,7 +2005,7 @@ enum CBasePlayer_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_bContextHelp,
 
@@ -1935,7 +2045,7 @@ enum CBasePlayer_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_bMissionBriefing,
 
@@ -1943,7 +2053,7 @@ enum CBasePlayer_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_bTeamChanged,
 
@@ -1975,7 +2085,7 @@ enum CBasePlayer_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_bHasNightVision,
 
@@ -1983,7 +2093,7 @@ enum CBasePlayer_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_bNightVisionOn,
 
@@ -2023,7 +2133,7 @@ enum CBasePlayer_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_bIgnoreRadio,
 
@@ -2031,7 +2141,7 @@ enum CBasePlayer_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_bHasC4,
 
@@ -2039,7 +2149,7 @@ enum CBasePlayer_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_bHasDefuser,
 
@@ -2047,7 +2157,7 @@ enum CBasePlayer_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_bKilledByBomb,
 
@@ -2063,7 +2173,7 @@ enum CBasePlayer_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_bKilledByGrenade,
 
@@ -2111,7 +2221,7 @@ enum CBasePlayer_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_bEscaped,
 
@@ -2119,7 +2229,7 @@ enum CBasePlayer_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_bIsVIP,
 
@@ -2159,7 +2269,7 @@ enum CBasePlayer_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_bJustKilledTeammate,
 
@@ -2183,7 +2293,7 @@ enum CBasePlayer_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_bCanShoot,
 
@@ -2207,7 +2317,7 @@ enum CBasePlayer_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_bHeadshotKilled,
 
@@ -2215,7 +2325,7 @@ enum CBasePlayer_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_bPunishedForTK,
 
@@ -2223,7 +2333,7 @@ enum CBasePlayer_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_bReceivesNoMoneyNextRound,
 
@@ -2239,7 +2349,7 @@ enum CBasePlayer_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_bHasChangedName,
 
@@ -2255,7 +2365,7 @@ enum CBasePlayer_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_bIsDefusing,
 
@@ -2975,7 +3085,7 @@ enum CBasePlayer_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_bVGUIMenus,
 
@@ -2983,7 +3093,7 @@ enum CBasePlayer_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_bShowHints,
 
@@ -2991,7 +3101,7 @@ enum CBasePlayer_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_bShieldDrawn,
 
@@ -2999,7 +3109,7 @@ enum CBasePlayer_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_bOwnsShield,
 
@@ -3007,7 +3117,7 @@ enum CBasePlayer_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_bWasFollowing,
 
@@ -3103,7 +3213,7 @@ enum CBasePlayer_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_bIsInRebuy,
 
@@ -3143,7 +3253,7 @@ enum CBasePlayer_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_bObserverAutoDirector,
 
@@ -3151,7 +3261,7 @@ enum CBasePlayer_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_canSwitchObserverModes,
 
@@ -3419,7 +3529,7 @@ enum PlayerMove
 
 	/*
 	* Description:      -
-	* Member type:      bool
+	* Member type:      int
 	* Get params:       get_pmove(member);
 	* Set params:       set_pmove(const PlayerMove:var, value);
 	*/
@@ -3427,7 +3537,7 @@ enum PlayerMove
 
 	/*
 	* Description:      -
-	* Member type:      bool
+	* Member type:      int
 	* Get params:       get_pmove(member);
 	* Set params:       set_pmove(const PlayerMove:var, value);
 	*/
@@ -4048,7 +4158,9 @@ enum PMTrace
 	pmt_hitgroup
 };
 
-// CCSPlayer
+/**
+* CCSPlayer API Members
+*/
 enum CCSPlayer_Members
 {
 	/*
@@ -4063,7 +4175,7 @@ enum CCSPlayer_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_bForceShowMenu,
 
@@ -4076,7 +4188,9 @@ enum CCSPlayer_Members
 	m_flRespawnPending,
 };
 
-// CBasePlayerItem
+/**
+* CBasePlayerItem Members
+*/
 enum CBasePlayerItem_Members
 {
 	/*
@@ -4104,7 +4218,9 @@ enum CBasePlayerItem_Members
 	m_iId,
 };
 
-// CBasePlayerWeapon
+/**
+* CBasePlayerWeapon Members
+*/
 enum CBasePlayerWeapon_Members
 {
 	/*
@@ -4231,7 +4347,7 @@ enum CBasePlayerWeapon_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_Weapon_bDelayFire,
 
@@ -4247,7 +4363,7 @@ enum CBasePlayerWeapon_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_Weapon_bSecondarySilencerOn,
 
@@ -4372,7 +4488,9 @@ enum CBasePlayerWeapon_Members
 	m_Weapon_flLastFireTime
 };
 
-// CWeaponBox
+/**
+* CWeaponBox Members
+*/
 enum CWeaponBox_Members
 {
 	/*
@@ -4411,12 +4529,14 @@ enum CWeaponBox_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_WeaponBox_bIsBomb,
 };
 
-// CArmoury
+/**
+* CArmoury Members
+*/
 enum CArmoury_Members
 {
 	/*
@@ -4447,19 +4567,21 @@ enum CArmoury_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_Armoury_bAlreadyCounted,
 };
 
-// CGrenade
+/**
+* CGrenade Members
+*/
 enum CGrenade_Members
 {
 	/*
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_Grenade_bStartDefuse = BEGIN_MEMBER_REGION(grenade),
 
@@ -4467,7 +4589,7 @@ enum CGrenade_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_Grenade_bIsC4,
 
@@ -4555,7 +4677,7 @@ enum CGrenade_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_Grenade_bJustBlew,
 
@@ -4611,7 +4733,7 @@ enum CGrenade_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_Grenade_bLightSmoke,
 
@@ -4619,7 +4741,7 @@ enum CGrenade_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_Grenade_bDetonated,
 
@@ -4648,7 +4770,9 @@ enum CGrenade_Members
 	m_Grenade_fRegisteredSound,
 };
 
-// CP228
+/**
+* CP228 Members
+*/
 enum CP228_Members
 {
 	/*
@@ -4668,7 +4792,9 @@ enum CP228_Members
 	m_P228_usFire,
 };
 
-// CSCOUT
+/**
+* CSCOUT Members
+*/
 enum CSCOUT_Members
 {
 	/*
@@ -4688,7 +4814,9 @@ enum CSCOUT_Members
 	m_SCOUT_usFire,
 };
 
-// CHEGrenade
+/**
+* CHEGrenade Members
+*/
 enum CHEGrenade_Members
 {
 	/*
@@ -4700,7 +4828,9 @@ enum CHEGrenade_Members
 	m_HEGrenade_usCreate = BEGIN_MEMBER_REGION(hegrenade),
 };
 
-// CXM1014
+/**
+* CXM1014 Members
+*/
 enum CXM1014_Members
 {
 	/*
@@ -4728,14 +4858,16 @@ enum CXM1014_Members
 	m_XM1014_usFire,
 };
 
-// CC4
+/**
+* CC4 Members
+*/
 enum CC4_Members
 {
 	/*
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_C4_bStartedArming = BEGIN_MEMBER_REGION(c4),
 
@@ -4743,7 +4875,7 @@ enum CC4_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_C4_bBombPlacedAnimation,
 
@@ -4759,12 +4891,14 @@ enum CC4_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_C4_bHasShield,
 };
 
-// CMAC10
+/**
+* CMAC10 Members
+*/
 enum CMAC10_Members
 {
 	/*
@@ -4792,7 +4926,9 @@ enum CMAC10_Members
 	m_MAC10_usFire,
 };
 
-// CAUG
+/**
+* CAUG Members
+*/
 enum CAUG_Members
 {
 	/*
@@ -4820,7 +4956,9 @@ enum CAUG_Members
 	m_AUG_usFire,
 };
 
-// CSmokeGrenade
+/**
+* CSmokeGrenade Members
+*/
 enum CSmokeGrenade_Members
 {
 	/*
@@ -4832,7 +4970,9 @@ enum CSmokeGrenade_Members
 	m_SmokeGrenade_usCreate = BEGIN_MEMBER_REGION(smokegrenade),
 };
 
-// CELITE
+/**
+* CELITE Members
+*/
 enum CELITE_Members
 {
 	/*
@@ -4860,7 +5000,9 @@ enum CELITE_Members
 	m_ELITE_usFire_RIGHT,
 };
 
-// CFiveSeven
+/**
+* CFiveSeven Members
+*/
 enum CFiveSeven_Members
 {
 	/*
@@ -4880,7 +5022,9 @@ enum CFiveSeven_Members
 	m_FiveSeven_usFire,
 };
 
-// CUMP45
+/**
+* CUMP45 Members
+*/
 enum CUMP45_Members
 {
 	/*
@@ -4908,7 +5052,9 @@ enum CUMP45_Members
 	m_UMP45_usFire,
 };
 
-// CSG550
+/**
+* CSG550 Members
+*/
 enum CSG550_Members
 {
 	m_SG550_iShell = BEGIN_MEMBER_REGION(sg550),
@@ -4922,7 +5068,9 @@ enum CSG550_Members
 	m_SG550_usFire,
 };
 
-// CGalil
+/**
+* CGalil Members
+*/
 enum CGalil_Members
 {
 	/*
@@ -4950,7 +5098,9 @@ enum CGalil_Members
 	m_Galil_usFire,
 };
 
-// CFamas
+/**
+* CFamas Members
+*/
 enum CFamas_Members
 {
 	/*
@@ -4970,7 +5120,9 @@ enum CFamas_Members
 	m_Famas_iShellOn,
 };
 
-// CUSP
+/**
+* CUSP Members
+*/
 enum CUSP_Members
 {
 	/*
@@ -4990,7 +5142,9 @@ enum CUSP_Members
 	m_USP_usFire,
 };
 
-// CGLOCK18
+/**
+* CGLOCK18 Members
+*/
 enum CGLOCK18_Members
 {
 	/*
@@ -5005,12 +5159,14 @@ enum CGLOCK18_Members
 	* Description:      -
 	* Member type:      bool
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
+	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_GLOCK18_bBurstFire,
 };
 
-// CAWP
+/**
+* CAWP Members
+*/
 enum CAWP_Members
 {
 	/*
@@ -5030,7 +5186,9 @@ enum CAWP_Members
 	m_AWP_usFire,
 };
 
-// CMP5N
+/**
+* CMP5N Members
+*/
 enum CMP5N_Members
 {
 	/*
@@ -5058,7 +5216,9 @@ enum CMP5N_Members
 	m_MP5N_usFire,
 };
 
-// CM249
+/**
+* CM249 Members
+*/
 enum CM249_Members
 {
 	/*
@@ -5086,7 +5246,9 @@ enum CM249_Members
 	m_M249_usFire,
 };
 
-// CM3
+/**
+* CM3 Members
+*/
 enum CM3_Members
 {
 	m_M3_iShell = BEGIN_MEMBER_REGION(m3),
@@ -5108,7 +5270,9 @@ enum CM3_Members
 	m_M3_usFire,
 };
 
-// CM4A1
+/**
+* CM4A1 Members
+*/
 enum CM4A1_Members
 {
 	/*
@@ -5136,7 +5300,9 @@ enum CM4A1_Members
 	m_M4A1_usFire,
 };
 
-// CTMP
+/**
+* CTMP Members
+*/
 enum CTMP_Members
 {
 	/*
@@ -5164,7 +5330,9 @@ enum CTMP_Members
 	m_TMP_usFire,
 };
 
-// CG3SG1
+/**
+* CG3SG1 Members
+*/
 enum CG3SG1_Members
 {
 	/*
@@ -5184,7 +5352,9 @@ enum CG3SG1_Members
 	m_G3SG1_usFire,
 };
 
-// CDEAGLE
+/**
+* CDEAGLE Members
+*/
 enum CDEAGLE_Members
 {
 	/*
@@ -5204,7 +5374,9 @@ enum CDEAGLE_Members
 	m_DEAGLE_usFire,
 };
 
-// CSG552
+/**
+* CSG552 Members
+*/
 enum CSG552_Members
 {
 	/*
@@ -5232,7 +5404,9 @@ enum CSG552_Members
 	m_SG552_usFire,
 };
 
-// CAK47
+/**
+* CAK47 Members
+*/
 enum CAK47_Members
 {
 	/*
@@ -5260,7 +5434,9 @@ enum CAK47_Members
 	m_AK47_usFire,
 };
 
-// CKnife
+/**
+* CKnife Members
+*/
 enum CKnife_Members
 {
 	/*
@@ -5280,7 +5456,9 @@ enum CKnife_Members
 	m_Knife_usKnife,
 };
 
-// CP90
+/**
+* CP90 Members
+*/
 enum CP90_Members
 {
 	/*
@@ -5308,7 +5486,9 @@ enum CP90_Members
 	m_P90_usFire,
 };
 
-// CWShield
+/**
+* CWShield Members
+*/
 enum CShield_Members
 {
 	/*
@@ -5328,7 +5508,9 @@ enum CShield_Members
 	m_Shield_flTimeToIgnoreTouches,
 };
 
-// CMapInfo
+/**
+* CMapInfo Members
+*/
 enum CMapInfo_Members
 {
 	/*
@@ -5346,4 +5528,18 @@ enum CMapInfo_Members
 	* Set params:       set_member(index, member, Float:value);
 	*/
 	m_MapInfo_flBombRadius,
+};
+
+/**
+* CCSPlayerWeapon API Members
+*/
+enum CCSPlayerWeapon_Members
+{
+	/*
+	* Description:      Can the weapon have secondary attack
+	* Member type:      bool
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, bool:value);
+	*/
+	m_Weapon_bHasSecondaryAttack = BEGIN_MEMBER_REGION(csplayerweapon),
 };

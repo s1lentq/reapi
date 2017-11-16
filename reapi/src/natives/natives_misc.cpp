@@ -739,12 +739,12 @@ cell AMX_NATIVE_CALL rg_get_weapon_info(AMX *amx, cell *params)
 			cell* dest = getAmxAddr(amx, params[arg_3]);
 			size_t length = *getAmxAddr(amx, params[arg_4]);
 
-			if (info->ammoName == nullptr) {
+			if (info->ammoName1 == nullptr) {
 				setAmxString(dest, "", 1);
 				return 0;
 			}
 
-			setAmxString(dest, info->ammoName, length);
+			setAmxString(dest, info->ammoName1, length);
 			return 1;
 		}
 	case WI_NAME:
@@ -766,6 +766,7 @@ cell AMX_NATIVE_CALL rg_get_weapon_info(AMX *amx, cell *params)
 			setAmxString(dest, info->entityName, length);
 			return 1;
 		}
+
 	default:
 		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: unknown type statement %i, params count %i", __FUNCTION__, info_type, PARAMS_COUNT);
 		return -1;
@@ -1924,6 +1925,166 @@ cell AMX_NATIVE_CALL rg_send_audio(AMX *amx, cell *params)
 	return TRUE;
 }
 
+enum ItemInfo_e
+{
+	ItemInfo_iSlot,
+	ItemInfo_iPosition,
+	ItemInfo_pszAmmo1,
+	ItemInfo_iMaxAmmo1,
+	ItemInfo_pszAmmo2,
+	ItemInfo_iMaxAmmo2,
+	ItemInfo_pszName,
+	ItemInfo_iMaxClip,
+	ItemInfo_iId,
+	ItemInfo_iFlags,
+	ItemInfo_iWeight
+};
+
+/**
+* Sets a parameter of the member CSPlayerItem::m_ItemInfo
+*
+* @param entity Entity index
+* @param type   Item info type. See ItemInfo constants.
+*
+* native rg_set_iteminfo(const entity, ItemInfo:type, any:...);
+*/
+cell AMX_NATIVE_CALL rg_set_iteminfo(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_type, arg_value };
+
+	CHECK_ISENTITY(arg_index);
+
+	CBasePlayerWeapon *pWeapon = getPrivate<CBasePlayerWeapon>(params[arg_index]);
+	if (unlikely(pWeapon == nullptr)) {
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
+		return FALSE;
+	}
+
+	if (pWeapon->IsWeapon()) {
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: #%d entity is not a weapon.", __FUNCTION__, indexOfEdict(pWeapon->pev));
+		return FALSE;
+	}
+
+	CCSPlayerItem *pItem = pWeapon->CSPlayerItem();
+	if (unlikely(pItem == nullptr)) {
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized m_pEntity.", __FUNCTION__);
+		return FALSE;
+	}
+
+	char itembuf[256];
+	cell *ptr = getAmxAddr(amx, params[arg_value]);
+
+	ItemInfo_e type = static_cast<ItemInfo_e>(params[arg_type]);
+	switch (type)
+	{
+	case ItemInfo_iSlot:     pItem->m_ItemInfo.iSlot     = *ptr; break;
+	case ItemInfo_iPosition: pItem->m_ItemInfo.iPosition = *ptr; break;
+	case ItemInfo_iMaxAmmo1: pItem->m_ItemInfo.iMaxAmmo1 = *ptr; break;
+	case ItemInfo_iMaxAmmo2: pItem->m_ItemInfo.iMaxAmmo2 = *ptr; break;
+	case ItemInfo_iMaxClip:  pItem->m_ItemInfo.iMaxClip  = *ptr; break;
+	case ItemInfo_iId:       pItem->m_ItemInfo.iId       = *ptr; break;
+	case ItemInfo_iFlags:    pItem->m_ItemInfo.iFlags    = *ptr; break;
+	case ItemInfo_iWeight:   pItem->m_ItemInfo.iWeight   = *ptr; break;
+	case ItemInfo_pszAmmo1:  pItem->m_ItemInfo.pszAmmo1  = getAmxString(amx, params[arg_value], itembuf); break;
+	case ItemInfo_pszAmmo2:  pItem->m_ItemInfo.pszAmmo2  = getAmxString(amx, params[arg_value], itembuf); break;
+	case ItemInfo_pszName:   pItem->m_ItemInfo.pszName   = getAmxString(amx, params[arg_value], itembuf); break;
+
+	default:
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "Unknown ItemInfo type %d", type);
+		return FALSE;
+	}
+
+	return TRUE;
+}
+
+/**
+* Gets a parameter of the member CSPlayerItem::m_ItemInfo
+*
+* @param entity Entity index
+* @param type   Item info type. See ItemInfo constants.
+*
+* native rg_get_iteminfo(const ent, ItemInfo:type, any:...);
+*/
+cell AMX_NATIVE_CALL rg_get_iteminfo(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_type, arg_output, arg_length };
+
+	CHECK_ISENTITY(arg_index);
+
+	CBasePlayerWeapon *pWeapon = getPrivate<CBasePlayerWeapon>(params[arg_index]);
+	if (unlikely(pWeapon == nullptr)) {
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
+		return FALSE;
+	}
+
+	ItemInfo_e type = static_cast<ItemInfo_e>(params[arg_type]);
+	if ((type == ItemInfo_pszAmmo1 || type == ItemInfo_pszAmmo2 || type == ItemInfo_pszName) && PARAMS_COUNT != 4) {
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "Bad arg count. Expected %d, got %d.", 4, PARAMS_COUNT);
+		return FALSE;
+	}
+
+	if (pWeapon->IsWeapon()) {
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: #%d entity is not a weapon.", __FUNCTION__, indexOfEdict(pWeapon->pev));
+		return FALSE;
+	}
+
+	CCSPlayerItem *pItem = pWeapon->CSPlayerItem();
+	if (unlikely(pItem == nullptr)) {
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized m_pEntity.", __FUNCTION__);
+		return FALSE;
+	}
+
+	cell *dest = getAmxAddr(amx, params[arg_output]);
+	size_t length = *getAmxAddr(amx, params[arg_length]);
+
+	switch (type)
+	{
+	case ItemInfo_iSlot:     return pItem->m_ItemInfo.iSlot;
+	case ItemInfo_iPosition: return pItem->m_ItemInfo.iPosition;
+	case ItemInfo_iMaxAmmo1: return pItem->m_ItemInfo.iMaxAmmo1;
+	case ItemInfo_iMaxAmmo2: return pItem->m_ItemInfo.iMaxAmmo2;
+	case ItemInfo_iMaxClip:  return pItem->m_ItemInfo.iMaxClip;
+	case ItemInfo_iId:       return pItem->m_ItemInfo.iId;
+	case ItemInfo_iFlags:    return pItem->m_ItemInfo.iFlags;
+	case ItemInfo_iWeight:   return pItem->m_ItemInfo.iWeight;
+	case ItemInfo_pszAmmo1:
+	{
+		if (pItem->m_ItemInfo.pszAmmo1 == nullptr) {
+			setAmxString(dest, "", 1);
+			break;
+		}
+
+		setAmxString(dest, pItem->m_ItemInfo.pszAmmo1, length);
+		break;
+	}
+	case ItemInfo_pszAmmo2:
+	{
+		if (pItem->m_ItemInfo.pszAmmo2 == nullptr) {
+			setAmxString(dest, "", 1);
+			break;
+		}
+
+		setAmxString(dest, pItem->m_ItemInfo.pszAmmo2, length);
+		break;
+	}
+	case ItemInfo_pszName:
+	{
+		if (pItem->m_ItemInfo.pszName == nullptr) {
+			setAmxString(dest, "", 1);
+			break;
+		}
+
+		setAmxString(dest, pItem->m_ItemInfo.pszName, length);
+		break;
+	}
+	default:
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "Unknown ItemInfo type %d", type);
+		return FALSE;
+	}
+
+	return TRUE;
+}
+
 AMX_NATIVE_INFO Misc_Natives_RG[] =
 {
 	{ "rg_set_animation",             rg_set_animation             },
@@ -1998,6 +2159,9 @@ AMX_NATIVE_INFO Misc_Natives_RG[] =
 	{ "rg_send_bartime",              rg_send_bartime              },
 	{ "rg_send_bartime2",             rg_send_bartime2             },
 	{ "rg_send_audio",                rg_send_audio                },
+
+	{ "rg_set_iteminfo",              rg_set_iteminfo              },
+	{ "rg_get_iteminfo",              rg_get_iteminfo              },
 
 	{ nullptr, nullptr }
 };

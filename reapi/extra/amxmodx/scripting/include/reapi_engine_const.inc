@@ -4,14 +4,18 @@
 
 #define _reapi_engine_const_included
 
-// For native rh_get_mapname
+/**
+* For native rh_get_mapname
+*/
 enum MapNameType
 {
-	MNT_TRUE,	// return the original map name independant of the name set with via rh_set_mapname
-	MNT_SET		// return the name of the current map
+	MNT_TRUE,   // return the original map name independant of the name set with via rh_set_mapname
+	MNT_SET     // return the name of the current map
 };
 
-// rh_emit_sound2 flags
+/**
+* rh_emit_sound2 flags
+*/
 #define SND_EMIT2_NOPAS   BIT(0) // Never to check PAS
 #define SND_EMIT2_INVOKER BIT(1) // Do not send to the client invoker
 

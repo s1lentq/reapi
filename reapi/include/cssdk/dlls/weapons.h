@@ -28,8 +28,6 @@
 
 #pragma once
 
-#include "weapontype.h"
-
 class CBasePlayer;
 
 #define MAX_WEAPONS			32
@@ -134,6 +132,9 @@ struct MULTIDAMAGE
 	int type;
 };
 
+#include "weapontype.h"
+#include "items.h"
+
 class CArmoury: public CBaseEntity {
 public:
 	virtual void Spawn() = 0;
@@ -186,6 +187,7 @@ public:
 };
 
 // Items that the player has in their inventory that they can use
+class CCSPlayerItem;
 class CBasePlayerItem: public CBaseAnimating {
 public:
 	virtual int Save(CSave &save) = 0;
@@ -213,6 +215,12 @@ public:
 	virtual CBasePlayerItem *GetWeaponPtr() = 0;
 	virtual float GetMaxSpeed() = 0;
 	virtual int iItemSlot() = 0;					// return 0 to MAX_ITEMS_SLOTS, used in hud
+
+	CCSPlayerItem *CSPlayerItem() const
+	{
+		return reinterpret_cast<CCSPlayerItem *>(this->m_pEntity);
+	}
+
 public:
 	CBasePlayer *m_pPlayer;
 	CBasePlayerItem *m_pNext;
@@ -220,6 +228,7 @@ public:
 };
 
 // inventory items that
+class CCSPlayerWeapon;
 class CBasePlayerWeapon: public CBasePlayerItem {
 public:
 	virtual int Save(CSave &save) = 0;
@@ -251,6 +260,12 @@ public:
 	virtual void RetireWeapon() = 0;
 	virtual BOOL ShouldWeaponIdle() = 0;
 	virtual BOOL UseDecrement() = 0;
+
+	CCSPlayerWeapon *CSPlayerWeapon() const
+	{
+		return reinterpret_cast<CCSPlayerWeapon *>(this->m_pEntity);
+	}
+
 public:
 	BOOL IsPistol() { return (m_iId == WEAPON_USP || m_iId == WEAPON_GLOCK18 || m_iId == WEAPON_P228 || m_iId == WEAPON_DEAGLE || m_iId == WEAPON_ELITE || m_iId == WEAPON_FIVESEVEN); }
 

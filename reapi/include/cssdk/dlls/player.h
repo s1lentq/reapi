@@ -25,8 +25,10 @@
 *   version.
 *
 */
+
 #pragma once
 
+#include "weapons.h"
 #include "pm_materials.h"
 #include "hintmessage.h"
 #include "unisignals.h"

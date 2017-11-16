@@ -802,3 +802,21 @@ native rg_send_bartime2(const index, const duration, const startPercent, const b
 * @noreturn
 */
 native rg_send_audio(const index, const sample[], const pitch = PITCH_NORM);
+
+/**
+* Sets a parameter of the member CSPlayerItem::m_ItemInfo
+*
+* @param entity Entity index
+* @param type   Item info type. See ItemInfo constants.
+*
+*/
+native rg_set_iteminfo(const entity, ItemInfo:type, any:...);
+
+/**
+* Gets a parameter of the member CSPlayerItem::m_ItemInfo
+*
+* @param entity Entity index
+* @param type   Item info type. See ItemInfo constants.
+*
+*/
+native rg_get_iteminfo(const ent, ItemInfo:type, any:...);

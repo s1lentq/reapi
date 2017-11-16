@@ -20,13 +20,9 @@
 // rewrite on own custom preprocessor definitions INDEXENT and ENTINDEX from cbase.h
 #include "type_conversion.h"
 
-#include <cbase.h>
 #include <pm_defs.h>
 #include <pm_movevars.h>
 #include <com_progdefs.h>
-#include <gamerules.h>
-#include <mapinfo.h>
-#include <studio.h>
 
 // metamod SDK
 #include <meta_api.h>
@@ -34,6 +30,8 @@
 // regamedll API
 #include <regamedll_api.h>
 #include "mod_regamedll_api.h"
+#include <mapinfo.h>
+#include <studio.h>
 
 // rehlds API
 #include <rehlds_api.h>

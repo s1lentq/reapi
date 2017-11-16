@@ -128,7 +128,9 @@
 #define EF_LIGHT                        64  // Rocket flare glow sprite
 #define EF_NODRAW                       128 // Don't draw entity
 
-// Break Model Defines
+/**
+* Break Model Defines
+*/
 #define BREAK_TYPEMASK                  0x4F
 #define BREAK_GLASS                     0x01
 #define BREAK_METAL                     0x02
@@ -140,7 +142,9 @@
 #define BREAK_CONCRETE                  0x40
 #define BREAK_2                         0x80
 
-// Colliding temp entity sounds
+/**
+* Colliding temp entity sounds
+*/
 #define BOUNCE_GLASS                    BREAK_GLASS
 #define BOUNCE_METAL                    BREAK_METAL
 #define BOUNCE_FLESH                    BREAK_FLESH
@@ -150,7 +154,9 @@
 #define BOUNCE_CONCRETE                 BREAK_CONCRETE
 #define BOUNCE_SHOTSHELL                0x80
 
-// Temp entity bounce sound types
+/**
+* Temp entity bounce sound types
+*/
 #define TE_BOUNCE_NULL                  0
 #define TE_BOUNCE_SHELL                 1
 #define TE_BOUNCE_SHOTSHELL             2
@@ -223,8 +229,10 @@
 #define PFLAG_USING                     (1<<4) // Using a continuous entity
 #define PFLAG_OBSERVER                  (1<<5) // Player is locked in stationary cam mode. Spectators can move, observers can't.
 
-// Player HUD
-// CBasePlayer::m_iHideHUD
+/**
+* Player HUD
+* CBasePlayer::m_iHideHUD
+*/
 #define HIDEHUD_WEAPONS                 (1<<0)
 #define HIDEHUD_FLASHLIGHT              (1<<1)
 #define HIDEHUD_ALL                     (1<<2)
@@ -233,6 +241,15 @@
 #define HIDEHUD_MONEY                   (1<<5)
 #define HIDEHUD_CROSSHAIR               (1<<6)
 #define HIDEHUD_OBSERVER_CROSSHAIR      (1<<7)
+
+/**
+* Item's flags
+*/
+#define ITEM_FLAG_SELECTONEMPTY         (1<<0)
+#define ITEM_FLAG_NOAUTORELOAD          (1<<1)
+#define ITEM_FLAG_NOAUTOSWITCHEMPTY     (1<<2)
+#define ITEM_FLAG_LIMITINWORLD          (1<<3)
+#define ITEM_FLAG_EXHAUSTIBLE           (1<<4)
 
 /**
 * @section get_entvar(entity, var_spawnflags) values
@@ -666,7 +683,9 @@
 #define BLOOD_COLOR_YELLOW              195
 #define BLOOD_COLOR_GREEN               BLOOD_COLOR_YELLOW
 
-// CBasePlayer::m_iIgnoreGlobalChat
+/**
+* CBasePlayer::m_iIgnoreGlobalChat
+*/
 enum
 {
 	IGNOREMSG_NONE,  // Nothing to do
@@ -694,7 +713,9 @@ enum ArmorType
 	ARMOR_VESTHELM, // Vest and helmet
 };
 
-// For CArmoury::m_Armoury_iItem
+/**
+* For CArmoury::m_Armoury_iItem
+*/
 enum ArmouryItemPack
 {
 	ARMOURY_MP5NAVY,
@@ -826,7 +847,9 @@ enum WeaponIdType
 	WEAPON_SHIELDGUN = 99
 };
 
-// For member CBaseMonster::m_rgbTimeBasedDamage
+/**
+* For CBaseMonster::m_rgbTimeBasedDamage
+*/
 enum TimeBasedDamage
 {
 	ITDB_PRALYZE,
@@ -958,7 +981,9 @@ enum WinStatus
 	#define RR_ESCAPING_TERRORISTS_NEUTRALIZED RR_ESCAPING_TERRORISTS_NEUTR
 #endif
 
-// Used for EndRoundMessage() logged messages
+/**
+* Used for EndRoundMessage() logged messages
+*/
 enum ScenarioEventEndRound
 {
 	ROUND_NONE,
@@ -997,10 +1022,22 @@ enum PLAYER_ANIM
 	PLAYER_HOLDBOMB
 };
 
-// CBasePlayer::m_iJoiningState
-enum JoinState { JOINED, SHOWLTEXT, READINGLTEXT, SHOWTEAMSELECT, PICKINGTEAM, GETINTOGAME };
+/**
+* For CBasePlayer::m_iJoiningState
+*/
+enum JoinState
+{
+	JOINED,
+	SHOWLTEXT,
+	READINGLTEXT,
+	SHOWTEAMSELECT,
+	PICKINGTEAM,
+	GETINTOGAME
+};
 
-// CBasePlayer::m_iMenu
+/**
+* For CBasePlayer::m_iMenu
+*/
 enum _Menu
 {
 	Menu_OFF,
@@ -1020,7 +1057,9 @@ enum _Menu
 	Menu_ClientBuy
 };
 
-// CBasePlayer::m_flLastCommandTime[8]
+/**
+* For CBasePlayer::m_flLastCommandTime[8]
+*/
 enum TrackCommands
 {
 	CMD_SAY,
@@ -1034,7 +1073,9 @@ enum TrackCommands
 	COMMANDS_TO_TRACK,
 };
 
-// CBasePlayer::m_rgpPlayerItems[6]
+/**
+* For CBasePlayer::m_rgpPlayerItems[6]
+*/
 enum InventorySlotType
 {
 	NONE_SLOT,
@@ -1045,7 +1086,9 @@ enum InventorySlotType
 	C4_SLOT,
 };
 
-// Sets animation for weapon_shield of SendWeaponAnim
+/**
+* Sets animation for weapon_shield of SendWeaponAnim
+*/
 enum shieldgren_e
 {
 	SHIELDREN_IDLE = 4,
@@ -1066,7 +1109,9 @@ enum shieldgun_e
 	SHIELDGUN_DOWN,
 };
 
-// Flags for CUnifiedSignals m_signals
+/**
+* Flags for CUnifiedSignals m_signals
+*/
 enum SignalState
 {
 	SIGNAL_BUY       = BIT(0),
@@ -1076,7 +1121,9 @@ enum SignalState
 	SIGNAL_VIPSAFETY = BIT(4),
 };
 
-// Weapon states of the following weapons: usp, elite, glock18, famas and m4a1.
+/**
+* Weapon states of the following weapons: usp, elite, glock18, famas and m4a1.
+*/
 enum WeaponState
 {
 	WPNSTATE_USP_SILENCED       = BIT(0),
@@ -1141,7 +1188,9 @@ enum ItemRestType
 	ITEM_TYPE_EQUIPPED // When an entity game_player_equip gives item to player or default items on player spawn
 };
 
-// Constant items
+/**
+* Constant items
+*/
 enum ItemID
 {
 	ITEM_NONE = -1,
@@ -1187,7 +1236,9 @@ enum ItemID
 	ITEM_BATTERY
 };
 
-// CMapInfo:m_iBuyingStatus
+/**
+* For CMapInfo:m_iBuyingStatus
+*/
 enum InfoMapBuyParam
 {
 	BUYING_EVERYONE = 0,

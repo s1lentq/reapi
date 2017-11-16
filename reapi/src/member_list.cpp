@@ -62,6 +62,7 @@
 #define SHIELD_MEMBERS(mx)       CLASS_MEMBERS(CWShield, mx, m_Shield_##mx, m_)
 #define REBUYSTRUCT_MEMBERS(mx)  CLASS_MEMBERS(RebuyStruct, mx, mx,)
 #define MAPINFO_MEMBERS(mx)      CLASS_MEMBERS(CMapInfo, mx, m_MapInfo_##mx, m_)
+#define CSPLWPN_MEMBERS(mx)      CLASS_MEMBERS(CCSPlayerWeapon, mx, m_Weapon_##mx, m_)
 
 inline MType getMemberType(float*)              { return MEMBER_FLOAT; }
 inline MType getMemberType(float)               { return MEMBER_FLOAT; }
@@ -988,6 +989,10 @@ member_t memberlist_mapinfo[] = {
 	MAPINFO_MEMBERS(flBombRadius),
 };
 
+member_t memberlist_csplayerweapon[] = {
+	CSPLWPN_MEMBERS(bHasSecondaryAttack)
+};
+
 memberlist_t memberlist;
 
 member_t *memberlist_t::operator[](size_t members) const
@@ -1045,6 +1050,7 @@ member_t *memberlist_t::operator[](size_t members) const
 		CASE(shield)
 		CASE(rebuystruct)
 		CASE(mapinfo)
+		CASE(csplayerweapon)
 	}
 
 	return nullptr;
