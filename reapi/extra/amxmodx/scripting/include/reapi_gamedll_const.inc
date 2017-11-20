@@ -4,11 +4,16 @@
 
 #define _reapi_gamedll_const_included
 
-// Returns true if round has ended by expired time
-// @note: Use this for hookchain RG_RoundEnd with the parameter ScenarioEventEndRound:event
+/**
+* Returns true if round has ended by expired time
+* 
+* @note Use this for hookchain RG_RoundEnd with the parameter ScenarioEventEndRound:event
+*/
 #define IsRoundExpireEvent(%0) (((1<<_:(%0) + ScenarioEventEndRound:0)) & ((1<<_:ROUND_TARGET_SAVED) | (1<<_:ROUND_HOSTAGE_NOT_RESCUED) | (1<<_:ROUND_TERRORISTS_NOT_ESCAPED) | (1<<_:ROUND_VIP_NOT_ESCAPED) | (1<<_:ROUND_GAME_OVER))) != 0)
 
-// suppress warning: 200 on amxmodx 1.8.2
+/**
+* suppress warning: 200 on amxmodx 1.8.2
+*/
 #if AMXX_VERSION_NUM < 183
 	#define RG_CBaseAnimating_ResetSequenceInfo RG_CBaseAnimating_ResetSequence
 	#define RG_CBasePlayer_Observer_IsValidTarget RG_CBasePlayer_Observer_IsValid
@@ -28,12 +33,18 @@
 	#define m_Shield_hEntToIgnoreTouchesFrom m_Shield_EntToIgnoreTouchesFrom
 #endif
 
+/**
+* enum UnifiedSignals
+*/
 enum UnifiedSignals
 {
 	US_Signal,
 	US_State
 };
 
+/**
+* enum AccountSet
+*/
 enum AccountSet
 {
 	AS_SET, // Setts the value of the account
@@ -222,6 +233,9 @@ enum GiveType
 	GT_DROP_AND_REPLACE // Give the item and drop all other weapons from the slot
 };
 
+/**
+* MenuChooseTeam
+*/
 enum MenuChooseTeam
 {
 	MenuChoose_T = 1,
@@ -232,6 +246,9 @@ enum MenuChooseTeam
 	MenuChoose_Spec,
 };
 
+/**
+* VGUIMenu
+*/
 enum VGUIMenu
 {
 	VGUI_Menu_Team = 2,
@@ -248,6 +265,9 @@ enum VGUIMenu
 	VGUI_Menu_Buy_Item,
 };
 
+/**
+* GamedllFunc
+*/
 enum GamedllFunc
 {
 	/*
@@ -326,6 +346,9 @@ enum GamedllFunc
 	RG_BuyWeaponByWeaponID
 };
 
+/**
+* GamedllFunc CBaseAnimating
+*/
 enum GamedllFunc_CBaseAnimating
 {
 	/*
@@ -335,6 +358,9 @@ enum GamedllFunc_CBaseAnimating
 	RG_CBaseAnimating_ResetSequenceInfo = BEGIN_FUNC_REGION(animating)
 };
 
+/**
+* GamedllFunc CBasePlayer
+*/
 enum GamedllFunc_CBasePlayer
 {
 	/*
@@ -596,6 +622,9 @@ enum GamedllFunc_CBasePlayer
 	RG_CBasePlayer_StartDeathCam
 };
 
+/**
+* GamedllFunc CSGameRules
+*/
 enum GamedllFunc_CSGameRules
 {
 	/*
@@ -3306,6 +3335,9 @@ enum CBasePlayer_Members
 	m_flLastCommandTime
 };
 
+/**
+* RebuyStruct
+*/
 enum RebuyStruct
 {
 	/*
@@ -3389,6 +3421,9 @@ enum RebuyStruct
 	m_armor,
 };
 
+/**
+* PlayerMove
+*/
 enum PlayerMove
 {
 	/*
@@ -3872,6 +3907,9 @@ enum PlayerMove
 	pm_player_maxs
 };
 
+/**
+* MoveVars
+*/
 enum MoveVars
 {
 	/*
@@ -4083,6 +4121,9 @@ enum MoveVars
 	mv_skyvec_z
 };
 
+/**
+* PMTrace
+*/
 enum PMTrace
 {
 	/*
