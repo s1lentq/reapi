@@ -3,6 +3,9 @@
 #endif
 #define _cssdk_const_included
 
+/**
+* Basic constants
+*/
 #define BIT(%0)                         (1<<(%0))
 
 #define NULLENT                         -1
@@ -213,14 +216,18 @@
 // These are the damage types that have client hud art
 #define DMG_SHOWNHUD                    (DMG_POISON | DMG_ACID | DMG_FREEZE | DMG_SLOWFREEZE | DMG_DROWN | DMG_BURN | DMG_SLOWBURN | DMG_NERVEGAS | DMG_RADIATION | DMG_SHOCK)
 
-// When calling KILLED(), a value that governs gib behavior is expected to be
-// one of these three values
+/**
+* When calling KILLED(), a value that governs gib behavior is expected to be
+* one of these three values
+*/
 #define GIB_NORMAL                      0 // Gib if entity was overkilled
 #define GIB_NEVER                       1 // Never gib, no matter how much death damage is done ( freezing, etc )
 #define GIB_ALWAYS                      2 // Always gib ( Houndeye Shock, Barnacle Bite )
 
-// Player physics flags bits
-// CBasePlayer::m_afPhysicsFlags
+/**
+* Player physics flags bits
+* CBasePlayer::m_afPhysicsFlags
+*/
 #define PFLAG_ONLADDER                  (1<<0)
 #define PFLAG_ONSWING                   (1<<0)
 #define PFLAG_ONTRAIN                   (1<<1)
@@ -644,6 +651,9 @@
 #define TRAIN_FAST                      0x04
 #define TRAIN_BACK                      0x05
 
+/*
+* PlaybackEvent flags
+*/
 #define FEV_NOTHOST                     (1<<0) // Skip local host for event send.
 #define FEV_RELIABLE                    (1<<1) // Send the event reliably. You must specify the origin and angles
                                                // for this to work correctly on the server for anything
@@ -677,7 +687,9 @@
 // UNDONE: This will ignore transition volumes (trigger_transition), but not the PVS!!!
 #define FCAP_FORCE_TRANSITION           0x00000080 // ALWAYS goes across transitions
 
-// All monsters need this data
+/**
+* All monsters need this data
+*/
 #define DONT_BLEED                      -1
 #define BLOOD_COLOR_RED                 247
 #define BLOOD_COLOR_YELLOW              195
@@ -693,6 +705,9 @@ enum
 	IGNOREMSG_TEAM   // Same as IGNOREMSG_ENEMY but ignore teammates
 }
 
+/**
+* Hitgroups
+*/
 enum HitBoxGroup
 {
 	HITGROUP_GENERIC = 0,
@@ -706,6 +721,9 @@ enum HitBoxGroup
 	HITGROUP_SHIELD
 };
 
+/**
+* Armor types for m_iKevlar
+*/
 enum ArmorType
 {
 	ARMOR_NONE,     // No armor
@@ -750,6 +768,9 @@ enum ArmouryItemPack
 	ARMOURY_DEAGLE,
 };
 
+/**
+* Reward types for RG_CBasePlayer_AddAccount
+*/
 enum RewardType
 {
 	RT_NONE,
@@ -769,6 +790,9 @@ enum RewardType
 	RT_VIP_RESCUED_MYSELF
 };
 
+/**
+* Team IDs for m_iTeam
+*/
 enum TeamName
 {
 	TEAM_UNASSIGNED,
@@ -777,6 +801,9 @@ enum TeamName
 	TEAM_SPECTATOR
 };
 
+/**
+* For m_iModelName
+*/
 enum ModelName
 {
 	MODEL_UNASSIGNED,
@@ -794,6 +821,9 @@ enum ModelName
 	MODEL_AUTO
 };
 
+/**
+* weapon respawning return codes
+*/
 enum
 {
 	GR_NONE = 0,
@@ -811,6 +841,9 @@ enum
 	GR_PLR_DROP_AMMO_NO
 };
 
+/**
+* Weapon IDs for rg_get_weaponbox_id, GetGrenadeType, rg_get_weapon_info(const weapon_name[], WI_ID)
+*/
 enum WeaponIdType
 {
 	WEAPON_NONE,
@@ -862,6 +895,9 @@ enum TimeBasedDamage
 	ITDB_SLOWFREEZE
 };
 
+/**
+* m_Activity
+*/
 enum Activity
 {
 	ACT_INVALID = -1,
@@ -968,6 +1004,9 @@ enum Activity
 	ACT_NO
 };
 
+/**
+* WinStatus for RG_RoundEnd, rg_round_end
+*/
 enum WinStatus
 {
 	WINSTATUS_CTS = 1,
@@ -1007,6 +1046,9 @@ enum ScenarioEventEndRound
 	ROUND_GAME_OVER
 };
 
+/**
+* Animation IDs for RG_CBasePlayer_SetAnimation, rg_set_animation
+*/
 enum PLAYER_ANIM
 {
 	PLAYER_IDLE,
@@ -1134,6 +1176,9 @@ enum WeaponState
 	WPNSTATE_SHIELD_DRAWN       = BIT(5),
 };
 
+/**
+* Bullet types for rg_fire_bullets, rg_fire_bullets3
+*/
 enum Bullet
 {
 	BULLET_NONE,
@@ -1154,6 +1199,9 @@ enum Bullet
 	BULLET_PLAYER_357SIG,
 };
 
+/**
+* Reward rules for rg_get_account_rules, rg_set_account_rules
+*/
 enum RewardRules
 {
 	RR_CTS_WIN,
@@ -1180,7 +1228,9 @@ enum RewardRules
 	RR_TOOK_HOSTAGE,
 	RR_END
 };
-
+/**
+* For RG_CBasePlayer_HasRestrictItem
+*/
 enum ItemRestType
 {
 	ITEM_TYPE_BUYING,  // When a player is buying items
@@ -1247,6 +1297,9 @@ enum InfoMapBuyParam
 	BUYING_NO_ONE,
 };
 
+/**
+* For SetUse
+*/
 enum USE_TYPE
 {
 	USE_OFF,
