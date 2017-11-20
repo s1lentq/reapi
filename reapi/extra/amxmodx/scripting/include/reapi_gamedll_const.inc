@@ -3,6 +3,7 @@
 #endif
 
 #define _reapi_gamedll_const_included
+
 /**
 * Returns true if round has ended by expired time
 * 
