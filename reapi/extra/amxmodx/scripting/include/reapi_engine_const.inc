@@ -19,6 +19,9 @@ enum MapNameType
 #define SND_EMIT2_NOPAS   BIT(0) // Never to check PAS
 #define SND_EMIT2_INVOKER BIT(1) // Do not send to the client invoker
 
+/**
+* enum EngineFunc
+*/
 enum EngineFunc
 {
 	/*
@@ -52,6 +55,9 @@ enum EngineFunc
 	RH_SV_WriteFullClientUpdate,
 };
 
+/**
+* enum EntVars
+*/
 enum EntVars
 {
 	/*
@@ -1039,6 +1045,9 @@ enum EntVars
 	var_euser4
 };
 
+/**
+* enum UCmd
+*/
 enum UCmd
 {
 	/*
