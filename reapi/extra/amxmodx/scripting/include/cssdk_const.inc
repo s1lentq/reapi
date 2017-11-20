@@ -651,7 +651,7 @@
 #define TRAIN_FAST                      0x04
 #define TRAIN_BACK                      0x05
 
-/*
+/**
 * PlaybackEvent flags
 */
 #define FEV_NOTHOST                     (1<<0) // Skip local host for event send.
