@@ -50,7 +50,7 @@ enum AccountSet
 	AS_ADD  // Adds a value to the account
 };
 
-/*
+/**
 * Weapon info types for use with rg_set_weapon_info/rg_get_weapon_info()
 */
 enum WpnInfo
@@ -128,7 +128,7 @@ enum WpnInfo
 	WI_NAME
 };
 
-/*
+/**
 * Item's info types for use with rg_set_iteminfo/rg_get_iteminfo()
 */
 enum ItemInfo
@@ -222,7 +222,7 @@ enum ItemInfo
 	ItemInfo_iWeight
 };
 
-/*
+/**
 * Use with rg_give_item
 */
 enum GiveType
