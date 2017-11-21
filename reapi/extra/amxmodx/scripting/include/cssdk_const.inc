@@ -1009,7 +1009,8 @@ enum Activity
 */
 enum WinStatus
 {
-	WINSTATUS_CTS = 1,
+	WINSTATUS_NONE = 0,
+	WINSTATUS_CTS,
 	WINSTATUS_TERRORISTS,
 	WINSTATUS_DRAW,
 };
@@ -1228,6 +1229,7 @@ enum RewardRules
 	RR_TOOK_HOSTAGE,
 	RR_END
 };
+
 /**
 * For RG_CBasePlayer_HasRestrictItem
 */
