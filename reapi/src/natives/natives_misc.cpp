@@ -1960,7 +1960,7 @@ cell AMX_NATIVE_CALL rg_set_iteminfo(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	if (pWeapon->IsWeapon()) {
+	if (!pWeapon->IsWeapon()) {
 		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: #%d entity is not a weapon.", __FUNCTION__, indexOfEdict(pWeapon->pev));
 		return FALSE;
 	}
@@ -2023,7 +2023,7 @@ cell AMX_NATIVE_CALL rg_get_iteminfo(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	if (pWeapon->IsWeapon()) {
+	if (!pWeapon->IsWeapon()) {
 		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: #%d entity is not a weapon.", __FUNCTION__, indexOfEdict(pWeapon->pev));
 		return FALSE;
 	}
