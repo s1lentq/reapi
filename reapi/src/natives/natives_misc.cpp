@@ -2035,7 +2035,7 @@ cell AMX_NATIVE_CALL rg_get_iteminfo(AMX *amx, cell *params)
 	}
 
 	cell *dest = getAmxAddr(amx, params[arg_output]);
-	size_t length = *getAmxAddr(amx, params[arg_length]);
+	size_t length = (PARAMS_COUNT == 4) ? *getAmxAddr(amx, params[arg_length]) : 0;
 
 	switch (type)
 	{
