@@ -379,7 +379,7 @@ struct {
 	const char *sentence;
 	size_t status;
 } msg_sentence_list[] = {
-	{ "", "" },									// ROUND_NONE
+	{ "", "" },																		// ROUND_NONE
 	{ "#Target_Bombed",                     "terwin",     WINSTATUS_TERRORISTS  },	// ROUND_TARGET_BOMB
 	{ "#VIP_Escaped",                       "ctwin",      WINSTATUS_CTS         },	// ROUND_VIP_ESCAPED
 	{ "#VIP_Assassinated",                  "terwin",     WINSTATUS_TERRORISTS  },	// ROUND_VIP_ASSASSINATED
@@ -396,6 +396,8 @@ struct {
 	{ "#Terrorists_Not_Escaped",            "ctwin",      WINSTATUS_CTS         },	// ROUND_TERRORISTS_NOT_ESCAPED
 	{ "#VIP_Not_Escaped",                   "terwin",     WINSTATUS_TERRORISTS  },	// ROUND_VIP_NOT_ESCAPED
 	{ "#Game_Commencing",                   "",           WINSTATUS_DRAW        },	// ROUND_GAME_COMMENCE
+	{ "",                                   "",           WINSTATUS_DRAW        },	// ROUND_GAME_RESTART
+	{ "#Cstrike_Tutor_Round_Over",          "rounddraw",  WINSTATUS_DRAW        },	// ROUND_GAME_OVER
 };
 
 /*
@@ -427,7 +429,13 @@ cell AMX_NATIVE_CALL rg_round_end(AMX *amx, cell *params)
 	const char *message  = getAmxString(amx, params[arg_message], messagebuf);
 
 	ScenarioEventEndRound event = static_cast<ScenarioEventEndRound>(params[arg_event]);
-	if (event != ROUND_NONE) {
+	if (event != ROUND_NONE)
+	{
+		if (event < ROUND_NONE || event > ROUND_GAME_OVER) {
+			AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid event %i, bounds(%i, %i)", __FUNCTION__, event, ROUND_NONE, ROUND_GAME_OVER);
+			return FALSE;
+		}
+
 		auto& lst = msg_sentence_list[event];
 		if (strcmp(sentence, "default") == 0)
 			sentence = lst.sentence;
