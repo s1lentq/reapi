@@ -6,7 +6,7 @@
 
 /**
 * Returns true if round has ended by expired time
-* 
+*
 * @note Use this for hookchain RG_RoundEnd with the parameter ScenarioEventEndRound:event
 */
 #define IsRoundExpireEvent(%0) (((1<<_:(%0) + ScenarioEventEndRound:0)) & ((1<<_:ROUND_TARGET_SAVED) | (1<<_:ROUND_HOSTAGE_NOT_RESCUED) | (1<<_:ROUND_TERRORISTS_NOT_ESCAPED) | (1<<_:ROUND_VIP_NOT_ESCAPED) | (1<<_:ROUND_GAME_OVER))) != 0)
@@ -28,6 +28,7 @@
 	#define RG_CSGameRules_DeadPlayerWeapons RG_CSGameRules_DeadPlayerWpn
 	#define RG_CSGameRules_CheckMapConditions RG_CSGameRules_CheckMapCond
 	#define RG_CSGameRules_CheckWinConditions RG_CSGameRules_CheckWinCond
+	#define RG_CSGameRules_CanPlayerHearPlayer RG_CSGameRules_CanPlrHearPlr
 	#define RG_CBasePlayer_SetClientUserInfoModel RG_CBasePlayer_SetUserInfoModel
 	#define RG_CBasePlayer_SetClientUserInfoName RG_CBasePlayer_SetUserInfoName
 	#define m_Shield_hEntToIgnoreTouchesFrom m_Shield_EntToIgnoreTouchesFrom
@@ -343,7 +344,35 @@ enum GamedllFunc
 	* Return type:      CBaseEntity * (Entity index of weapon)
 	* Params:           (const index, const WeaponIdType:weaponID)
 	*/
-	RG_BuyWeaponByWeaponID
+	RG_BuyWeaponByWeaponID,
+
+	/*
+	* Description:      Called when a player throws the hegrenade.
+	* Return type:      CGrenade * (Entity index of hegrenade)
+	* Params:           (const index, Float:vecStart[3], Float:vecVelocity[3], Float:time, const team, const usEvent)
+	*/
+	RG_ThrowHeGrenade,
+
+	/*
+	* Description:      Called when a player throws the flashbang.
+	* Return type:      CGrenade * (Entity index of flashbang)
+	* Params:           (const index, Float:vecStart[3], Float:vecVelocity[3], Float:time)
+	*/
+	RG_ThrowFlashbang,
+
+	/*
+	* Description:      Called when a player throws the smokegrenade.
+	* Return type:      CGrenade * (Entity index of smokegrenade)
+	* Params:           (const index, Float:vecStart[3], Float:vecVelocity[3], Float:time, const usEvent)
+	*/
+	RG_ThrowSmokeGrenade,
+
+	/*
+	* Description:      Called when a player plant's the bomb on the ground.
+	* Return type:      CGrenade * (Entity index of bomb)
+	* Params:           (const index, Float:vecStart[3], Float:vecVelocity[3])
+	*/
+	RG_PlantBomb
 };
 
 /**
@@ -356,6 +385,60 @@ enum GamedllFunc_CBaseAnimating
 	* Params:           (const this)
 	*/
 	RG_CBaseAnimating_ResetSequenceInfo = BEGIN_FUNC_REGION(animating)
+};
+
+/**
+* GamedllFunc CGrenade
+*/
+enum GamedllFunc_CGrenade
+{
+	/*
+	* Description:      Called when a player goes to start defuse the bomb.
+	* Params:           (const this, const player)
+	*/
+	RG_CGrenade_DefuseBombStart = BEGIN_FUNC_REGION(grenade),
+
+	/*
+	* Description:      Called when a player has ended to defuses the bomb or when the previous defuser has taken off or been killed.
+	* Params:           (const this, const player, bool:bDefused)
+	*/
+	RG_CGrenade_DefuseBombEnd,
+
+	/*
+	* Description:      Called when a hegrenade detonates.
+	* Params:           (const this, tracehandle, const bitsDamageType)
+	*/
+	RG_CGrenade_ExplodeHeGrenade,
+
+	/*
+	* Description:      Called when a flashbang detonates.
+	* Params:           (const this, tracehandle, const bitsDamageType)
+	*/
+	RG_CGrenade_ExplodeFlashbang,
+
+	/*
+	* Description:      Called when a smokegrenade detonates.
+	* Params:           (const this)
+	*/
+	RG_CGrenade_ExplodeSmokeGrenade,
+
+	/*
+	* Description:      Called when a C4 goes to explodes.
+	* Params:           (const this, tracehandle, const bitsDamageType)
+	*/
+	RG_CGrenade_ExplodeBomb,
+};
+
+/**
+* GamedllFunc CWeaponBox
+*/
+enum GamedllFunc_CWeaponBox
+{
+	/*
+	* Description:      Called when a player dies to pack up the appropriate weapons and ammo items, and creates a weaponbox that falls to floor with sets specify the model or when a player drop the item.
+	* Params:           (const this, const szModelName[])
+	*/
+	RG_CWeaponBox_SetModel = BEGIN_FUNC_REGION(weaponbox),
 };
 
 /**
@@ -619,7 +702,28 @@ enum GamedllFunc_CBasePlayer
 	* Description:      Called when a player dying and goes into observer mode like StartObserver
 	* Params:           (const this)
 	*/
-	RG_CBasePlayer_StartDeathCam
+	RG_CBasePlayer_StartDeathCam,
+
+	/*
+	* Description:      Called when a player goes switch to opposite team after auto-teambalance or caused by 3rd-party things.
+	* @note             This doesn't register the event when a player switched manually
+	* Params:           (const this)
+	*/
+	RG_CBasePlayer_SwitchTeam,
+
+	/*
+	* Description:      Can a player switch to team?
+	* Return type:      bool
+	* Params:           (const this, TeamName:teamToSwap)
+	*/
+	RG_CBasePlayer_CanSwitchTeam,
+
+	/*
+	* Description:      Called when a player throws the grenade.
+	* Return type:      CGrenade * (Entity index of hegrenade)
+	* Params:           (const this, const grenade, Float:vecSrc[3], Float:vecThrow[3], Float:time, const usEvent)
+	*/
+	RG_CBasePlayer_ThrowGrenade,
 };
 
 /**
@@ -629,24 +733,28 @@ enum GamedllFunc_CSGameRules
 {
 	/*
 	* Description:      Should the player switch to this weapon?
+	* Return type:      BOOL
 	* Params:           (const index, const weapon)
 	*/
 	RG_CSGameRules_FShouldSwitchWeapon = BEGIN_FUNC_REGION(gamerules),
 
 	/*
 	* Description:      I can't use this weapon anymore, get me the next best one.
+	* Return type:      BOOL
 	* Params:           (const index, const currentWeapon)
 	*/
 	RG_CSGameRules_GetNextBestWeapon,
 
 	/*
 	* Description:      -
+	* Return type:      float
 	* Params:           (const index)
 	*/
 	RG_CSGameRules_FlPlayerFallDamage,
 
 	/*
 	* Description:      Can this player take damage from this attacker?
+	* Return type:      float
 	* Params:           (const index, const attacker)
 	*/
 	RG_CSGameRules_FPlayerCanTakeDamage,
@@ -659,12 +767,14 @@ enum GamedllFunc_CSGameRules
 
 	/*
 	* Description:      Is this player allowed to respawn now?
+	* Return type:      BOOL
 	* Params:           (const index)
 	*/
 	RG_CSGameRules_FPlayerCanRespawn,
 
 	/*
 	* Description:      Place this player on his spawnspot and face him in the proper direction.
+	* Return type:      edict_t * (Entity index of spawnspot)
 	* Params:           (const index)
 	*/
 	RG_CSGameRules_GetPlayerSpawnSpot,
@@ -689,12 +799,14 @@ enum GamedllFunc_CSGameRules
 
 	/*
 	* Description:      The player is touching a CBasePlayerItem, do I give it to him?
+	* Return type:      BOOL
 	* Params:           (const index, const item)
 	*/
 	RG_CSGameRules_CanHavePlayerItem,
 
 	/*
 	* Description:      What do I do with player's weapons when he's killed?
+	* Return type:      int
 	* Params:           (const index)
 	*/
 	RG_CSGameRules_DeadPlayerWeapons,
@@ -765,7 +877,14 @@ enum GamedllFunc_CSGameRules
 	* Description:      It's called when the freeze time ends.
 	* Params:           ()
 	*/
-	RG_CSGameRules_OnRoundFreezeEnd
+	RG_CSGameRules_OnRoundFreezeEnd,
+
+	/*
+	* Description:      It's called when a player hears another player.
+	* Return type:      bool
+	* Params:           (const listener, const sender)
+	*/
+	RG_CSGameRules_CanPlayerHearPlayer,
 };
 
 /**
@@ -1444,7 +1563,32 @@ enum CSGameRules_Members
 	* Get params:       Float:get_member_game(member);
 	* Set params:       set_member_game(member, Float:value);
 	*/
-	m_flEscapeRatio
+	m_flEscapeRatio,
+
+	/*
+	* Description:      -
+	* Member type:      float
+	* Get params:       Float:get_member_game(member);
+	* Set params:       set_member_game(member, Float:value);
+	*/
+	m_flTimeLimit,
+
+	/*
+	* Description:      Stores the start time of the game.
+	* @note             The time resets when the game is restarting or the game commencing.
+	* Member type:      float
+	* Get params:       Float:get_member_game(member);
+	* Set params:       set_member_game(member, Float:value);
+	*/
+	m_flGameStartTime,
+
+	/*
+	* Description:      TRUE = goes balance team, otherwise FALSE
+	* Member type:      bool
+	* Get params:       get_member_game(member);
+	* Set params:       set_member_game(member, bool:value);
+	*/
+	m_bTeamBalanced,
 };
 
 /**

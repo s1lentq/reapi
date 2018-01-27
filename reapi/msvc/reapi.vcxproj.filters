@@ -827,14 +827,23 @@
     <None Include="..\extra\amxmodx\scripting\include\reapi_engine.inc">
       <Filter>amxmodx\scripting\include</Filter>
     </None>
-    <None Include="..\extra\amxmodx\scripting\include\reapi_addons.inc">
-      <Filter>amxmodx\scripting\include</Filter>
-    </None>
     <None Include="..\extra\amxmodx\scripting\include\cssdk_const.inc">
       <Filter>amxmodx\scripting\include</Filter>
     </None>
     <None Include="..\version\reapi_version.inc">
       <Filter>version</Filter>
+    </None>
+    <None Include="..\extra\amxmodx\scripting\include\hlsdk_const.inc">
+      <Filter>amxmodx\scripting\include</Filter>
+    </None>
+    <None Include="..\extra\amxmodx\scripting\include\reapi_rechecker.inc">
+      <Filter>amxmodx\scripting\include</Filter>
+    </None>
+    <None Include="..\extra\amxmodx\scripting\include\reapi_reunion.inc">
+      <Filter>amxmodx\scripting\include</Filter>
+    </None>
+    <None Include="..\extra\amxmodx\scripting\include\reapi_vtc.inc">
+      <Filter>amxmodx\scripting\include</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

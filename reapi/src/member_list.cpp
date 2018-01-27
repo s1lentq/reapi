@@ -227,6 +227,9 @@ member_t memberlist_gamerules[] = {
 	GM_MEMBERS(m_bSkipShowMenu),
 	GM_MEMBERS(m_bNeededPlayers),
 	GM_MEMBERS(m_flEscapeRatio),
+	GM_MEMBERS(m_flTimeLimit),
+	GM_MEMBERS(m_flGameStartTime),
+	GM_MEMBERS(m_bTeamBalanced),
 };
 
 member_t memberlist_base[] = {

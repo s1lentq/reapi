@@ -210,6 +210,9 @@ enum CSGameRules_Members
 	m_bSkipShowMenu,
 	m_bNeededPlayers,
 	m_flEscapeRatio,
+	m_flTimeLimit,
+	m_flGameStartTime,
+	m_bTeamBalanced,
 };
 
 // CBaseEntity

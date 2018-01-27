@@ -264,44 +264,44 @@ typedef void * (*PFN_REQ_FNPTR)(const char *name);
 // ***** Module funcs stuff *****
 enum ForwardExecType
 {
-	ET_IGNORE = 0,					// Ignore return vaue
+	ET_IGNORE = 0,				// Ignore return vaue
 	ET_STOP,					// Stop on PLUGIN_HANDLED
 	ET_STOP2,					// Stop on PLUGIN_HANDLED, continue on other values, return biggest return value
-	ET_CONTINUE,					// Continue; return biggest return value
+	ET_CONTINUE,				// Continue; return biggest return value
 };
 
 enum ForwardParam
 {
-	FP_DONE = -1,					// specify this as the last argument
+	FP_DONE = -1,				// specify this as the last argument
 	// only tells the function that there are no more arguments
 	FP_CELL,					// normal cell
 	FP_FLOAT,					// float; used as normal cell though
 	FP_STRING,					// string
-	FP_STRINGEX,					// string; will be updated to the last function's value
+	FP_STRINGEX,				// string; will be updated to the last function's value
 	FP_ARRAY,					// array; use the return value of prepareArray.
 };
 
 enum PlayerProp
 {
-	Player_Name,		//String
-	Player_Ip,		//String
-	Player_Team,		//String
-	Player_Ingame,		//bool
-	Player_Authorized,	//bool
-	Player_Vgui,		//bool
-	Player_Time,		//float
-	Player_Playtime,	//float
-	Player_MenuExpire,	//float
-	Player_Weapons,		//struct{int,int}[32]
-	Player_CurrentWeapon,	//int
-	Player_TeamID,		//int
-	Player_Deaths,		//int
-	Player_Aiming,		//int
-	Player_Menu,		//int
-	Player_Keys,		//int
-	Player_Flags,		//int[32]
-	Player_Newmenu,		//int
-	Player_NewmenuPage,	//int
+	Player_Name,			// String
+	Player_Ip,				// String
+	Player_Team,			// String
+	Player_Ingame,			// bool
+	Player_Authorized,		// bool
+	Player_Vgui,			// bool
+	Player_Time,			// float
+	Player_Playtime,		// float
+	Player_MenuExpire,		// float
+	Player_Weapons,			// struct{int,int}[32]
+	Player_CurrentWeapon,	// int
+	Player_TeamID,			// int
+	Player_Deaths,			// int
+	Player_Aiming,			// int
+	Player_Menu,			// int
+	Player_Keys,			// int
+	Player_Flags,			// int[32]
+	Player_Newmenu,			// int
+	Player_NewmenuPage,		// int
 };
 
 enum LibType

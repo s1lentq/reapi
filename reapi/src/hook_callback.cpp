@@ -480,6 +480,38 @@ void CBasePlayer_StartDeathCam(IReGameHook_CBasePlayer_StartDeathCam *chain, CBa
 	callVoidForward(RG_CBasePlayer_StartDeathCam, original, indexOfEdict(pthis->pev));
 }
 
+void CBasePlayer_SwitchTeam(IReGameHook_CBasePlayer_SwitchTeam *chain, CBasePlayer *pthis)
+{
+	auto original = [chain](int _pthis)
+	{
+		chain->callNext(getPrivate<CBasePlayer>(_pthis));
+	};
+
+	callVoidForward(RG_CBasePlayer_CanSwitchTeam, original, indexOfEdict(pthis->pev));
+}
+
+bool CBasePlayer_CanSwitchTeam(IReGameHook_CBasePlayer_CanSwitchTeam *chain, CBasePlayer *pthis, TeamName teamToSwap)
+{
+	auto original = [chain](int _pthis, TeamName _teamToSwap)
+	{
+		return chain->callNext(getPrivate<CBasePlayer>(_pthis), _teamToSwap);
+	};
+
+	return callForward<bool>(RG_CBasePlayer_CanSwitchTeam, original, indexOfEdict(pthis->pev), teamToSwap);
+}
+
+CGrenade *CBasePlayer_ThrowGrenade(IReGameHook_CBasePlayer_ThrowGrenade *chain, CBasePlayer *pthis, CBasePlayerWeapon *pWeapon, Vector &vecSrc, Vector &vecThrow, float time, unsigned short usEvent)
+{
+	Vector vecSrcCopy(vecSrc), vecThrowCopy(vecThrow);
+
+	auto original = [chain, &vecSrcCopy, &vecThrowCopy](int _pthis, int _pWeapon, cell _vecSrc, cell _vecThrow, float _time, unsigned short _usEvent)
+	{
+		return indexOfPDataAmx(chain->callNext(getPrivate<CBasePlayer>(_pthis), getPrivate<CBasePlayerWeapon>(_pWeapon), vecSrcCopy, vecThrowCopy, _time, _usEvent));
+	};
+
+	return getPrivate<CGrenade>(callForward<size_t>(RG_CBasePlayer_ThrowGrenade, original, indexOfEdict(pthis->pev), indexOfEdict(pWeapon->pev), g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecSrcCopy), 3, true), g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecThrowCopy), 3, true), time, usEvent));
+}
+
 void CBaseAnimating_ResetSequenceInfo(IReGameHook_CBaseAnimating_ResetSequenceInfo *chain, CBaseAnimating *pthis)
 {
 	auto original = [chain](int _pthis)
@@ -784,6 +816,86 @@ void CSGameRules_OnRoundFreezeEnd(IReGameHook_CSGameRules_OnRoundFreezeEnd *chai
 	callVoidForward(RG_CSGameRules_OnRoundFreezeEnd, original);
 }
 
+bool CSGameRules_CanPlayerHearPlayer(IReGameHook_CSGameRules_CanPlayerHearPlayer *chain, CBasePlayer *pListener, CBasePlayer *pSender)
+{
+	auto original = [chain](int _pListener, int _pSender)
+	{
+		return chain->callNext(getPrivate<CBasePlayer>(_pListener), getPrivate<CBasePlayer>(_pSender));
+	};
+
+	return callForward<bool>(RG_CSGameRules_CanPlayerHearPlayer, original, indexOfEdict(pListener->pev), indexOfEdict(pSender->pev));
+}
+
+void CWeaponBox_SetModel(IReGameHook_CWeaponBox_SetModel *chain, CWeaponBox *pthis, const char *pszModelName)
+{
+	auto original = [chain](int _pthis, const char *_pszModelName)
+	{
+		chain->callNext(getPrivate<CWeaponBox>(_pthis), _pszModelName);
+	};
+
+	callVoidForward(RG_CWeaponBox_SetModel, original, indexOfEdict(pthis->pev), pszModelName);
+}
+
+void CGrenade_DefuseBombStart(IReGameHook_CGrenade_DefuseBombStart *chain, CGrenade *pthis, CBasePlayer *pPlayer)
+{
+	auto original = [chain](int _pthis, int _pPlayer)
+	{
+		chain->callNext(getPrivate<CGrenade>(_pthis), getPrivate<CBasePlayer>(_pPlayer));
+	};
+
+	callVoidForward(RG_CGrenade_DefuseBombStart, original, indexOfEdict(pthis->pev), indexOfEdict(pPlayer->pev));
+}
+
+void CGrenade_DefuseBombEnd(IReGameHook_CGrenade_DefuseBombEnd *chain, CGrenade *pthis, CBasePlayer *pPlayer, bool bDefused)
+{
+	auto original = [chain](int _pthis, int _pPlayer, bool _bDefused)
+	{
+		chain->callNext(getPrivate<CGrenade>(_pthis), getPrivate<CBasePlayer>(_pPlayer), _bDefused);
+	};
+
+	callVoidForward(RG_CGrenade_DefuseBombEnd, original, indexOfEdict(pthis->pev), indexOfEdict(pPlayer->pev), bDefused);
+}
+
+void CGrenade_ExplodeHeGrenade(IReGameHook_CGrenade_ExplodeHeGrenade *chain, CGrenade *pthis, TraceResult *ptr, int bitsDamageType)
+{
+	auto original = [chain](int _pthis, TraceResult *_ptr, int _bitsDamageType)
+	{
+		chain->callNext(getPrivate<CGrenade>(_pthis), _ptr, _bitsDamageType);
+	};
+
+	callVoidForward(RG_CGrenade_ExplodeHeGrenade, original, indexOfEdict(pthis->pev), ptr, bitsDamageType);
+}
+
+void CGrenade_ExplodeFlashbang(IReGameHook_CGrenade_ExplodeFlashbang *chain, CGrenade *pthis, TraceResult *ptr, int bitsDamageType)
+{
+	auto original = [chain](int _pthis, TraceResult *_ptr, int _bitsDamageType)
+	{
+		chain->callNext(getPrivate<CGrenade>(_pthis), _ptr, _bitsDamageType);
+	};
+
+	callVoidForward(RG_CGrenade_ExplodeFlashbang, original, indexOfEdict(pthis->pev), ptr, bitsDamageType);
+}
+
+void CGrenade_ExplodeSmokeGrenade(IReGameHook_CGrenade_ExplodeSmokeGrenade *chain, CGrenade *pthis)
+{
+	auto original = [chain](int _pthis)
+	{
+		chain->callNext(getPrivate<CGrenade>(_pthis));
+	};
+
+	callVoidForward(RG_CGrenade_ExplodeSmokeGrenade, original, indexOfEdict(pthis->pev));
+}
+
+void CGrenade_ExplodeBomb(IReGameHook_CGrenade_ExplodeBomb *chain, CGrenade *pthis, TraceResult *ptr, int bitsDamageType)
+{
+	auto original = [chain](int _pthis, TraceResult *_ptr, int _bitsDamageType)
+	{
+		chain->callNext(getPrivate<CGrenade>(_pthis), _ptr, _bitsDamageType);
+	};
+
+	callVoidForward(RG_CGrenade_ExplodeBomb, original, indexOfEdict(pthis->pev), ptr, bitsDamageType);
+}
+
 void HandleMenu_ChooseAppearance(IReGameHook_HandleMenu_ChooseAppearance *chain, CBasePlayer *pPlayer, int slot)
 {
 	auto original = [chain](int _pPlayer, int _slot)
@@ -842,6 +954,54 @@ CBaseEntity *BuyWeaponByWeaponID(IReGameHook_BuyWeaponByWeaponID *chain, CBasePl
 	};
 
 	return getPrivate<CBaseEntity>(callForward<size_t>(RG_BuyWeaponByWeaponID, original, indexOfEdict(pPlayer->pev), weaponID));
+}
+
+CGrenade *ThrowHeGrenade(IReGameHook_ThrowHeGrenade *chain, entvars_t *pevOwner, Vector &vecStart, Vector &vecVelocity, float time, int iTeam, unsigned short usEvent)
+{
+	Vector vecStartCopy(vecStart), vecVelocityCopy(vecVelocity);
+
+	auto original = [chain, &vecStartCopy, &vecVelocityCopy](int _pevOwner, cell _vecStart, cell _vecVelocity, float _time, int _iTeam, unsigned short _usEvent)
+	{
+		return indexOfPDataAmx(chain->callNext(PEV(_pevOwner), vecStartCopy, vecVelocityCopy, _time, _iTeam, _usEvent));
+	};
+
+	return getPrivate<CGrenade>(callForward<size_t>(RG_ThrowHeGrenade, original, indexOfEdict(pevOwner), g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecStartCopy), 3, true), g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecVelocityCopy), 3, true), time, iTeam, usEvent));
+}
+
+CGrenade *ThrowFlashbang(IReGameHook_ThrowFlashbang *chain, entvars_t *pevOwner, Vector &vecStart, Vector &vecVelocity, float time)
+{
+	Vector vecStartCopy(vecStart), vecVelocityCopy(vecVelocity);
+
+	auto original = [chain, &vecStartCopy, &vecVelocityCopy](int _pevOwner, cell _vecStart, cell _vecVelocity, float _time)
+	{
+		return indexOfPDataAmx(chain->callNext(PEV(_pevOwner), vecStartCopy, vecVelocityCopy, _time));
+	};
+
+	return getPrivate<CGrenade>(callForward<size_t>(RG_ThrowHeGrenade, original, indexOfEdict(pevOwner), g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecStartCopy), 3, true), g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecVelocityCopy), 3, true), time));
+}
+
+CGrenade *ThrowSmokeGrenade(IReGameHook_ThrowSmokeGrenade *chain, entvars_t *pevOwner, Vector &vecStart, Vector &vecVelocity, float time, unsigned short usEvent)
+{
+	Vector vecStartCopy(vecStart), vecVelocityCopy(vecVelocity);
+
+	auto original = [chain, &vecStartCopy, &vecVelocityCopy](int _pevOwner, cell _vecStart, cell _vecVelocity, float _time, unsigned short _usEvent)
+	{
+		return indexOfPDataAmx(chain->callNext(PEV(_pevOwner), vecStartCopy, vecVelocityCopy, _time, _usEvent));
+	};
+
+	return getPrivate<CGrenade>(callForward<size_t>(RG_ThrowSmokeGrenade, original, indexOfEdict(pevOwner), g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecStartCopy), 3, true), g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecVelocityCopy), 3, true), time, usEvent));
+}
+
+CGrenade *PlantBomb(IReGameHook_PlantBomb *chain, entvars_t *pevOwner, Vector &vecStart, Vector &vecVelocity)
+{
+	Vector vecStartCopy(vecStart), vecVelocityCopy(vecVelocity);
+
+	auto original = [chain, &vecStartCopy, &vecVelocityCopy](int _pevOwner, cell _vecStart, cell _vecVelocity)
+	{
+		return indexOfPDataAmx(chain->callNext(PEV(_pevOwner), vecStartCopy, vecVelocityCopy));
+	};
+
+	return getPrivate<CGrenade>(callForward<size_t>(RG_PlantBomb, original, indexOfEdict(pevOwner), g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecStartCopy), 3, true), g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecVelocityCopy), 3, true)));
 }
 
 int g_iClientStartSpeak, g_iClientStopSpeak;

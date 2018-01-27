@@ -285,12 +285,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\extra\amxmodx\scripting\include\cssdk_const.inc" />
+    <None Include="..\extra\amxmodx\scripting\include\hlsdk_const.inc" />
     <None Include="..\extra\amxmodx\scripting\include\reapi.inc" />
     <None Include="..\extra\amxmodx\scripting\include\reapi_engine.inc" />
     <None Include="..\extra\amxmodx\scripting\include\reapi_engine_const.inc" />
     <None Include="..\extra\amxmodx\scripting\include\reapi_gamedll.inc" />
     <None Include="..\extra\amxmodx\scripting\include\reapi_gamedll_const.inc" />
-    <None Include="..\extra\amxmodx\scripting\include\reapi_addons.inc" />
+    <None Include="..\extra\amxmodx\scripting\include\reapi_rechecker.inc" />
+    <None Include="..\extra\amxmodx\scripting\include\reapi_reunion.inc" />
+    <None Include="..\extra\amxmodx\scripting\include\reapi_vtc.inc" />
     <None Include="..\extra\amxmodx\scripting\reapi_test.sma" />
     <None Include="..\version\reapi_version.inc" />
     <None Include="reapi.def" />

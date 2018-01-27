@@ -648,6 +648,7 @@ public:
 	float m_flEscapeRatio;
 	float m_flTimeLimit;
 	float m_flGameStartTime;
+	bool m_bTeamBalanced;
 };
 
 typedef struct mapcycle_item_s

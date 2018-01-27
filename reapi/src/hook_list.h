@@ -31,6 +31,8 @@ extern hook_t hooklist_animating[];
 extern hook_t hooklist_player[];
 extern hook_t hooklist_gamerules[];
 extern hook_t hooklist_rechecker[];
+extern hook_t hooklist_grenade[];
+extern hook_t hooklist_weaponbox[];
 
 enum
 {
@@ -53,6 +55,8 @@ struct hooklist_t
 			CASE(player)
 			CASE(gamerules)
 			CASE(rechecker)
+			CASE(grenade)
+			CASE(weaponbox)
 		}
 
 		return nullptr;
@@ -69,6 +73,8 @@ struct hooklist_t
 		ht_player,
 		ht_gamerules,
 		ht_rechecker,
+		ht_grenade,
+		ht_weaponbox,
 
 		ht_end
 	};
@@ -101,6 +107,11 @@ enum GamedllFunc
 
 	RG_BuyGunAmmo,
 	RG_BuyWeaponByWeaponID,
+
+	RG_ThrowHeGrenade,
+	RG_ThrowFlashbang,
+	RG_ThrowSmokeGrenade,
+	RG_PlantBomb
 
 	// [...]
 };
@@ -158,6 +169,28 @@ enum GamedllFunc_CBasePlayer
 	RG_CBasePlayer_StartObserver,
 	RG_CBasePlayer_GetIntoGame,
 	RG_CBasePlayer_StartDeathCam,
+	RG_CBasePlayer_SwitchTeam,
+	RG_CBasePlayer_CanSwitchTeam,
+	RG_CBasePlayer_ThrowGrenade,
+
+	// [...]
+};
+
+enum GamedllFunc_CGrenade
+{
+	RG_CGrenade_DefuseBombStart = BEGIN_FUNC_REGION(grenade),
+	RG_CGrenade_DefuseBombEnd,
+	RG_CGrenade_ExplodeHeGrenade,
+	RG_CGrenade_ExplodeFlashbang,
+	RG_CGrenade_ExplodeSmokeGrenade,
+	RG_CGrenade_ExplodeBomb,
+
+	// [...]
+};
+
+enum GamedllFunc_CWeaponBox
+{
+	RG_CWeaponBox_SetModel = BEGIN_FUNC_REGION(weaponbox),
 
 	// [...]
 };
@@ -188,6 +221,7 @@ enum GamedllFunc_CSGameRules
 	RG_CSGameRules_GoToIntermission,
 	RG_CSGameRules_BalanceTeams,
 	RG_CSGameRules_OnRoundFreezeEnd,
+	RG_CSGameRules_CanPlayerHearPlayer,
 
 	// [...]
 };

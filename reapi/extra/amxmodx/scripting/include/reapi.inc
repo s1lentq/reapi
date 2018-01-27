@@ -20,7 +20,9 @@ enum hooks_tables_e
 	ht_animating,
 	ht_player,
 	ht_gamerules,
-	ht_rechecker
+	ht_rechecker,
+	ht_grenade,
+	ht_weaponbox
 };
 
 enum members_tables_e
@@ -132,7 +134,7 @@ enum HookChain
 *
 * @return           Returns a hook handle. Use EnableHookChain/DisableHookChain to toggle the forward on or off
 */
-native HookChain:RegisterHookChain({EngineFunc, GamedllFunc, GamedllFunc_CBaseAnimating, GamedllFunc_CBasePlayer, GamedllFunc_CSGameRules, ReCheckerFunc}:function_id, const callback[], post = 0);
+native HookChain:RegisterHookChain({EngineFunc, GamedllFunc, GamedllFunc_CBaseAnimating, GamedllFunc_CBasePlayer, GamedllFunc_CSGameRules, GamedllFunc_CGrenade, GamedllFunc_CWeaponBox, ReCheckerFunc}:function_id, const callback[], post = 0);
 
 /*
 * Stops a hook from triggering.
