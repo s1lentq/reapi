@@ -1,5 +1,7 @@
 #pragma once
 
+#include <amxxmodule.h>
+
 #define INDEXENT edictByIndex
 #define ENTINDEX indexOfEdict
 #define AMX_NULLENT -1
@@ -81,6 +83,11 @@ inline size_t indexOfPDataAmx(const T* pdata)
 	if (likely(pdata != nullptr))
 		index = indexOfEdict(pdata->pev);
 	return index;
+}
+
+inline cell getAmxVector(Vector& vec)
+{
+	return g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vec), 3, true);
 }
 
 // HLTypeConversion.h -> AMXModX

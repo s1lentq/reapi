@@ -115,7 +115,7 @@ void CBasePlayer_TraceAttack(IReGameHook_CBasePlayer_TraceAttack *chain, CBasePl
 		chain->callNext(getPrivate<CBasePlayer>(_pthis), PEV(_pevAttacker), _flDamage, vecDirCopy, _ptr, _bitsDamageType);
 	};
 
-	callVoidForward(RG_CBasePlayer_TraceAttack, original, indexOfEdict(pthis->pev), indexOfEdict(pevAttacker), flDamage, g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecDirCopy), 3, true), ptr, bitsDamageType);
+	callVoidForward(RG_CBasePlayer_TraceAttack, original, indexOfEdict(pthis->pev), indexOfEdict(pevAttacker), flDamage, getAmxVector(vecDirCopy), ptr, bitsDamageType);
 }
 
 int CBasePlayer_TakeDamage(IReGameHook_CBasePlayer_TakeDamage *chain, CBasePlayer *pthis, entvars_t *pevInflictor, entvars_t *pevAttacker, float& flDamage, int bitsDamageType)
@@ -457,7 +457,7 @@ void CBasePlayer_StartObserver(IReGameHook_CBasePlayer_StartObserver *chain, CBa
 		chain->callNext(getPrivate<CBasePlayer>(_pthis), vecPositionCopy, vecViewAngleCopy);
 	};
 
-	callVoidForward(RG_CBasePlayer_StartObserver, original, indexOfEdict(pthis->pev), g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecPosition), 3, true), g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecViewAngle), 3, true));
+	callVoidForward(RG_CBasePlayer_StartObserver, original, indexOfEdict(pthis->pev), getAmxVector(vecPosition), getAmxVector(vecViewAngle));
 }
 
 bool CBasePlayer_GetIntoGame(IReGameHook_CBasePlayer_GetIntoGame *chain, CBasePlayer *pthis)
@@ -509,7 +509,7 @@ CGrenade *CBasePlayer_ThrowGrenade(IReGameHook_CBasePlayer_ThrowGrenade *chain, 
 		return indexOfPDataAmx(chain->callNext(getPrivate<CBasePlayer>(_pthis), getPrivate<CBasePlayerWeapon>(_pWeapon), vecSrcCopy, vecThrowCopy, _time, _usEvent));
 	};
 
-	return getPrivate<CGrenade>(callForward<size_t>(RG_CBasePlayer_ThrowGrenade, original, indexOfEdict(pthis->pev), indexOfEdict(pWeapon->pev), g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecSrcCopy), 3, true), g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecThrowCopy), 3, true), time, usEvent));
+	return getPrivate<CGrenade>(callForward<size_t>(RG_CBasePlayer_ThrowGrenade, original, indexOfEdict(pthis->pev), indexOfEdict(pWeapon->pev), getAmxVector(vecSrcCopy), getAmxVector(vecThrowCopy), time, usEvent));
 }
 
 void CBaseAnimating_ResetSequenceInfo(IReGameHook_CBaseAnimating_ResetSequenceInfo *chain, CBaseAnimating *pthis)
@@ -541,7 +541,7 @@ void PlayerBlind(IReGameHook_PlayerBlind *chain, CBasePlayer *pPlayer, entvars_t
 		chain->callNext(getPrivate<CBasePlayer>(_pPlayer), PEV(_pevInflictor), PEV(_pevAttacker), _fadeTime, _fadeHold, _alpha, colorCopy);
 	};
 
-	callVoidForward(RG_PlayerBlind, original, indexOfEdict(pPlayer->pev), indexOfEdict(pevInflictor), indexOfEdict(pevAttacker), fadeTime, fadeHold, alpha, g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&colorCopy), 3, true));
+	callVoidForward(RG_PlayerBlind, original, indexOfEdict(pPlayer->pev), indexOfEdict(pevInflictor), indexOfEdict(pevAttacker), fadeTime, fadeHold, alpha, getAmxVector(colorCopy));
 }
 
 void RadiusFlash_TraceLine(IReGameHook_RadiusFlash_TraceLine *chain, CBasePlayer *pPlayer, entvars_t *pevInflictor, entvars_t *pevAttacker, Vector& vecSrc, Vector& vecSpot, TraceResult *ptr)
@@ -553,7 +553,7 @@ void RadiusFlash_TraceLine(IReGameHook_RadiusFlash_TraceLine *chain, CBasePlayer
 		chain->callNext(getPrivate<CBasePlayer>(_pPlayer), PEV(_pevInflictor), PEV(_pevAttacker), vecSrcCopy, vecSpotCopy, _ptr);
 	};
 
-	callVoidForward(RG_RadiusFlash_TraceLine, original, indexOfEdict(pPlayer->pev), indexOfEdict(pevInflictor), indexOfEdict(pevAttacker), g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecSrcCopy), 3, true), g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecSpotCopy), 3, true), ptr);
+	callVoidForward(RG_RadiusFlash_TraceLine, original, indexOfEdict(pPlayer->pev), indexOfEdict(pevInflictor), indexOfEdict(pevAttacker), getAmxVector(vecSrcCopy), getAmxVector(vecSpotCopy), ptr);
 }
 
 bool RoundEnd(IReGameHook_RoundEnd *chain, int winStatus, ScenarioEventEndRound event, float tmDelay)
@@ -965,7 +965,7 @@ CGrenade *ThrowHeGrenade(IReGameHook_ThrowHeGrenade *chain, entvars_t *pevOwner,
 		return indexOfPDataAmx(chain->callNext(PEV(_pevOwner), vecStartCopy, vecVelocityCopy, _time, _iTeam, _usEvent));
 	};
 
-	return getPrivate<CGrenade>(callForward<size_t>(RG_ThrowHeGrenade, original, indexOfEdict(pevOwner), g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecStartCopy), 3, true), g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecVelocityCopy), 3, true), time, iTeam, usEvent));
+	return getPrivate<CGrenade>(callForward<size_t>(RG_ThrowHeGrenade, original, indexOfEdict(pevOwner), getAmxVector(vecStartCopy), getAmxVector(vecVelocityCopy), time, iTeam, usEvent));
 }
 
 CGrenade *ThrowFlashbang(IReGameHook_ThrowFlashbang *chain, entvars_t *pevOwner, Vector &vecStart, Vector &vecVelocity, float time)
@@ -977,7 +977,7 @@ CGrenade *ThrowFlashbang(IReGameHook_ThrowFlashbang *chain, entvars_t *pevOwner,
 		return indexOfPDataAmx(chain->callNext(PEV(_pevOwner), vecStartCopy, vecVelocityCopy, _time));
 	};
 
-	return getPrivate<CGrenade>(callForward<size_t>(RG_ThrowFlashbang, original, indexOfEdict(pevOwner), g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecStartCopy), 3, true), g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecVelocityCopy), 3, true), time));
+	return getPrivate<CGrenade>(callForward<size_t>(RG_ThrowFlashbang, original, indexOfEdict(pevOwner), getAmxVector(vecStartCopy), getAmxVector(vecVelocityCopy), time));
 }
 
 CGrenade *ThrowSmokeGrenade(IReGameHook_ThrowSmokeGrenade *chain, entvars_t *pevOwner, Vector &vecStart, Vector &vecVelocity, float time, unsigned short usEvent)
@@ -989,7 +989,7 @@ CGrenade *ThrowSmokeGrenade(IReGameHook_ThrowSmokeGrenade *chain, entvars_t *pev
 		return indexOfPDataAmx(chain->callNext(PEV(_pevOwner), vecStartCopy, vecVelocityCopy, _time, _usEvent));
 	};
 
-	return getPrivate<CGrenade>(callForward<size_t>(RG_ThrowSmokeGrenade, original, indexOfEdict(pevOwner), g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecStartCopy), 3, true), g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecVelocityCopy), 3, true), time, usEvent));
+	return getPrivate<CGrenade>(callForward<size_t>(RG_ThrowSmokeGrenade, original, indexOfEdict(pevOwner), getAmxVector(vecStartCopy), getAmxVector(vecVelocityCopy), time, usEvent));
 }
 
 CGrenade *PlantBomb(IReGameHook_PlantBomb *chain, entvars_t *pevOwner, Vector &vecStart, Vector &vecVelocity)
@@ -1001,7 +1001,7 @@ CGrenade *PlantBomb(IReGameHook_PlantBomb *chain, entvars_t *pevOwner, Vector &v
 		return indexOfPDataAmx(chain->callNext(PEV(_pevOwner), vecStartCopy, vecVelocityCopy));
 	};
 
-	return getPrivate<CGrenade>(callForward<size_t>(RG_PlantBomb, original, indexOfEdict(pevOwner), g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecStartCopy), 3, true), g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecVelocityCopy), 3, true)));
+	return getPrivate<CGrenade>(callForward<size_t>(RG_PlantBomb, original, indexOfEdict(pevOwner), getAmxVector(vecStartCopy), getAmxVector(vecVelocityCopy)));
 }
 
 int g_iClientStartSpeak, g_iClientStopSpeak;
