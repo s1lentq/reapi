@@ -977,7 +977,7 @@ CGrenade *ThrowFlashbang(IReGameHook_ThrowFlashbang *chain, entvars_t *pevOwner,
 		return indexOfPDataAmx(chain->callNext(PEV(_pevOwner), vecStartCopy, vecVelocityCopy, _time));
 	};
 
-	return getPrivate<CGrenade>(callForward<size_t>(RG_ThrowHeGrenade, original, indexOfEdict(pevOwner), g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecStartCopy), 3, true), g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecVelocityCopy), 3, true), time));
+	return getPrivate<CGrenade>(callForward<size_t>(RG_ThrowFlashbang, original, indexOfEdict(pevOwner), g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecStartCopy), 3, true), g_amxxapi.PrepareCellArrayA(reinterpret_cast<cell *>(&vecVelocityCopy), 3, true), time));
 }
 
 CGrenade *ThrowSmokeGrenade(IReGameHook_ThrowSmokeGrenade *chain, entvars_t *pevOwner, Vector &vecStart, Vector &vecVelocity, float time, unsigned short usEvent)
