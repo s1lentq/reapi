@@ -232,7 +232,7 @@ native rg_give_item(const index, const pszName[], GiveType:type = GT_APPEND);
 * @param index      Client index
 * @param pszName    Item classname
 * @param type       Look at the enums with name GiveType
-* @param uid        Sets a unique index for the entity
+* @param uid        Sets an unique index for the entity
 *
 * @return           Index of entity if successfull, -1 otherwise
 *
