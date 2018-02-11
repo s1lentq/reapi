@@ -493,7 +493,7 @@ cell AMX_NATIVE_CALL rg_create_entity(AMX *amx, cell *params)
 	enum args_e { arg_count, arg_classname, arg_hashtable };
 
 	char classname[256];
-	string_t iClass = g_engfuncs.pfnAllocString(getAmxString(amx, params[arg_classname], classname));
+	string_t iClass = getAmxStringAlloc(amx, params[arg_classname], classname);
 
 	edict_t	*pEntity;
 	if (params[arg_hashtable] != 0)
@@ -1993,9 +1993,9 @@ cell AMX_NATIVE_CALL rg_set_iteminfo(AMX *amx, cell *params)
 	case ItemInfo_iId:       pItem->m_ItemInfo.iId       = *ptr; break;
 	case ItemInfo_iFlags:    pItem->m_ItemInfo.iFlags    = *ptr; break;
 	case ItemInfo_iWeight:   pItem->m_ItemInfo.iWeight   = *ptr; break;
-	case ItemInfo_pszAmmo1:  pItem->m_ItemInfo.pszAmmo1  = getAmxString(amx, params[arg_value], itembuf); break;
-	case ItemInfo_pszAmmo2:  pItem->m_ItemInfo.pszAmmo2  = getAmxString(amx, params[arg_value], itembuf); break;
-	case ItemInfo_pszName:   pItem->m_ItemInfo.pszName   = getAmxString(amx, params[arg_value], itembuf); break;
+	case ItemInfo_pszAmmo1:  pItem->m_ItemInfo.pszAmmo1  = STRING(getAmxStringAlloc(amx, params[arg_value], itembuf)); break;
+	case ItemInfo_pszAmmo2:  pItem->m_ItemInfo.pszAmmo2  = STRING(getAmxStringAlloc(amx, params[arg_value], itembuf)); break;
+	case ItemInfo_pszName:   pItem->m_ItemInfo.pszName   = STRING(getAmxStringAlloc(amx, params[arg_value], itembuf)); break;
 
 	default:
 		AMXX_LogError(amx, AMX_ERR_NATIVE, "Unknown ItemInfo type %d", type);

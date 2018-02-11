@@ -110,6 +110,13 @@ const char* getAmxString(AMX* amx, cell addr, char (&dest)[N], size_t* len = nul
 	return getAmxString(getAmxAddr(amx, addr), dest, N - 1, len);
 }
 
+template<size_t N>
+string_t getAmxStringAlloc(AMX* amx, cell addr, char (&dest)[N], size_t* len = nullptr)
+{
+	const char* pszDest = getAmxString(getAmxAddr(amx, addr), dest, N - 1, len);
+	return (pszDest && pszDest[0] != '\0') ? ALLOC_STRING(pszDest) : iStringNull;
+}
+
 inline void fillNatives(AMX_NATIVE_INFO* table, cell (AMX_NATIVE_CALL with)(AMX *, cell *))
 {
 	for (size_t i = 0; table[i].name; i++)
