@@ -988,14 +988,15 @@ cell AMX_NATIVE_CALL rg_internal_cmd(AMX *amx, cell *params)
 *
 * @param index      Client index
 * @param item_name  Item classname
+* @param removeAmmo Remove ammunition
 *
 * @return           1 if found and remove, 0 otherwise
 *
-* native rg_remove_item(const index, const item_name[]);
+* native rg_remove_item(const index, const item_name[], const bool:removeAmmo = false);
 */
 cell AMX_NATIVE_CALL rg_remove_item(AMX *amx, cell *params)
 {
-	enum args_e { arg_count, arg_index, arg_item_name };
+	enum args_e { arg_count, arg_index, arg_item_name, arg_remammo };
 
 	CHECK_ISPLAYER(arg_index);
 
@@ -1003,8 +1004,8 @@ cell AMX_NATIVE_CALL rg_remove_item(AMX *amx, cell *params)
 	CHECK_CONNECTED(pPlayer, arg_index);
 
 	char iname[256];
-	const char* szItemName = getAmxString(amx, params[arg_item_name], iname);
-	if (pPlayer->CSPlayer()->RemovePlayerItem(szItemName)) {
+	const char* pszItemName = getAmxString(amx, params[arg_item_name], iname);
+	if (pPlayer->CSPlayer()->RemovePlayerItemEx(pszItemName, params[arg_remammo] != 0)) {
 		return TRUE;
 	}
 

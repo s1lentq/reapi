@@ -497,10 +497,11 @@ native rg_internal_cmd(const index, const cmd[], const arg[] = "");
 *
 * @param index      Client index
 * @param item_name  Item classname
+* @param removeAmmo Remove ammunition
 *
 * @return           1 if found and remove, 0 otherwise
 */
-native rg_remove_item(const index, const item_name[]);
+native rg_remove_item(const index, const item_name[], const bool:removeAmmo = false);
 
 /*
 * Sets the amount of ammo in the client's backpack for a specific weapon.

@@ -66,6 +66,11 @@
     <ClInclude Include="..\include\cssdk\dlls\activitymap.h" />
     <ClInclude Include="..\include\cssdk\dlls\airtank.h" />
     <ClInclude Include="..\include\cssdk\dlls\ammo.h" />
+    <ClInclude Include="..\include\cssdk\dlls\API\CSEntity.h" />
+    <ClInclude Include="..\include\cssdk\dlls\API\CSInterfaces.h" />
+    <ClInclude Include="..\include\cssdk\dlls\API\CSPlayer.h" />
+    <ClInclude Include="..\include\cssdk\dlls\API\CSPlayerItem.h" />
+    <ClInclude Include="..\include\cssdk\dlls\API\CSPlayerWeapon.h" />
     <ClInclude Include="..\include\cssdk\dlls\basemonster.h" />
     <ClInclude Include="..\include\cssdk\dlls\bmodels.h" />
     <ClInclude Include="..\include\cssdk\dlls\bot\cs_bot.h" />
@@ -371,10 +376,10 @@
       <Message>Force build to run Pre-Build event</Message>
     </CustomBuildStep>
     <CustomBuildStep>
-      <Outputs>subversion.always.run</Outputs>
+      <Outputs>build.always.run</Outputs>
     </CustomBuildStep>
     <CustomBuildStep>
-      <Inputs>subversion.always.run</Inputs>
+      <Inputs>build.always.run</Inputs>
     </CustomBuildStep>
     <PreBuildEvent>
       <Command>IF EXIST "$(ProjectDir)PreBuild.bat" (CALL "$(ProjectDir)PreBuild.bat" "$(ProjectDir)..\version\" "$(ProjectDir)..\")</Command>
@@ -419,10 +424,10 @@
       <Message>Force build to run Pre-Build event</Message>
     </CustomBuildStep>
     <CustomBuildStep>
-      <Outputs>subversion.always.run</Outputs>
+      <Outputs>build.always.run</Outputs>
     </CustomBuildStep>
     <CustomBuildStep>
-      <Inputs>subversion.always.run</Inputs>
+      <Inputs>build.always.run</Inputs>
     </CustomBuildStep>
     <PostBuildEvent>
       <Command>IF EXIST "$(ProjectDir)PostBuild.bat" (CALL "$(ProjectDir)PostBuild.bat" "$(TargetDir)" "$(TargetName)" "$(TargetExt)" "$(ProjectDir)")</Command>
