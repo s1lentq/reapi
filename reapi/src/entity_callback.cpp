@@ -125,7 +125,7 @@ bool CEntityCallback::SetBlocked(AMX *amx, CBaseEntity *pEntity, const char *psz
 	}
 
 	m_callbacks.push_back(new CAmxxHook<eCallback_t>(amx, pszCallback, fwdid, new eCallback_t(pEntity, pParams, iParamsLen, CType_Blocked)));
-	pEntity->SetTouch(&CBaseEntity::SUB_Blocked);
+	pEntity->SetBlocked(&CBaseEntity::SUB_Blocked);
 	return true;
 }
 
