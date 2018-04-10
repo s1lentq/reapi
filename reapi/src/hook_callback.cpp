@@ -512,6 +512,26 @@ CGrenade *CBasePlayer_ThrowGrenade(IReGameHook_CBasePlayer_ThrowGrenade *chain, 
 	return getPrivate<CGrenade>(callForward<size_t>(RG_CBasePlayer_ThrowGrenade, original, indexOfEdict(pthis->pev), indexOfEdict(pWeapon->pev), getAmxVector(vecSrcCopy), getAmxVector(vecThrowCopy), time, usEvent));
 }
 
+void CBasePlayer_SetSpawnProtection(IReGameHook_CBasePlayer_SetSpawnProtection *chain, CBasePlayer *pthis, float flProtectionTime)
+{
+	auto original = [chain](int _pthis, float _flProtectionTime)
+	{
+		return chain->callNext(getPrivate<CBasePlayer>(_pthis), _flProtectionTime);
+	};
+
+	callVoidForward(RG_CBasePlayer_SetSpawnProtection, original, indexOfEdict(pthis->pev), flProtectionTime);
+}
+
+void CBasePlayer_RemoveSpawnProtection(IReGameHook_CBasePlayer_RemoveSpawnProtection *chain, CBasePlayer *pthis)
+{
+	auto original = [chain](int _pthis)
+	{
+		return chain->callNext(getPrivate<CBasePlayer>(_pthis));
+	};
+
+	callVoidForward(RG_CBasePlayer_RemoveSpawnProtection, original, indexOfEdict(pthis->pev));
+}
+
 void CBaseAnimating_ResetSequenceInfo(IReGameHook_CBaseAnimating_ResetSequenceInfo *chain, CBaseAnimating *pthis)
 {
 	auto original = [chain](int _pthis)
@@ -1002,6 +1022,18 @@ CGrenade *PlantBomb(IReGameHook_PlantBomb *chain, entvars_t *pevOwner, Vector &v
 	};
 
 	return getPrivate<CGrenade>(callForward<size_t>(RG_PlantBomb, original, indexOfEdict(pevOwner), getAmxVector(vecStartCopy), getAmxVector(vecVelocityCopy)));
+}
+
+bool IsPenetrableEntity(IReGameHook_IsPenetrableEntity *chain, Vector &vecSrc, Vector &vecEnd, entvars_t *pevAttacker, edict_t *pHit)
+{
+	Vector vecSrcCopy(vecSrc), vecEndCopy(vecEnd);
+
+	auto original = [chain, &vecSrcCopy, &vecEndCopy](cell _vecSrc, cell _vecEnd, int _pevAttacker, int _pHit)
+	{
+		return chain->callNext(vecSrcCopy, vecEndCopy, PEV(_pevAttacker), edictByIndexAmx(_pHit));
+	};
+
+	return callForward<bool>(RG_IsPenetrableEntity, original, getAmxVector(vecSrcCopy), getAmxVector(vecEndCopy), indexOfEdict(pevAttacker), indexOfEdict(pHit));
 }
 
 int g_iClientStartSpeak, g_iClientStopSpeak;

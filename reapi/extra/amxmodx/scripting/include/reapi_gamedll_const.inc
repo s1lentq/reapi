@@ -372,7 +372,14 @@ enum GamedllFunc
 	* Return type:      CGrenade * (Entity index of bomb)
 	* Params:           (const index, Float:vecStart[3], Float:vecVelocity[3])
 	*/
-	RG_PlantBomb
+	RG_PlantBomb,
+	
+	/*
+	* Description:      Called when a player hit to entity.
+	* Return type:      bool
+	* Params:           (Float:vecSrc[3], Float:vecEnd[3], index, entity)
+	*/
+	RG_IsPenetrableEntity,
 };
 
 /**
@@ -724,6 +731,20 @@ enum GamedllFunc_CBasePlayer
 	* Params:           (const this, const grenade, Float:vecSrc[3], Float:vecThrow[3], Float:time, const usEvent)
 	*/
 	RG_CBasePlayer_ThrowGrenade,
+	
+	/*
+	* Description:      Called when a player's set protection.
+	* Return type:      void
+	* Params:           (const this, Float:time)
+	*/
+	RG_CBasePlayer_SetSpawnProtection,
+	
+	/*
+	* Description:      Called when a player's remove protection.
+	* Return type:      void
+	* Params:           (const this)
+	*/
+	RG_CBasePlayer_RemoveSpawnProtection,
 };
 
 /**
