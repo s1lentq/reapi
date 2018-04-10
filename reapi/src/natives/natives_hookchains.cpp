@@ -188,7 +188,7 @@ cell AMX_NATIVE_CALL GetHookChainReturn(AMX *amx, cell *params)
 
 	if (unlikely(params[arg_type] != retVal.type))
 	{
-		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: trying to set return value with incompatible type.", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: trying to get return value with incompatible type.", __FUNCTION__);
 		return FALSE;
 	}
 
@@ -242,7 +242,7 @@ cell AMX_NATIVE_CALL SetHookChainArg(AMX *amx, cell *params)
 {
 	if (unlikely(!g_hookCtx))
 	{
-		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: trying to get return value without active hook.", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: trying to set argument without active hook.", __FUNCTION__);
 		return FALSE;
 	}
 
