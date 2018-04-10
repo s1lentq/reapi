@@ -735,6 +735,7 @@ enum CSPlayer_Members
 	m_szModel = BEGIN_MEMBER_REGION(csplayer),
 	m_bForceShowMenu,
 	m_flRespawnPending,
+	m_flSpawnProtectionEndTime,
 };
 
 enum CBasePlayerItem_Members

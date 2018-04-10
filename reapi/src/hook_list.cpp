@@ -98,6 +98,7 @@ hook_t hooklist_gamedll[] = {
 	DLL(ThrowFlashbang),
 	DLL(ThrowSmokeGrenade),
 	DLL(PlantBomb),
+	DLL(IsPenetrableEntity),
 };
 
 hook_t hooklist_animating[] = {
@@ -150,6 +151,8 @@ hook_t hooklist_player[] = {
 	DLL(CBasePlayer_SwitchTeam),
 	DLL(CBasePlayer_CanSwitchTeam),
 	DLL(CBasePlayer_ThrowGrenade),
+	DLL(CBasePlayer_SetSpawnProtection),
+	DLL(CBasePlayer_RemoveSpawnProtection),
 };
 
 hook_t hooklist_gamerules[] = {

@@ -111,7 +111,8 @@ enum GamedllFunc
 	RG_ThrowHeGrenade,
 	RG_ThrowFlashbang,
 	RG_ThrowSmokeGrenade,
-	RG_PlantBomb
+	RG_PlantBomb,
+	RG_IsPenetrableEntity,
 
 	// [...]
 };
@@ -172,6 +173,8 @@ enum GamedllFunc_CBasePlayer
 	RG_CBasePlayer_SwitchTeam,
 	RG_CBasePlayer_CanSwitchTeam,
 	RG_CBasePlayer_ThrowGrenade,
+	RG_CBasePlayer_SetSpawnProtection,
+	RG_CBasePlayer_RemoveSpawnProtection,
 
 	// [...]
 };
