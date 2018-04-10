@@ -4392,6 +4392,14 @@ enum CCSPlayer_Members
 	* Set params:       set_member(index, member, Float:value);
 	*/
 	m_flRespawnPending,
+
+	/*
+	* Description:      -
+	* Member type:      float
+	* Get params:       Float:get_member(index, member);
+	* Set params:       set_member(index, member, Float:value);
+	*/
+	m_flSpawnProtectionEndTime,
 };
 
 /**

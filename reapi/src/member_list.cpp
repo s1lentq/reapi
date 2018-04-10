@@ -727,6 +727,7 @@ member_t memberlist_csplayer[] = {
 	CSPL_MEMBERS(m_szModel),
 	CSPL_MEMBERS(m_bForceShowMenu),
 	CSPL_MEMBERS(m_flRespawnPending),
+	CSPL_MEMBERS(m_flSpawnProtectionEndTime),
 };
 
 member_t memberlist_baseitem[] = {
