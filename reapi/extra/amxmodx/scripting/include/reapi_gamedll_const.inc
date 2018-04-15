@@ -32,6 +32,8 @@
 	#define RG_CBasePlayer_SetClientUserInfoModel RG_CBasePlayer_SetUserInfoModel
 	#define RG_CBasePlayer_SetClientUserInfoName RG_CBasePlayer_SetUserInfoName
 	#define m_Shield_hEntToIgnoreTouchesFrom m_Shield_EntToIgnoreTouchesFrom
+	#define RG_CBasePlayer_RemoveSpawnProtection RG_CBasePlayer_RemoveProtection
+	#define RG_CBasePlayer_SetSpawnProtection RG_CBasePlayer_SetProtection
 #endif
 
 /**
