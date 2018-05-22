@@ -408,13 +408,15 @@ struct {
 * @param event      The event is the end of the round
 * @param message    The message on round end
 * @param sentence   The sound at the end of the round
+* @param trigger    This will trigger to all hooks on that function
+*                   Be very careful about recursion!
 *
 * @noreturn
-* native rg_round_end(const Float:tmDelay, const WinStatus:st, const ScenarioEventEndRound:event = ROUND_NONE, const message[] = "default", const sentence[] = "default");
+* native rg_round_end(const Float:tmDelay, const WinStatus:st, const ScenarioEventEndRound:event = ROUND_NONE, const message[] = "default", const sentence[] = "default", const bool:trigger = false);
 */
 cell AMX_NATIVE_CALL rg_round_end(AMX *amx, cell *params)
 {
-	enum args_e { arg_count, arg_delay, arg_win, arg_event, arg_message, arg_sentence, arg_silent };
+	enum args_e { arg_count, arg_delay, arg_win, arg_event, arg_message, arg_sentence, arg_trigger };
 
 	CHECK_GAMERULES();
 
@@ -448,8 +450,24 @@ cell AMX_NATIVE_CALL rg_round_end(AMX *amx, cell *params)
 		Broadcast(sentence);
 	}
 
-	CSGameRules()->EndRoundMessage(message, event);
-	CSGameRules()->TerminateRound(CAmxArg(amx, params[arg_delay]), winstatus);
+	float tmDelay = CAmxArg(amx, params[arg_delay]);
+	if (params[arg_trigger] != 0)
+	{
+		return callForward<BOOL>(RG_RoundEnd,
+				[&message](int _winStatus, ScenarioEventEndRound _event, float _tmDelay)
+				{
+					CSGameRules()->EndRoundMessage(message, _event);
+					CSGameRules()->TerminateRound(_tmDelay, _winStatus);
+					return TRUE;
+				},
+			winstatus, event, tmDelay);
+	}
+	else
+	{
+		CSGameRules()->EndRoundMessage(message, event);
+		CSGameRules()->TerminateRound(tmDelay, winstatus);
+	}
+
 	return TRUE;
 }
 

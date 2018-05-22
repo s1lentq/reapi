@@ -61,6 +61,9 @@
     <Filter Include="common">
       <UniqueIdentifier>{8232a3e7-911f-4ee1-8223-03ac077d7bee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="include\cssdk\dlls\API">
+      <UniqueIdentifier>{7bbc2807-1f04-4c73-a99c-e7955f9bda90}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\metamod\dllapi.h">
@@ -701,6 +704,21 @@
     </ClInclude>
     <ClInclude Include="..\src\amx_hook.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cssdk\dlls\API\CSEntity.h">
+      <Filter>include\cssdk\dlls\API</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cssdk\dlls\API\CSInterfaces.h">
+      <Filter>include\cssdk\dlls\API</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cssdk\dlls\API\CSPlayer.h">
+      <Filter>include\cssdk\dlls\API</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cssdk\dlls\API\CSPlayerItem.h">
+      <Filter>include\cssdk\dlls\API</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cssdk\dlls\API\CSPlayerWeapon.h">
+      <Filter>include\cssdk\dlls\API</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

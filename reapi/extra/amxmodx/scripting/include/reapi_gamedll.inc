@@ -348,10 +348,12 @@ native Float:[3] rg_fire_bullets3(const inflictor, const attacker, Float:vecSrc[
 * @param event      The event is the end of the round
 * @param message    The message on round end
 * @param sentence   The sound at the end of the round
+* @param trigger    This will trigger to all hooks on that function
+*                   Be very careful about recursion!
 *
-* @noreturn
+* @return           1 on success, 0 otherwise
 */
-native rg_round_end(const Float:tmDelay, const WinStatus:st, const ScenarioEventEndRound:event = ROUND_NONE, const message[] = "default", const sentence[] = "default");
+native rg_round_end(const Float:tmDelay, const WinStatus:st, const ScenarioEventEndRound:event = ROUND_NONE, const message[] = "default", const sentence[] = "default", const bool:trigger = false);
 
 /*
 * Updates current scores.
