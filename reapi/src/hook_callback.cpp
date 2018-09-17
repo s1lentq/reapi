@@ -593,6 +593,7 @@ void PM_Move(IReGameHook_PM_Move *chain, playermove_t *ppmove, int server)
 		chain->callNext(_ppmove, _server);
 	};
 
+	g_pMove = ppmove;
 	callVoidForward(RG_PM_Move, original, ppmove, server);
 }
 
