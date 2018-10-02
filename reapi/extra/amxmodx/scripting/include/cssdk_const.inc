@@ -1302,10 +1302,7 @@ enum InfoMapBuyParam
 /**
 * For SetUse
 */
-enum USE_TYPE
-{
-	USE_OFF,
-	USE_ON,
-	USE_SET,
-	USE_TOGGLE
-};
+#define USE_OFF                         0
+#define USE_ON                          1
+#define USE_SET                         2
+#define USE_TOGGLE                      3
