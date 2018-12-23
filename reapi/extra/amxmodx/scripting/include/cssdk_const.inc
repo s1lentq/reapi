@@ -180,6 +180,17 @@
 #define OBS_MAP_CHASE                   6 // Chase Overview
 
 /**
+* Custom constants iuser3
+*
+*/
+#define PLAYER_CAN_SHOOT                (1<<0)
+#define PLAYER_FREEZE_TIME_OVER         (1<<1)
+#define PLAYER_IN_BOMB_ZONE             (1<<2)
+#define PLAYER_HOLDING_SHIELD           (1<<3)
+#define PLAYER_PREVENT_DUCK             (1<<4)
+#define PLAYER_PREVENT_CLIMB            (1<<5) // The player can't climb ladder
+
+/**
 * Instant damage values for use with the 3rd parameter of the "Damage" client
 * message.
 */
