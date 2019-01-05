@@ -772,6 +772,7 @@ member_t memberlist_baseweapon[] = {
 	BASEWPN_MEMBERS(usFireFamas),
 	BASEWPN_MEMBERS(flPrevPrimaryAttack),
 	BASEWPN_MEMBERS(flLastFireTime),
+	BASEWPN_MEMBERS(flBaseDamage),
 };
 
 member_t memberlist_weaponbox[] = {

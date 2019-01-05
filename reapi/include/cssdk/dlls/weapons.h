@@ -306,6 +306,8 @@ public:
 	// hle time creep vars
 	float m_flPrevPrimaryAttack;
 	float m_flLastFireTime;
+
+	float m_flBaseDamage;
 };
 
 class CBasePlayerAmmo: public CBaseEntity {

@@ -781,7 +781,9 @@ enum CBasePlayerWeapon_Members
 	m_Weapon_usFireGlock18,
 	m_Weapon_usFireFamas,
 	m_Weapon_flPrevPrimaryAttack,
-	m_Weapon_flLastFireTime
+	m_Weapon_flLastFireTime,
+
+	m_Weapon_flBaseDamage
 };
 
 enum CWeaponBox_Members
