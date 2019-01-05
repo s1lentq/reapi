@@ -782,8 +782,6 @@ enum CBasePlayerWeapon_Members
 	m_Weapon_usFireFamas,
 	m_Weapon_flPrevPrimaryAttack,
 	m_Weapon_flLastFireTime,
-
-	m_Weapon_flBaseDamage
 };
 
 enum CWeaponBox_Members
@@ -1043,7 +1041,4 @@ enum CSPlayerWeapon_Members
 {
 	m_Weapon_bHasSecondaryAttack = BEGIN_MEMBER_REGION(csplayerweapon),
 	m_Weapon_flBaseDamage,
-	m_Weapon_flFamasBaseDamageBurst,
-	m_Weapon_flM4A1BaseDamageSil,
-	m_Weapon_flUSPBaseDamageSil,
 };
