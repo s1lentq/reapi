@@ -5760,7 +5760,7 @@ enum CCSPlayerWeapon_Members
 	m_Weapon_bHasSecondaryAttack = BEGIN_MEMBER_REGION(csplayerweapon),
 
 	/*
-	* Description:      -
+	* Description:      Basic damage that weapon deals before any multiplier, such as hitgroup, armor, distance and bullet penetration
 	* Member type:      float
 	* Get params:       Float:get_member(index, member);
 	* Set params:       set_member(index, member, Float:value);
