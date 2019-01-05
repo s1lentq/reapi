@@ -5765,5 +5765,28 @@ enum CCSPlayerWeapon_Members
 	* Get params:       Float:get_member(index, member);
 	* Set params:       set_member(index, member, Float:value);
 	*/
-	m_Weapon_flBaseDamage
+	m_Weapon_flBaseDamage,
+
+	/*
+	* Description:      -
+	* Member type:      float
+	* Get params:       Float:get_member(index, member);
+	* Set params:       set_member(index, member, Float:value);
+	*/
+	m_Weapon_flFamasBaseDamageBurst
+
+	/*
+	* Description:      -
+	* Member type:      float
+	* Get params:       Float:get_member(index, member);
+	* Set params:       set_member(index, member, Float:value);
+	*/
+	m_Weapon_flM4A1BaseDamageSil,
+	/*
+	* Description:      -
+	* Member type:      float
+	* Get params:       Float:get_member(index, member);
+	* Set params:       set_member(index, member, Float:value);
+	*/
+	m_Weapon_flUSPBaseDamageSil,
 };
