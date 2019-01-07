@@ -771,7 +771,7 @@ member_t memberlist_baseweapon[] = {
 	BASEWPN_MEMBERS(usFireGlock18),
 	BASEWPN_MEMBERS(usFireFamas),
 	BASEWPN_MEMBERS(flPrevPrimaryAttack),
-	BASEWPN_MEMBERS(flLastFireTime),
+	BASEWPN_MEMBERS(flLastFireTime)
 };
 
 member_t memberlist_weaponbox[] = {
@@ -994,7 +994,8 @@ member_t memberlist_mapinfo[] = {
 };
 
 member_t memberlist_csplayerweapon[] = {
-	CSPLWPN_MEMBERS(bHasSecondaryAttack)
+	CSPLWPN_MEMBERS(bHasSecondaryAttack),
+	CSPLWPN_MEMBERS(flBaseDamage),
 };
 
 memberlist_t memberlist;

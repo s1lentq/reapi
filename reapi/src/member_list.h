@@ -781,7 +781,7 @@ enum CBasePlayerWeapon_Members
 	m_Weapon_usFireGlock18,
 	m_Weapon_usFireFamas,
 	m_Weapon_flPrevPrimaryAttack,
-	m_Weapon_flLastFireTime
+	m_Weapon_flLastFireTime,
 };
 
 enum CWeaponBox_Members
@@ -1040,4 +1040,5 @@ enum MapInfo_Members
 enum CSPlayerWeapon_Members
 {
 	m_Weapon_bHasSecondaryAttack = BEGIN_MEMBER_REGION(csplayerweapon),
+	m_Weapon_flBaseDamage,
 };

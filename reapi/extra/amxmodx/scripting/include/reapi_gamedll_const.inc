@@ -4701,7 +4701,7 @@ enum CBasePlayerWeapon_Members
 	* Get params:       Float:get_member(index, member);
 	* Set params:       set_member(index, member, Float:value);
 	*/
-	m_Weapon_flLastFireTime
+	m_Weapon_flLastFireTime,
 };
 
 /**
@@ -5758,4 +5758,12 @@ enum CCSPlayerWeapon_Members
 	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_Weapon_bHasSecondaryAttack = BEGIN_MEMBER_REGION(csplayerweapon),
+
+	/*
+	* Description:      Basic damage that weapon deals before any multiplier, such as hitgroup, armor, distance and bullet penetration
+	* Member type:      float
+	* Get params:       Float:get_member(index, member);
+	* Set params:       set_member(index, member, Float:value);
+	*/
+	m_Weapon_flBaseDamage,
 };
