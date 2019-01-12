@@ -348,6 +348,7 @@ public:
 	virtual BOOL IsPistol() = 0;
 public:
 	int m_iShell;
+	float m_flBaseDamageSil;
 	unsigned short m_usFire;
 };
 
@@ -633,6 +634,7 @@ public:
 public:
 	int m_iShell;
 	int m_iShellOn;
+	float m_flBaseDamageSil;
 	unsigned short m_usFire;
 };
 
@@ -873,4 +875,5 @@ public:
 public:
 	int m_iShell;
 	int m_iShellOn;
+	float m_flBaseDamageBurst;
 };

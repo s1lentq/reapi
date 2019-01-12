@@ -917,11 +917,13 @@ enum CFamas_Members
 {
 	m_Famas_iShell = BEGIN_MEMBER_REGION(famas),
 	m_Famas_iShellOn,
+	m_Famas_flBaseDamageBurst,
 };
 
 enum CUSP_Members
 {
 	m_USP_iShell = BEGIN_MEMBER_REGION(usp),
+	m_USP_flBaseDamageSil,
 	m_USP_usFire,
 };
 
@@ -962,6 +964,7 @@ enum CM4A1_Members
 {
 	m_M4A1_iShell = BEGIN_MEMBER_REGION(m4a1),
 	m_M4A1_iShellOn,
+	m_M4A1_flBaseDamageSil,
 	m_M4A1_usFire,
 };
 
