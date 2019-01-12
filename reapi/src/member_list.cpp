@@ -895,8 +895,8 @@ member_t memberlist_famas[] = {
 
 member_t memberlist_usp[] = {
 	USP_MEMBERS(iShell),
-	USP_MEMBERS(flBaseDamageSil),
 	USP_MEMBERS(usFire),
+	USP_MEMBERS(flBaseDamageSil),
 };
 
 member_t memberlist_glock18[] = {
@@ -930,8 +930,8 @@ member_t memberlist_m3[] = {
 member_t memberlist_m4a1[] = {
 	M4A1_MEMBERS(iShell),
 	M4A1_MEMBERS(iShellOn),
-	M4A1_MEMBERS(flBaseDamageSil),
 	M4A1_MEMBERS(usFire),
+	M4A1_MEMBERS(flBaseDamageSil),
 };
 
 member_t memberlist_tmp[] = {

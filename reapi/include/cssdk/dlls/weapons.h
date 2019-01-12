@@ -348,8 +348,8 @@ public:
 	virtual BOOL IsPistol() = 0;
 public:
 	int m_iShell;
-	float m_flBaseDamageSil;
 	unsigned short m_usFire;
+	float m_flBaseDamageSil;
 };
 
 class CMP5N: public CBasePlayerWeapon {
@@ -634,8 +634,8 @@ public:
 public:
 	int m_iShell;
 	int m_iShellOn;
-	float m_flBaseDamageSil;
 	unsigned short m_usFire;
+	float m_flBaseDamageSil;
 };
 
 class CMAC10: public CBasePlayerWeapon {

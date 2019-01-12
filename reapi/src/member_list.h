@@ -923,8 +923,8 @@ enum CFamas_Members
 enum CUSP_Members
 {
 	m_USP_iShell = BEGIN_MEMBER_REGION(usp),
-	m_USP_flBaseDamageSil,
 	m_USP_usFire,
+	m_USP_flBaseDamageSil,
 };
 
 enum CGLOCK18_Members
@@ -964,8 +964,8 @@ enum CM4A1_Members
 {
 	m_M4A1_iShell = BEGIN_MEMBER_REGION(m4a1),
 	m_M4A1_iShellOn,
-	m_M4A1_flBaseDamageSil,
 	m_M4A1_usFire,
+	m_M4A1_flBaseDamageSil,
 };
 
 enum CTMP_Members

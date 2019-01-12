@@ -5358,20 +5358,20 @@ enum CUSP_Members
 	m_USP_iShell = BEGIN_MEMBER_REGION(usp),
 
 	/*
-	* Description:      Basic damage that usp deals before any multiplier, such as hitgroup, armor, distance and bullet penetration in silence mdoe
-	* Member type:      float
-	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
-	*/
-	m_USP_flBaseDamageSil,
-
-	/*
 	* Description:      -
 	* Member type:      unsigned short
 	* Get params:       get_member(index, member);
 	* Set params:       set_member(index, member, value);
 	*/
 	m_USP_usFire,
+
+	/*
+	* Description:      Basic damage that usp deals before any multiplier, such as hitgroup, armor, distance and bullet penetration in silence mdoe
+	* Member type:      float
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_USP_flBaseDamageSil,
 };
 
 /**
@@ -5524,20 +5524,20 @@ enum CM4A1_Members
 	m_M4A1_iShellOn,
 
 	/*
-	* Description:      Basic damage that m4a1 deals before any multiplier, such as hitgroup, armor, distance and bullet penetration in silence mdoe
-	* Member type:      float
-	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, value);
-	*/
-	m_M4A1_flBaseDamageSil,
-
-	/*
 	* Description:      -
 	* Member type:      unsigned short
 	* Get params:       get_member(index, member);
 	* Set params:       set_member(index, member, value);
 	*/
 	m_M4A1_usFire,
+
+	/*
+	* Description:      Basic damage that m4a1 deals before any multiplier, such as hitgroup, armor, distance and bullet penetration in silence mdoe
+	* Member type:      float
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_M4A1_flBaseDamageSil,
 };
 
 /**
