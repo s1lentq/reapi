@@ -349,6 +349,7 @@ public:
 public:
 	int m_iShell;
 	unsigned short m_usFire;
+	float m_flBaseDamageSil;
 };
 
 class CMP5N: public CBasePlayerWeapon {
@@ -634,6 +635,7 @@ public:
 	int m_iShell;
 	int m_iShellOn;
 	unsigned short m_usFire;
+	float m_flBaseDamageSil;
 };
 
 class CMAC10: public CBasePlayerWeapon {
@@ -873,4 +875,5 @@ public:
 public:
 	int m_iShell;
 	int m_iShellOn;
+	float m_flBaseDamageBurst;
 };

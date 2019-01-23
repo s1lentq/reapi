@@ -890,11 +890,13 @@ member_t memberlist_galil[] = {
 member_t memberlist_famas[] = {
 	FAMAS_MEMBERS(iShell),
 	FAMAS_MEMBERS(iShellOn),
+	FAMAS_MEMBERS(flBaseDamageBurst),
 };
 
 member_t memberlist_usp[] = {
 	USP_MEMBERS(iShell),
 	USP_MEMBERS(usFire),
+	USP_MEMBERS(flBaseDamageSil),
 };
 
 member_t memberlist_glock18[] = {
@@ -929,6 +931,7 @@ member_t memberlist_m4a1[] = {
 	M4A1_MEMBERS(iShell),
 	M4A1_MEMBERS(iShellOn),
 	M4A1_MEMBERS(usFire),
+	M4A1_MEMBERS(flBaseDamageSil),
 };
 
 member_t memberlist_tmp[] = {
