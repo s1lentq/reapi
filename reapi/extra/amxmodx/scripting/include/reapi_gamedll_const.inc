@@ -664,7 +664,7 @@ enum GamedllFunc_CBasePlayer
 
 	/*
 	* Description:      Called on spawn, the attempt to equip a player.
-	* Params:           (const this, bool addDefault, bool equipGame)
+	* Params:           (const this, bool:addDefault, bool:equipGame)
 	*/
 	RG_CBasePlayer_OnSpawnEquip,
 
@@ -3900,8 +3900,8 @@ enum PlayerMove
 	/*
 	* Description:      -
 	* Member type:      char [256]
-	* Get params:       get_member(const PlayerMove:var, dest[], const lenght);
-	* Set params:       set_member(const PlayerMove:var, const source[]);
+	* Get params:       get_pmove(const PlayerMove:var, dest[], const lenght);
+	* Set params:       set_pmove(const PlayerMove:var, const source[]);
 	*/
 	pm_sztexturename,
 
@@ -4052,8 +4052,8 @@ enum PlayerMove
 	/*
 	* Description:      -
 	* Member type:      char [256]
-	* Get params:       get_member(const PlayerMove:var, dest[], const lenght);
-	* Set params:       set_member(const PlayerMove:var, const source[]);
+	* Get params:       get_pmove(const PlayerMove:var, dest[], const lenght);
+	* Set params:       set_pmove(const PlayerMove:var, const source[]);
 	*/
 	pm_physinfo,
 
