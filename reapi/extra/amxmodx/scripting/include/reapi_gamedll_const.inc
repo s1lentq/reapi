@@ -664,7 +664,7 @@ enum GamedllFunc_CBasePlayer
 
 	/*
 	* Description:      Called on spawn, the attempt to equip a player.
-	* Params:           (const this, bool addDefault, bool equipGame)
+	* Params:           (const this, bool:addDefault, bool:equipGame)
 	*/
 	RG_CBasePlayer_OnSpawnEquip,
 
@@ -3900,8 +3900,8 @@ enum PlayerMove
 	/*
 	* Description:      -
 	* Member type:      char [256]
-	* Get params:       get_member(const PlayerMove:var, dest[], const lenght);
-	* Set params:       set_member(const PlayerMove:var, const source[]);
+	* Get params:       get_pmove(const PlayerMove:var, dest[], const lenght);
+	* Set params:       set_pmove(const PlayerMove:var, const source[]);
 	*/
 	pm_sztexturename,
 
@@ -4052,8 +4052,8 @@ enum PlayerMove
 	/*
 	* Description:      -
 	* Member type:      char [256]
-	* Get params:       get_member(const PlayerMove:var, dest[], const lenght);
-	* Set params:       set_member(const PlayerMove:var, const source[]);
+	* Get params:       get_pmove(const PlayerMove:var, dest[], const lenght);
+	* Set params:       set_pmove(const PlayerMove:var, const source[]);
 	*/
 	pm_physinfo,
 
@@ -4071,7 +4071,7 @@ enum PlayerMove
 	* Get params:       get_pmove(const PlayerMove:var, Float:output[3], element);
 	* Set params:       set_pmove(const PlayerMove:var, Float:dest[3], element);
 	*/
-	pm_player_maxs
+	pm_player_maxs,
 };
 
 /**
@@ -4285,7 +4285,7 @@ enum MoveVars
 	* Get params:       Float:get_movevar(const MoveVars:var);
 	* Set params:       set_movevar(const MoveVars:var, Float:value);
 	*/
-	mv_skyvec_z
+	mv_skyvec_z,
 };
 
 /**
