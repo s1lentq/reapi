@@ -950,33 +950,33 @@ enum EntVars
 
 	/*
 	* Description:      -
-	* Member type:      int
-	* Get params:       get_entvar(index, EntVars:var);
-	* Set params:       set_entvar(index, EntVars:var, value);
+	* Member type:      float
+	* Get params:       Float:get_entvar(index, EntVars:var);
+	* Set params:       set_entvar(index, EntVars:var, Float:value);
 	*/
 	var_fuser1,
 
 	/*
 	* Description:      -
-	* Member type:      int
-	* Get params:       get_entvar(index, EntVars:var);
-	* Set params:       set_entvar(index, EntVars:var, value);
+	* Member type:      float
+	* Get params:       Float:get_entvar(index, EntVars:var);
+	* Set params:       set_entvar(index, EntVars:var, Float:value);
 	*/
 	var_fuser2,
 
 	/*
 	* Description:      -
-	* Member type:      int
-	* Get params:       get_entvar(index, EntVars:var);
-	* Set params:       set_entvar(index, EntVars:var, value);
+	* Member type:      float
+	* Get params:       Float:get_entvar(index, EntVars:var);
+	* Set params:       set_entvar(index, EntVars:var, Float:value);
 	*/
 	var_fuser3,
 
 	/*
 	* Description:      -
-	* Member type:      int
-	* Get params:       get_entvar(index, EntVars:var);
-	* Set params:       set_entvar(index, EntVars:var, value);
+	* Member type:      float
+	* Get params:       Float:get_entvar(index, EntVars:var);
+	* Set params:       set_entvar(index, EntVars:var, Float:value);
 	*/
 	var_fuser4,
 
