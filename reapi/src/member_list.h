@@ -466,7 +466,10 @@ enum CBasePlayer_Members
 	m_intenseTimestamp,
 	m_silentTimestamp,
 	m_musicState,
-	m_flLastCommandTime
+	m_flLastCommandTime,
+	m_iLastAccount,
+	m_iLastClientHealth,
+	m_tmNextAccountHealthUpdate,
 };
 
 // entvars

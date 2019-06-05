@@ -175,6 +175,7 @@ enum GamedllFunc_CBasePlayer
 	RG_CBasePlayer_ThrowGrenade,
 	RG_CBasePlayer_SetSpawnProtection,
 	RG_CBasePlayer_RemoveSpawnProtection,
+	RG_CBasePlayer_HintMessageEx,
 
 	// [...]
 };

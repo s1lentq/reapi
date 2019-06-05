@@ -2112,6 +2112,40 @@ cell AMX_NATIVE_CALL rg_get_iteminfo(AMX *amx, cell *params)
 	return TRUE;
 }
 
+/*
+* Adds hint message to the queue.
+*
+* @param index                 Client index
+* @param message               The message hint
+* @param duration              The time duration in seconds stays on screen
+* @param bDisplayIfPlayerDead  Whether to print hint for dead players?
+* @param bOverride             Whether to override previous messages?
+*
+* @return                      true if prints, false otherwise
+*
+* native bool:rg_hint_message(const index, const message[], Float:duration = 6.0, bool:bDisplayIfPlayerDead = false, bool:bOverride = false);
+*/
+cell AMX_NATIVE_CALL rg_hint_message(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_message, arg_duration, arg_displayIfPlayerDead, arg_override };
+
+	CHECK_ISPLAYER(arg_index);
+
+	CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_index]);
+	CHECK_CONNECTED(pPlayer, arg_index);
+
+	char messagebuf[190];
+	const char *message  = getAmxString(amx, params[arg_message], messagebuf);
+
+	if (!message || message[0] == '\0') {
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: sending an empty hint message is meaningless. rework your code.", __FUNCTION__);
+		return FALSE;
+	}
+
+	CAmxArgs args(amx, params);
+	return pPlayer->CSPlayer()->HintMessageEx(message, args[arg_duration], args[arg_displayIfPlayerDead], args[arg_override]) ? TRUE : FALSE;
+}
+
 AMX_NATIVE_INFO Misc_Natives_RG[] =
 {
 	{ "rg_set_animation",             rg_set_animation             },
@@ -2189,6 +2223,8 @@ AMX_NATIVE_INFO Misc_Natives_RG[] =
 
 	{ "rg_set_iteminfo",              rg_set_iteminfo              },
 	{ "rg_get_iteminfo",              rg_get_iteminfo              },
+
+	{ "rg_hint_message",              rg_hint_message              },
 
 	{ nullptr, nullptr }
 };

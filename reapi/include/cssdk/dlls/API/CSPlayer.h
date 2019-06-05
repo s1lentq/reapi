@@ -82,8 +82,19 @@ public:
 	virtual bool RemovePlayerItemEx(const char* pszItemName, bool bRemoveAmmo);
  	virtual void SetSpawnProtection(float flProtectionTime);
 	virtual void RemoveSpawnProtection();
+	virtual bool HintMessageEx(const char *pMessage, float duration = 6.0f, bool bDisplayIfPlayerDead = false, bool bOverride = false);
 
 	CBasePlayer *BasePlayer() const;
+
+public:
+	enum EProtectionState
+	{
+		ProtectionSt_NoSet,
+		ProtectionSt_Active,
+		ProtectionSt_Expired,
+	};
+
+	EProtectionState GetProtectionState() const;
 
 public:
 	char m_szModel[32];
@@ -96,4 +107,18 @@ public:
 inline CBasePlayer *CCSPlayer::BasePlayer() const
 {
 	return reinterpret_cast<CBasePlayer *>(this->m_pContainingEntity);
+}
+
+inline CCSPlayer::EProtectionState CCSPlayer::GetProtectionState() const
+{
+	// no protection set
+	if (m_flSpawnProtectionEndTime <= 0.0f)
+		return ProtectionSt_NoSet;
+
+	// check if end time of protection isn't expired yet
+	if (m_flSpawnProtectionEndTime >= gpGlobals->time)
+		return ProtectionSt_Active;
+
+	// has expired
+	return ProtectionSt_Expired;
 }

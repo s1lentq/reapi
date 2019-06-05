@@ -375,7 +375,7 @@ enum GamedllFunc
 	* Params:           (const index, Float:vecStart[3], Float:vecVelocity[3])
 	*/
 	RG_PlantBomb,
-	
+
 	/*
 	* Description:      Called when a player hit to entity.
 	* Return type:      bool
@@ -733,20 +733,27 @@ enum GamedllFunc_CBasePlayer
 	* Params:           (const this, const grenade, Float:vecSrc[3], Float:vecThrow[3], Float:time, const usEvent)
 	*/
 	RG_CBasePlayer_ThrowGrenade,
-	
+
 	/*
 	* Description:      Called when a player's set protection.
 	* Return type:      void
 	* Params:           (const this, Float:time)
 	*/
 	RG_CBasePlayer_SetSpawnProtection,
-	
+
 	/*
 	* Description:      Called when a player's remove protection.
 	* Return type:      void
 	* Params:           (const this)
 	*/
 	RG_CBasePlayer_RemoveSpawnProtection,
+
+	/*
+	* Description:      Called when the game prints hint message into DHUD.
+	* Return type:      bool
+	* Params:           (const this, const message[], Float:duration, bool:bDisplayIfPlayerDead, bool:bOverride)
+	*/
+	RG_CBasePlayer_HintMessageEx,
 };
 
 /**
@@ -3499,7 +3506,31 @@ enum CBasePlayer_Members
 	* Get params:       Float:get_member(index, member, element);
 	* Set params:       set_member(index, member, Float:value, element);
 	*/
-	m_flLastCommandTime
+	m_flLastCommandTime,
+
+	/*
+	* Description:      The amount of money sent to the client last time.
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_iLastAccount,
+
+	/*
+	* Description:      The amount of health sent to the client last time.
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, Float:value);
+	*/
+	m_iLastClientHealth,
+
+	/*
+	* Description:      Waiting time for update fields into scoreboard.
+	* Member type:      float
+	* Get params:       Float:get_member(index, member);
+	* Set params:       set_member(index, member, Float:value);
+	*/
+	m_tmNextAccountHealthUpdate,
 };
 
 /**

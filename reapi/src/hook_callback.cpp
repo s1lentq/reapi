@@ -532,6 +532,16 @@ void CBasePlayer_RemoveSpawnProtection(IReGameHook_CBasePlayer_RemoveSpawnProtec
 	callVoidForward(RG_CBasePlayer_RemoveSpawnProtection, original, indexOfEdict(pthis->pev));
 }
 
+bool CBasePlayer_HintMessageEx(IReGameHook_CBasePlayer_HintMessageEx *chain, CBasePlayer *pthis, const char *pMessage, float duration, bool bDisplayIfPlayerDead, bool bOverride)
+{
+	auto original = [chain](int _pthis, const char *_pMessage, float _duration, bool _bDisplayIfPlayerDead, bool _bOverride)
+	{
+		return chain->callNext(getPrivate<CBasePlayer>(_pthis), _pMessage, _duration, _bDisplayIfPlayerDead, _bOverride);
+	};
+
+	return callForward<bool>(RG_CBasePlayer_HintMessageEx, original, indexOfEdict(pthis->pev), pMessage, duration, bDisplayIfPlayerDead, bOverride);
+}
+
 void CBaseAnimating_ResetSequenceInfo(IReGameHook_CBaseAnimating_ResetSequenceInfo *chain, CBaseAnimating *pthis)
 {
 	auto original = [chain](int _pthis)

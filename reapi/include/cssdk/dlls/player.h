@@ -584,6 +584,9 @@ public:
 	float m_silentTimestamp;
 	MusicState m_musicState;
 	float m_flLastCommandTime[COMMANDS_TO_TRACK];
+	int m_iLastAccount;
+	int m_iLastClientHealth;
+	float m_tmNextAccountHealthUpdate;
 };
 
 class CWShield: public CBaseEntity {

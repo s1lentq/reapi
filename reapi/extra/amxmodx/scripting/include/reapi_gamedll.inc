@@ -823,3 +823,16 @@ native rg_set_iteminfo(const entity, ItemInfo:type, any:...);
 *
 */
 native rg_get_iteminfo(const ent, ItemInfo:type, any:...);
+
+/*
+* Adds hint message to the queue.
+*
+* @param index                 Client index
+* @param message               The message hint
+* @param duration              The time duration in seconds stays on screen
+* @param bDisplayIfPlayerDead  Whether to print hint for dead players?
+* @param bOverride             Whether to override previous messages?
+*
+* @return                      true if prints, false otherwise
+*/
+native bool:rg_hint_message(const index, const message[], Float:duration = 6.0, bool:bDisplayIfPlayerDead = false, bool:bOverride = false);

@@ -153,6 +153,7 @@ hook_t hooklist_player[] = {
 	DLL(CBasePlayer_ThrowGrenade),
 	DLL(CBasePlayer_SetSpawnProtection),
 	DLL(CBasePlayer_RemoveSpawnProtection),
+	DLL(CBasePlayer_HintMessageEx),
 };
 
 hook_t hooklist_gamerules[] = {

@@ -476,6 +476,9 @@ member_t memberlist_player[] = {
 	PL_MEMBERS(m_silentTimestamp),
 	PL_MEMBERS(m_musicState),
 	PL_MEMBERS(m_flLastCommandTime),
+	PL_MEMBERS(m_iLastAccount),
+	PL_MEMBERS(m_iLastClientHealth),
+	PL_MEMBERS(m_tmNextAccountHealthUpdate),
 };
 
 member_t memberlist_entvars[] = {
