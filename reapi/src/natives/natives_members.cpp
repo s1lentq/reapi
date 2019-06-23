@@ -146,7 +146,7 @@ cell AMX_NATIVE_CALL set_member_game(AMX *amx, cell *params)
 */
 cell AMX_NATIVE_CALL get_member_game(AMX *amx, cell *params)
 {
-	enum args_e { arg_count, arg_member, arg_2 };
+	enum args_e { arg_count, arg_member, arg_2, arg_3 };
 
 	CHECK_GAMERULES();
 
@@ -160,19 +160,24 @@ cell AMX_NATIVE_CALL get_member_game(AMX *amx, cell *params)
 	size_t element;
 	size_t length;
 
-	if (PARAMS_COUNT == 2)
-	{
-		cell* arg3 = getAmxAddr(amx, params[arg_2]);
+	if (PARAMS_COUNT == 3) {
+		dest = getAmxAddr(amx, params[arg_2]);
+		length = *getAmxAddr(amx, params[arg_3]);
+		element = 0;
+	}
+	else if (PARAMS_COUNT == 2) {
+		cell* arg2 = getAmxAddr(amx, params[arg_2]);
 		if (member->isTypeReturnable()) {
 			dest = nullptr;
-			element = *arg3;
+			element = *arg2;
 		}
 		else {
-			dest = arg3;
+			dest = arg2;
 			element = 0;
 		}
 		length = 0;
-	} else {
+	}
+	else {
 		dest = nullptr;
 		element = 0;
 		length = 0;
