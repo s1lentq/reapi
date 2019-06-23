@@ -2270,18 +2270,17 @@ enum MapNameType { MNT_TRUE, MNT_SET };
 */
 cell AMX_NATIVE_CALL rh_get_mapname(AMX *amx, cell *params)
 {
-	enum args_e { arg_count, arg_output, arg_len, arg_type };
+	enum args_e { arg_count, arg_output, arg_maxlen, arg_type };
 
 	cell* dest = getAmxAddr(amx, params[arg_output]);
-	size_t length = *getAmxAddr(amx, params[arg_len]);
 
 	switch ((MapNameType)params[arg_type])
 	{
 	case MNT_TRUE:
-		setAmxString(dest, g_szMapName, length);
+		setAmxString(dest, g_szMapName, params[arg_maxlen]);
 		break;
 	case MNT_SET:
-		setAmxString(dest, g_RehldsData->GetName(), length);
+		setAmxString(dest, g_RehldsData->GetName(), params[arg_maxlen]);
 		break;
 	}
 
