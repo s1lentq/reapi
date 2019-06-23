@@ -1,6 +1,6 @@
 #include "precompiled.h"
 
-void __declspec(noreturn) UTIL_SysError(const char *fmt, ...)
+void NORETURN UTIL_SysError(const char *fmt, ...)
 {
 	va_list argptr;
 	char string[8192];

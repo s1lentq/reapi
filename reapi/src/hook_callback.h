@@ -130,7 +130,9 @@ struct hookctx_t
 			tempstrings_used++;
 			return ptr;
 		}
-		return "<reapi error>";
+
+		static char fatalErr[] = "<reapi error>";
+		return fatalErr;
 	}
 
 	void clear_temp_strings() const

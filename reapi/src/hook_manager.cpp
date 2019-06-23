@@ -13,7 +13,7 @@ int CHookManager::addHandler(AMX *amx, int func, const char *funcname, int forwa
 	}
 
 	auto& dest = post ? hook->post : hook->pre;
-	dest.push_back(new CAmxxHook<>(amx, funcname, forward));
+	dest.push_back(new CAmxxHookBase(amx, funcname, forward));
 	int id = func * MAX_HOOK_FORWARDS + dest.size();
 	return post ? -id : id; // use unsigned ids for post hooks
 }
@@ -28,7 +28,7 @@ hook_t *CHookManager::getHook(size_t func) const
 	return m_hooklist.getHookSafe(func);
 }
 
-CAmxxHook<> *CHookManager::getAmxxHook(cell handle) const
+CAmxxHookBase *CHookManager::getAmxxHook(cell handle) const
 {
 	bool post = handle < 0;
 

@@ -9,7 +9,7 @@ public:
 	void Clear() const;
 	cell addHandler(AMX *amx, int func, const char *funcname, int forward, bool post) const;
 	hook_t *getHook(size_t func) const;
-	CAmxxHook<> *getAmxxHook(cell hook) const;
+	CAmxxHookBase *getAmxxHook(cell hook) const;
 
 	hook_t *getHookFast(size_t func) const {
 		return m_hooklist[func];

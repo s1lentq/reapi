@@ -12,8 +12,8 @@ bool VTC_Api_Init()
 	if (!g_pVoiceTranscoderApi)
 		return false;
 
-	int majorVersion = g_pVoiceTranscoderApi->GetMajorVersion();
-	int minorVersion = g_pVoiceTranscoderApi->GetMinorVersion();
+	size_t majorVersion = g_pVoiceTranscoderApi->GetMajorVersion();
+	size_t minorVersion = g_pVoiceTranscoderApi->GetMinorVersion();
 
 	if (majorVersion != VOICETRANSCODER_API_VERSION_MAJOR)
 	{

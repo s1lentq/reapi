@@ -7,62 +7,66 @@
 #if _MSC_VER <= 1800 && __INTEL_COMPILER < 1500
 	// BUG BUG
 	// http://connect.microsoft.com/VisualStudio/feedbackdetail/view/797682/c-decltype-of-class-member-access-incompletely-implemented
-	#define decltypefx(cx, pref, dt, mx) decltype(std::declval<cx>()dt##pref##mx)
+	#define decltypefx(cx, pref, mx) decltype(std::declval<cx>().pref##mx)
+	#define decltypefxdot(cx, pref, mx) decltype(std::declval<cx>().pref.mx)
 #else
-	#define decltypefx(cx, pref, dt, mx) decltype(cx::pref##mx)
+	#define decltypefx(cx, pref, mx) decltype(cx::pref##mx)
+	#define decltypefxdot(cx, pref, mx) decltype(cx::pref.mx)
 #endif
 
-#define CLASS_MEMBERS(cx, mx, postf, pref) ((!(postf & (MAX_REGION_RANGE - 1)) ? regmember::current_cell = 1, true : false) || (postf & (MAX_REGION_RANGE - 1)) == regmember::current_cell++) ? regmember([](member_t* ptr){ decltypefx(cx, pref, ., mx) f = {};ptr->size = getTypeSize(f);ptr->max_size = sizeof(f);ptr->offset = offsetof(##cx, ##pref##mx);ptr->type = getMemberType(f);ptr->name = #postf;}) : regmember(#pref#mx)
+#define CLASS_MEMBERS(cx, mx, postf)            ((!(postf & (MAX_REGION_RANGE - 1)) ? regmember::current_cell = 1, true : false) || (postf & (MAX_REGION_RANGE - 1)) == regmember::current_cell++) ? regmember([](member_t* ptr){ decltypefx(cx, , mx) f = {};ptr->size = getTypeSize(f);ptr->max_size = sizeof(f);ptr->offset = offsetof(cx, mx);ptr->type = getMemberType(f);ptr->name = #postf;}) : regmember(#mx)
+#define CLASS_MEMBERS_PREF(cx, mx, postf, pref) ((!(postf & (MAX_REGION_RANGE - 1)) ? regmember::current_cell = 1, true : false) || (postf & (MAX_REGION_RANGE - 1)) == regmember::current_cell++) ? regmember([](member_t* ptr){ decltypefx(cx, pref, mx) f = {};ptr->size = getTypeSize(f);ptr->max_size = sizeof(f);ptr->offset = offsetof(cx, pref##mx);ptr->type = getMemberType(f);ptr->name = #postf;}) : regmember(#pref#mx)
+#define CLASS_MEMBERS_DOT(cx, mx, postf, pref)  ((!(postf & (MAX_REGION_RANGE - 1)) ? regmember::current_cell = 1, true : false) || (postf & (MAX_REGION_RANGE - 1)) == regmember::current_cell++) ? regmember([](member_t* ptr){ decltypefxdot(cx, pref, mx) f = {};ptr->size = getTypeSize(f);ptr->max_size = sizeof(f);ptr->offset = offsetof(cx, pref.mx);ptr->type = getMemberType(f);ptr->name = #postf;}) : regmember(#pref"."#mx)
 
-#define GM_MEMBERS(mx)           CLASS_MEMBERS(CHalfLifeMultiplay, mx, mx,)
-#define GM_VOICE_MEMBERS(mx)     CLASS_MEMBERS(CHalfLifeMultiplay, mx, mx, m_VoiceGameMgr.)
-#define BASE_MEMBERS(mx)         CLASS_MEMBERS(CBaseEntity, mx, mx,)
-#define ANIM_MEMBERS(mx)         CLASS_MEMBERS(CBaseAnimating, mx, mx,)
-#define MONST_MEMBERS(mx)        CLASS_MEMBERS(CBaseMonster, mx, mx,)
-#define PL_MEMBERS(mx)           CLASS_MEMBERS(CBasePlayer, mx, mx,)
-#define EVAR_MEMBERS(mx)         CLASS_MEMBERS(com_entvars, mx, var_##mx,)
-#define PMOVE_MEMBERS(mx)        CLASS_MEMBERS(com_playermove, mx, pm_##mx,)
-#define MOVEVAR_MEMBERS(mx)      CLASS_MEMBERS(movevars_t, mx, mv_##mx,)
-#define UCMD_MEMBERS(mx)         CLASS_MEMBERS(usercmd_s, mx, ucmd_##mx,)
-#define PMTRACE_MEMBERS(mx)      CLASS_MEMBERS(pmtrace_s, mx, pmt_##mx,)
-#define CSPL_MEMBERS(mx)         CLASS_MEMBERS(CCSPlayer, mx, mx,)
-#define BASEITEM_MEMBERS(mx)     CLASS_MEMBERS(CBasePlayerItem, mx, mx,)
-#define BASEWPN_MEMBERS(mx)      CLASS_MEMBERS(CBasePlayerWeapon, mx, m_Weapon_##mx, m_)
-#define WPNBOX_MEMBERS(mx)       CLASS_MEMBERS(CWeaponBox, mx, m_WeaponBox_##mx, m_)
-#define ARMOURY_MEMBERS(mx)      CLASS_MEMBERS(CArmoury, mx, m_Armoury_##mx, m_)
-#define GRENADE_MEMBERS(mx)      CLASS_MEMBERS(CGrenade, mx, m_Grenade_##mx, m_)
-#define P228_MEMBERS(mx)         CLASS_MEMBERS(CP228, mx, m_P228_##mx, m_)
-#define SCOUT_MEMBERS(mx)        CLASS_MEMBERS(CSCOUT, mx, m_SCOUT_##mx, m_)
-#define HEGREN_MEMBERS(mx)       CLASS_MEMBERS(CHEGrenade, mx, m_HEGrenade_##mx, m_)
-#define XM1014_MEMBERS(mx)       CLASS_MEMBERS(CXM1014, mx, m_XM1014_##mx, m_)
-#define C4_MEMBERS(mx)           CLASS_MEMBERS(CC4, mx, m_C4_##mx, m_)
-#define MAC10_MEMBERS(mx)        CLASS_MEMBERS(CMAC10, mx, m_MAC10_##mx, m_)
-#define AUG_MEMBERS(mx)          CLASS_MEMBERS(CAUG, mx, m_AUG_##mx, m_)
-#define SMOKEGREN_MEMBERS(mx)    CLASS_MEMBERS(CSmokeGrenade, mx, m_SmokeGrenade_##mx, m_)
-#define ELITE_MEMBERS(mx)        CLASS_MEMBERS(CELITE, mx, m_ELITE_##mx, m_)
-#define FIVESEVEN_MEMBERS(mx)    CLASS_MEMBERS(CFiveSeven, mx, m_FiveSeven_##mx, m_)
-#define UMP45_MEMBERS(mx)        CLASS_MEMBERS(CUMP45, mx, m_UMP45_##mx, m_)
-#define SG550_MEMBERS(mx)        CLASS_MEMBERS(CSG550, mx, m_SG550_##mx, m_)
-#define GALIL_MEMBERS(mx)        CLASS_MEMBERS(CGalil, mx, m_Galil_##mx, m_)
-#define FAMAS_MEMBERS(mx)        CLASS_MEMBERS(CFamas, mx, m_Famas_##mx, m_)
-#define USP_MEMBERS(mx)          CLASS_MEMBERS(CUSP, mx, m_USP_##mx, m_)
-#define GLOCK18_MEMBERS(mx)      CLASS_MEMBERS(CGLOCK18, mx, m_GLOCK18_##mx, m_)
-#define AWP_MEMBERS(mx)          CLASS_MEMBERS(CAWP, mx, m_AWP_##mx, m_)
-#define MP5N_MEMBERS(mx)         CLASS_MEMBERS(CMP5N, mx, m_MP5N_##mx, m_)
-#define M249_MEMBERS(mx)         CLASS_MEMBERS(CM249, mx, m_M249_##mx, m_)
-#define M3_MEMBERS(mx)           CLASS_MEMBERS(CM3, mx, m_M3_##mx, m_)
-#define M4A1_MEMBERS(mx)         CLASS_MEMBERS(CM4A1, mx, m_M4A1_##mx, m_)
-#define TMP_MEMBERS(mx)          CLASS_MEMBERS(CTMP, mx, m_TMP_##mx, m_)
-#define G3SG1_MEMBERS(mx)        CLASS_MEMBERS(CG3SG1, mx, m_G3SG1_##mx, m_)
-#define DEAGLE_MEMBERS(mx)       CLASS_MEMBERS(CDEAGLE, mx, m_DEAGLE_##mx, m_)
-#define SG552_MEMBERS(mx)        CLASS_MEMBERS(CSG552, mx, m_SG552_##mx, m_)
-#define AK47_MEMBERS(mx)         CLASS_MEMBERS(CAK47, mx, m_AK47_##mx, m_)
-#define KNIFE_MEMBERS(mx)        CLASS_MEMBERS(CKnife, mx, m_Knife_##mx, m_)
-#define P90_MEMBERS(mx)          CLASS_MEMBERS(CP90, mx, m_P90_##mx, m_)
-#define SHIELD_MEMBERS(mx)       CLASS_MEMBERS(CWShield, mx, m_Shield_##mx, m_)
-#define REBUYSTRUCT_MEMBERS(mx)  CLASS_MEMBERS(RebuyStruct, mx, mx,)
-#define MAPINFO_MEMBERS(mx)      CLASS_MEMBERS(CMapInfo, mx, m_MapInfo_##mx, m_)
-#define CSPLWPN_MEMBERS(mx)      CLASS_MEMBERS(CCSPlayerWeapon, mx, m_Weapon_##mx, m_)
+#define GM_MEMBERS(mx)           CLASS_MEMBERS(CHalfLifeMultiplay, mx, mx)
+#define GM_VOICE_MEMBERS(mx)     CLASS_MEMBERS_DOT(CHalfLifeMultiplay, mx, mx, m_VoiceGameMgr)
+#define BASE_MEMBERS(mx)         CLASS_MEMBERS(CBaseEntity, mx, mx)
+#define ANIM_MEMBERS(mx)         CLASS_MEMBERS(CBaseAnimating, mx, mx)
+#define MONST_MEMBERS(mx)        CLASS_MEMBERS(CBaseMonster, mx, mx)
+#define PL_MEMBERS(mx)           CLASS_MEMBERS(CBasePlayer, mx, mx)
+#define EVAR_MEMBERS(mx)         CLASS_MEMBERS(com_entvars, mx, var_##mx)
+#define PMOVE_MEMBERS(mx)        CLASS_MEMBERS(com_playermove, mx, pm_##mx)
+#define MOVEVAR_MEMBERS(mx)      CLASS_MEMBERS(movevars_t, mx, mv_##mx)
+#define UCMD_MEMBERS(mx)         CLASS_MEMBERS(usercmd_s, mx, ucmd_##mx)
+#define PMTRACE_MEMBERS(mx)      CLASS_MEMBERS(pmtrace_s, mx, pmt_##mx)
+#define CSPL_MEMBERS(mx)         CLASS_MEMBERS(CCSPlayer, mx, mx)
+#define BASEITEM_MEMBERS(mx)     CLASS_MEMBERS(CBasePlayerItem, mx, mx)
+#define BASEWPN_MEMBERS(mx)      CLASS_MEMBERS_PREF(CBasePlayerWeapon, mx, m_Weapon_##mx, m_)
+#define WPNBOX_MEMBERS(mx)       CLASS_MEMBERS_PREF(CWeaponBox, mx, m_WeaponBox_##mx, m_)
+#define ARMOURY_MEMBERS(mx)      CLASS_MEMBERS_PREF(CArmoury, mx, m_Armoury_##mx, m_)
+#define GRENADE_MEMBERS(mx)      CLASS_MEMBERS_PREF(CGrenade, mx, m_Grenade_##mx, m_)
+#define P228_MEMBERS(mx)         CLASS_MEMBERS_PREF(CP228, mx, m_P228_##mx, m_)
+#define SCOUT_MEMBERS(mx)        CLASS_MEMBERS_PREF(CSCOUT, mx, m_SCOUT_##mx, m_)
+#define HEGREN_MEMBERS(mx)       CLASS_MEMBERS_PREF(CHEGrenade, mx, m_HEGrenade_##mx, m_)
+#define XM1014_MEMBERS(mx)       CLASS_MEMBERS_PREF(CXM1014, mx, m_XM1014_##mx, m_)
+#define C4_MEMBERS(mx)           CLASS_MEMBERS_PREF(CC4, mx, m_C4_##mx, m_)
+#define MAC10_MEMBERS(mx)        CLASS_MEMBERS_PREF(CMAC10, mx, m_MAC10_##mx, m_)
+#define AUG_MEMBERS(mx)          CLASS_MEMBERS_PREF(CAUG, mx, m_AUG_##mx, m_)
+#define SMOKEGREN_MEMBERS(mx)    CLASS_MEMBERS_PREF(CSmokeGrenade, mx, m_SmokeGrenade_##mx, m_)
+#define ELITE_MEMBERS(mx)        CLASS_MEMBERS_PREF(CELITE, mx, m_ELITE_##mx, m_)
+#define FIVESEVEN_MEMBERS(mx)    CLASS_MEMBERS_PREF(CFiveSeven, mx, m_FiveSeven_##mx, m_)
+#define UMP45_MEMBERS(mx)        CLASS_MEMBERS_PREF(CUMP45, mx, m_UMP45_##mx, m_)
+#define SG550_MEMBERS(mx)        CLASS_MEMBERS_PREF(CSG550, mx, m_SG550_##mx, m_)
+#define GALIL_MEMBERS(mx)        CLASS_MEMBERS_PREF(CGalil, mx, m_Galil_##mx, m_)
+#define FAMAS_MEMBERS(mx)        CLASS_MEMBERS_PREF(CFamas, mx, m_Famas_##mx, m_)
+#define USP_MEMBERS(mx)          CLASS_MEMBERS_PREF(CUSP, mx, m_USP_##mx, m_)
+#define GLOCK18_MEMBERS(mx)      CLASS_MEMBERS_PREF(CGLOCK18, mx, m_GLOCK18_##mx, m_)
+#define AWP_MEMBERS(mx)          CLASS_MEMBERS_PREF(CAWP, mx, m_AWP_##mx, m_)
+#define MP5N_MEMBERS(mx)         CLASS_MEMBERS_PREF(CMP5N, mx, m_MP5N_##mx, m_)
+#define M249_MEMBERS(mx)         CLASS_MEMBERS_PREF(CM249, mx, m_M249_##mx, m_)
+#define M3_MEMBERS(mx)           CLASS_MEMBERS_PREF(CM3, mx, m_M3_##mx, m_)
+#define M4A1_MEMBERS(mx)         CLASS_MEMBERS_PREF(CM4A1, mx, m_M4A1_##mx, m_)
+#define TMP_MEMBERS(mx)          CLASS_MEMBERS_PREF(CTMP, mx, m_TMP_##mx, m_)
+#define G3SG1_MEMBERS(mx)        CLASS_MEMBERS_PREF(CG3SG1, mx, m_G3SG1_##mx, m_)
+#define DEAGLE_MEMBERS(mx)       CLASS_MEMBERS_PREF(CDEAGLE, mx, m_DEAGLE_##mx, m_)
+#define SG552_MEMBERS(mx)        CLASS_MEMBERS_PREF(CSG552, mx, m_SG552_##mx, m_)
+#define AK47_MEMBERS(mx)         CLASS_MEMBERS_PREF(CAK47, mx, m_AK47_##mx, m_)
+#define KNIFE_MEMBERS(mx)        CLASS_MEMBERS_PREF(CKnife, mx, m_Knife_##mx, m_)
+#define P90_MEMBERS(mx)          CLASS_MEMBERS_PREF(CP90, mx, m_P90_##mx, m_)
+#define SHIELD_MEMBERS(mx)       CLASS_MEMBERS_PREF(CWShield, mx, m_Shield_##mx, m_)
+#define REBUYSTRUCT_MEMBERS(mx)  CLASS_MEMBERS(RebuyStruct, mx, mx)
+#define MAPINFO_MEMBERS(mx)      CLASS_MEMBERS_PREF(CMapInfo, mx, m_MapInfo_##mx, m_)
+#define CSPLWPN_MEMBERS(mx)      CLASS_MEMBERS_PREF(CCSPlayerWeapon, mx, m_Weapon_##mx, m_)
 
 inline MType getMemberType(float*)              { return MEMBER_FLOAT; }
 inline MType getMemberType(float)               { return MEMBER_FLOAT; }
@@ -118,8 +122,10 @@ inline MType getMemberType(RebuyStruct)         { return MEBMER_REBUYSTRUCT; }
 inline MType getMemberType(pmtrace_t)           { return MEMBER_PMTRACE; }
 inline MType getMemberType(usercmd_s)           { return MEBMER_USERCMD; }
 
+template<typename T> struct always_false: std::false_type {};
+
 template<typename T>
-inline MType getMemberType(T) { static_assert(false, "Not implemented overload"); }
+inline MType getMemberType(T) { static_assert(always_false<T>::value, "Not implemented overload"); return MEMBER_NONE; }
 
 template<typename T, size_t size>
 inline size_t getTypeSize(T type[size]) { return sizeof(T); }
@@ -140,6 +146,11 @@ struct regmember
 };
 
 int regmember::current_cell = 1;
+
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Winvalid-offsetof"
+#endif // #ifdef __GNUC__
 
 member_t memberlist_gamerules[] = {
 	GM_MEMBERS(m_bFreezePeriod),
@@ -1004,6 +1015,10 @@ member_t memberlist_csplayerweapon[] = {
 	CSPLWPN_MEMBERS(flBaseDamage),
 };
 
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif // #ifdef __GNUC__
+
 memberlist_t memberlist;
 
 member_t *memberlist_t::operator[](size_t members) const
@@ -1064,5 +1079,6 @@ member_t *memberlist_t::operator[](size_t members) const
 		CASE(csplayerweapon)
 	}
 
+	#undef CASE
 	return nullptr;
 }

@@ -14,6 +14,7 @@ import gradlecpp.VelocityUtils
 apply plugin: 'cpp'
 apply plugin: 'windows-resources'
 apply plugin: IccCompilerPlugin
+apply plugin: GccCompilerPlugin
 
 List<Task> getRcCompileTasks(NativeBinarySpec binary) {
 	def linkTask = GradleCppUtils.getLinkTask(binary)
@@ -36,6 +37,7 @@ void postEvaluate(NativeBinarySpec b) {
 }
 
 void setupToolchain(NativeBinarySpec b) {
+	boolean useGcc = project.hasProperty("useGcc")
 	ToolchainConfig cfg = rootProject.createToolchainConfig(b)
 	cfg.projectInclude(project, '', '/src', '/common', '/src/mods', '/src/natives', '/include', '/include/metamod', '/include/cssdk/common', '/include/cssdk/dlls', '/include/cssdk/engine', '/include/cssdk/game_shared', '/include/cssdk/pm_shared', '/include/cssdk/public')
 	cfg.singleDefines('HAVE_STRONG_TYPEDEF');
@@ -49,11 +51,13 @@ void setupToolchain(NativeBinarySpec b) {
 		cfg.compilerOptions.args '/Ob2', '/Oi', '/GF', '/GR-', '/GS-'
 		cfg.singleDefines('_CRT_SECURE_NO_WARNINGS')
 	} else if (cfg instanceof GccToolchainConfig) {
-		cfg.compilerOptions.pchConfig = new GccToolchainConfig.PrecompilerHeaderOptions(
-			enabled: true,
-			pchSourceSet: 'reapi_pch'
-		)
-		cfg.compilerOptions.languageStandard = 'c++0x'
+		if (!useGcc) {
+			cfg.compilerOptions.pchConfig = new GccToolchainConfig.PrecompilerHeaderOptions(
+				enabled: true,
+				pchSourceSet: 'reapi_pch'
+			)
+		}
+		cfg.compilerOptions.languageStandard = 'c++11'
 		cfg.defines([
 			'_stricmp': 'strcasecmp',
 			'_strnicmp': 'strncasecmp',
@@ -61,7 +65,13 @@ void setupToolchain(NativeBinarySpec b) {
 			'_snprintf': 'snprintf'
 		])
 
-		cfg.compilerOptions.args '-Qoption,cpp,--treat_func_as_string_literal_cpp', '-msse2', '-fomit-frame-pointer', '-inline-forceinline', '-fvisibility=default', '-fvisibility-inlines-hidden', '-fno-rtti', '-g0', '-s', '-fno-exceptions', '-no-ansi-alias'
+		if (useGcc) {
+			cfg.compilerOptions.args '-fno-strict-aliasing', '-finline-functions'
+		} else {
+			cfg.compilerOptions.args '-Qoption,cpp,--treat_func_as_string_literal_cpp', '-inline-forceinline', '-no-ansi-alias'
+		}
+
+		cfg.compilerOptions.args '-Wall', '-Wno-unknown-pragmas', '-msse2', '-fomit-frame-pointer', '-fvisibility=default', '-fvisibility-inlines-hidden', '-fno-rtti', '-g0', '-s', '-fno-exceptions'
 	}
 
 	ToolchainConfigUtils.apply(project, cfg, b)
@@ -84,9 +94,11 @@ model {
 	}
 
 	toolChains {
-		visualCpp(VisualCpp) {
-		}
-		icc(Icc) {
+		visualCpp(VisualCpp)
+		if (project.hasProperty("useGcc")) {
+			gcc(Gcc)
+		} else {
+			icc(Icc)
 		}
 	}
 

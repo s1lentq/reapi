@@ -1202,7 +1202,8 @@ cell AMX_NATIVE_CALL rg_give_defusekit(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	pPlayer->m_bHasDefuser = pPlayer->pev->body = params[arg_def] != 0;
+	pPlayer->m_bHasDefuser = params[arg_def] ? true : false;
+	pPlayer->pev->body     = params[arg_def] ? 1 : 0;
 
 	if (params[arg_def] != 0)
 	{
@@ -1326,6 +1327,8 @@ cell AMX_NATIVE_CALL rg_set_user_team(AMX *amx, cell *params)
 		case CT:
 			CSGameRules()->m_iNumCT++;
 			break;
+		default:
+			break;
 		}
 
 		// previous team
@@ -1358,6 +1361,8 @@ cell AMX_NATIVE_CALL rg_set_user_team(AMX *amx, cell *params)
 
 				pPlayer->CSPlayer()->SendItemStatus();
 			}
+			break;
+		default:
 			break;
 		}
 	}

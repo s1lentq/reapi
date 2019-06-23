@@ -8,6 +8,7 @@ import org.gradle.nativeplatform.toolchain.VisualCpp
 
 apply from: 'shared_msvc.gradle'
 apply from: 'shared_icc.gradle'
+apply from: 'shared_gcc.gradle'
 
 rootProject.ext.createToolchainConfig = { NativeBinarySpec bin ->
 	BinaryKind binaryKind
@@ -27,6 +28,8 @@ rootProject.ext.createToolchainConfig = { NativeBinarySpec bin ->
 		return rootProject.createMsvcConfig(releaseBuild, binaryKind)
 	} else if (bin.toolChain instanceof Icc) {
 		return rootProject.createIccConfig(releaseBuild, binaryKind)
+	} else if (bin.toolChain instanceof Gcc) {
+		return rootProject.createGccConfig(releaseBuild, binaryKind)
 	} else {
 		throw new RuntimeException("Unknown native toolchain: ${bin.toolChain.class.name}")
 	}

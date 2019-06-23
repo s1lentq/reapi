@@ -122,12 +122,12 @@ C_DLLEXPORT int GetEntityAPI2(DLL_FUNCTIONS *pFunctionTable, int *interfaceVersi
 {
 	if (!pFunctionTable)
 	{
-		ALERT(at_logged, __FUNCTION__ " called with null pFunctionTable");
+		ALERT(at_logged, "GetEntityAPI2 called with null pFunctionTable");
 		return FALSE;
 	}
 	else if (*interfaceVersion != INTERFACE_VERSION)
 	{
-		ALERT(at_logged, __FUNCTION__ " version mismatch; requested=%d ours=%d", *interfaceVersion, INTERFACE_VERSION);
+		ALERT(at_logged, "GetEntityAPI2 version mismatch; requested=%d ours=%d", *interfaceVersion, INTERFACE_VERSION);
 
 		//! Tell metamod what version we had, so it can figure out who is out of date.
 		*interfaceVersion = INTERFACE_VERSION;
@@ -143,12 +143,12 @@ C_DLLEXPORT int GetEntityAPI2_Post(DLL_FUNCTIONS *pFunctionTable, int *interface
 {
 	if (!pFunctionTable)
 	{
-		ALERT(at_logged, __FUNCTION__ " called with null pFunctionTable");
+		ALERT(at_logged, "GetEntityAPI2_Post called with null pFunctionTable");
 		return FALSE;
 	}
 	else if (*interfaceVersion != INTERFACE_VERSION)
 	{
-		ALERT(at_logged, __FUNCTION__ " version mismatch; requested=%d ours=%d", *interfaceVersion, INTERFACE_VERSION);
+		ALERT(at_logged, "GetEntityAPI2_Post version mismatch; requested=%d ours=%d", *interfaceVersion, INTERFACE_VERSION);
 
 		//! Tell metamod what version we had, so it can figure out who is out of date.
 		*interfaceVersion = INTERFACE_VERSION;

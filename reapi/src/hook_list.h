@@ -11,8 +11,8 @@ typedef void (*regchain_t)();
 
 struct hook_t
 {
-	std::vector<class CAmxxHook<> *> pre;   // pre forwards
-	std::vector<class CAmxxHook<> *> post;  // post forwards
+	std::vector<class CAmxxHookBase *> pre;   // pre forwards
+	std::vector<class CAmxxHookBase *> post;  // post forwards
 
 	const char *func_name;                  // function name
 	const char *depend_name;                // platform dependency
@@ -59,6 +59,8 @@ struct hooklist_t
 			CASE(weaponbox)
 		}
 
+		#undef CASE
+
 		return nullptr;
 	}
 
@@ -74,9 +76,7 @@ struct hooklist_t
 		ht_gamerules,
 		ht_rechecker,
 		ht_grenade,
-		ht_weaponbox,
-
-		ht_end
+		ht_weaponbox
 	};
 };
 

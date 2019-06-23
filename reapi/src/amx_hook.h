@@ -8,78 +8,61 @@ enum fwdstate
 	FSTATE_STOPPED
 };
 
-template <typename T = void>
-class CAmxxHook
+class CAmxxHookBase
 {
 public:
-	~CAmxxHook()
+	~CAmxxHookBase()
 	{
 		if (m_index != -1) {
 			g_amxxapi.UnregisterSPForward(m_index);
 			m_index = -1;
 		}
-
-		delete m_uniqueData;
 	}
 
-	CAmxxHook(AMX *amx, const char *funcname, int index, T *data = nullptr) :
+	CAmxxHookBase(AMX *amx, const char *funcname, int index) :
 		m_index(index),
 		m_state(FSTATE_ENABLED),
-		m_amx(amx),
-		m_uniqueData(data)
+		m_amx(amx)
 	{
 		Q_strlcpy(m_CallbackName, funcname);
-	};
+	}
 
-	T *GetUnique()                 const;
-	int GetIndex()                const;
-	fwdstate GetState()           const;
-	AMX *GetAmx()                 const;
-	const char *GetCallbackName() const;
+	int GetIndex()                const { return m_index; }
+	fwdstate GetState()           const { return m_state; }
+	AMX *GetAmx()                 const { return m_amx; }
+	const char *GetCallbackName() const { return m_CallbackName; }
 
-	void SetState(fwdstate st);
+	void SetState(fwdstate st) { m_state = st; }
 
 private:
-	T *m_uniqueData;
 	int m_index;
 	char m_CallbackName[64];
 	fwdstate m_state;
 	AMX *m_amx;
 };
 
-// Inlines
 template <typename T>
-inline T *CAmxxHook<T>::GetUnique() const
+class CAmxxHookUnique: public CAmxxHookBase
 {
-	return m_uniqueData;
-}
+public:
+	~CAmxxHookUnique()
+	{
+		if (m_uniqueData)
+		{
+			delete m_uniqueData;
+			m_uniqueData = nullptr;
+		}
+	}
 
-template <typename T>
-inline AMX *CAmxxHook<T>::GetAmx() const
-{
-	return m_amx;
-}
+	CAmxxHookUnique(AMX *amx, const char *funcname, int index, T *data = nullptr) :
+		CAmxxHookBase(amx, funcname, index),
+		m_uniqueData(data)
+	{
 
-template <typename T>
-inline const char *CAmxxHook<T>::GetCallbackName() const
-{
-	return m_CallbackName;
-}
+	}
 
-template <typename T>
-inline int CAmxxHook<T>::GetIndex() const
-{
-	return m_index;
-}
+	T *GetUnique() const { return m_uniqueData; }
 
-template <typename T>
-inline fwdstate CAmxxHook<T>::GetState() const
-{
-	return m_state;
-}
-
-template <typename T>
-inline void CAmxxHook<T>::SetState(fwdstate st)
-{
-	m_state = st;
-}
+private:
+	T *m_uniqueData;
+};

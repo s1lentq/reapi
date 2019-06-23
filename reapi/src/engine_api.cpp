@@ -176,12 +176,12 @@ C_DLLEXPORT int GetEngineFunctions_Post(enginefuncs_t *pengfuncsFromEngine, int 
 {
 	if (!pengfuncsFromEngine)
 	{
-		ALERT(at_logged, __FUNCTION__ " called with null pengfuncsFromEngine");
+		ALERT(at_logged, "GetEngineFunctions_Post called with null pengfuncsFromEngine");
 		return FALSE;
 	}
 	else if (*interfaceVersion != ENGINE_INTERFACE_VERSION)
 	{
-		ALERT(at_logged, __FUNCTION__ " version mismatch; requested=%d ours=%d", *interfaceVersion, ENGINE_INTERFACE_VERSION);
+		ALERT(at_logged, "GetEngineFunctions_Post version mismatch; requested=%d ours=%d", *interfaceVersion, ENGINE_INTERFACE_VERSION);
 		// Tell metamod what version we had, so it can figure out who is out of date.
 		*interfaceVersion = ENGINE_INTERFACE_VERSION;
 		return FALSE;

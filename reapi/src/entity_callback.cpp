@@ -61,7 +61,7 @@ bool CEntityCallback::SetThink(AMX *amx, CBaseEntity *pEntity, const char *pszCa
 		return false;
 	}
 
-	m_callbacks.push_back(new CAmxxHook<eCallback_t>(amx, pszCallback, fwdid, new eCallback_t(pEntity, pParams, iParamsLen, CType_Think)));
+	m_callbacks.push_back(new CAmxxHookUnique<eCallback_t>(amx, pszCallback, fwdid, new eCallback_t(pEntity, pParams, iParamsLen, CType_Think)));
 	pEntity->SetThink(&CBaseEntity::SUB_Think);
 	return true;
 }
@@ -82,7 +82,7 @@ bool CEntityCallback::SetTouch(AMX *amx, CBaseEntity *pEntity, const char *pszCa
 		return false;
 	}
 
-	m_callbacks.push_back(new CAmxxHook<eCallback_t>(amx, pszCallback, fwdid, new eCallback_t(pEntity, pParams, iParamsLen, CType_Touch)));
+	m_callbacks.push_back(new CAmxxHookUnique<eCallback_t>(amx, pszCallback, fwdid, new eCallback_t(pEntity, pParams, iParamsLen, CType_Touch)));
 	pEntity->SetTouch(&CBaseEntity::SUB_Touch);
 	return true;
 }
@@ -103,7 +103,7 @@ bool CEntityCallback::SetUse(AMX *amx, CBaseEntity *pEntity, const char *pszCall
 		return false;
 	}
 
-	m_callbacks.push_back(new CAmxxHook<eCallback_t>(amx, pszCallback, fwdid, new eCallback_t(pEntity, pParams, iParamsLen, CType_Use)));
+	m_callbacks.push_back(new CAmxxHookUnique<eCallback_t>(amx, pszCallback, fwdid, new eCallback_t(pEntity, pParams, iParamsLen, CType_Use)));
 	pEntity->SetUse(&CBaseEntity::SUB_Use);
 	return true;
 }
@@ -124,7 +124,7 @@ bool CEntityCallback::SetBlocked(AMX *amx, CBaseEntity *pEntity, const char *psz
 		return false;
 	}
 
-	m_callbacks.push_back(new CAmxxHook<eCallback_t>(amx, pszCallback, fwdid, new eCallback_t(pEntity, pParams, iParamsLen, CType_Blocked)));
+	m_callbacks.push_back(new CAmxxHookUnique<eCallback_t>(amx, pszCallback, fwdid, new eCallback_t(pEntity, pParams, iParamsLen, CType_Blocked)));
 	pEntity->SetBlocked(&CBaseEntity::SUB_Blocked);
 	return true;
 }
@@ -145,7 +145,7 @@ bool CEntityCallback::SetMoveDone(AMX *amx, CBaseEntity *pEntity, const char *ps
 		return false;
 	}
 
-	m_callbacks.push_back(new CAmxxHook<eCallback_t>(amx, pszCallback, fwdid, new eCallback_t(pEntity, pParams, iParamsLen, CType_MoveDone)));
+	m_callbacks.push_back(new CAmxxHookUnique<eCallback_t>(amx, pszCallback, fwdid, new eCallback_t(pEntity, pParams, iParamsLen, CType_MoveDone)));
 
 	// TODO: Make sure that the entity actually inherited from CBaseToggle
 	((CBaseToggle *)pEntity)->SetMoveDone(&CBaseToggle::SUB_MoveDone);

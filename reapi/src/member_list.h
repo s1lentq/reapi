@@ -5,7 +5,8 @@
 // member types
 enum MType
 {
-	MEMBER_FLOAT = 0,		// Any floating point value
+	MEMBER_NONE = 0,
+	MEMBER_FLOAT,			// Any floating point value
 	MEMBER_DOUBLE,			// double value
 	MEMBER_ENTITY,			// An entity offset (EOFFSET)
 	MEMBER_CLASSPTR,		// CBaseEntity *

@@ -72,7 +72,7 @@ private:
 		size_t m_iParamLen;
 	};
 
-	std::vector<CAmxxHook<eCallback_t> *> m_callbacks;
+	std::vector<CAmxxHookUnique<eCallback_t> *> m_callbacks;
 };
 
 extern CEntityCallback g_entCallback;
