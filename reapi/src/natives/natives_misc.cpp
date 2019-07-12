@@ -2364,6 +2364,34 @@ cell AMX_NATIVE_CALL rh_update_user_info(AMX *amx, cell *params)
 	return TRUE;
 }
 
+/*
+* Kicks a client from server with message
+*
+* @param index     Client index
+* @param message   Message that will be sent to client when it is deleted from server
+*
+* @noreturn
+*
+* native rh_drop_client(const index, const message[] = "");
+*/
+cell AMX_NATIVE_CALL rh_drop_client(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_msg };
+ 
+	CHECK_ISPLAYER(arg_index);
+
+	client_t *pClient = clientOfIndex(params[arg_index]);
+	if (unlikely(pClient == nullptr || !(pClient->active | pClient->spawned | pClient->connected)))
+	{
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
+		return FALSE;
+	}
+  
+	char messagebuf[256];
+	g_RehldsFuncs->DropClient(g_RehldsSvs->GetClient(params[arg_index] - 1), false, getAmxString(amx, params[arg_msg], messagebuf));
+	return TRUE;
+}
+
 AMX_NATIVE_INFO Misc_Natives_RH[] =
 {
 	{ "rh_set_mapname",      rh_set_mapname      },
@@ -2371,6 +2399,7 @@ AMX_NATIVE_INFO Misc_Natives_RH[] =
 	{ "rh_reset_mapname",    rh_reset_mapname    },
 	{ "rh_emit_sound2",      rh_emit_sound2      },
 	{ "rh_update_user_info", rh_update_user_info },
+	{ "rh_drop_client",      rh_drop_client      },
 
 	{ nullptr, nullptr }
 };
