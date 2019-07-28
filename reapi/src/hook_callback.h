@@ -1,5 +1,7 @@
 #pragma once
 
+#include <tuple>
+
 // hookchain return type
 enum HookChainState
 {
@@ -17,7 +19,8 @@ enum AType : uint8
 	ATYPE_STRING,
 	ATYPE_CLASSPTR,
 	ATYPE_EDICT,
-	ATYPE_EVARS
+	ATYPE_EVARS,
+	ATYPE_BOOL
 };
 
 struct retval_t
@@ -44,6 +47,7 @@ inline AType getApiType(char[])			{ return ATYPE_STRING; }
 inline AType getApiType(CBaseEntity *)	{ return ATYPE_CLASSPTR; }
 inline AType getApiType(edict_t *)		{ return ATYPE_EDICT; }
 inline AType getApiType(entvars_t *)	{ return ATYPE_EVARS; }
+inline AType getApiType(bool)			{ return ATYPE_BOOL; }
 
 template<typename T>
 inline AType getApiType(T *) { return ATYPE_INTEGER; }
@@ -63,64 +67,47 @@ bool hasStringArgs(T, f_args... args)
 
 #define MAX_HOOKCHAIN_ARGS 12u
 
-template<size_t current = 0, typename T1, typename T2, typename T3, typename T4, typename ...t_args>
-void setupArgTypes(AType args_type[], T1, T2, T3, T4, t_args... args)
-{
-	if (current + 4 <= MAX_HOOKCHAIN_ARGS)
-		*(uint32 *)&args_type[current] = getApiType(T1()) | (getApiType(T2()) << 8) | (getApiType(T3()) << 16) | (getApiType(T4()) << 24);
-	if (sizeof...(args) && current + 4 < MAX_HOOKCHAIN_ARGS)
-		setupArgTypes<current + 4>(args_type, args...);
-}
-
-template<size_t current = 0, typename T1, typename T2, typename T3>
-void setupArgTypes(AType args_type[], T1, T2, T3)
-{
-	if (current + 3 <= MAX_HOOKCHAIN_ARGS)
-		*(uint32 *)&args_type[current] = getApiType(T1()) | (getApiType(T2()) << 8) | (getApiType(T3()) << 16);
-	else
-		setupArgTypes(args_type, T1(), T2());
-}
-
-template<size_t current = 0, typename T1, typename T2>
-void setupArgTypes(AType args_type[], T1, T2)
-{
-	if (current + 2 <= MAX_HOOKCHAIN_ARGS)
-		*(uint16 *)&args_type[current] = getApiType(T1()) | (getApiType(T2()) << 8);
-	else
-		setupArgTypes(args_type, T1());
-}
-
-template<size_t current = 0, typename T>
-void setupArgTypes(AType args_type[], T)
-{
-	if (current + 1 <= MAX_HOOKCHAIN_ARGS)
-		args_type[current] = getApiType(T());
-}
-
-template<size_t current = 0>
-void setupArgTypes(AType args_type[])
-{
-}
-
 struct hookctx_t
 {
 	template<typename ...t_args>
-	hookctx_t(size_t arg_count, t_args... args)
+	hookctx_t(size_t arg_count, t_args&&... args)
 	{
-		args_count = min(arg_count, MAX_HOOKCHAIN_ARGS);
-
 		if (hasStringArgs(args...)) {
 			tempstrings_used = 0;
 		}
 
-		setupArgTypes(args_type, args...);
+		args_count = min(arg_count, MAX_HOOKCHAIN_ARGS);
+		setArgs(std::forward_as_tuple(args...));
 	}
 
-	void reset(size_t arg_ptr, AType ret_type = ATYPE_INTEGER)
+	template <size_t current = 0,
+			typename tuple_t,
+			size_t size = std::tuple_size<typename std::decay<tuple_t>::type>::value,
+			std::enable_if_t<current >= size>* = nullptr> // if current >= size
+	void setArgs(tuple_t &&t)
+	{
+	}
+
+	template <size_t current = 0,
+			typename tuple_t,
+			size_t size = std::tuple_size<typename std::decay<tuple_t>::type>::value,
+			std::enable_if_t<current < size>* = nullptr> // if current < size
+	void setArgs(tuple_t &&t)
+	{
+		// current iteration
+		if (current < MAX_HOOKCHAIN_ARGS)
+		{
+			auto &arg = std::get<current>(std::forward<tuple_t>(t));
+			args[current].handle = (size_t)&arg;
+			args[current].type   = getApiType(arg);
+			setArgs<current + 1>(std::forward<tuple_t>(t)); // call next
+		}
+	}
+
+	void reset(AType ret_type = ATYPE_INTEGER)
 	{
 		retVal.set = false;
 		retVal.type = ret_type;
-		args_ptr = arg_ptr;
 	}
 
 	char* get_temp_string(AMX* amx)
@@ -140,29 +127,34 @@ struct hookctx_t
 		s_temp_strings.pop(tempstrings_used);
 	}
 
-	retval_t retVal;
-	size_t args_count;
-	size_t args_ptr;
-	size_t tempstrings_used;
-	AType args_type[MAX_HOOKCHAIN_ARGS];
+	retval_t retVal                 = {false,ATYPE_INTEGER};
+	size_t tempstrings_used         = 0;
 
+	struct args_t
+	{
+		size_t handle;
+		AType  type;
+	};
+
+	size_t args_count               = 0;
+	args_t args[MAX_HOOKCHAIN_ARGS] = {0u, ATYPE_INTEGER};
 	static CTempStrings s_temp_strings;
 };
 
 extern hookctx_t* g_hookCtx;
 
 template <typename original_t, typename ...f_args>
-NOINLINE void DLLEXPORT _callVoidForward(const hook_t* hook, original_t original, volatile f_args... args)
+NOINLINE void DLLEXPORT _callVoidForward(const hook_t* hook, original_t original, f_args&&... args)
 {
 	auto hookCtx = g_hookCtx;
-	hookCtx->reset(size_t(&original) + sizeof(original));
+	hookCtx->reset();
 	int hc_state = HC_CONTINUE;
 
 	for (auto fwd : hook->pre)
 	{
 		if (likely(fwd->GetState() == FSTATE_ENABLED))
 		{
-			auto ret = g_amxxapi.ExecuteForward(fwd->GetIndex(), args...);
+			auto ret = g_amxxapi.ExecuteForward(fwd->GetIndex(), std::forward<f_args &&>(args)...);
 
 			if (unlikely(ret == HC_BREAK)) {
 				return;
@@ -175,13 +167,13 @@ NOINLINE void DLLEXPORT _callVoidForward(const hook_t* hook, original_t original
 
 	if (hc_state != HC_SUPERCEDE) {
 		g_hookCtx = nullptr;
-		original(args...);
+		original(std::forward<f_args &&>(args)...);
 		g_hookCtx = hookCtx;
 	}
 
 	for (auto fwd : hook->post) {
 		if (likely(fwd->GetState() == FSTATE_ENABLED)) {
-			auto ret = g_amxxapi.ExecuteForward(fwd->GetIndex(), args...);
+			auto ret = g_amxxapi.ExecuteForward(fwd->GetIndex(), std::forward<f_args &&>(args)...);
 
 			if (unlikely(ret == HC_BREAK))
 				break;
@@ -190,7 +182,7 @@ NOINLINE void DLLEXPORT _callVoidForward(const hook_t* hook, original_t original
 }
 
 template <typename original_t, typename ...f_args>
-void callVoidForward(size_t func, original_t original, f_args... args)
+void callVoidForward(size_t func, original_t original, f_args&&... args)
 {
 	hookctx_t hookCtx(sizeof...(args), args...);
 	hookctx_t* save = g_hookCtx;
@@ -205,17 +197,18 @@ void callVoidForward(size_t func, original_t original, f_args... args)
 }
 
 template <typename R, typename original_t, typename ...f_args>
-NOINLINE R DLLEXPORT _callForward(const hook_t* hook, original_t original, volatile f_args... args)
+NOINLINE R DLLEXPORT _callForward(const hook_t* hook, original_t original, f_args&&... args)
 {
 	auto hookCtx = g_hookCtx;
-	hookCtx->reset(size_t(&original) + sizeof(original), getApiType(R()));
+	hookCtx->reset(getApiType(R()));
+
 	int hc_state = HC_CONTINUE;
 
 	for (auto fwd : hook->pre)
 	{
 		if (likely(fwd->GetState() == FSTATE_ENABLED))
 		{
-			auto ret = g_amxxapi.ExecuteForward(fwd->GetIndex(), args...);
+			auto ret = g_amxxapi.ExecuteForward(fwd->GetIndex(), std::forward<f_args &&>(args)...);
 
 			if (likely(ret == HC_CONTINUE)) {
 				continue;
@@ -238,7 +231,7 @@ NOINLINE R DLLEXPORT _callForward(const hook_t* hook, original_t original, volat
 	if (likely(hc_state != HC_SUPERCEDE))
 	{
 		g_hookCtx = nullptr;
-		auto retVal = original(args...);
+		auto retVal = original(std::forward<f_args &&>(args)...);
 		g_hookCtx = hookCtx;
 
 		if (unlikely(!hookCtx->retVal.set)) {
@@ -259,7 +252,7 @@ NOINLINE R DLLEXPORT _callForward(const hook_t* hook, original_t original, volat
 
 	for (auto fwd : hook->post) {
 		if (likely(fwd->GetState() == FSTATE_ENABLED)) {
-			auto ret = g_amxxapi.ExecuteForward(fwd->GetIndex(), args...);
+			auto ret = g_amxxapi.ExecuteForward(fwd->GetIndex(), std::forward<f_args &&>(args)...);
 
 			if (unlikely(ret == HC_BREAK))
 				break;
@@ -270,7 +263,7 @@ NOINLINE R DLLEXPORT _callForward(const hook_t* hook, original_t original, volat
 }
 
 template <typename R, typename original_t, typename ...f_args>
-R callForward(size_t func, original_t original, f_args... args)
+R callForward(size_t func, original_t original, f_args&&... args)
 {
 	static_assert(sizeof(R) <= sizeof(int), "invalid hookchain return type size > sizeof(int)");
 

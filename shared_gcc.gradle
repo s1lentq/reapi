@@ -16,14 +16,13 @@ rootProject.ext.createGccConfig = { boolean release, BinaryKind binKind ->
 							'linux': null,
 							'__linux__': null,
 							'NDEBUG': null,
-							'_GLIBCXX_USE_CXX11_ABI': 0,  // don't use specific c++11 features from GCC 5.X for backward compatibility to earlier version ABI libstdc++.so.6
 						],
 				),
 
 				linkerOptions: new GccToolchainConfig.LinkerOptions(
 						stripSymbolTable: false,
 						staticLibGcc: false,
-						staticLibStdCpp: false,
+						staticLibStdCpp: true,
 				),
 
 				librarianOptions: new GccToolchainConfig.LibrarianOptions(
@@ -42,14 +41,13 @@ rootProject.ext.createGccConfig = { boolean release, BinaryKind binKind ->
 							'linux': null,
 							'__linux__': null,
 							'NDEBUG': null,
-							'_GLIBCXX_USE_CXX11_ABI': 0,  // don't use specific c++11 features from GCC 5.X for backward compatibility to earlier version ABI libstdc++.so.6
 						],
 				),
 
 				linkerOptions: new GccToolchainConfig.LinkerOptions(
 						stripSymbolTable: false,
 						staticLibGcc: false,
-						staticLibStdCpp: false,
+						staticLibStdCpp: true,
 				),
 
 				librarianOptions: new GccToolchainConfig.LibrarianOptions(

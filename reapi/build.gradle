@@ -57,7 +57,7 @@ void setupToolchain(NativeBinarySpec b) {
 				pchSourceSet: 'reapi_pch'
 			)
 		}
-		cfg.compilerOptions.languageStandard = 'c++11'
+		cfg.compilerOptions.languageStandard = 'c++14'
 		cfg.defines([
 			'_stricmp': 'strcasecmp',
 			'_strnicmp': 'strncasecmp',
@@ -70,6 +70,9 @@ void setupToolchain(NativeBinarySpec b) {
 		} else {
 			cfg.compilerOptions.args '-Qoption,cpp,--treat_func_as_string_literal_cpp', '-inline-forceinline', '-no-ansi-alias'
 		}
+
+		cfg.linkerOptions.args '-Wl,--version-script=../version_script.lds', '-Wl,--gc-sections'
+		cfg.compilerOptions.args '-ffunction-sections', '-fdata-sections' // Remove unused code and data
 
 		cfg.compilerOptions.args '-Wall', '-Wno-unknown-pragmas', '-msse2', '-fomit-frame-pointer', '-fvisibility=default', '-fvisibility-inlines-hidden', '-fno-rtti', '-g0', '-s', '-fno-exceptions'
 	}

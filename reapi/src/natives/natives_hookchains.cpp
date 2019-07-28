@@ -255,8 +255,7 @@ cell AMX_NATIVE_CALL SetHookChainArg(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	AType type = g_hookCtx->args_type[number];
-
+	AType type = g_hookCtx->args[number].type;
 	if (unlikely(params[arg_type] != type))
 	{
 		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid argument type provided.", __FUNCTION__);
@@ -264,13 +263,16 @@ cell AMX_NATIVE_CALL SetHookChainArg(AMX *amx, cell *params)
 	}
 
 	cell* srcAddr = getAmxAddr(amx, params[arg_value]);
-	size_t destAddr = g_hookCtx->args_ptr + number * sizeof(int);
+	size_t destAddr = g_hookCtx->args[number].handle;
 
 	switch (type)
 	{
 	case ATYPE_INTEGER:
 	case ATYPE_FLOAT:
 		*(cell *)destAddr = *srcAddr;
+		break;
+	case ATYPE_BOOL:
+		*(bool *)destAddr = *srcAddr != 0;
 		break;
 	case ATYPE_STRING:
 		*(char **)destAddr = getAmxString(srcAddr, g_hookCtx->get_temp_string(amx), CTempStrings::STRING_LEN);
