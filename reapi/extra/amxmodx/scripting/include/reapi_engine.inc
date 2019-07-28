@@ -137,3 +137,14 @@ native bool:rh_emit_sound2(const entity, const recipient, const channel, const s
 * @noreturn
 */
 native rh_update_user_info(playerEntIndex);
+
+/*
+* Kicks a client from server with message
+*
+* @param index     Client index
+* @param message   Message that will be sent to client when it is deleted from server
+*
+* @noreturn
+*
+*/
+native rh_drop_client(const index, const message[] = "");
