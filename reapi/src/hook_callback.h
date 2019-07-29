@@ -210,7 +210,7 @@ NOINLINE R DLLEXPORT _callForward(const hook_t* hook, original_t original, f_arg
 		{
 			auto ret = g_amxxapi.ExecuteForward(fwd->GetIndex(), std::forward<f_args &&>(args)...);
 
-			if (likely(ret == HC_CONTINUE)) {
+			if (unlikely(ret != HC_SUPERCEDE && ret != HC_BREAK)) {
 				continue;
 			}
 
