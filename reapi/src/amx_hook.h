@@ -11,21 +11,8 @@ enum fwdstate
 class CAmxxHookBase
 {
 public:
-	~CAmxxHookBase()
-	{
-		if (m_index != -1) {
-			g_amxxapi.UnregisterSPForward(m_index);
-			m_index = -1;
-		}
-	}
-
-	CAmxxHookBase(AMX *amx, const char *funcname, int index) :
-		m_index(index),
-		m_state(FSTATE_ENABLED),
-		m_amx(amx)
-	{
-		Q_strlcpy(m_CallbackName, funcname);
-	}
+	~CAmxxHookBase();
+	CAmxxHookBase(AMX *amx, const char *funcname, int index);
 
 	int GetIndex()                const { return m_index; }
 	fwdstate GetState()           const { return m_state; }
@@ -33,6 +20,7 @@ public:
 	const char *GetCallbackName() const { return m_CallbackName; }
 
 	void SetState(fwdstate st) { m_state = st; }
+	void Error(int error, const char *fmt, ...);
 
 private:
 	int m_index;

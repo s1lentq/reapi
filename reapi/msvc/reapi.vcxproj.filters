@@ -824,6 +824,9 @@
     <ClCompile Include="..\src\entity_callback.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\amx_hook.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\extra\amxmodx\scripting\include\reapi.inc">

@@ -250,6 +250,7 @@
     </ClCompile>
     <ClCompile Include="..\include\cssdk\public\interface.cpp" />
     <ClCompile Include="..\src\amxxmodule.cpp" />
+    <ClCompile Include="..\src\amx_hook.cpp" />
     <ClCompile Include="..\src\api_config.cpp" />
     <ClCompile Include="..\src\dllapi.cpp" />
     <ClCompile Include="..\src\engine_api.cpp" />

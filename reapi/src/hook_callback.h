@@ -215,7 +215,7 @@ NOINLINE R DLLEXPORT _callForward(const hook_t* hook, original_t original, f_arg
 			}
 
 			if (unlikely(!hookCtx->retVal.set)) {
-				AMXX_Assert(fwd->GetAmx(), "%s : Can't suppress original function call without new return value set", fwd->GetCallbackName());
+				fwd->Error(AMX_ERR_ASSERT, "Can't suppress original function call without new return value set");
 				continue;
 			}
 

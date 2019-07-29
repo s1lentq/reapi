@@ -221,24 +221,6 @@ NOINLINE void AMXX_LogError(AMX *amx, int err, const char *fmt, ...)
 	g_amxxapi.LogError(amx, err, "[%s] %s", g_ModuleInfo.logtag, msg);
 }
 
-NOINLINE void AMXX_Assert(AMX *amx, const char *fmt, ...)
-{
-	char msg[2048];
-	va_list arglst;
-	va_start(arglst, fmt);
-	vsnprintf(msg, sizeof msg, fmt, arglst);
-	va_end(arglst);
-
-	auto scriptName = g_amxxapi.GetAmxScriptName(g_amxxapi.FindAmxScriptByAmx(amx));
-	if (scriptName)
-	{
-		if ((scriptName = strrchr(scriptName, CORRECT_PATH_SEPARATOR)))
-			scriptName++;
-	}
-
-	g_amxxapi.LogError(amx, AMX_ERR_ASSERT, "[%s] %s", scriptName, msg);
-}
-
 char* getAmxString(cell* src, char* dest, size_t max, size_t* len)
 {
 	char* start = dest;
