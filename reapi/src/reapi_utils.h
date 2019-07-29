@@ -57,4 +57,6 @@ void GetBonePosition(CBaseEntity *pEntity, int iBone, Vector *vecOrigin, Vector 
 void GetAttachment(CBaseEntity *pEntity, int iBone, Vector *pVecOrigin, Vector *pVecAngles);
 void RemoveOrDropItem(CBasePlayer *pPlayer, CBasePlayerItem *pItem, GiveType type);
 
+const char *getATypeStr(AType type);
+
 extern void NORETURN UTIL_SysError(const char *fmt, ...);

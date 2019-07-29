@@ -220,3 +220,22 @@ void RemoveOrDropItem(CBasePlayer *pPlayer, CBasePlayerItem *pItem, GiveType typ
 		break;
 	}
 }
+
+const char *getATypeStr(AType type)
+{
+	static constexpr const char *s_ATypes[]
+	{
+		"ATYPE_INTEGER",
+		"ATYPE_FLOAT",
+		"ATYPE_STRING",
+		"ATYPE_CLASSPTR",
+		"ATYPE_EDICT",
+		"ATYPE_EVARS",
+		"ATYPE_BOOL"
+	};
+
+	if (type >= arraysize(s_ATypes))
+		return "";
+
+	return s_ATypes[type];
+}

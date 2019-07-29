@@ -123,7 +123,14 @@ cell AMX_NATIVE_CALL SetHookChainReturn(AMX *amx, cell *params)
 
 	if (unlikely(params[arg_type] != retVal.type))
 	{
-		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: trying to set return value with incompatible type.", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE,
+			"%s: trying to set return value with incompatible type, expected '%s'; got '%s'",
+			__FUNCTION__,
+			getATypeStr(retVal.type),
+			getATypeStr(static_cast<AType>(params[arg_type]))
+		);
+
+		printf("> SetHookChainReturn: called #3\n");
 		return FALSE;
 	}
 
@@ -135,6 +142,9 @@ cell AMX_NATIVE_CALL SetHookChainReturn(AMX *amx, cell *params)
 	case ATYPE_INTEGER:
 	case ATYPE_FLOAT:
 		retVal._integer = *srcAddr;
+		break;
+	case ATYPE_BOOL:
+		retVal._integer = (*srcAddr != 0) ? TRUE : FALSE;
 		break;
 
 	case ATYPE_STRING:
@@ -188,7 +198,13 @@ cell AMX_NATIVE_CALL GetHookChainReturn(AMX *amx, cell *params)
 
 	if (unlikely(params[arg_type] != retVal.type))
 	{
-		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: trying to get return value with incompatible type.", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE,
+			"%s: trying to get return value with incompatible type, expected '%s'; got '%s'",
+			__FUNCTION__,
+			getATypeStr(retVal.type),
+			getATypeStr(static_cast<AType>(params[arg_type]))
+		);
+
 		return FALSE;
 	}
 
@@ -205,6 +221,8 @@ cell AMX_NATIVE_CALL GetHookChainReturn(AMX *amx, cell *params)
 	case ATYPE_INTEGER:
 	case ATYPE_FLOAT:
 		return retVal._integer;
+	case ATYPE_BOOL:
+		return retVal._integer != 0 ? TRUE : FALSE;
 	case ATYPE_STRING:
 	{
 		if (PARAMS_COUNT != 2)
@@ -258,7 +276,13 @@ cell AMX_NATIVE_CALL SetHookChainArg(AMX *amx, cell *params)
 	AType type = g_hookCtx->args[number].type;
 	if (unlikely(params[arg_type] != type))
 	{
-		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid argument type provided.", __FUNCTION__);
+		AMXX_LogError(amx, AMX_ERR_NATIVE,
+			"%s: invalid argument type provided, expected '%s'; got '%s'",
+			__FUNCTION__,
+			getATypeStr(type),
+			getATypeStr(static_cast<AType>(params[arg_type]))
+		);
+
 		return FALSE;
 	}
 
