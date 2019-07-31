@@ -130,7 +130,6 @@ cell AMX_NATIVE_CALL SetHookChainReturn(AMX *amx, cell *params)
 			getATypeStr(static_cast<AType>(params[arg_type]))
 		);
 
-		printf("> SetHookChainReturn: called #3\n");
 		return FALSE;
 	}
 
