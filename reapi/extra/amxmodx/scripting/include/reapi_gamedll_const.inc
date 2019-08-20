@@ -760,7 +760,7 @@ enum GamedllFunc_CBasePlayer
 	* Return type:      void
 	* Params:           (const this)
 	*/
-	RG_CBasePlayer_PlayerUseEx,
+	RG_CBasePlayer_DenyUse,
 };
 
 /**

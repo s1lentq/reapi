@@ -154,7 +154,7 @@ hook_t hooklist_player[] = {
 	DLL(CBasePlayer_SetSpawnProtection),
 	DLL(CBasePlayer_RemoveSpawnProtection),
 	DLL(CBasePlayer_HintMessageEx),
-	DLL(CBasePlayer_PlayerUseEx),
+	DLL(CBasePlayer_DenyUse),
 };
 
 hook_t hooklist_gamerules[] = {
