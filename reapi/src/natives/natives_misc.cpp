@@ -1387,6 +1387,10 @@ cell AMX_NATIVE_CALL rg_set_user_team(AMX *amx, cell *params)
 	if (args[arg_team] == SPECTATOR && !pPlayer->IsAlive()) {
 		pPlayer->CSPlayer()->StartDeathCam();
 	}
+
+	if ((prevTeam == TERRORIST || prevTeam == CT) && prevTeam != args[arg_team] && !pPlayer->IsAlive()) {
+		CSGameRules()->CheckWinConditions();
+	}
 	return TRUE;
 }
 
