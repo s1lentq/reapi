@@ -2151,6 +2151,21 @@ cell AMX_NATIVE_CALL rg_hint_message(AMX *amx, cell *params)
 	return pPlayer->CSPlayer()->HintMessageEx(message, args[arg_duration], args[arg_displayIfPlayerDead], args[arg_override]) ? TRUE : FALSE;
 }
 
+/*
+* Instantly check round conditions.
+*
+* @noreturn
+*
+* native rg_check_win_conditions();
+*/
+cell AMX_NATIVE_CALL rg_check_win_conditions(AMX *amx, cell *params)
+{
+	CHECK_GAMERULES();
+
+	CSGameRules()->CheckWinConditions();
+	return TRUE;
+}
+
 AMX_NATIVE_INFO Misc_Natives_RG[] =
 {
 	{ "rg_set_animation",             rg_set_animation             },
@@ -2230,6 +2245,8 @@ AMX_NATIVE_INFO Misc_Natives_RG[] =
 	{ "rg_get_iteminfo",              rg_get_iteminfo              },
 
 	{ "rg_hint_message",              rg_hint_message              },
+
+	{ "rg_check_win_conditions",      rg_check_win_conditions      },
 
 	{ nullptr, nullptr }
 };
