@@ -176,7 +176,7 @@ enum GamedllFunc_CBasePlayer
 	RG_CBasePlayer_SetSpawnProtection,
 	RG_CBasePlayer_RemoveSpawnProtection,
 	RG_CBasePlayer_HintMessageEx,
-	RG_CBasePlayer_DenyUse,
+	RG_CBasePlayer_UseEmpty,
 
 	// [...]
 };

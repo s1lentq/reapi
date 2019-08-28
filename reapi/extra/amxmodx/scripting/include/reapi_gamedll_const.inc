@@ -756,11 +756,11 @@ enum GamedllFunc_CBasePlayer
 	RG_CBasePlayer_HintMessageEx,
 
 	/*
-	* Description:      Called when a player presses USE button on non-object
+	* Description:      Called when a player press use without candidates
 	* Return type:      void
 	* Params:           (const this)
 	*/
-	RG_CBasePlayer_DenyUse,
+	RG_CBasePlayer_UseEmpty,
 };
 
 /**

@@ -542,14 +542,14 @@ bool CBasePlayer_HintMessageEx(IReGameHook_CBasePlayer_HintMessageEx *chain, CBa
 	return callForward<bool>(RG_CBasePlayer_HintMessageEx, original, indexOfEdict(pthis->pev), pMessage, duration, bDisplayIfPlayerDead, bOverride);
 }
 
-void CBasePlayer_DenyUse(IReGameHook_CBasePlayer_DenyUse *chain, CBasePlayer *pthis)
+void CBasePlayer_UseEmpty(IReGameHook_CBasePlayer_UseEmpty *chain, CBasePlayer *pthis)
 {
 	auto original = [chain](int _pthis)
 	{
 		return chain->callNext(getPrivate<CBasePlayer>(_pthis));
 	};
 
-	callVoidForward(RG_CBasePlayer_DenyUse, original, indexOfEdict(pthis->pev));
+	callVoidForward(RG_CBasePlayer_UseEmpty, original, indexOfEdict(pthis->pev));
 }
 
 void CBaseAnimating_ResetSequenceInfo(IReGameHook_CBaseAnimating_ResetSequenceInfo *chain, CBaseAnimating *pthis)
