@@ -836,3 +836,15 @@ native rg_get_iteminfo(const ent, ItemInfo:type, any:...);
 * @return                      true if prints, false otherwise
 */
 native bool:rg_hint_message(const index, const message[], Float:duration = 6.0, bool:bDisplayIfPlayerDead = false, bool:bOverride = false);
+
+/*
+* Instantly initialize player counts.
+*
+* @param num_alive_terrorist 	count alive terrorists
+* @param num_alive_ct		 	count alive counter-terrorists
+* @param num_dead_terrorist		count dead terrorists
+* @param num_dead_ct			count dead counter-terrorists
+*
+* @noreturn
+*/
+native rg_initialize_player_counts(&num_alive_terrorist = 0, &num_alive_ct = 0, &num_dead_terrorist = 0, &num_dead_ct = 0);
