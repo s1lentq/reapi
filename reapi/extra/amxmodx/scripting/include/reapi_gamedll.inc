@@ -838,7 +838,7 @@ native rg_get_iteminfo(const ent, ItemInfo:type, any:...);
 native bool:rg_hint_message(const index, const message[], Float:duration = 6.0, bool:bDisplayIfPlayerDead = false, bool:bOverride = false);
 
 /*
-* Instantly check round conditions.
+* Instantly check win conditions.
 *
 * @noreturn
 */
