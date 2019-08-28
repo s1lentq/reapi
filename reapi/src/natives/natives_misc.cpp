@@ -2152,7 +2152,7 @@ cell AMX_NATIVE_CALL rg_hint_message(AMX *amx, cell *params)
 }
 
 /*
-* Instantly check round conditions.
+* Instantly check win conditions.
 *
 * @noreturn
 *
