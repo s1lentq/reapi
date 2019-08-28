@@ -2151,6 +2151,19 @@ cell AMX_NATIVE_CALL rg_hint_message(AMX *amx, cell *params)
 	return pPlayer->CSPlayer()->HintMessageEx(message, args[arg_duration], args[arg_displayIfPlayerDead], args[arg_override]) ? TRUE : FALSE;
 }
 
+/*
+* Get timeleft in seconds.
+*
+* @return      return timeleft in seconds.
+*
+* native rg_get_timeleft();
+*/
+cell AMX_NATIVE_CALL rg_get_timeleft(AMX *amx, cell *params)
+{
+	CHECK_GAMERULES();
+	return (int)CSGameRules()->GetTimeLeft();
+}
+
 AMX_NATIVE_INFO Misc_Natives_RG[] =
 {
 	{ "rg_set_animation",             rg_set_animation             },
@@ -2230,6 +2243,8 @@ AMX_NATIVE_INFO Misc_Natives_RG[] =
 	{ "rg_get_iteminfo",              rg_get_iteminfo              },
 
 	{ "rg_hint_message",              rg_hint_message              },
+
+	{ "rg_get_timeleft",              rg_get_timeleft              },
 
 	{ nullptr, nullptr }
 };
