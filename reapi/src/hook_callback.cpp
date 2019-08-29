@@ -606,15 +606,23 @@ bool RoundEnd(IReGameHook_RoundEnd *chain, int winStatus, ScenarioEventEndRound 
 	return callForward<bool>(RG_RoundEnd, original, winStatus, event, tmDelay);
 }
 
-void PM_Move(IReGameHook_PM_Move *chain, playermove_t *ppmove, int server)
+void PM_Move_AMXX(Move_t *data, int playerIndex)
 {
-	auto original = [chain](playermove_t *_ppmove, int _server)
+	auto original = [data](int _playerIndex)
 	{
-		chain->callNext(_ppmove, _server);
+		data->m_chain->callNext(data->m_args.ppmove, data->m_args.server);
 	};
 
+	callVoidForward(RG_PM_Move, original, playerIndex);
+}
+
+void PM_Move(IReGameHook_PM_Move *chain, playermove_t *ppmove, int server)
+{
 	g_pMove = ppmove;
-	callVoidForward(RG_PM_Move, original, ppmove, server);
+
+	Move_args_t args(ppmove, server);
+	Move_t data(chain, args);
+	PM_Move_AMXX(&data, ppmove->player_index + 1);
 }
 
 void PM_AirMove(IReGameHook_PM_AirMove *chain, int playerIndex)

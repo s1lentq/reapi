@@ -313,7 +313,19 @@ int GetForceCamera(IReGameHook_GetForceCamera *chain, CBasePlayer *pObserver);
 void PlayerBlind(IReGameHook_PlayerBlind *chain, CBasePlayer *pPlayer, entvars_t *pevInflictor, entvars_t *pevAttacker, float fadeTime, float fadeHold, int alpha, Vector& color);
 void RadiusFlash_TraceLine(IReGameHook_RadiusFlash_TraceLine *chain, CBasePlayer *pPlayer, entvars_t *pevInflictor, entvars_t *pevAttacker, Vector& vecSrc, Vector& vecSpot, TraceResult *ptr);
 bool RoundEnd(IReGameHook_RoundEnd *chain, int winStatus, ScenarioEventEndRound event, float tmDelay);
+
+struct Move_args_t
+{
+	Move_args_t(playermove_t *_ppmove, int _server) : ppmove(_ppmove), server(_server) {}
+
+	playermove_t *ppmove;
+	int server;
+};
+
+using Move_t = hookdata_t<IReGameHook_PM_Move *, Move_args_t &>;
+void PM_Move_AMXX(Move_t *data, int playerIndex);
 void PM_Move(IReGameHook_PM_Move *chain, playermove_t *ppmove, int server);
+
 void PM_AirMove(IReGameHook_PM_AirMove *chain, int playerIndex);
 void HandleMenu_ChooseAppearance(IReGameHook_HandleMenu_ChooseAppearance *chain, CBasePlayer *pPlayer, int slot);
 BOOL HandleMenu_ChooseTeam(IReGameHook_HandleMenu_ChooseTeam *chain, CBasePlayer *pPlayer, int slot);
