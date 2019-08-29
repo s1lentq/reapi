@@ -1297,15 +1297,16 @@ cell AMX_NATIVE_CALL rg_set_user_armor(AMX *amx, cell *params)
 * @param team           Team id
 * @param model          Internal model, use MODEL_AUTO for a random appearance or MODEL_UNASSIGNED to not update it
 *
-* @param send_teaminfo  If true, a TeamInfo message will be sent
+* @param send_teaminfo          If true, a TeamInfo message will be sent
+* @param check_win_conditions   If true, a CheckWinConditions will be call
 *
 * @return               1 on success, 0 otherwise
 *
-* native rg_set_user_team(const index, {TeamName,_}:team, {ModelName,_}:model = MODEL_AUTO, const bool:send_teaminfo = true);
+* native rg_set_user_team(const index, {TeamName,_}:team, {ModelName,_}:model = MODEL_AUTO, const bool:send_teaminfo = true, const bool:check_win_conditions = false);
 */
 cell AMX_NATIVE_CALL rg_set_user_team(AMX *amx, cell *params)
 {
-	enum args_e { arg_count, arg_index, arg_team, arg_model, arg_sendinfo };
+	enum args_e { arg_count, arg_index, arg_team, arg_model, arg_sendinfo, arg_check_win_conditions };
 
 	CHECK_GAMERULES();
 	CHECK_ISPLAYER(arg_index);
@@ -1387,6 +1388,11 @@ cell AMX_NATIVE_CALL rg_set_user_team(AMX *amx, cell *params)
 	if (args[arg_team] == SPECTATOR && !pPlayer->IsAlive()) {
 		pPlayer->CSPlayer()->StartDeathCam();
 	}
+
+	if (PARAMS_COUNT >= 5 && args[arg_check_win_conditions]) {
+		CSGameRules()->CheckWinConditions();
+	}
+
 	return TRUE;
 }
 

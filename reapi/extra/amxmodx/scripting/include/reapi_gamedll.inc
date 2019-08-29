@@ -590,11 +590,12 @@ native rg_set_user_armor(const index, armorvalue, ArmorType:armortype);
 * @param team           Team id
 * @param model          Internal model, use MODEL_AUTO for a random appearance or MODEL_UNASSIGNED to not update it
 *
-* @param send_teaminfo  If true, a TeamInfo message will be sent
+* @param send_teaminfo          If true, a TeamInfo message will be sent
+* @param check_win_conditions   If true, a CheckWinConditions will be call
 *
 * @return               1 on success, 0 otherwise
 */
-native rg_set_user_team(const index, {TeamName,_}:team, {ModelName,_}:model = MODEL_AUTO, const bool:send_teaminfo = true);
+native rg_set_user_team(const index, {TeamName,_}:team, {ModelName,_}:model = MODEL_AUTO, const bool:send_teaminfo = true, const bool:check_win_conditions = false);
 
 /*
 * Sets the client's player model.
