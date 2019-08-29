@@ -2154,10 +2154,10 @@ cell AMX_NATIVE_CALL rg_hint_message(AMX *amx, cell *params)
 /*
 * Instantly initialize player counts.
 *
-* @param num_alive_terrorist 	count alive terrorists
-* @param num_alive_ct		 	count alive counter-terrorists
-* @param num_dead_terrorist		count dead terrorists
-* @param num_dead_ct			count dead counter-terrorists
+* @param num_alive_terrorist   Count alive terrorists
+* @param num_alive_ct          Count alive counter-terrorists
+* @param num_dead_terrorist    Count dead terrorists
+* @param num_dead_ct           Count dead counter-terrorists
 *
 * @noreturn
 *
@@ -2170,9 +2170,10 @@ cell AMX_NATIVE_CALL rg_initialize_player_counts(AMX *amx, cell *params)
 	CHECK_GAMERULES();
 
 	cell& numAliveTerrorist = *getAmxAddr(amx, params[arg_num_alive_terrorist]);
-	cell& numAliveCT = *getAmxAddr(amx, params[arg_num_alive_ct]);
-	cell& numDeadTerrorist = *getAmxAddr(amx, params[arg_num_dead_terrorist]);
-	cell& numDeadCT = *getAmxAddr(amx, params[arg_num_dead_ct]);
+	cell& numAliveCT        = *getAmxAddr(amx, params[arg_num_alive_ct]);
+	cell& numDeadTerrorist  = *getAmxAddr(amx, params[arg_num_dead_terrorist]);
+	cell& numDeadCT         = *getAmxAddr(amx, params[arg_num_dead_ct]);
+	
 	CSGameRules()->InitializePlayerCounts(numAliveTerrorist, numAliveCT, numDeadTerrorist, numDeadCT);
 	return TRUE;
 }
