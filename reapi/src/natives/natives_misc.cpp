@@ -2152,6 +2152,21 @@ cell AMX_NATIVE_CALL rg_hint_message(AMX *amx, cell *params)
 }
 
 /*
+* Instantly restart round.
+*
+* @noreturn
+*
+* native rg_restart_round();
+*/
+cell AMX_NATIVE_CALL rg_restart_round(AMX *amx, cell *params)
+{
+	CHECK_GAMERULES();
+
+	CSGameRules()->RestartRound();
+	return TRUE;
+}
+
+/*
 * Instantly check win conditions.
 *
 * @noreturn
@@ -2273,6 +2288,7 @@ AMX_NATIVE_INFO Misc_Natives_RG[] =
 
 	{ "rg_hint_message",              rg_hint_message              },
 
+	{ "rg_restart_round",             rg_restart_round             },
 	{ "rg_check_win_conditions",      rg_check_win_conditions      },
 	{ "rg_initialize_player_counts",  rg_initialize_player_counts  },
 

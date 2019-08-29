@@ -838,6 +838,13 @@ native rg_get_iteminfo(const ent, ItemInfo:type, any:...);
 native bool:rg_hint_message(const index, const message[], Float:duration = 6.0, bool:bDisplayIfPlayerDead = false, bool:bOverride = false);
 
 /*
+* Instantly restart round.
+*
+* @noreturn
+*/
+native rg_restart_round();
+
+/*
 * Instantly check win conditions.
 *
 * @noreturn
