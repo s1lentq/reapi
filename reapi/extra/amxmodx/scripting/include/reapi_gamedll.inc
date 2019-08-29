@@ -843,3 +843,22 @@ native bool:rg_hint_message(const index, const message[], Float:duration = 6.0, 
 * @noreturn
 */
 native rg_restart_round();
+
+/*
+* Instantly check win conditions.
+*
+* @noreturn
+*/
+native rg_check_win_conditions();
+
+/*
+* Instantly initialize player counts.
+*
+* @param num_alive_terrorist   Count alive terrorists
+* @param num_alive_ct          Count alive counter-terrorists
+* @param num_dead_terrorist    Count dead terrorists
+* @param num_dead_ct           Count dead counter-terrorists
+*
+* @noreturn
+*/
+native rg_initialize_player_counts(&num_alive_terrorist = 0, &num_alive_ct = 0, &num_dead_terrorist = 0, &num_dead_ct = 0);
