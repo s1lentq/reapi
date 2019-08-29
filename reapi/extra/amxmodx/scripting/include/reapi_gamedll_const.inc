@@ -754,6 +754,13 @@ enum GamedllFunc_CBasePlayer
 	* Params:           (const this, const message[], Float:duration, bool:bDisplayIfPlayerDead, bool:bOverride)
 	*/
 	RG_CBasePlayer_HintMessageEx,
+
+	/*
+	* Description:      Called when a player press use and if a suitable candidate is not found.
+	* Return type:      void
+	* Params:           (const this)
+	*/
+	RG_CBasePlayer_UseEmpty,
 };
 
 /**
