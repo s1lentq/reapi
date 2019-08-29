@@ -2151,6 +2151,33 @@ cell AMX_NATIVE_CALL rg_hint_message(AMX *amx, cell *params)
 	return pPlayer->CSPlayer()->HintMessageEx(message, args[arg_duration], args[arg_displayIfPlayerDead], args[arg_override]) ? TRUE : FALSE;
 }
 
+/*
+* Instantly initialize player counts.
+*
+* @param num_alive_terrorist   Count alive terrorists
+* @param num_alive_ct          Count alive counter-terrorists
+* @param num_dead_terrorist    Count dead terrorists
+* @param num_dead_ct           Count dead counter-terrorists
+*
+* @noreturn
+*
+* native rg_initialize_player_counts(&num_alive_terrorist = 0, &num_alive_ct = 0, &num_dead_terrorist = 0, &num_dead_ct = 0);
+*/
+cell AMX_NATIVE_CALL rg_initialize_player_counts(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_num_alive_terrorist, arg_num_alive_ct, arg_num_dead_terrorist, arg_num_dead_ct };
+
+	CHECK_GAMERULES();
+
+	cell& numAliveTerrorist = *getAmxAddr(amx, params[arg_num_alive_terrorist]);
+	cell& numAliveCT        = *getAmxAddr(amx, params[arg_num_alive_ct]);
+	cell& numDeadTerrorist  = *getAmxAddr(amx, params[arg_num_dead_terrorist]);
+	cell& numDeadCT         = *getAmxAddr(amx, params[arg_num_dead_ct]);
+	
+	CSGameRules()->InitializePlayerCounts(numAliveTerrorist, numAliveCT, numDeadTerrorist, numDeadCT);
+	return TRUE;
+}
+
 AMX_NATIVE_INFO Misc_Natives_RG[] =
 {
 	{ "rg_set_animation",             rg_set_animation             },
@@ -2230,6 +2257,8 @@ AMX_NATIVE_INFO Misc_Natives_RG[] =
 	{ "rg_get_iteminfo",              rg_get_iteminfo              },
 
 	{ "rg_hint_message",              rg_hint_message              },
+
+	{ "rg_initialize_player_counts",  rg_initialize_player_counts  },
 
 	{ nullptr, nullptr }
 };
