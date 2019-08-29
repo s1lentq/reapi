@@ -2152,6 +2152,21 @@ cell AMX_NATIVE_CALL rg_hint_message(AMX *amx, cell *params)
 }
 
 /*
+* Instantly check win conditions.
+*
+* @noreturn
+*
+* native rg_check_win_conditions();
+*/
+cell AMX_NATIVE_CALL rg_check_win_conditions(AMX *amx, cell *params)
+{
+	CHECK_GAMERULES();
+
+	CSGameRules()->CheckWinConditions();
+	return TRUE;
+}
+
+/*
 * Instantly initialize player counts.
 *
 * @param num_alive_terrorist   Count alive terrorists
@@ -2258,6 +2273,7 @@ AMX_NATIVE_INFO Misc_Natives_RG[] =
 
 	{ "rg_hint_message",              rg_hint_message              },
 
+	{ "rg_check_win_conditions",      rg_check_win_conditions      },
 	{ "rg_initialize_player_counts",  rg_initialize_player_counts  },
 
 	{ nullptr, nullptr }
