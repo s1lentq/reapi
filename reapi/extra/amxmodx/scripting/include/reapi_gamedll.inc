@@ -840,10 +840,10 @@ native bool:rg_hint_message(const index, const message[], Float:duration = 6.0, 
 /*
 * Instantly initialize player counts.
 *
-* @param num_alive_terrorist 	count alive terrorists
-* @param num_alive_ct		 	count alive counter-terrorists
-* @param num_dead_terrorist		count dead terrorists
-* @param num_dead_ct			count dead counter-terrorists
+* @param num_alive_terrorist   Count alive terrorists
+* @param num_alive_ct          Count alive counter-terrorists
+* @param num_dead_terrorist    Count dead terrorists
+* @param num_dead_ct           Count dead counter-terrorists
 *
 * @noreturn
 */
