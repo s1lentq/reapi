@@ -300,7 +300,7 @@ enum GamedllFunc
 
 	/*
 	* Description:      -
-	* Params:           (const PlayerMove:ppmove, const server)
+	* Params:           (const ppmove, const server)
 	*/
 	RG_PM_Move,
 
