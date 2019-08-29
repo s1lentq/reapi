@@ -122,14 +122,17 @@
 /**
 * get_entvar(entity, var_effects) values
 */
-#define EF_BRIGHTFIELD                  1   // Swirling cloud of particles
-#define EF_MUZZLEFLASH                  2   // Single frame ELIGHT on entity attachment 0
-#define EF_BRIGHTLIGHT                  4   // DLIGHT centered at entity origin
-#define EF_DIMLIGHT                     8   // Player flashlight
-#define EF_INVLIGHT                     16  // Get lighting from ceiling
-#define EF_NOINTERP                     32  // Don't interpolate the next frame
-#define EF_LIGHT                        64  // Rocket flare glow sprite
-#define EF_NODRAW                       128 // Don't draw entity
+#define EF_BRIGHTFIELD                  1    // Swirling cloud of particles
+#define EF_MUZZLEFLASH                  2    // Single frame ELIGHT on entity attachment 0
+#define EF_BRIGHTLIGHT                  4    // DLIGHT centered at entity origin
+#define EF_DIMLIGHT                     8    // Player flashlight
+#define EF_INVLIGHT                     16   // Get lighting from ceiling
+#define EF_NOINTERP                     32   // Don't interpolate the next frame
+#define EF_LIGHT                        64   // Rocket flare glow sprite
+#define EF_NODRAW                       128  // Don't draw entity
+#define EF_FORCEVISIBILITY              2048 // force visibility
+#define EF_OWNER_VISIBILITY             4096 // visibility for owner
+#define EF_OWNER_NO_VISIBILITY          8192 // no visibility for owner
 
 /**
 * Break Model Defines

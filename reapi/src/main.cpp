@@ -95,7 +95,20 @@ void KeyValue(edict_t *pentKeyvalue, KeyValueData *pkvd)
 
 CGameRules *InstallGameRules(IReGameHook_InstallGameRules *chain)
 {
-	return g_pGameRules = chain->callNext();
+	auto gamerules = chain->callNext();
+
+	// Safe check CGameRules API interface version
+	if (!g_ReGameApi->BGetIGameRules(GAMERULES_API_INTERFACE_VERSION))
+	{
+		api_cfg.FailedReGameDllAPI();
+		UTIL_ServerPrint("[%s]: Interface CGameRules API version '%s' not found.\n", Plugin_info.logtag, GAMERULES_API_INTERFACE_VERSION);
+	}
+	else
+	{
+		g_pGameRules = gamerules;
+	}
+
+	return gamerules;
 }
 
 int DispatchSpawn(edict_t *pEntity)

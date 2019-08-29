@@ -7,6 +7,11 @@ CAPI_Config::CAPI_Config() : m_api_rehlds(false), m_api_regame(false), m_api_vtc
 
 }
 
+void CAPI_Config::FailedReGameDllAPI()
+{
+	m_api_regame = false;
+}
+
 void CAPI_Config::Init()
 {
 	m_api_rehlds    = RehldsApi_Init();

@@ -58,5 +58,12 @@ bool RegamedllApi_Init()
 	g_ReGameFuncs = g_ReGameApi->GetFuncs();
 	g_ReGameHookchains = g_ReGameApi->GetHookchains();
 
+	// Safe check CCSEntity API interface version
+	if (!g_ReGameApi->BGetICSEntity(CSENTITY_API_INTERFACE_VERSION))
+	{
+		UTIL_ServerPrint("[%s]: Interface CCSEntity API version '%s' not found.\n", Plugin_info.logtag, CSENTITY_API_INTERFACE_VERSION);
+		return false;
+	}
+
 	return true;
 }
