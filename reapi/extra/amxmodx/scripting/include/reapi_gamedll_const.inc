@@ -756,7 +756,7 @@ enum GamedllFunc_CBasePlayer
 	RG_CBasePlayer_HintMessageEx,
 
 	/*
-	* Description:      Called when a player press use without candidates.
+	* Description:      Called when a player press use and if a suitable candidate is not found.
 	* Return type:      void
 	* Params:           (const this)
 	*/
