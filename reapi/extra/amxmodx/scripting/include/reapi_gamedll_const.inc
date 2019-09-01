@@ -761,6 +761,13 @@ enum GamedllFunc_CBasePlayer
 	* Params:           (const this)
 	*/
 	RG_CBasePlayer_UseEmpty,
+	
+	/*
+	* Description:      Called when a idle player is removed from server.
+	* Return type:      void
+	* Params:           (const this)
+	*/
+	RG_CBasePlayer_DropIdlePlayer,	
 };
 
 /**
