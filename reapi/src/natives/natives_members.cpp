@@ -297,7 +297,7 @@ cell AMX_NATIVE_CALL set_pmove(AMX *amx, cell *params)
 	}
 
 	cell* value = getAmxAddr(amx, params[arg_value]);
-	size_t element = (PARAMS_COUNT == 4) ? *getAmxAddr(amx, params[arg_elem]) : 0;
+	size_t element = (PARAMS_COUNT == 3) ? *getAmxAddr(amx, params[arg_elem]) : 0;
 
 	return set_member(g_pMove, member, value, element);
 }
@@ -325,18 +325,43 @@ cell AMX_NATIVE_CALL get_pmove(AMX *amx, cell *params)
 	size_t element;
 	size_t length;
 
-	if (PARAMS_COUNT == 3) {
-		if (member->type == MEMBER_STRING) {
+	if (PARAMS_COUNT == 3)
+	{
+		if (member->type == MEMBER_STRING)
+		{
 			dest = getAmxAddr(amx, params[arg_2]);
 			length = *getAmxAddr(amx, params[arg_3]);
 			element = 0;
-		} else {
+		}
+		else
+		{
 			dest = getAmxAddr(amx, params[arg_2]);
 			element = *getAmxAddr(amx, params[arg_3]);
 			length = 0;
 		}
 	}
-	else {
+	else if (PARAMS_COUNT == 2)
+	{
+		cell *arg2 = getAmxAddr(amx, params[arg_2]);
+		if (member->isTypeReturnable())
+		{
+			if (member->type == MEMBER_FLOAT) {
+				dest = arg2;
+				element = 0;
+			} else {
+				dest = nullptr;
+				element = *arg2;
+			}
+		}
+		else {
+			dest = arg2;
+			element = 0;
+		}
+
+		length = 0;
+	}
+	else
+	{
 		dest = nullptr;
 		element = 0;
 		length = 0;
