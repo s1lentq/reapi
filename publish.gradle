@@ -4,11 +4,25 @@ import groovyx.net.http.HTTPBuilder
 import static groovyx.net.http.Method.POST
 
 void _copyFileToDir(String from, String to) {
+	if (!project.file(from).exists()) {
+		println 'WARNING: Could not find: ' + from;
+		return;
+	}
+
+	if (!project.file(to).exists()) {
+		project.file(to).mkdirs();
+	}
+
 	def dst = new File(project.file(to), FilenameUtils.getName(from))
 	GradleCppUtils.copyFile(project.file(from), dst, false)
 }
 
 void _copyFile(String from, String to) {
+	if (!project.file(from).exists()) {
+		println 'WARNING: Could not find: ' + from;
+		return;
+	}
+
 	GradleCppUtils.copyFile(project.file(from), project.file(to), false)
 }
 
@@ -22,30 +36,30 @@ task publishPrepareFiles << {
 
 	pubRootDir.mkdirs()
 
-	project.file('publish/publishRoot/reapi/addons/amxmodx/modules').mkdirs()
-	//project.file('publish/publishRoot/reapi/addons/amxmodx/scripting/include').mkdirs()
+	project.file('publish/publishRoot/addons/amxmodx/modules').mkdirs()
+	//project.file('publish/publishRoot/addons/amxmodx/scripting/include').mkdirs()
 
-	_copyFileToDir('publish/reapi_amxx.dll', 'publish/publishRoot/reapi/addons/amxmodx/modules/')
-	//_copyFileToDir('publish/reapi_amxx.pdb', 'publish/publishRoot/reapi/addons/amxmodx/modules/')
-	_copyFile('publish/reapi_amxx_i386.so', 'publish/publishRoot/reapi/addons/amxmodx/modules/reapi_amxx_i386.so')
+	_copyFileToDir('publish/reapi_amxx.dll', 'publish/publishRoot/addons/amxmodx/modules/')
+	//_copyFileToDir('publish/reapi_amxx.pdb', 'publish/publishRoot/addons/amxmodx/modules/')
+	_copyFile('publish/reapi_amxx_i386.so', 'publish/publishRoot/addons/amxmodx/modules/reapi_amxx_i386.so')
 
 	copy {
 		from 'reapi/extra'
-		into 'publish/publishRoot/reapi/addons'
+		into 'publish/publishRoot/addons'
 	}
 	copy {
 		from 'reapi/version/reapi_version.inc'
-		into 'publish/publishRoot/reapi/addons/amxmodx/scripting/include'
+		into 'publish/publishRoot/addons/amxmodx/scripting/include'
 	}
 }
 
 task publishPackage(type: Zip, dependsOn: 'publishPrepareFiles') {
 	baseName = "reapi_${project.version}"
 	destinationDir file('publish')
-	from 'publish/publishRoot/reapi'
+	from 'publish/publishRoot'
 }
 
-task doPackage {
+task doPublish {
 	dependsOn 'publishPackage'
 
 }
