@@ -562,6 +562,26 @@ void CBaseAnimating_ResetSequenceInfo(IReGameHook_CBaseAnimating_ResetSequenceIn
 	callVoidForward(RG_CBaseAnimating_ResetSequenceInfo, original, indexOfEdict(pthis->pev));
 }
 
+BOOL CBasePlayerWeapon_CanDeploy(IReGameHook_CBasePlayerWeapon_CanDeploy *chain, CBasePlayer *pthis)
+{
+	auto original = [chain](int _pthis)
+	{
+		return chain->callNext(getPrivate<CBasePlayerWeapon>(_pthis));
+	};
+
+	return callForward<BOOL>(RG_CBasePlayerWeapon_CanDeploy, original, indexOfEdict(pthis->pev));
+}
+
+BOOL CBasePlayerWeapon_DefaultDeploy(IReGameHook_CBasePlayerWeapon_DefaultDeploy *chain, CBasePlayerWeapon *pthis, char *szViewModel, char *szWeaponModel, int iAnim, char *szAnimExt, int skiplocal)
+{
+	auto original = [chain](int _pthis, char *_szViewModel, char *_szWeaponModel, int _iAnim, char *_szAnimExt, int _skiplocal)
+	{
+		return chain->callNext(getPrivate<CBasePlayerWeapon>(_pthis), _szViewModel, _szWeaponModel, _iAnim, _szAnimExt, _skiplocal);
+	};
+
+	return callForward<BOOL>(RG_CBasePlayerWeapon_DefaultDeploy, original, indexOfEdict(pthis->pev), szViewModel, szWeaponModel, iAnim, szAnimExt, skiplocal);
+}
+
 int GetForceCamera(IReGameHook_GetForceCamera *chain, CBasePlayer *pObserver)
 {
 	auto original = [chain](int _pObserver)

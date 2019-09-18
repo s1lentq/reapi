@@ -764,6 +764,26 @@ enum GamedllFunc_CBasePlayer
 };
 
 /**
+* GamedllFunc CBasePlayer
+*/
+enum GamedllFunc_CBasePlayerWeapon
+{
+	/*
+	* Description:      -
+	* Return type:      bool
+	* Params:           (const this)
+	*/
+	RG_CBasePlayerWeapon_CanDeploy = BEGIN_FUNC_REGION(weapon),
+
+	/*
+	* Description:      -
+	* Return type:      bool
+	* Params:           (const this, szViewModel[], szWeaponModel[], iAnim, szAnimExt[], skiplocal)
+	*/
+	RG_CBasePlayerWeapon_DefaultDeploy,
+};
+
+/**
 * GamedllFunc CSGameRules
 */
 enum GamedllFunc_CSGameRules
