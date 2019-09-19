@@ -33,6 +33,7 @@ extern hook_t hooklist_gamerules[];
 extern hook_t hooklist_rechecker[];
 extern hook_t hooklist_grenade[];
 extern hook_t hooklist_weaponbox[];
+extern hook_t hooklist_weapon[];
 
 enum
 {
@@ -57,6 +58,7 @@ struct hooklist_t
 			CASE(rechecker)
 			CASE(grenade)
 			CASE(weaponbox)
+			CASE(weapon)
 		}
 
 		#undef CASE
