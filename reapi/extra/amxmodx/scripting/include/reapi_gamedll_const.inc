@@ -781,6 +781,13 @@ enum GamedllFunc_CBasePlayerWeapon
 	* Params:           (const this, szViewModel[], szWeaponModel[], iAnim, szAnimExt[], skiplocal)
 	*/
 	RG_CBasePlayerWeapon_DefaultDeploy,
+
+	/*
+	* Description:      -
+	* Return type:      int
+	* Params:           (const this, iClipSize, iAnim, Float:fDelay)
+	*/
+	RG_CBasePlayerWeapon_DefaultReload,
 };
 
 /**

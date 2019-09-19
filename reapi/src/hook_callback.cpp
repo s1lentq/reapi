@@ -582,6 +582,16 @@ BOOL CBasePlayerWeapon_DefaultDeploy(IReGameHook_CBasePlayerWeapon_DefaultDeploy
 	return callForward<BOOL>(RG_CBasePlayerWeapon_DefaultDeploy, original, indexOfEdict(pthis->pev), szViewModel, szWeaponModel, iAnim, szAnimExt, skiplocal);
 }
 
+int CBasePlayerWeapon_DefaultReload(IReGameHook_CBasePlayerWeapon_DefaultReload *chain, CBasePlayerWeapon *pthis, int iClipSize, int iAnim, float fDelay)
+{
+	auto original = [chain](int _pthis, int _iClipSize, int _iAnim, float _fDelay)
+	{
+		return chain->callNext(getPrivate<CBasePlayerWeapon>(_pthis), _iClipSize, _iAnim, _fDelay);
+	};
+
+	return callForward<int>(RG_CBasePlayerWeapon_DefaultReload, original, indexOfEdict(pthis->pev), iClipSize, iAnim, fDelay);
+}
+
 int GetForceCamera(IReGameHook_GetForceCamera *chain, CBasePlayer *pObserver)
 {
 	auto original = [chain](int _pObserver)
