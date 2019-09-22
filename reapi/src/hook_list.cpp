@@ -201,6 +201,7 @@ hook_t hooklist_weapon[] = {
 	DLL(CBasePlayerWeapon_CanDeploy),
 	DLL(CBasePlayerWeapon_DefaultDeploy),
 	DLL(CBasePlayerWeapon_DefaultReload),
+	DLL(CBasePlayerWeapon_DefaultShotgunReload),
 };
 
 #define RCHECK(h,...) { {}, {}, #h, "ReChecker", [](){ return api_cfg.hasRechecker(); }, ((!(RC_##h & (MAX_REGION_RANGE - 1)) ? regfunc::current_cell = 1, true : false) || (RC_##h & (MAX_REGION_RANGE - 1)) == regfunc::current_cell++) ? regfunc(h##__VA_ARGS__) : regfunc(#h#__VA_ARGS__), [](){ g_RecheckerHookchains->h()->registerHook(&h); }, [](){ g_RecheckerHookchains->h()->unregisterHook(&h); }}

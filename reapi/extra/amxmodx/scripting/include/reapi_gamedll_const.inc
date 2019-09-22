@@ -788,6 +788,13 @@ enum GamedllFunc_CBasePlayerWeapon
 	* Params:           (const this, iClipSize, iAnim, Float:fDelay)
 	*/
 	RG_CBasePlayerWeapon_DefaultReload,
+
+	/*
+	* Description:      -
+	* Return type:      bool
+	* Params:           (const this, iAnim, iStartAnim, Float:fDelay, Float:fStartDelay, const pszReloadSound1[], const pszReloadSound2[])
+	*/
+	RG_CBasePlayerWeapon_DefaultShotgunReload,
 };
 
 /**

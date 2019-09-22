@@ -208,6 +208,7 @@ enum GamedllFunc_CBasePlayerWeapon
 	RG_CBasePlayerWeapon_CanDeploy = BEGIN_FUNC_REGION(weapon),
 	RG_CBasePlayerWeapon_DefaultDeploy,
 	RG_CBasePlayerWeapon_DefaultReload,
+	RG_CBasePlayerWeapon_DefaultShotgunReload,
 
 	// [...]
 };
