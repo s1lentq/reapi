@@ -764,6 +764,40 @@ enum GamedllFunc_CBasePlayer
 };
 
 /**
+* GamedllFunc CBasePlayer
+*/
+enum GamedllFunc_CBasePlayerWeapon
+{
+	/*
+	* Description:      -
+	* Return type:      BOOL
+	* Params:           (const this)
+	*/
+	RG_CBasePlayerWeapon_CanDeploy = BEGIN_FUNC_REGION(weapon),
+
+	/*
+	* Description:      -
+	* Return type:      BOOL
+	* Params:           (const this, szViewModel[], szWeaponModel[], iAnim, szAnimExt[], skiplocal)
+	*/
+	RG_CBasePlayerWeapon_DefaultDeploy,
+
+	/*
+	* Description:      -
+	* Return type:      int
+	* Params:           (const this, iClipSize, iAnim, Float:fDelay)
+	*/
+	RG_CBasePlayerWeapon_DefaultReload,
+
+	/*
+	* Description:      -
+	* Return type:      bool
+	* Params:           (const this, iAnim, iStartAnim, Float:fDelay, Float:fStartDelay, const pszReloadSound1[], const pszReloadSound2[])
+	*/
+	RG_CBasePlayerWeapon_DefaultShotgunReload,
+};
+
+/**
 * GamedllFunc CSGameRules
 */
 enum GamedllFunc_CSGameRules

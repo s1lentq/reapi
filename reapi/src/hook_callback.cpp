@@ -562,6 +562,46 @@ void CBaseAnimating_ResetSequenceInfo(IReGameHook_CBaseAnimating_ResetSequenceIn
 	callVoidForward(RG_CBaseAnimating_ResetSequenceInfo, original, indexOfEdict(pthis->pev));
 }
 
+BOOL CBasePlayerWeapon_CanDeploy(IReGameHook_CBasePlayerWeapon_CanDeploy *chain, CBasePlayerWeapon *pthis)
+{
+	auto original = [chain](int _pthis)
+	{
+		return chain->callNext(getPrivate<CBasePlayerWeapon>(_pthis));
+	};
+
+	return callForward<BOOL>(RG_CBasePlayerWeapon_CanDeploy, original, indexOfEdict(pthis->pev));
+}
+
+BOOL CBasePlayerWeapon_DefaultDeploy(IReGameHook_CBasePlayerWeapon_DefaultDeploy *chain, CBasePlayerWeapon *pthis, char *szViewModel, char *szWeaponModel, int iAnim, char *szAnimExt, int skiplocal)
+{
+	auto original = [chain](int _pthis, char *_szViewModel, char *_szWeaponModel, int _iAnim, char *_szAnimExt, int _skiplocal)
+	{
+		return chain->callNext(getPrivate<CBasePlayerWeapon>(_pthis), _szViewModel, _szWeaponModel, _iAnim, _szAnimExt, _skiplocal);
+	};
+
+	return callForward<BOOL>(RG_CBasePlayerWeapon_DefaultDeploy, original, indexOfEdict(pthis->pev), szViewModel, szWeaponModel, iAnim, szAnimExt, skiplocal);
+}
+
+int CBasePlayerWeapon_DefaultReload(IReGameHook_CBasePlayerWeapon_DefaultReload *chain, CBasePlayerWeapon *pthis, int iClipSize, int iAnim, float fDelay)
+{
+	auto original = [chain](int _pthis, int _iClipSize, int _iAnim, float _fDelay)
+	{
+		return chain->callNext(getPrivate<CBasePlayerWeapon>(_pthis), _iClipSize, _iAnim, _fDelay);
+	};
+
+	return callForward<int>(RG_CBasePlayerWeapon_DefaultReload, original, indexOfEdict(pthis->pev), iClipSize, iAnim, fDelay);
+}
+
+bool CBasePlayerWeapon_DefaultShotgunReload(IReGameHook_CBasePlayerWeapon_DefaultShotgunReload *chain, CBasePlayerWeapon *pthis, int iAnim, int iStartAnim, float fDelay, float fStartDelay, const char *pszReloadSound1, const char *pszReloadSound2)
+{
+	auto original = [chain](int _pthis, int _iAnim, int _iStartAnim, float _fDelay, float _fStartDelay, const char *_pszReloadSound1, const char *_pszReloadSound2)
+	{
+		return chain->callNext(getPrivate<CBasePlayerWeapon>(_pthis), _iAnim, _iStartAnim, _fDelay, _fStartDelay, _pszReloadSound1, _pszReloadSound2);
+	};
+
+	return callForward<int>(RG_CBasePlayerWeapon_DefaultShotgunReload, original, indexOfEdict(pthis->pev), iAnim, iStartAnim, fDelay, fStartDelay, pszReloadSound1, pszReloadSound2);
+}
+
 int GetForceCamera(IReGameHook_GetForceCamera *chain, CBasePlayer *pObserver)
 {
 	auto original = [chain](int _pObserver)

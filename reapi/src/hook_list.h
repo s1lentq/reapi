@@ -33,6 +33,7 @@ extern hook_t hooklist_gamerules[];
 extern hook_t hooklist_rechecker[];
 extern hook_t hooklist_grenade[];
 extern hook_t hooklist_weaponbox[];
+extern hook_t hooklist_weapon[];
 
 enum
 {
@@ -57,6 +58,7 @@ struct hooklist_t
 			CASE(rechecker)
 			CASE(grenade)
 			CASE(weaponbox)
+			CASE(weapon)
 		}
 
 		#undef CASE
@@ -76,7 +78,8 @@ struct hooklist_t
 		ht_gamerules,
 		ht_rechecker,
 		ht_grenade,
-		ht_weaponbox
+		ht_weaponbox,
+		ht_weapon
 	};
 };
 
@@ -196,6 +199,16 @@ enum GamedllFunc_CGrenade
 enum GamedllFunc_CWeaponBox
 {
 	RG_CWeaponBox_SetModel = BEGIN_FUNC_REGION(weaponbox),
+
+	// [...]
+};
+
+enum GamedllFunc_CBasePlayerWeapon
+{
+	RG_CBasePlayerWeapon_CanDeploy = BEGIN_FUNC_REGION(weapon),
+	RG_CBasePlayerWeapon_DefaultDeploy,
+	RG_CBasePlayerWeapon_DefaultReload,
+	RG_CBasePlayerWeapon_DefaultShotgunReload,
 
 	// [...]
 };
