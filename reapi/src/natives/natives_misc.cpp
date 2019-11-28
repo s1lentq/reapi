@@ -1570,13 +1570,13 @@ cell AMX_NATIVE_CALL rg_transfer_c4(AMX *amx, cell *params)
 /*
 * Instantly reload client's weapons.
 *
-* @param index              Client index
-* @param weapon             Weapon entity-index, if 0 then all weapons will be reloaded
-* @param bFullBPAmmo        Keep the amount of bpammo
+* @param index            Client index
+* @param weapon           Weapon entity-index, if 0 then all weapons will be reloaded
+* @param bRefillBPAmmo    Refill amount of backpack ammo
 *
-* @return                   1 on success, 0 otherwise
+* @return                 1 on success, 0 otherwise
 *
-* native rg_instant_reload_weapons(const index, const weapon = 0, const bool:bFullBPAmmo = true);
+* native rg_instant_reload_weapons(const index, const weapon = 0, const bool:bRefillBPAmmo = true);
 */
 cell AMX_NATIVE_CALL rg_instant_reload_weapons(AMX *amx, cell *params)
 {

@@ -650,13 +650,13 @@ native rg_transfer_c4(const index, const receiver = 0);
 /*
 * Instantly reload client's weapons.
 *
-* @param index         Client index
-* @param weapon        Weapon entity-index, if 0 then all weapons will be reloaded
-* @param bFullBPAmmo   Keep the amount of bpammo
+* @param index           Client index
+* @param weapon          Weapon entity-index, if 0 then all weapons will be reloaded
+* @param bRefillBPAmmo   Refill amount of backpack ammo
 *
-* @return              1 on success, 0 otherwise
+* @return                1 on success, 0 otherwise
 */
-native rg_instant_reload_weapons(const index, const weapon = 0, const bool:bFullBPAmmo = true);
+native rg_instant_reload_weapons(const index, const weapon = 0, const bool:bRefillBPAmmo = true);
 
 /*
 * Sets the amount of reward in the game account for all players.
