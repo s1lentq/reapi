@@ -1570,16 +1570,17 @@ cell AMX_NATIVE_CALL rg_transfer_c4(AMX *amx, cell *params)
 /*
 * Instantly reload client's weapons.
 *
-* @param index      Client index
-* @param weapon     Weapon entity-index, if 0 then all weapons will be reloaded
+* @param index              Client index
+* @param weapon             Weapon entity-index, if 0 then all weapons will be reloaded
+* @param bFullBPAmmo        Keep the amount of bpammo
 *
-* @return           1 on success, 0 otherwise
+* @return                   1 on success, 0 otherwise
 *
-* native rg_instant_reload_weapons(const index, const weapon = 0);
+* native rg_instant_reload_weapons(const index, const weapon = 0, const bool:bFullBPAmmo = true);
 */
 cell AMX_NATIVE_CALL rg_instant_reload_weapons(AMX *amx, cell *params)
 {
-	enum args_e { arg_count, arg_index, arg_weapon, arg_force_reload, arg_force_refill };
+	enum args_e { arg_count, arg_index, arg_weapon, /* arg_force_reload, */ arg_force_refill };
 
 	CHECK_ISPLAYER(arg_index);
 
@@ -1596,7 +1597,7 @@ cell AMX_NATIVE_CALL rg_instant_reload_weapons(AMX *amx, cell *params)
 		}
 	}
 
-	pPlayer->CSPlayer()->ReloadWeapons(pWeapon, true, true);
+	pPlayer->CSPlayer()->ReloadWeapons(pWeapon, true, params[arg_force_refill] != 0);
 	return TRUE;
 }
 
