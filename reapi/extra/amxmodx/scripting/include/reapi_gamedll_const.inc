@@ -4440,6 +4440,30 @@ enum CCSPlayer_Members
 	* Set params:       set_member(index, member, Float:value);
 	*/
 	m_flSpawnProtectionEndTime,
+	
+	/*
+	* Description:      -
+	* Member type:      class Vector
+	* Get params:       get_member(index, member, Float:output[3]);
+	* Set params:       set_member(index, member, Float:dest[3]);
+	*/
+	m_vecOldvAngle,
+
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_iWeaponInfiniteAmmo,
+
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_iWeaponInfiniteIds,
 };
 
 /**
