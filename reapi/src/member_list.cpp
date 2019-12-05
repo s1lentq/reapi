@@ -742,6 +742,9 @@ member_t memberlist_csplayer[] = {
 	CSPL_MEMBERS(m_bForceShowMenu),
 	CSPL_MEMBERS(m_flRespawnPending),
 	CSPL_MEMBERS(m_flSpawnProtectionEndTime),
+	CSPL_MEMBERS(m_vecOldvAngle),
+	CSPL_MEMBERS(m_iWeaponInfiniteAmmo),
+	CSPL_MEMBERS(m_iWeaponInfiniteIds),
 };
 
 member_t memberlist_baseitem[] = {

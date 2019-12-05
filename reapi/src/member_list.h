@@ -740,6 +740,9 @@ enum CSPlayer_Members
 	m_bForceShowMenu,
 	m_flRespawnPending,
 	m_flSpawnProtectionEndTime,
+	m_vecOldvAngle,
+	m_iWeaponInfiniteAmmo,
+	m_iWeaponInfiniteIds,
 };
 
 enum CBasePlayerItem_Members

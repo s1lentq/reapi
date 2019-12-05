@@ -101,6 +101,9 @@ public:
 	bool m_bForceShowMenu;
 	float m_flRespawnPending;
 	float m_flSpawnProtectionEndTime;
+	Vector m_vecOldvAngle;
+	int m_iWeaponInfiniteAmmo;
+	int m_iWeaponInfiniteIds;
 };
 
 // Inlines
