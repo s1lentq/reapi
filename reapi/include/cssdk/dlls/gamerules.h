@@ -673,6 +673,9 @@ typedef struct mapcycle_s
 class CCStrikeGameMgrHelper: public IVoiceGameMgrHelper {
 public:
 	virtual bool CanPlayerHearPlayer(CBasePlayer *pListener, CBasePlayer *pSender) = 0;
+	virtual void ResetCanHearPlayer(int index) = 0;
+	virtual void SetCanHearPlayer(CBasePlayer* pListener, CBasePlayer* pSender, bool bCanHear) = 0;
+	virtual bool GetCanHearPlayer(CBasePlayer* pListener, CBasePlayer* pSender) = 0;
 };
 
 extern CGameRules *g_pGameRules;

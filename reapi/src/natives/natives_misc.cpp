@@ -2214,6 +2214,63 @@ cell AMX_NATIVE_CALL rg_initialize_player_counts(AMX *amx, cell *params)
 	return TRUE;
 }
 
+/*
+* Set if player can hear another player
+*
+* @param listener              Listener player id
+* @param sender                Sender player id
+* @param can_hear              Can listener hear sender
+*
+* @noreturn
+*
+* native rg_set_can_hear_player(const listener, const sender, const bool:can_hear);
+*/
+cell AMX_NATIVE_CALL rg_set_can_hear_player(AMX* amx, cell* params)
+{
+	enum args_e { arg_count, arg_listener, arg_sender, arg_can_hear };
+
+	CHECK_GAMERULES();
+	CHECK_ISPLAYER(arg_listener);
+	CHECK_ISPLAYER(arg_sender);
+
+	CBasePlayer* pListener = UTIL_PlayerByIndex(params[arg_listener]);
+	CHECK_CONNECTED(pListener, arg_listener);
+
+	CBasePlayer* pSender = UTIL_PlayerByIndex(params[arg_sender]);
+	CHECK_CONNECTED(pSender, arg_sender);
+
+	CSGameRules()->m_VoiceGameMgr.m_pHelper->SetCanHearPlayer(pListener, pSender, params[arg_can_hear] != 0);
+
+	return TRUE;
+}
+
+/*
+* Get if player can hear another player
+*
+* @param listener              Listener player id
+* @param sender                Sender player id
+*
+* @return boolean
+*
+* native bool:rg_get_can_hear_player(const listener, const sender);
+*/
+cell AMX_NATIVE_CALL rg_get_can_hear_player(AMX* amx, cell* params)
+{
+	enum args_e { arg_count, arg_listener, arg_sender };
+
+	CHECK_GAMERULES();
+	CHECK_ISPLAYER(arg_listener);
+	CHECK_ISPLAYER(arg_sender);
+
+	CBasePlayer* pListener = UTIL_PlayerByIndex(params[arg_listener]);
+	CHECK_CONNECTED(pListener, arg_listener);
+
+	CBasePlayer* pSender = UTIL_PlayerByIndex(params[arg_sender]);
+	CHECK_CONNECTED(pSender, arg_sender);
+
+	return CSGameRules()->m_VoiceGameMgr.m_pHelper->GetCanHearPlayer(pListener, pSender) ? TRUE : FALSE;
+}
+
 AMX_NATIVE_INFO Misc_Natives_RG[] =
 {
 	{ "rg_set_animation",             rg_set_animation             },
@@ -2297,6 +2354,9 @@ AMX_NATIVE_INFO Misc_Natives_RG[] =
 	{ "rg_restart_round",             rg_restart_round             },
 	{ "rg_check_win_conditions",      rg_check_win_conditions      },
 	{ "rg_initialize_player_counts",  rg_initialize_player_counts  },
+
+	{ "rg_set_can_hear_player",       rg_set_can_hear_player       },
+	{ "rg_get_can_hear_player",       rg_get_can_hear_player       },
 
 	{ nullptr, nullptr }
 };
