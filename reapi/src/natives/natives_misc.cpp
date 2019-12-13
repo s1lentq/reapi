@@ -2215,6 +2215,30 @@ cell AMX_NATIVE_CALL rg_initialize_player_counts(AMX *amx, cell *params)
 }
 
 /*
+* Reset if player can hear another player.
+* NOTE: All players can hear player and player can hear all players
+*
+* @param index                 Player id
+* @noreturn
+*
+* native rg_reset_can_hear_player(const index);
+*/
+cell AMX_NATIVE_CALL rg_reset_can_hear_player(AMX* amx, cell* params)
+{
+	enum args_e { arg_count, arg_index };
+
+	CHECK_GAMERULES();
+	CHECK_ISPLAYER(arg_index);
+
+	CBasePlayer* pPlayer = UTIL_PlayerByIndex(params[arg_index]);
+	CHECK_CONNECTED(pPlayer, arg_index);
+
+	CSGameRules()->m_VoiceGameMgr.m_pHelper->ResetCanHearPlayer(pPlayer->edict());
+
+	return TRUE;
+}
+
+/*
 * Set if player can hear another player
 *
 * @param listener              Listener player id
@@ -2268,7 +2292,7 @@ cell AMX_NATIVE_CALL rg_get_can_hear_player(AMX* amx, cell* params)
 	CBasePlayer* pSender = UTIL_PlayerByIndex(params[arg_sender]);
 	CHECK_CONNECTED(pSender, arg_sender);
 
-	return CSGameRules()->m_VoiceGameMgr.m_pHelper->GetCanHearPlayer(pListener, pSender) ? TRUE : FALSE;
+	return CSGameRules()->m_VoiceGameMgr.m_pHelper->GetCanHearPlayer(pListener, pSender);
 }
 
 AMX_NATIVE_INFO Misc_Natives_RG[] =
@@ -2355,6 +2379,7 @@ AMX_NATIVE_INFO Misc_Natives_RG[] =
 	{ "rg_check_win_conditions",      rg_check_win_conditions      },
 	{ "rg_initialize_player_counts",  rg_initialize_player_counts  },
 
+	{ "rg_reset_can_hear_player",     rg_reset_can_hear_player     },
 	{ "rg_set_can_hear_player",       rg_set_can_hear_player       },
 	{ "rg_get_can_hear_player",       rg_get_can_hear_player       },
 

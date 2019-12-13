@@ -865,6 +865,15 @@ native rg_check_win_conditions();
 native rg_initialize_player_counts(&num_alive_terrorist = 0, &num_alive_ct = 0, &num_dead_terrorist = 0, &num_dead_ct = 0);
 
 /*
+* Reset if player can hear another player.
+* NOTE: All players can hear player and player can hear all players
+*
+* @param index                 Player id
+* @noreturn
+*/
+native rg_reset_can_hear_player(const index);
+
+/*
 * Set if player can hear another player
 *
 * @param listener              Listener player id
