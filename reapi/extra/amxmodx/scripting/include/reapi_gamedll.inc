@@ -866,7 +866,6 @@ native rg_initialize_player_counts(&num_alive_terrorist = 0, &num_alive_ct = 0, 
 
 /*
 * Reset if player can hear another player.
-* NOTE: All players can hear player and player can hear all players
 *
 * @param index                 Player id
 * @noreturn
