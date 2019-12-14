@@ -2216,7 +2216,6 @@ cell AMX_NATIVE_CALL rg_initialize_player_counts(AMX *amx, cell *params)
 
 /*
 * Reset if player can hear another player.
-* NOTE: All players can hear player and player can hear all players
 *
 * @param index                 Player id
 * @noreturn
