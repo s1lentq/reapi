@@ -743,6 +743,7 @@ enum CSPlayer_Members
 	m_vecOldvAngle,
 	m_iWeaponInfiniteAmmo,
 	m_iWeaponInfiniteIds,
+	m_bCanShootOverride,
 };
 
 enum CBasePlayerItem_Members

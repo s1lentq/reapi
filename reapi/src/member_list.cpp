@@ -745,6 +745,7 @@ member_t memberlist_csplayer[] = {
 	CSPL_MEMBERS(m_vecOldvAngle),
 	CSPL_MEMBERS(m_iWeaponInfiniteAmmo),
 	CSPL_MEMBERS(m_iWeaponInfiniteIds),
+	CSPL_MEMBERS(m_bCanShootOverride),
 };
 
 member_t memberlist_baseitem[] = {
