@@ -215,7 +215,7 @@ native WeaponIdType:GetGrenadeType(const entityIndex);
 * @param viewEntity  Entity index
 *
 */
-native engset_view(const index, const const viewEntity);
+native engset_view(const index, const viewEntity);
 
 /*
 * Gets the return index of the current view entity on a client.

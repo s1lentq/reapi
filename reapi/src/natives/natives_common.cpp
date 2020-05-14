@@ -75,7 +75,7 @@ cell AMX_NATIVE_CALL amx_GetGrenadeType(AMX *amx, cell *params)
 * @param index       Client index
 * @param viewEntity  Entity index
 *
-* native engset_view(const index, const const viewEntity);
+* native engset_view(const index, const viewEntity);
 */
 cell AMX_NATIVE_CALL amx_engset_view(AMX *amx, cell *params)
 {
