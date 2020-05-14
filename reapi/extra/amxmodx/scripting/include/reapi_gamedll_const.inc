@@ -2541,7 +2541,8 @@ enum CBasePlayer_Members
 	m_iMapVote,
 
 	/*
-	* Description:      -
+	* Description:      The player can't shoot for freezetime period or during defuse bomb
+	* @note             This member isn't flexible, you can't override it for other behavior, so for this purpose use m_bCanShootOverride
 	* Member type:      bool
 	* Get params:       get_member(index, member);
 	* Set params:       set_member(index, member, bool:value);
@@ -4505,6 +4506,14 @@ enum CCSPlayer_Members
 	* Set params:       set_member(index, member, value);
 	*/
 	m_iWeaponInfiniteIds,
+
+	/*
+	* Description:      Forcing override for CBasePlayer::m_bCanShoot
+	* Member type:      bool
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, bool:value);
+	*/
+	m_bCanShootOverride,
 };
 
 /**

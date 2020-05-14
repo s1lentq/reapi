@@ -31,9 +31,21 @@
 #include <API/CSPlayerItem.h>
 #include <API/CSPlayerWeapon.h>
 
+enum WeaponInfiniteAmmoMode
+{
+	WPNMODE_INFINITE_CLIP = 1,
+	WPNMODE_INFINITE_BPAMMO
+};
+
 class CCSPlayer: public CCSMonster {
 public:
-	CCSPlayer() : m_bForceShowMenu(false), m_flRespawnPending(0), m_flSpawnProtectionEndTime(0)
+	CCSPlayer() :
+		m_bForceShowMenu(false),
+		m_flRespawnPending(0),
+		m_flSpawnProtectionEndTime(0),
+		m_iWeaponInfiniteAmmo(0),
+		m_iWeaponInfiniteIds(0),
+		m_bCanShootOverride(false)
 	{
 		m_szModel[0] = '\0';
 	}
@@ -47,7 +59,7 @@ public:
 	virtual void GiveShield(bool bDeploy = true);
 	virtual void DropShield(bool bDeploy = true);
 	virtual void DropPlayerItem(const char *pszItemName);
-	virtual void RemoveShield();
+	virtual bool RemoveShield();
 	virtual void RemoveAllItems(bool bRemoveSuit);
 	virtual bool RemovePlayerItem(const char* pszItemName);
 	virtual void SetPlayerModel(bool bHasC4);
@@ -84,6 +96,11 @@ public:
 	virtual void RemoveSpawnProtection();
 	virtual bool HintMessageEx(const char *pMessage, float duration = 6.0f, bool bDisplayIfPlayerDead = false, bool bOverride = false);
 
+	void Reset();
+
+	void OnSpawn();
+	void OnKilled();
+
 	CBasePlayer *BasePlayer() const;
 
 public:
@@ -95,6 +112,7 @@ public:
 	};
 
 	EProtectionState GetProtectionState() const;
+	bool CheckActivityInGame();
 
 public:
 	char m_szModel[32];
@@ -104,6 +122,7 @@ public:
 	Vector m_vecOldvAngle;
 	int m_iWeaponInfiniteAmmo;
 	int m_iWeaponInfiniteIds;
+	bool m_bCanShootOverride;
 };
 
 // Inlines

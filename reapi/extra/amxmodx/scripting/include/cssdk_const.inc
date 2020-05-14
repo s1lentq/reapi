@@ -192,6 +192,7 @@
 #define PLAYER_HOLDING_SHIELD           (1<<3)
 #define PLAYER_PREVENT_DUCK             (1<<4)
 #define PLAYER_PREVENT_CLIMB            (1<<5) // The player can't climb ladder
+#define PLAYER_PREVENT_JUMP             (1<<6)
 
 /**
 * Instant damage values for use with the 3rd parameter of the "Damage" client
