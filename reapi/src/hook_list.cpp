@@ -208,9 +208,9 @@ hook_t hooklist_weapon[] = {
 };
 
 hook_t hooklist_gib[] = {
-	DLL(CGib_SpawnGib),
+	DLL(CGib_Spawn),
 	DLL(CGib_BounceGibTouch),
-	DLL(CGib_WaitGibTillLand),
+	DLL(CGib_WaitTillLand),
 };
 
 #define RCHECK(h,...) { {}, {}, #h, "ReChecker", [](){ return api_cfg.hasRechecker(); }, ((!(RC_##h & (MAX_REGION_RANGE - 1)) ? regfunc::current_cell = 1, true : false) || (RC_##h & (MAX_REGION_RANGE - 1)) == regfunc::current_cell++) ? regfunc(h##__VA_ARGS__) : regfunc(#h#__VA_ARGS__), [](){ g_RecheckerHookchains->h()->registerHook(&h); }, [](){ g_RecheckerHookchains->h()->unregisterHook(&h); }}

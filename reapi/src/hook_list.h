@@ -253,9 +253,9 @@ enum GamedllFunc_CSGameRules
 
 enum GamedllFunc_CGib
 {
-	RG_CGib_SpawnGib = BEGIN_FUNC_REGION(gib),
+	RG_CGib_Spawn = BEGIN_FUNC_REGION(gib),
 	RG_CGib_BounceGibTouch,
-	RG_CGib_WaitGibTillLand,
+	RG_CGib_WaitTillLand,
 
 	// [...]
 };

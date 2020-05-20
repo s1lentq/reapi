@@ -1135,14 +1135,14 @@ void SpawnRandomGibs(IReGameHook_SpawnRandomGibs *chain, entvars_t *pevVictim, i
 	callVoidForward(RG_SpawnRandomGibs, original, indexOfEdict(pevVictim), cGibs, human);
 }
 
-void CGib_SpawnGib(IReGameHook_CGib_SpawnGib *chain, CGib *pthis, const char *szGibModel)
+void CGib_Spawn(IReGameHook_CGib_Spawn *chain, CGib *pthis, const char *szGibModel)
 {
 	auto original = [chain](int _pthis, const char *_szGibModel)
 	{
 		chain->callNext(getPrivate<CGib>(_pthis), _szGibModel);
 	};
 
-	callVoidForward(RG_CGib_SpawnGib, original, indexOfEdict(pthis->pev), szGibModel);
+	callVoidForward(RG_CGib_Spawn, original, indexOfEdict(pthis->pev), szGibModel);
 }
 
 void CGib_BounceGibTouch(IReGameHook_CGib_BounceGibTouch *chain, CGib *pthis, CBaseEntity *pOther)
@@ -1155,14 +1155,14 @@ void CGib_BounceGibTouch(IReGameHook_CGib_BounceGibTouch *chain, CGib *pthis, CB
 	callVoidForward(RG_CGib_BounceGibTouch, original, indexOfEdict(pthis->pev), indexOfEdict(pOther->pev));
 }
 
-void CGib_WaitGibTillLand(IReGameHook_CGib_WaitGibTillLand *chain, CGib *pthis)
+void CGib_WaitTillLand(IReGameHook_CGib_WaitTillLand *chain, CGib *pthis)
 {
 	auto original = [chain](int _pthis)
 	{
 		chain->callNext(getPrivate<CGib>(_pthis));
 	};
 
-	callVoidForward(RG_CGib_WaitGibTillLand, original, indexOfEdict(pthis->pev));
+	callVoidForward(RG_CGib_WaitTillLand, original, indexOfEdict(pthis->pev));
 }
 
 int g_iClientStartSpeak, g_iClientStopSpeak;

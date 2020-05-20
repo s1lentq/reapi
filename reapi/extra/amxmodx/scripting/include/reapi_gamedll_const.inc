@@ -826,7 +826,7 @@ enum GamedllFunc_CGib
 	* Description:      -
 	* Params:           (const this, const szGibModel[])
 	*/
-	RG_CGib_SpawnGib = BEGIN_FUNC_REGION(gib),
+	RG_CGib_Spawn = BEGIN_FUNC_REGION(gib),
 
 	/*
 	* Description:      -
@@ -838,7 +838,7 @@ enum GamedllFunc_CGib
 	* Description:      -
 	* Params:           (const this)
 	*/
-	RG_CGib_WaitGibTillLand,
+	RG_CGib_WaitTillLand,
 };
 
 /**

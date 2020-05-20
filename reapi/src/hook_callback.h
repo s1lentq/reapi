@@ -435,9 +435,9 @@ void CGrenade_ExplodeSmokeGrenade(IReGameHook_CGrenade_ExplodeSmokeGrenade *chai
 void CGrenade_ExplodeBomb(IReGameHook_CGrenade_ExplodeBomb *chain, CGrenade *pthis, TraceResult *ptr, int bitsDamageType);
 
 // regamedll functions - gib
-void CGib_SpawnGib(IReGameHook_CGib_SpawnGib *chain, CGib *pthis, const char *szGibModel);
+void CGib_Spawn(IReGameHook_CGib_Spawn *chain, CGib *pthis, const char *szGibModel);
 void CGib_BounceGibTouch(IReGameHook_CGib_BounceGibTouch *chain, CGib *pthis, CBaseEntity *pOther);
-void CGib_WaitGibTillLand(IReGameHook_CGib_WaitGibTillLand *chain, CGib *pthis);
+void CGib_WaitTillLand(IReGameHook_CGib_WaitTillLand *chain, CGib *pthis);
 
 extern int g_iClientStartSpeak;
 extern int g_iClientStopSpeak;
