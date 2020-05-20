@@ -23,7 +23,8 @@ enum hooks_tables_e
 	ht_rechecker,
 	ht_grenade,
 	ht_weaponbox,
-	ht_weapon
+	ht_weapon,
+	ht_gib
 };
 
 enum members_tables_e
@@ -75,7 +76,8 @@ enum members_tables_e
 	mt_shield,
 	mt_rebuystruct,
 	mt_mapinfo,
-	mt_csplayerweapon
+	mt_csplayerweapon,
+	mt_gib
 };
 
 // Is like FNullEnt
@@ -137,7 +139,7 @@ enum HookChain
 *
 * @return           Returns a hook handle. Use EnableHookChain/DisableHookChain to toggle the forward on or off
 */
-native HookChain:RegisterHookChain({EngineFunc, GamedllFunc, GamedllFunc_CBaseAnimating, GamedllFunc_CBasePlayer, GamedllFunc_CSGameRules, GamedllFunc_CGrenade, GamedllFunc_CWeaponBox, ReCheckerFunc, GamedllFunc_CBasePlayerWeapon}:function_id, const callback[], post = 0);
+native HookChain:RegisterHookChain({EngineFunc, GamedllFunc, GamedllFunc_CBaseAnimating, GamedllFunc_CBasePlayer, GamedllFunc_CSGameRules, GamedllFunc_CGrenade, GamedllFunc_CWeaponBox, ReCheckerFunc, GamedllFunc_CBasePlayerWeapon, GamedllFunc_CGib}:function_id, const callback[], post = 0);
 
 /*
 * Stops a hook from triggering.

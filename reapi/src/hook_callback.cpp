@@ -1115,6 +1115,56 @@ bool IsPenetrableEntity(IReGameHook_IsPenetrableEntity *chain, Vector &vecSrc, V
 	return callForward<bool>(RG_IsPenetrableEntity, original, getAmxVector(vecSrcCopy), getAmxVector(vecEndCopy), indexOfEdict(pevAttacker), indexOfEdict(pHit));
 }
 
+CGib *SpawnHeadGib(IReGameHook_SpawnHeadGib *chain, entvars_t *pevVictim)
+{
+	auto original = [chain](int _pevVictim)
+	{
+		return indexOfPDataAmx(chain->callNext(PEV(_pevVictim)));
+	};
+
+	return getPrivate<CGib>(callForward<size_t>(RG_SpawnHeadGib, original, indexOfEdict(pevVictim)));
+}
+
+void SpawnRandomGibs(IReGameHook_SpawnRandomGibs *chain, entvars_t *pevVictim, int cGibs, int human)
+{
+	auto original = [chain](int _pevVictim, int _cGibs, int _human)
+	{
+		chain->callNext(PEV(_pevVictim), _cGibs, _human);
+	};
+
+	callVoidForward(RG_SpawnRandomGibs, original, indexOfEdict(pevVictim), cGibs, human);
+}
+
+void CGib_SpawnGib(IReGameHook_CGib_SpawnGib *chain, CGib *pthis, const char *szGibModel)
+{
+	auto original = [chain](int _pthis, const char *_szGibModel)
+	{
+		chain->callNext(getPrivate<CGib>(_pthis), _szGibModel);
+	};
+
+	callVoidForward(RG_CGib_SpawnGib, original, indexOfEdict(pthis->pev), szGibModel);
+}
+
+void CGib_BounceGibTouch(IReGameHook_CGib_BounceGibTouch *chain, CGib *pthis, CBaseEntity *pOther)
+{
+	auto original = [chain](int _pthis, int _pOther)
+	{
+		chain->callNext(getPrivate<CGib>(_pthis), getPrivate<CBaseEntity>(_pOther));
+	};
+
+	callVoidForward(RG_CGib_BounceGibTouch, original, indexOfEdict(pthis->pev), indexOfEdict(pOther->pev));
+}
+
+void CGib_WaitGibTillLand(IReGameHook_CGib_WaitGibTillLand *chain, CGib *pthis)
+{
+	auto original = [chain](int _pthis)
+	{
+		chain->callNext(getPrivate<CGib>(_pthis));
+	};
+
+	callVoidForward(RG_CGib_WaitGibTillLand, original, indexOfEdict(pthis->pev));
+}
+
 int g_iClientStartSpeak, g_iClientStopSpeak;
 
 void OnClientStartSpeak(size_t clientIndex)

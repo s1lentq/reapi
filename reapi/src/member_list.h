@@ -82,6 +82,7 @@ struct memberlist_t
 		mt_rebuystruct,
 		mt_mapinfo,
 		mt_csplayerweapon,
+		mt_gib,
 	};
 };
 
@@ -1052,4 +1053,12 @@ enum CSPlayerWeapon_Members
 {
 	m_Weapon_bHasSecondaryAttack = BEGIN_MEMBER_REGION(csplayerweapon),
 	m_Weapon_flBaseDamage,
+};
+
+enum CGib_Members
+{
+	m_Gib_bloodColor = BEGIN_MEMBER_REGION(gib),
+	m_Gib_cBloodDecals,
+	m_Gib_material,
+	m_Gib_lifeTime,
 };

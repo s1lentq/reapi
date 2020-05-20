@@ -382,6 +382,19 @@ enum GamedllFunc
 	* Params:           (Float:vecSrc[3], Float:vecEnd[3], index, entity)
 	*/
 	RG_IsPenetrableEntity,
+
+	/*
+	* Description:      -
+	* Return type:      CGib * (Entity index of gib)
+	* Params:           (pevVictim)
+	*/
+	RG_SpawnHeadGib,
+
+	/*
+	* Description:      -
+	* Params:           (int cGibs, int human)
+	*/
+	RG_SpawnRandomGibs,
 };
 
 /**
@@ -802,6 +815,30 @@ enum GamedllFunc_CBasePlayerWeapon
 	* Params:           (const this, iAnim, iStartAnim, Float:fDelay, Float:fStartDelay, const pszReloadSound1[], const pszReloadSound2[])
 	*/
 	RG_CBasePlayerWeapon_DefaultShotgunReload,
+};
+
+/**
+* GamedllFunc CGib
+*/
+enum GamedllFunc_CGib
+{
+	/*
+	* Description:      -
+	* Params:           (const this, const szGibModel[])
+	*/
+	RG_CGib_SpawnGib = BEGIN_FUNC_REGION(gib),
+
+	/*
+	* Description:      -
+	* Params:           (const this, pOther)
+	*/
+	RG_CGib_BounceGibTouch,
+
+	/*
+	* Description:      -
+	* Params:           (const this)
+	*/
+	RG_CGib_WaitGibTillLand,
 };
 
 /**
@@ -5902,4 +5939,42 @@ enum CCSPlayerWeapon_Members
 	* Set params:       set_member(index, member, Float:value);
 	*/
 	m_Weapon_flBaseDamage,
+};
+
+/**
+* CGib Members
+*/
+enum CGib_Members
+{
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_Gib_bloodColor = BEGIN_MEMBER_REGION(gib),
+	
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_Gib_cBloodDecals,
+	
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_Gib_material,
+	
+	/*
+	* Description:      -
+	* Member type:      float
+	* Get params:       Float:get_member(index, member);
+	* Set params:       set_member(index, member, Float:value);
+	*/
+	m_Gib_lifeTime,
 };

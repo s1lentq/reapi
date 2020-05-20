@@ -34,6 +34,7 @@ extern hook_t hooklist_rechecker[];
 extern hook_t hooklist_grenade[];
 extern hook_t hooklist_weaponbox[];
 extern hook_t hooklist_weapon[];
+extern hook_t hooklist_gib[];
 
 enum
 {
@@ -59,6 +60,7 @@ struct hooklist_t
 			CASE(grenade)
 			CASE(weaponbox)
 			CASE(weapon)
+			CASE(gib)
 		}
 
 		#undef CASE
@@ -79,7 +81,8 @@ struct hooklist_t
 		ht_rechecker,
 		ht_grenade,
 		ht_weaponbox,
-		ht_weapon
+		ht_weapon,
+		ht_gib,
 	};
 };
 
@@ -116,6 +119,9 @@ enum GamedllFunc
 	RG_ThrowSmokeGrenade,
 	RG_PlantBomb,
 	RG_IsPenetrableEntity,
+
+	RG_SpawnHeadGib,
+	RG_SpawnRandomGibs,
 
 	// [...]
 };
@@ -241,6 +247,15 @@ enum GamedllFunc_CSGameRules
 	RG_CSGameRules_BalanceTeams,
 	RG_CSGameRules_OnRoundFreezeEnd,
 	RG_CSGameRules_CanPlayerHearPlayer,
+
+	// [...]
+};
+
+enum GamedllFunc_CGib
+{
+	RG_CGib_SpawnGib = BEGIN_FUNC_REGION(gib),
+	RG_CGib_BounceGibTouch,
+	RG_CGib_WaitGibTillLand,
 
 	// [...]
 };
