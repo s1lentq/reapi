@@ -159,6 +159,8 @@ void GetBonePosition(CBaseEntity *pEntity, int iBone, Vector *pVecOrigin, Vector
 {
 	Vector vecOrigin, vecAngles;
 	edict_t *pEdict = pEntity->edict();
+// force to update frame
+	StudioFrameAdvanceEnt(pEdict);
 
 	pEntity->pev->angles.x = -pEntity->pev->angles.x;
 	GET_BONE_POSITION(pEdict, iBone, vecOrigin, vecAngles);
