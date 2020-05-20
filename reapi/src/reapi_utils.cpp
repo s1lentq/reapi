@@ -185,8 +185,6 @@ void GetAttachment(CBaseEntity *pEntity, int iBone, Vector *pVecOrigin, Vector *
 	edict_t *pEdict = pEntity->edict();
 
 	// force to update frame
-	StudioFrameAdvanceEnt(pEdict);
-
 	GET_ATTACHMENT(pEdict, iBone, vecOrigin, vecAngles);
 
 	if (!pEntity->IsPlayer()) {
