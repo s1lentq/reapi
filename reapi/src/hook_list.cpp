@@ -99,6 +99,8 @@ hook_t hooklist_gamedll[] = {
 	DLL(ThrowSmokeGrenade),
 	DLL(PlantBomb),
 	DLL(IsPenetrableEntity),
+	DLL(SpawnHeadGib),
+	DLL(SpawnRandomGibs),
 };
 
 hook_t hooklist_animating[] = {
@@ -205,6 +207,12 @@ hook_t hooklist_weapon[] = {
 	DLL(CBasePlayerWeapon_DefaultShotgunReload),
 };
 
+hook_t hooklist_gib[] = {
+	DLL(CGib_Spawn),
+	DLL(CGib_BounceGibTouch),
+	DLL(CGib_WaitTillLand),
+};
+
 #define RCHECK(h,...) { {}, {}, #h, "ReChecker", [](){ return api_cfg.hasRechecker(); }, ((!(RC_##h & (MAX_REGION_RANGE - 1)) ? regfunc::current_cell = 1, true : false) || (RC_##h & (MAX_REGION_RANGE - 1)) == regfunc::current_cell++) ? regfunc(h##__VA_ARGS__) : regfunc(#h#__VA_ARGS__), [](){ g_RecheckerHookchains->h()->registerHook(&h); }, [](){ g_RecheckerHookchains->h()->unregisterHook(&h); }}
 hook_t hooklist_rechecker[] = {
 	RCHECK(FileConsistencyProcess, _AMXX),
@@ -229,6 +237,7 @@ hook_t* hooklist_t::getHookSafe(size_t hook)
 		CASE(grenade)
 		CASE(weaponbox)
 		CASE(weapon)
+		CASE(gib)
 	}
 
 	return nullptr;
@@ -247,6 +256,7 @@ void hooklist_t::clear()
 	FOREACH_CLEAR(grenade);
 	FOREACH_CLEAR(weaponbox);
 	FOREACH_CLEAR(weapon);
+	FOREACH_CLEAR(gib);
 }
 
 void hook_t::clear()

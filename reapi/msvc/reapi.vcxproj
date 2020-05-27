@@ -92,6 +92,7 @@
     <ClInclude Include="..\include\cssdk\dlls\func_break.h" />
     <ClInclude Include="..\include\cssdk\dlls\func_tank.h" />
     <ClInclude Include="..\include\cssdk\dlls\gamerules.h" />
+    <ClInclude Include="..\include\cssdk\dlls\gib.h" />
     <ClInclude Include="..\include\cssdk\dlls\healthkit.h" />
     <ClInclude Include="..\include\cssdk\dlls\hintmessage.h" />
     <ClInclude Include="..\include\cssdk\dlls\hookchains.h" />

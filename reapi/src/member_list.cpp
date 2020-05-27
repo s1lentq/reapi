@@ -67,6 +67,7 @@
 #define REBUYSTRUCT_MEMBERS(mx)  CLASS_MEMBERS(RebuyStruct, mx, mx)
 #define MAPINFO_MEMBERS(mx)      CLASS_MEMBERS_PREF(CMapInfo, mx, m_MapInfo_##mx, m_)
 #define CSPLWPN_MEMBERS(mx)      CLASS_MEMBERS_PREF(CCSPlayerWeapon, mx, m_Weapon_##mx, m_)
+#define GIB_MEMBERS(mx)          CLASS_MEMBERS_PREF(CGib, mx, m_Gib_##mx, m_)
 
 inline MType getMemberType(float*)              { return MEMBER_FLOAT; }
 inline MType getMemberType(float)               { return MEMBER_FLOAT; }
@@ -1019,6 +1020,13 @@ member_t memberlist_csplayerweapon[] = {
 	CSPLWPN_MEMBERS(flBaseDamage),
 };
 
+member_t memberlist_gib[] = {
+	GIB_MEMBERS(bloodColor),
+	GIB_MEMBERS(cBloodDecals),
+	GIB_MEMBERS(material),
+	GIB_MEMBERS(lifeTime),
+};
+
 #ifdef __GNUC__
 #pragma GCC diagnostic pop
 #endif // #ifdef __GNUC__
@@ -1081,6 +1089,7 @@ member_t *memberlist_t::operator[](size_t members) const
 		CASE(rebuystruct)
 		CASE(mapinfo)
 		CASE(csplayerweapon)
+		CASE(gib)
 	}
 
 	#undef CASE

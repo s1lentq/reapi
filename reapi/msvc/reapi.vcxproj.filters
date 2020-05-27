@@ -720,6 +720,9 @@
     <ClInclude Include="..\include\cssdk\dlls\API\CSPlayerWeapon.h">
       <Filter>include\cssdk\dlls\API</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\cssdk\dlls\gib.h">
+      <Filter>include\cssdk\dlls</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\include\cssdk\common\parsemsg.cpp">
