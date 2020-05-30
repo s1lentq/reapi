@@ -260,6 +260,12 @@ void CBasePlayer_UpdateClientData(IReGameHook_CBasePlayer_UpdateClientData *chai
 
 void CBasePlayer_ImpulseCommands(IReGameHook_CBasePlayer_ImpulseCommands *chain, CBasePlayer *pthis)
 {
+	if (pthis->pev->impulse == 0)
+	{
+		chain->callNext(pthis);
+		return;
+	}
+
 	auto original = [chain](int _pthis)
 	{
 		chain->callNext(getPrivate<CBasePlayer>(_pthis));
