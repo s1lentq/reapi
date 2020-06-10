@@ -580,6 +580,11 @@ public:
 public:
 	TraceResult m_trHit;
 	unsigned short m_usKnife;
+	float m_flStabBaseDamage;
+	float m_flSwingBaseDamage;
+	float m_flSwingBaseDamage_Fast;
+	float m_flStabDistance;
+	float m_flSwingDistance;
 };
 
 class CM249: public CBasePlayerWeapon {

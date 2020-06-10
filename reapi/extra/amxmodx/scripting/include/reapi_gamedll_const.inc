@@ -5843,6 +5843,46 @@ enum CKnife_Members
 	* Set params:       set_member(index, member, value);
 	*/
 	m_Knife_usKnife,
+
+	/*
+	* Description:      -
+	* Member type:      float
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_Knife_flStabBaseDamage,
+
+	/*
+	* Description:      -
+	* Member type:      float
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_Knife_flSwingBaseDamage,
+
+	/*
+	* Description:      -
+	* Member type:      float
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_Knife_flSwingBaseDamage_Fast,
+
+	/*
+	* Description:      -
+	* Member type:      float
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_Knife_flStabDistance,
+
+	/*
+	* Description:      -
+	* Member type:      float
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_Knife_flSwingDistance,
 };
 
 /**
