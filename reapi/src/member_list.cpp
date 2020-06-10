@@ -984,6 +984,11 @@ member_t memberlist_ak47[] = {
 member_t memberlist_knife[] = {
 	KNIFE_MEMBERS(trHit),
 	KNIFE_MEMBERS(usKnife),
+	KNIFE_MEMBERS(flStabBaseDamage),
+	KNIFE_MEMBERS(flSwingBaseDamage),
+	KNIFE_MEMBERS(flSwingBaseDamage_Fast),
+	KNIFE_MEMBERS(flStabDistance),
+	KNIFE_MEMBERS(flSwingDistance),
 };
 
 member_t memberlist_p90[] = {

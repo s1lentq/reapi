@@ -1014,6 +1014,11 @@ enum CKnife_Members
 {
 	m_Knife_trHit = BEGIN_MEMBER_REGION(knife),
 	m_Knife_usKnife,
+	m_Knife_flStabBaseDamage,
+	m_Knife_flSwingBaseDamage,
+	m_Knife_flSwingBaseDamage_Fast,
+	m_Knife_flStabDistance,
+	m_Knife_flSwingDistance,
 };
 
 enum CP90_Members
