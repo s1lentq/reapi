@@ -314,6 +314,38 @@ cell AMX_NATIVE_CALL SetHookChainArg(AMX *amx, cell *params)
 	return TRUE;
 }
 
+/*
+* Return call state of original API function (that are available into enum).
+* Look at the enums for parameter lists.
+*
+* @param func       The function to get state
+*
+* @return           Returns true if the API original function was called, otherwise false
+*
+* native bool:IsReapiHookOriginalWasCalled(any:function_id);
+*/
+cell AMX_NATIVE_CALL IsReapiHookOriginalWasCalled(AMX* amx, cell* params)
+{
+	enum args_e { arg_count, arg_func };
+
+	int func = params[arg_func];
+	auto hook = g_hookManager.getHook(func);
+
+	if (unlikely(hook == nullptr))
+	{
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: function with id (%d) doesn't exist in current API version.", __FUNCTION__, func);
+		return INVALID_HOOKCHAIN;
+	}
+
+	if (unlikely(!hook->checkRequirements()))
+	{
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: function (%s) is not available, %s required.", __FUNCTION__, hook->func_name, hook->depend_name);
+		return INVALID_HOOKCHAIN;
+	}
+
+	return hook->wasCalled ? TRUE : FALSE;
+}
+
 AMX_NATIVE_INFO HookChain_Natives[] =
 {
 	{ "RegisterHookChain", RegisterHookChain },
@@ -325,6 +357,8 @@ AMX_NATIVE_INFO HookChain_Natives[] =
 	{ "GetHookChainReturn", GetHookChainReturn },
 
 	{ "SetHookChainArg", SetHookChainArg },
+
+	{ "IsReapiHookOriginalWasCalled", IsReapiHookOriginalWasCalled },
 
 	{ nullptr, nullptr }
 };
