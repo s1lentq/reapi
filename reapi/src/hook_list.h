@@ -23,6 +23,8 @@ struct hook_t
 	regchain_t unregisterHookchain;         // unregister re* API hook
 
 	void clear();
+
+	bool wasCalled;
 };
 
 extern hook_t hooklist_engine[];

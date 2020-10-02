@@ -193,6 +193,16 @@ native any:GetHookChainReturn(AType:type, any:...);
 native SetHookChainArg(number, AType:type, any:...);
 
 /*
+* Return call state of original API function (that are available into enum).
+* Look at the enums for parameter lists.
+*
+* @param func		The function to get state
+*
+* @return           Returns true if the original function was called, otherwise false
+*/
+native bool:IsReapiHookOriginalWasCalled(any:function_id);
+
+/*
 * Compares the entity to a specified classname.
 * @note This native also checks the validity of an entity.
 *

@@ -144,11 +144,13 @@ struct hookctx_t
 extern hookctx_t* g_hookCtx;
 
 template <typename original_t, typename ...f_args>
-NOINLINE void DLLEXPORT _callVoidForward(const hook_t* hook, original_t original, f_args&&... args)
+NOINLINE void DLLEXPORT _callVoidForward(hook_t* hook, original_t original, f_args&&... args)
 {
 	auto hookCtx = g_hookCtx;
 	hookCtx->reset();
 	int hc_state = HC_CONTINUE;
+
+	hook->wasCalled = false;
 
 	for (auto fwd : hook->pre)
 	{
@@ -169,16 +171,21 @@ NOINLINE void DLLEXPORT _callVoidForward(const hook_t* hook, original_t original
 		g_hookCtx = nullptr;
 		original(std::forward<f_args &&>(args)...);
 		g_hookCtx = hookCtx;
+		hook->wasCalled = true;
 	}
 
-	for (auto fwd : hook->post) {
-		if (likely(fwd->GetState() == FSTATE_ENABLED)) {
+	for (auto fwd : hook->post)
+	{
+		if (likely(fwd->GetState() == FSTATE_ENABLED))
+		{
 			auto ret = g_amxxapi.ExecuteForward(fwd->GetIndex(), std::forward<f_args &&>(args)...);
 
 			if (unlikely(ret == HC_BREAK))
 				break;
 		}
 	}
+
+	hook->wasCalled = false;
 }
 
 template <typename original_t, typename ...f_args>
