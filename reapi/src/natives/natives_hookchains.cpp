@@ -318,7 +318,7 @@ cell AMX_NATIVE_CALL SetHookChainArg(AMX *amx, cell *params)
 * Return call state of original API function (that are available into enum).
 * Look at the enums for parameter lists.
 *
-* @param func		The function to get state
+* @param func       The function to get state
 *
 * @return           Returns true if the API original function was called, otherwise false
 *
@@ -343,7 +343,7 @@ cell AMX_NATIVE_CALL IsReapiHookOriginalWasCalled(AMX* amx, cell* params)
 		return INVALID_HOOKCHAIN;
 	}
 
-	return hook->wasCalled;
+	return hook->wasCalled ? TRUE : FALSE;
 }
 
 AMX_NATIVE_INFO HookChain_Natives[] =
