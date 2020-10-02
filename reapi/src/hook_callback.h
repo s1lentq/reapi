@@ -260,8 +260,10 @@ NOINLINE R DLLEXPORT _callForward(hook_t* hook, original_t original, f_args&&...
 		}
 	}
 
-	for (auto fwd : hook->post) {
-		if (likely(fwd->GetState() == FSTATE_ENABLED)) {
+	for (auto fwd : hook->post)
+	{
+		if (likely(fwd->GetState() == FSTATE_ENABLED))
+		{
 			auto ret = g_amxxapi.ExecuteForward(fwd->GetIndex(), std::forward<f_args &&>(args)...);
 
 			if (unlikely(ret == HC_BREAK))
