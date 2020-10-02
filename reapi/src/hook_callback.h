@@ -204,12 +204,14 @@ void callVoidForward(size_t func, original_t original, f_args&&... args)
 }
 
 template <typename R, typename original_t, typename ...f_args>
-NOINLINE R DLLEXPORT _callForward(const hook_t* hook, original_t original, f_args&&... args)
+NOINLINE R DLLEXPORT _callForward(hook_t* hook, original_t original, f_args&&... args)
 {
 	auto hookCtx = g_hookCtx;
 	hookCtx->reset(getApiType(R()));
 
 	int hc_state = HC_CONTINUE;
+
+	hook->wasCalled = false;
 
 	for (auto fwd : hook->pre)
 	{
@@ -240,6 +242,7 @@ NOINLINE R DLLEXPORT _callForward(const hook_t* hook, original_t original, f_arg
 		g_hookCtx = nullptr;
 		auto retVal = original(std::forward<f_args &&>(args)...);
 		g_hookCtx = hookCtx;
+		hook->wasCalled = true;
 
 		if (unlikely(!hookCtx->retVal.set)) {
 			switch (sizeof retVal) {
@@ -265,6 +268,8 @@ NOINLINE R DLLEXPORT _callForward(const hook_t* hook, original_t original, f_arg
 				break;
 		}
 	}
+	
+	hook->wasCalled = false;
 
 	return *(R *)&hookCtx->retVal._integer;
 }
