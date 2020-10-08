@@ -203,7 +203,7 @@ native SetHookChainArg(number, AType:type, any:...);
 native bool:IsReapiHookOriginalWasCalled({EngineFunc, GamedllFunc, GamedllFunc_CBaseAnimating, GamedllFunc_CBasePlayer, GamedllFunc_CSGameRules, GamedllFunc_CGrenade, GamedllFunc_CWeaponBox, ReCheckerFunc, GamedllFunc_CBasePlayerWeapon, GamedllFunc_CGib}:function_id);
 
 /*
-* Returns a current hookchain handle.
+* Returns the current hookchain handle.
 *
 * @return           Returns a hook handle
 */
