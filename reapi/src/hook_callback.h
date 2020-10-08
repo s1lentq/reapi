@@ -122,11 +122,15 @@ struct hookctx_t
 		return fatalErr;
 	}
 
+	void SetId(int id) { index = id; }
+	void ResetId()     { index = 0;  }
+
 	void clear_temp_strings() const
 	{
 		s_temp_strings.pop(tempstrings_used);
 	}
 
+	int index                       = 0;
 	retval_t retVal                 = {false,ATYPE_INTEGER};
 	size_t tempstrings_used         = 0;
 
@@ -156,7 +160,9 @@ NOINLINE void DLLEXPORT _callVoidForward(hook_t* hook, original_t original, f_ar
 	{
 		if (likely(fwd->GetState() == FSTATE_ENABLED))
 		{
-			auto ret = g_amxxapi.ExecuteForward(fwd->GetIndex(), std::forward<f_args &&>(args)...);
+			hookCtx->SetId(fwd->GetIndex()); // set current handler hook
+			auto ret = g_amxxapi.ExecuteForward(fwd->GetFwdIndex(), std::forward<f_args &&>(args)...);
+			hookCtx->ResetId();
 
 			if (unlikely(ret == HC_BREAK)) {
 				return;
@@ -178,7 +184,9 @@ NOINLINE void DLLEXPORT _callVoidForward(hook_t* hook, original_t original, f_ar
 	{
 		if (likely(fwd->GetState() == FSTATE_ENABLED))
 		{
-			auto ret = g_amxxapi.ExecuteForward(fwd->GetIndex(), std::forward<f_args &&>(args)...);
+			hookCtx->SetId(fwd->GetIndex()); // set current handler hook
+			auto ret = g_amxxapi.ExecuteForward(fwd->GetFwdIndex(), std::forward<f_args &&>(args)...);
+			hookCtx->ResetId();
 
 			if (unlikely(ret == HC_BREAK))
 				break;
@@ -217,7 +225,9 @@ NOINLINE R DLLEXPORT _callForward(hook_t* hook, original_t original, f_args&&...
 	{
 		if (likely(fwd->GetState() == FSTATE_ENABLED))
 		{
-			auto ret = g_amxxapi.ExecuteForward(fwd->GetIndex(), std::forward<f_args &&>(args)...);
+			hookCtx->SetId(fwd->GetIndex()); // set current handler hook
+			auto ret = g_amxxapi.ExecuteForward(fwd->GetFwdIndex(), std::forward<f_args &&>(args)...);
+			hookCtx->ResetId();
 
 			if (unlikely(ret != HC_SUPERCEDE && ret != HC_BREAK)) {
 				continue;
@@ -264,7 +274,9 @@ NOINLINE R DLLEXPORT _callForward(hook_t* hook, original_t original, f_args&&...
 	{
 		if (likely(fwd->GetState() == FSTATE_ENABLED))
 		{
-			auto ret = g_amxxapi.ExecuteForward(fwd->GetIndex(), std::forward<f_args &&>(args)...);
+			hookCtx->SetId(fwd->GetIndex()); // set current handler hook
+			auto ret = g_amxxapi.ExecuteForward(fwd->GetFwdIndex(), std::forward<f_args &&>(args)...);
+			hookCtx->ResetId();
 
 			if (unlikely(ret == HC_BREAK))
 				break;

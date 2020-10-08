@@ -13,9 +13,11 @@ int CHookManager::addHandler(AMX *amx, int func, const char *funcname, int forwa
 	}
 
 	auto& dest = post ? hook->post : hook->pre;
-	dest.push_back(new CAmxxHookBase(amx, funcname, forward));
-	int id = func * MAX_HOOK_FORWARDS + dest.size();
-	return post ? -id : id; // use unsigned ids for post hooks
+	int i = func * MAX_HOOK_FORWARDS + dest.size() + 1;
+	int index = post ? -i : i; // use unsigned ids for post hooks
+
+	dest.push_back(new CAmxxHookBase(amx, funcname, forward, index));
+	return index;
 }
 
 void CHookManager::Clear() const

@@ -346,6 +346,24 @@ cell AMX_NATIVE_CALL IsReapiHookOriginalWasCalled(AMX* amx, cell* params)
 	return hook->wasCalled ? TRUE : FALSE;
 }
 
+/*
+* Returns a current hookchain handle.
+*
+* @return           Returns a hook handle
+*
+* native HookChain:GetHookChainHandle();
+*/
+cell AMX_NATIVE_CALL GetHookChainHandle(AMX* amx, cell* params)
+{
+	if (unlikely(!g_hookCtx))
+	{
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: trying to get handle without active hook.", __FUNCTION__);
+		return FALSE;
+	}
+
+	return g_hookCtx->index;
+}
+
 AMX_NATIVE_INFO HookChain_Natives[] =
 {
 	{ "RegisterHookChain", RegisterHookChain },
@@ -359,6 +377,8 @@ AMX_NATIVE_INFO HookChain_Natives[] =
 	{ "SetHookChainArg", SetHookChainArg },
 
 	{ "IsReapiHookOriginalWasCalled", IsReapiHookOriginalWasCalled },
+
+	{ "GetHookChainHandle", GetHookChainHandle },
 
 	{ nullptr, nullptr }
 };
