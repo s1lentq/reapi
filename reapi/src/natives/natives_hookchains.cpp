@@ -347,7 +347,7 @@ cell AMX_NATIVE_CALL IsReapiHookOriginalWasCalled(AMX* amx, cell* params)
 }
 
 /*
-* Returns a current hookchain handle.
+* Returns the current hookchain handle.
 *
 * @return           Returns a hook handle
 *
