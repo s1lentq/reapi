@@ -205,7 +205,7 @@ native bool:IsReapiHookOriginalWasCalled({EngineFunc, GamedllFunc, GamedllFunc_C
 /*
 * Returns the current hookchain handle.
 *
-* @return           Returns a hook handle
+* @return           Returns the hook handle
 */
 native HookChain:GetHookChainHandle();
 
