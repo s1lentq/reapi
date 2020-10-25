@@ -378,7 +378,7 @@ AMX_NATIVE_INFO HookChain_Natives[] =
 
 	{ "IsReapiHookOriginalWasCalled", IsReapiHookOriginalWasCalled },
 
-	{ "GetHookChainCurrentHandle", GetHookChainCurrentHandle },
+	{ "GetCurrentHookChainHandle", GetCurrentHookChainHandle},
 
 	{ nullptr, nullptr }
 };
