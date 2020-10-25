@@ -353,7 +353,7 @@ cell AMX_NATIVE_CALL IsReapiHookOriginalWasCalled(AMX* amx, cell* params)
 *
 * native HookChain:GetHookChainCurrentHandle();
 */
-cell AMX_NATIVE_CALL GetHookChainCurrentHandle(AMX* amx, cell* params)
+cell AMX_NATIVE_CALL GetCurrentHookChainHandle(AMX* amx, cell* params)
 {
 	if (unlikely(!g_hookCtx))
 	{
