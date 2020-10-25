@@ -30,9 +30,9 @@ public:
 			if (data->m_entity == pEntity && data->m_callbackType == type)
 			{
 				if (data->m_iParamLen > 0) {
-					g_amxxapi.ExecuteForward(fwd->GetIndex(), args..., g_amxxapi.PrepareCellArrayA(data->m_pParams, data->m_iParamLen, true));
+					g_amxxapi.ExecuteForward(fwd->GetFwdIndex(), args..., g_amxxapi.PrepareCellArrayA(data->m_pParams, data->m_iParamLen, true));
 				} else {
-					g_amxxapi.ExecuteForward(fwd->GetIndex(), args...);
+					g_amxxapi.ExecuteForward(fwd->GetFwdIndex(), args...);
 				}
 			}
 		}

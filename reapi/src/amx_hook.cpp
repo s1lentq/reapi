@@ -1,6 +1,7 @@
 #include "precompiled.h"
 
-CAmxxHookBase::CAmxxHookBase(AMX *amx, const char *funcname, int index) :
+CAmxxHookBase::CAmxxHookBase(AMX *amx, const char *funcname, int forwardIndex, int index) :
+	m_fwdindex(forwardIndex),
 	m_index(index),
 	m_state(FSTATE_ENABLED),
 	m_amx(amx)
@@ -10,10 +11,10 @@ CAmxxHookBase::CAmxxHookBase(AMX *amx, const char *funcname, int index) :
 
 CAmxxHookBase::~CAmxxHookBase()
 {
-	if (m_index != -1)
+	if (m_fwdindex != -1)
 	{
-		g_amxxapi.UnregisterSPForward(m_index);
-		m_index = -1;
+		g_amxxapi.UnregisterSPForward(m_fwdindex);
+		m_fwdindex = -1;
 	}
 }
 

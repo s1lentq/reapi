@@ -203,6 +203,13 @@ native SetHookChainArg(number, AType:type, any:...);
 native bool:IsReapiHookOriginalWasCalled({EngineFunc, GamedllFunc, GamedllFunc_CBaseAnimating, GamedllFunc_CBasePlayer, GamedllFunc_CSGameRules, GamedllFunc_CGrenade, GamedllFunc_CWeaponBox, ReCheckerFunc, GamedllFunc_CBasePlayerWeapon, GamedllFunc_CGib}:function_id);
 
 /*
+* Returns the current hookchain handle.
+*
+* @return           Returns the hook handle
+*/
+native HookChain:GetCurrentHookChainHandle();
+
+/*
 * Compares the entity to a specified classname.
 * @note This native also checks the validity of an entity.
 *
