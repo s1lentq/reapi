@@ -1775,7 +1775,7 @@ cell AMX_NATIVE_CALL rg_get_join_team_priority(AMX *amx, cell *params)
 * @param index      Client index
 * @param attacker   Attacker index
 *
-* @return           true if he can take damage, false otherwise
+* @return           true if player can take damage, false otherwise
 *
 * native bool:rg_is_player_can_takedamage(const index, const attacker);
 */
@@ -1796,6 +1796,28 @@ cell AMX_NATIVE_CALL rg_is_player_can_takedamage(AMX *amx, cell *params)
 	}
 
 	return CSGameRules()->FPlayerCanTakeDamage(pPlayer, pAttacker);
+}
+
+/*
+* Checks whether the player can respawn.
+*
+* @param index      Client index
+*
+* @return           true if player can respawn, false otherwise
+*
+* native bool:rg_is_player_can_respawn(const index);
+*/
+cell AMX_NATIVE_CALL rg_is_player_can_respawn(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index };
+
+	CHECK_GAMERULES();
+	CHECK_ISPLAYER(arg_index);
+
+	CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_index]);
+	CHECK_CONNECTED(pPlayer, arg_index);
+
+	return CSGameRules()->FPlayerCanRespawn(pPlayer);
 }
 
 /*
@@ -2361,6 +2383,7 @@ AMX_NATIVE_INFO Misc_Natives_RG[] =
 	{ "rg_switch_weapon",             rg_switch_weapon             },
 	{ "rg_get_join_team_priority",    rg_get_join_team_priority    },
 	{ "rg_is_player_can_takedamage",  rg_is_player_can_takedamage  },
+	{ "rg_is_player_can_respawn",     rg_is_player_can_respawn     },
 	{ "rg_get_weaponbox_id",          rg_get_weaponbox_id          },
 	{ "rg_round_respawn",             rg_round_respawn             },
 	{ "rg_reset_maxspeed",            rg_reset_maxspeed            },
