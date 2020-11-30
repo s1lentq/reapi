@@ -741,9 +741,18 @@ native TeamName:rg_get_join_team_priority();
 * @param index      Client index
 * @param attacker   Attacker index
 *
-* @return           true if he can take damage, false otherwise
+* @return           true if player can take damage, false otherwise
 */
 native bool:rg_is_player_can_takedamage(const index, const attacker);
+
+/*
+* Checks whether the player can respawn.
+*
+* @param index      Client index
+*
+* @return           true if player can respawn, false otherwise
+*/
+native bool:rg_is_player_can_respawn(const index);
 
 /*
 * Gets WeaponIdType from weaponbox
