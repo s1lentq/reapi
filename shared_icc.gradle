@@ -4,7 +4,7 @@ import org.doomedsociety.gradlecpp.gcc.OptimizationLevel
 
 rootProject.ext.createIccConfig = { boolean release, BinaryKind binKind ->
 	GccToolchainConfig cfg
-	if (release) {
+	if (!release) {
 		cfg = new GccToolchainConfig(
 			compilerOptions: new GccToolchainConfig.CompilerOptions(
 				optimizationLevel: OptimizationLevel.LEVEL_3,
