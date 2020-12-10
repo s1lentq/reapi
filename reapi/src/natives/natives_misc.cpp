@@ -2316,6 +2316,34 @@ cell AMX_NATIVE_CALL rg_get_can_hear_player(AMX* amx, cell* params)
 	return CSGameRules()->m_VoiceGameMgr.m_pHelper->GetCanHearPlayer(pListener, pSender);
 }
 
+
+/*
+* Creates a bomb (c4)
+*
+* @param owner					id of player or 0
+* @param vecOrigin				The origin of the entity
+* @param vecAngles				The angles of the entity
+*
+* @return entindex
+native rg_create_bomb(owner = 0, Float:vecOrigin[3], Float : vecAngles[3] = { 0.0, 0.0, 0.0 });
+*/
+cell AMX_NATIVE_CALL rg_create_bomb(AMX* amx, cell* params)
+{
+	enum args_e { arg_count, arg_index, arg_origin, arg_angles };
+	CAmxArgs args(amx, params);
+	
+	if(params[arg_index] != 0) {
+		CHECK_ISPLAYER(arg_index);
+		
+		CBasePlayer* pPlayer = UTIL_PlayerByIndex(params[arg_index]);
+		CHECK_CONNECTED(pPlayer, arg_index);
+
+		return (cell)ENTINDEX(CSGameRules()->CreateBomb(pPlayer->pev, args[arg_origin], args[arg_angles])->pev);
+	}
+
+	return (cell)ENTINDEX(CSGameRules()->CreateBomb(nullptr, args[arg_origin], args[arg_angles])->pev);
+}
+
 AMX_NATIVE_INFO Misc_Natives_RG[] =
 {
 	{ "rg_set_animation",             rg_set_animation             },
@@ -2404,6 +2432,8 @@ AMX_NATIVE_INFO Misc_Natives_RG[] =
 	{ "rg_reset_can_hear_player",     rg_reset_can_hear_player     },
 	{ "rg_set_can_hear_player",       rg_set_can_hear_player       },
 	{ "rg_get_can_hear_player",       rg_get_can_hear_player       },
+
+	{ "rg_create_bomb",				  rg_create_bomb			   },
 
 	{ nullptr, nullptr }
 };

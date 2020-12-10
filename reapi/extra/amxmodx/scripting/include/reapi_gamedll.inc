@@ -901,3 +901,14 @@ native rg_set_can_hear_player(const listener, const sender, const bool:can_hear)
 * @return boolean
 */
 native bool:rg_get_can_hear_player(const listener, const sender);
+
+/*
+* Creates a bomb
+*
+* @param owner					id of player or 0
+* @param vecOrigin				The origin of the entity
+* @param vecAngles				The angles of the entity
+*
+* @return entindex
+*/
+native rg_create_bomb(owner = 0, Float:vecOrigin[3], Float:vecAngles[3] = {0.0, 0.0, 0.0});
