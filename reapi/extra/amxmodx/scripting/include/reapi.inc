@@ -94,6 +94,13 @@ enum members_tables_e
 #include <reapi_engine>  // @note: only for ReHLDS
 #include <reapi_gamedll> // @note: only for gamedll Counter-Strike (ReGameDLL_CS)
 
+// If you want to use s/get_member unsafe version,
+// then macro MEMBER_UNSAFE must be defined before including header reapi.inc
+#if !defined(MEMBER_UNSAFE)
+	#define set_member set_member_s
+	#define get_member get_member_s
+#endif
+
 // addons
 #include <reapi_vtc>
 #include <reapi_reunion>

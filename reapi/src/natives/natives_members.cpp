@@ -109,6 +109,131 @@ cell AMX_NATIVE_CALL get_member(AMX *amx, cell *params)
 }
 
 /*
+* Sets a value to an entity's member.
+* Safe version, can guarantee that the present member is refers to derived class of the entity.
+*
+* @param index      Entity index
+* @param member     The specified member, look at the enums with name *_Members
+*
+* @return           1 on success.
+* native set_member_safe(const index, any:member, any:...);
+*/
+cell AMX_NATIVE_CALL set_member_s(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_member, arg_value, arg_elem };
+	member_t *member = memberlist[params[arg_member]];
+
+	if (unlikely(member == nullptr)) {
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_member]);
+		return FALSE;
+	}
+
+	edict_t *pEdict = edictByIndexAmx(params[arg_index]);
+	if (unlikely(pEdict == nullptr || pEdict->pvPrivateData == nullptr)) {
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
+		return FALSE;
+	}
+
+	cell* value = getAmxAddr(amx, params[arg_value]);
+	size_t element = (PARAMS_COUNT == 4) ? *getAmxAddr(amx, params[arg_elem]) : 0;
+	CBaseEntity *pEntity = getPrivate<CBaseEntity>(pEdict);
+
+	if (!member->pfnIsRefsToClass(pEntity))
+	{
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: '%s' has no refs to the base class of an entity '%s'", __FUNCTION__, member->name, STRING(pEdict->v.classname));
+		return FALSE;
+	}
+
+	return set_member(
+		get_pdata_custom(pEntity, params[arg_member]),
+		member,
+		value,
+		element
+	);
+}
+
+/*
+* Returns a value from an entity's member.
+* Safe version, can guarantee that the present member is refers to derived class of the entity.
+*
+* @param index      Entity index
+* @param member     The specified member, look at the enums with name *_Members
+*
+* @return           If an integer or boolean or one byte, array or everything else is passed via the 3rd argument and more, look at the argument list for the specified member
+*
+* native any:get_member_safe(const index, any:member, any:...);
+*/
+cell AMX_NATIVE_CALL get_member_s(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_member, arg_3, arg_4, arg_5 };
+	member_t *member = memberlist[params[arg_member]];
+
+	if (unlikely(member == nullptr)) {
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_member]);
+		return FALSE;
+	}
+
+	edict_t *pEdict = edictByIndexAmx(params[arg_index]);
+	if (unlikely(pEdict == nullptr || pEdict->pvPrivateData == nullptr)) {
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
+		return FALSE;
+	}
+
+	cell* dest;
+	size_t element;
+	size_t length;
+
+	switch (PARAMS_COUNT)
+	{
+	case 5:
+		dest = getAmxAddr(amx, params[arg_3]);
+		length = *getAmxAddr(amx, params[arg_4]);
+		element = *getAmxAddr(amx, params[arg_5]);
+		break;
+	case 4:
+		dest = getAmxAddr(amx, params[arg_3]);
+		length = *getAmxAddr(amx, params[arg_4]);
+		element = 0;
+		break;
+	case 3:
+	{
+		cell* arg3 = getAmxAddr(amx, params[arg_3]);
+		if (member->isTypeReturnable()) {
+			dest = nullptr;
+			element = *arg3;
+		}
+		else {
+			dest = arg3;
+			element = 0;
+		}
+		length = 0;
+		break;
+	}
+	default:
+		dest = nullptr;
+		element = 0;
+		length = 0;
+		break;
+	}
+
+	CBaseEntity *pEntity = getPrivate<CBaseEntity>(pEdict);
+
+	if (!member->pfnIsRefsToClass(pEntity))
+	{
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: '%s' has no refs to the base class of an entity '%s'", __FUNCTION__, member->name, STRING(pEdict->v.classname));
+		return FALSE;
+	}
+
+	return get_member(
+		get_pdata_custom(pEntity, params[arg_member]),
+		member,
+		dest,
+		element,
+		length
+	);
+}
+
+/*
 * Sets a value to CSGameRules_Members members.
 *
 * @param member     The specified member, look at the enums with name CSGameRules_Members
@@ -616,6 +741,9 @@ AMX_NATIVE_INFO ReGameVars_Natives[] =
 {
 	{ "set_member", set_member },
 	{ "get_member", get_member },
+
+	{ "set_member_s", set_member_s },
+	{ "get_member_s", get_member_s },
 
 	{ "set_member_game", set_member_game },
 	{ "get_member_game", get_member_game },

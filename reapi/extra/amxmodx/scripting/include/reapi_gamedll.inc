@@ -121,6 +121,28 @@ native set_member(const index, any:member, any:...);
 native any:get_member(const index, any:member, any:...);
 
 /*
+* Sets a value to an entity's member.
+* Safe version, can guarantee that the present member is refers to derived class of the entity.
+*
+* @param index      Entity index
+* @param member     The specified member, look at the enums with name *_Members
+*
+* @return           1 on success.
+*/
+native set_member_s(const index, any:member, any:...);
+
+/*
+* Returns a value from an entity's member.
+* Safe version, can guarantee that the present member is refers to derived class of the entity.
+*
+* @param index      Entity index
+* @param member     The specified member, look at the enums with name *_Members
+*
+* @return           If an integer or boolean or one byte, array or everything else is passed via the 3rd argument and more, look at the argument list for the specified member
+*/
+native any:get_member_s(const index, any:member, any:...);
+
+/*
 * Sets playermove var.
 *
 * @param var        The specified playermove, look at the enum PlayerMove

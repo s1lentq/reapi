@@ -95,6 +95,7 @@ struct member_t
 	size_t offset;
 	const char *name;
 	MType type;
+	bool (*pfnIsRefsToClass)(class CBaseEntity *pEntity);
 };
 
 inline bool member_t::isTypeReturnable() const

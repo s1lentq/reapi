@@ -14,9 +14,9 @@
 	#define decltypefxdot(cx, pref, mx) decltype(cx::pref.mx)
 #endif
 
-#define CLASS_MEMBERS(cx, mx, postf)            ((!(postf & (MAX_REGION_RANGE - 1)) ? regmember::current_cell = 1, true : false) || (postf & (MAX_REGION_RANGE - 1)) == regmember::current_cell++) ? regmember([](member_t* ptr){ decltypefx(cx, , mx) f = {};ptr->size = getTypeSize(f);ptr->max_size = sizeof(f);ptr->offset = offsetof(cx, mx);ptr->type = getMemberType(f);ptr->name = #postf;}) : regmember(#mx)
-#define CLASS_MEMBERS_PREF(cx, mx, postf, pref) ((!(postf & (MAX_REGION_RANGE - 1)) ? regmember::current_cell = 1, true : false) || (postf & (MAX_REGION_RANGE - 1)) == regmember::current_cell++) ? regmember([](member_t* ptr){ decltypefx(cx, pref, mx) f = {};ptr->size = getTypeSize(f);ptr->max_size = sizeof(f);ptr->offset = offsetof(cx, pref##mx);ptr->type = getMemberType(f);ptr->name = #postf;}) : regmember(#pref#mx)
-#define CLASS_MEMBERS_DOT(cx, mx, postf, pref)  ((!(postf & (MAX_REGION_RANGE - 1)) ? regmember::current_cell = 1, true : false) || (postf & (MAX_REGION_RANGE - 1)) == regmember::current_cell++) ? regmember([](member_t* ptr){ decltypefxdot(cx, pref, mx) f = {};ptr->size = getTypeSize(f);ptr->max_size = sizeof(f);ptr->offset = offsetof(cx, pref.mx);ptr->type = getMemberType(f);ptr->name = #postf;}) : regmember(#pref"."#mx)
+#define CLASS_MEMBERS(cx, mx, postf)            ((!(postf & (MAX_REGION_RANGE - 1)) ? regmember::current_cell = 1, true : false) || (postf & (MAX_REGION_RANGE - 1)) == regmember::current_cell++) ? regmember([](member_t* ptr){ decltypefx(cx, , mx) f = {};ptr->size = getTypeSize(f);ptr->max_size = sizeof(f);ptr->offset = offsetof(cx, mx);ptr->type = getMemberType(f);ptr->name = #postf;ptr->pfnIsRefsToClass = [](CBaseEntity *pEntity){ return dynamic_cast<cx *>(pEntity) != nullptr;};}) : regmember(#mx)
+#define CLASS_MEMBERS_PREF(cx, mx, postf, pref) ((!(postf & (MAX_REGION_RANGE - 1)) ? regmember::current_cell = 1, true : false) || (postf & (MAX_REGION_RANGE - 1)) == regmember::current_cell++) ? regmember([](member_t* ptr){ decltypefx(cx, pref, mx) f = {};ptr->size = getTypeSize(f);ptr->max_size = sizeof(f);ptr->offset = offsetof(cx, pref##mx);ptr->type = getMemberType(f);ptr->name = #postf;ptr->pfnIsRefsToClass = [](CBaseEntity *pEntity){ return dynamic_cast<cx *>(pEntity) != nullptr;};}) : regmember(#pref#mx)
+#define CLASS_MEMBERS_DOT(cx, mx, postf, pref)  ((!(postf & (MAX_REGION_RANGE - 1)) ? regmember::current_cell = 1, true : false) || (postf & (MAX_REGION_RANGE - 1)) == regmember::current_cell++) ? regmember([](member_t* ptr){ decltypefxdot(cx, pref, mx) f = {};ptr->size = getTypeSize(f);ptr->max_size = sizeof(f);ptr->offset = offsetof(cx, pref.mx);ptr->type = getMemberType(f);ptr->name = #postf;ptr->pfnIsRefsToClass = [](CBaseEntity *pEntity){ return dynamic_cast<cx *>(pEntity) != nullptr;};}) : regmember(#pref"."#mx)
 
 #define GM_MEMBERS(mx)           CLASS_MEMBERS(CHalfLifeMultiplay, mx, mx)
 #define GM_VOICE_MEMBERS(mx)     CLASS_MEMBERS_DOT(CHalfLifeMultiplay, mx, mx, m_VoiceGameMgr)
@@ -616,7 +616,7 @@ member_t memberlist_entvars[] = {
 	EVAR_MEMBERS(euser1),
 	EVAR_MEMBERS(euser2),
 	EVAR_MEMBERS(euser3),
-	EVAR_MEMBERS(euser4)
+	EVAR_MEMBERS(euser4),
 };
 
 member_t memberlist_playermove[] = {
@@ -723,7 +723,7 @@ member_t memberlist_usercmd[] = {
 	UCMD_MEMBERS(impulse),
 	UCMD_MEMBERS(weaponselect),
 	UCMD_MEMBERS(impact_index),
-	UCMD_MEMBERS(impact_position)
+	UCMD_MEMBERS(impact_position),
 };
 
 member_t memberlist_pmtrace[] = {
@@ -735,7 +735,7 @@ member_t memberlist_pmtrace[] = {
 	PMTRACE_MEMBERS(endpos),
 	PMTRACE_MEMBERS(ent),
 	PMTRACE_MEMBERS(deltavelocity),
-	PMTRACE_MEMBERS(hitgroup)
+	PMTRACE_MEMBERS(hitgroup),
 };
 
 member_t memberlist_csplayer[] = {
@@ -790,7 +790,7 @@ member_t memberlist_baseweapon[] = {
 	BASEWPN_MEMBERS(usFireGlock18),
 	BASEWPN_MEMBERS(usFireFamas),
 	BASEWPN_MEMBERS(flPrevPrimaryAttack),
-	BASEWPN_MEMBERS(flLastFireTime)
+	BASEWPN_MEMBERS(flLastFireTime),
 };
 
 member_t memberlist_weaponbox[] = {
