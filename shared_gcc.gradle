@@ -20,7 +20,7 @@ rootProject.ext.createGccConfig = { boolean release, BinaryKind binKind ->
 				),
 
 				linkerOptions: new GccToolchainConfig.LinkerOptions(
-						stripSymbolTable: false,
+						stripSymbolTable: true,
 						staticLibGcc: false,
 						staticLibStdCpp: true,
 				),

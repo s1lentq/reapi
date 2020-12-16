@@ -48,7 +48,7 @@ void setupToolchain(NativeBinarySpec b) {
 			pchHeader: 'precompiled.h',
 			pchSourceSet: 'reapi_pch'
 		)
-		cfg.compilerOptions.args '/Ob2', '/Oi', '/GF', '/GR-', '/GS-'
+		cfg.compilerOptions.args '/Ob2', '/Oi', '/GF', '/GS-'
 		cfg.singleDefines('_CRT_SECURE_NO_WARNINGS')
 	} else if (cfg instanceof GccToolchainConfig) {
 		if (!useGcc) {
@@ -74,7 +74,7 @@ void setupToolchain(NativeBinarySpec b) {
 		cfg.linkerOptions.args '-Wl,--version-script=../version_script.lds', '-Wl,--gc-sections'
 		cfg.compilerOptions.args '-ffunction-sections', '-fdata-sections' // Remove unused code and data
 
-		cfg.compilerOptions.args '-Wall', '-Wno-unknown-pragmas', '-msse2', '-fomit-frame-pointer', '-fvisibility=default', '-fvisibility-inlines-hidden', '-fno-rtti', '-g0', '-s', '-fno-exceptions'
+		cfg.compilerOptions.args '-Wall', '-Wno-unknown-pragmas', '-msse2', '-fomit-frame-pointer', '-fvisibility=default', '-fvisibility-inlines-hidden', '-g0', '-s', '-fno-exceptions'
 	}
 
 	ToolchainConfigUtils.apply(project, cfg, b)
