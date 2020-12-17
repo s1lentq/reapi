@@ -41,7 +41,14 @@ class CBasePlayerItem;
 class CSquadMonster;
 class CCSEntity;
 
-class CBaseEntity {
+#define DECLARE_CLASS_TYPES(className, baseClassName)\
+public:                                              \
+	using BaseClass = baseClassName;                 \
+	using ThisClass = className;                     \
+
+class CBaseEntity
+{
+	DECLARE_CLASS_TYPES(CBaseEntity, CBaseEntity);
 public:
 	// Constructor.  Set engine to use C/C++ callback functions
 	// pointers to engine data
@@ -246,15 +253,18 @@ inline void CBaseEntity::SetBlocked(std::nullptr_t)
 	m_pfnBlocked = nullptr;
 }
 
-class CPointEntity: public CBaseEntity {
+class CPointEntity: public CBaseEntity
+{
+	DECLARE_CLASS_TYPES(CPointEntity, CBaseEntity);
 public:
 	virtual void Spawn() = 0;
 	virtual int ObjectCaps() = 0;
 };
 
-
 // generic Delay entity
-class CBaseDelay: public CBaseEntity {
+class CBaseDelay: public CBaseEntity
+{
+	DECLARE_CLASS_TYPES(CBaseDelay, CBaseEntity);
 public:
 	virtual void KeyValue(KeyValueData *pkvd) = 0;
 	virtual int Save(CSave &save) = 0;
@@ -264,7 +274,9 @@ public:
 	int m_iszKillTarget;
 };
 
-class CBaseAnimating: public CBaseDelay {
+class CBaseAnimating: public CBaseDelay
+{
+	DECLARE_CLASS_TYPES(CBaseAnimating, CBaseDelay);
 public:
 	virtual int Save(CSave &save) = 0;
 	virtual int Restore(CRestore &restore) = 0;
@@ -297,7 +309,9 @@ private:
 };
 
 // generic Toggle entity.
-class CBaseToggle: public CBaseAnimating {
+class CBaseToggle: public CBaseAnimating
+{
+	DECLARE_CLASS_TYPES(CBaseToggle, CBaseAnimating);
 public:
 	virtual void KeyValue(KeyValueData *pkvd) = 0;
 	virtual int Save(CSave &save) = 0;
@@ -357,7 +371,9 @@ inline void CBaseToggle::SetMoveDone(std::nullptr_t)
 #include "player.h"
 
 // Generic Button
-class CBaseButton: public CBaseToggle {
+class CBaseButton: public CBaseToggle
+{
+	DECLARE_CLASS_TYPES(CBaseButton, CBaseToggle);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -389,7 +405,9 @@ public:
 #define MAX_MULTI_TARGETS	16	// maximum number of targets a single multi_manager entity may be assigned.
 #define MS_MAX_TARGETS		32
 
-class CMultiSource: public CPointEntity {
+class CMultiSource: public CPointEntity
+{
+	DECLARE_CLASS_TYPES(CMultiSource, CPointEntity);
 public:
 	virtual void Spawn() = 0;
 	virtual void Restart() = 0;
@@ -412,7 +430,9 @@ public:
 #define SF_WORLD_FORCETEAM  0x0004 // Force teams
 
 // This spawns first when each level begins.
-class CWorld: public CBaseEntity {
+class CWorld: public CBaseEntity
+{
+	DECLARE_CLASS_TYPES(CWorld, CBaseEntity);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;

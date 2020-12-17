@@ -102,7 +102,9 @@ enum HitBoxGroup
 	NUM_HITGROUPS,
 };
 
-class CGib: public CBaseEntity {
+class CGib: public CBaseEntity
+{
+	DECLARE_CLASS_TYPES(CGib, CBaseEntity);
 public:
 	virtual int ObjectCaps() = 0;
 public:

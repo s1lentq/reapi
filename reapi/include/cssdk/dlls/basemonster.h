@@ -45,7 +45,9 @@ enum MONSTERSTATE
 };
 
 class CBaseToggle;
-class CBaseMonster: public CBaseToggle {
+class CBaseMonster: public CBaseToggle
+{
+	DECLARE_CLASS_TYPES(CBaseMonster, CBaseToggle);
 public:
 	virtual void KeyValue(KeyValueData *pkvd) = 0;
 	virtual void TraceAttack(entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType) = 0;

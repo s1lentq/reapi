@@ -135,7 +135,9 @@ struct MULTIDAMAGE
 #include "weapontype.h"
 #include "items.h"
 
-class CArmoury: public CBaseEntity {
+class CArmoury: public CBaseEntity
+{
+	DECLARE_CLASS_TYPES(CArmoury, CBaseEntity);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -149,7 +151,9 @@ public:
 };
 
 // Smoke Grenade / HE grenade / Flashbang grenade / C4
-class CGrenade: public CBaseMonster {
+class CGrenade: public CBaseMonster
+{
+	DECLARE_CLASS_TYPES(CGrenade, CBaseMonster);
 public:
 	virtual void Spawn() = 0;
 	virtual int Save(CSave &save) = 0;
@@ -188,7 +192,9 @@ public:
 
 // Items that the player has in their inventory that they can use
 class CCSPlayerItem;
-class CBasePlayerItem: public CBaseAnimating {
+class CBasePlayerItem: public CBaseAnimating
+{
+	DECLARE_CLASS_TYPES(CBasePlayerItem, CBaseAnimating);
 public:
 	virtual int Save(CSave &save) = 0;
 	virtual int Restore(CRestore &restore) = 0;
@@ -229,7 +235,9 @@ public:
 
 // inventory items that
 class CCSPlayerWeapon;
-class CBasePlayerWeapon: public CBasePlayerItem {
+class CBasePlayerWeapon: public CBasePlayerItem
+{
+	DECLARE_CLASS_TYPES(CBasePlayerWeapon, CBasePlayerItem);
 public:
 	virtual int Save(CSave &save) = 0;
 	virtual int Restore(CRestore &restore) = 0;
@@ -308,14 +316,18 @@ public:
 	float m_flLastFireTime;
 };
 
-class CBasePlayerAmmo: public CBaseEntity {
+class CBasePlayerAmmo: public CBaseEntity
+{
+	DECLARE_CLASS_TYPES(CBasePlayerAmmo, CBaseEntity);
 public:
 	virtual void Spawn() = 0;
 	virtual BOOL AddAmmo(CBaseEntity *pOther) = 0;
 	virtual CBaseEntity *Respawn() = 0;
 };
 
-class CWeaponBox: public CBaseEntity {
+class CWeaponBox: public CBaseEntity
+{
+	DECLARE_CLASS_TYPES(CWeaponBox, CBaseEntity);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -332,7 +344,9 @@ public:
 	bool m_bIsBomb;
 };
 
-class CUSP: public CBasePlayerWeapon {
+class CUSP: public CBasePlayerWeapon
+{
+	DECLARE_CLASS_TYPES(CUSP, CBasePlayerWeapon);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -352,7 +366,9 @@ public:
 	float m_flBaseDamageSil;
 };
 
-class CMP5N: public CBasePlayerWeapon {
+class CMP5N: public CBasePlayerWeapon
+{
+	DECLARE_CLASS_TYPES(CMP5N, CBasePlayerWeapon);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -370,26 +386,9 @@ public:
 	unsigned short m_usFire;
 };
 
-class CSG552: public CBasePlayerWeapon {
-public:
-	virtual void Spawn() = 0;
-	virtual void Precache() = 0;
-	virtual int GetItemInfo(ItemInfo *p) = 0;
-	virtual BOOL Deploy() = 0;
-	virtual float GetMaxSpeed() = 0;
-	virtual int iItemSlot() = 0;
-	virtual void PrimaryAttack() = 0;
-	virtual void SecondaryAttack() = 0;
-	virtual void Reload() = 0;
-	virtual void WeaponIdle() = 0;
-	virtual BOOL UseDecrement() = 0;
-public:
-	int m_iShell;
-	int m_iShellOn;
-	unsigned short m_usFire;
-};
-
-class CAK47: public CBasePlayerWeapon {
+class CSG552: public CBasePlayerWeapon
+{
+	DECLARE_CLASS_TYPES(CSG552, CBasePlayerWeapon);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -408,7 +407,9 @@ public:
 	unsigned short m_usFire;
 };
 
-class CAUG: public CBasePlayerWeapon {
+class CAK47: public CBasePlayerWeapon
+{
+	DECLARE_CLASS_TYPES(CAK47, CBasePlayerWeapon);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -427,7 +428,30 @@ public:
 	unsigned short m_usFire;
 };
 
-class CAWP: public CBasePlayerWeapon {
+class CAUG: public CBasePlayerWeapon
+{
+	DECLARE_CLASS_TYPES(CAUG, CBasePlayerWeapon);
+public:
+	virtual void Spawn() = 0;
+	virtual void Precache() = 0;
+	virtual int GetItemInfo(ItemInfo *p) = 0;
+	virtual BOOL Deploy() = 0;
+	virtual float GetMaxSpeed() = 0;
+	virtual int iItemSlot() = 0;
+	virtual void PrimaryAttack() = 0;
+	virtual void SecondaryAttack() = 0;
+	virtual void Reload() = 0;
+	virtual void WeaponIdle() = 0;
+	virtual BOOL UseDecrement() = 0;
+public:
+	int m_iShell;
+	int m_iShellOn;
+	unsigned short m_usFire;
+};
+
+class CAWP: public CBasePlayerWeapon
+{
+	DECLARE_CLASS_TYPES(CAWP, CBasePlayerWeapon);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -449,7 +473,9 @@ public:
 #define BOMB_FLAG_DROPPED	0 // if the bomb was dropped due to voluntary dropping or death/disconnect
 #define BOMB_FLAG_PLANTED	1 // if the bomb has been planted will also trigger the round timer to hide will also show where the dropped bomb on the Terrorist team's radar.
 
-class CC4: public CBasePlayerWeapon {
+class CC4: public CBasePlayerWeapon
+{
+	DECLARE_CLASS_TYPES(CC4, CBasePlayerWeapon);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -470,7 +496,9 @@ public:
 	bool m_bHasShield;
 };
 
-class CDEAGLE: public CBasePlayerWeapon {
+class CDEAGLE: public CBasePlayerWeapon
+{
+	DECLARE_CLASS_TYPES(CDEAGLE, CBasePlayerWeapon);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -489,7 +517,9 @@ public:
 	unsigned short m_usFire;
 };
 
-class CFlashbang: public CBasePlayerWeapon {
+class CFlashbang: public CBasePlayerWeapon
+{
+	DECLARE_CLASS_TYPES(CFlashbang, CBasePlayerWeapon);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -507,7 +537,9 @@ public:
 	virtual BOOL IsPistol() = 0;
 };
 
-class CG3SG1: public CBasePlayerWeapon {
+class CG3SG1: public CBasePlayerWeapon
+{
+	DECLARE_CLASS_TYPES(CG3SG1, CBasePlayerWeapon);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -525,7 +557,9 @@ public:
 	unsigned short m_usFire;
 };
 
-class CGLOCK18: public CBasePlayerWeapon {
+class CGLOCK18: public CBasePlayerWeapon
+{
+	DECLARE_CLASS_TYPES(CGLOCK18, CBasePlayerWeapon);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -544,7 +578,9 @@ public:
 	bool m_bBurstFire;
 };
 
-class CHEGrenade: public CBasePlayerWeapon {
+class CHEGrenade: public CBasePlayerWeapon
+{
+	DECLARE_CLASS_TYPES(CHEGrenade, CBasePlayerWeapon);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -563,7 +599,9 @@ public:
 	unsigned short m_usCreate;
 };
 
-class CKnife: public CBasePlayerWeapon {
+class CKnife: public CBasePlayerWeapon
+{
+	DECLARE_CLASS_TYPES(CKnife, CBasePlayerWeapon);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -587,7 +625,9 @@ public:
 	float m_flSwingDistance;
 };
 
-class CM249: public CBasePlayerWeapon {
+class CM249: public CBasePlayerWeapon
+{
+	DECLARE_CLASS_TYPES(CM249, CBasePlayerWeapon);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -605,7 +645,9 @@ public:
 	unsigned short m_usFire;
 };
 
-class CM3: public CBasePlayerWeapon {
+class CM3: public CBasePlayerWeapon
+{
+	DECLARE_CLASS_TYPES(CM3, CBasePlayerWeapon);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -623,7 +665,9 @@ public:
 	unsigned short m_usFire;
 };
 
-class CM4A1: public CBasePlayerWeapon {
+class CM4A1: public CBasePlayerWeapon
+{
+	DECLARE_CLASS_TYPES(CM4A1, CBasePlayerWeapon);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -643,7 +687,9 @@ public:
 	float m_flBaseDamageSil;
 };
 
-class CMAC10: public CBasePlayerWeapon {
+class CMAC10: public CBasePlayerWeapon
+{
+	DECLARE_CLASS_TYPES(CMAC10, CBasePlayerWeapon);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -661,7 +707,9 @@ public:
 	unsigned short m_usFire;
 };
 
-class CP228: public CBasePlayerWeapon {
+class CP228: public CBasePlayerWeapon
+{
+	DECLARE_CLASS_TYPES(CP228, CBasePlayerWeapon);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -680,7 +728,9 @@ public:
 	unsigned short m_usFire;
 };
 
-class CP90: public CBasePlayerWeapon {
+class CP90: public CBasePlayerWeapon
+{
+	DECLARE_CLASS_TYPES(CP90, CBasePlayerWeapon);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -698,7 +748,9 @@ public:
 	unsigned short m_usFire;
 };
 
-class CSCOUT: public CBasePlayerWeapon {
+class CSCOUT: public CBasePlayerWeapon
+{
+	DECLARE_CLASS_TYPES(CSCOUT, CBasePlayerWeapon);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -716,7 +768,9 @@ public:
 	unsigned short m_usFire;
 };
 
-class CSmokeGrenade: public CBasePlayerWeapon {
+class CSmokeGrenade: public CBasePlayerWeapon
+{
+	DECLARE_CLASS_TYPES(CSmokeGrenade, CBasePlayerWeapon);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -735,7 +789,9 @@ public:
 	unsigned short m_usCreate;
 };
 
-class CTMP: public CBasePlayerWeapon {
+class CTMP: public CBasePlayerWeapon
+{
+	DECLARE_CLASS_TYPES(CTMP, CBasePlayerWeapon);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -753,7 +809,9 @@ public:
 	unsigned short m_usFire;
 };
 
-class CXM1014: public CBasePlayerWeapon {
+class CXM1014: public CBasePlayerWeapon
+{
+	DECLARE_CLASS_TYPES(CXM1014, CBasePlayerWeapon);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -771,7 +829,9 @@ public:
 	unsigned short m_usFire;
 };
 
-class CELITE: public CBasePlayerWeapon {
+class CELITE: public CBasePlayerWeapon
+{
+	DECLARE_CLASS_TYPES(CELITE, CBasePlayerWeapon);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -790,7 +850,9 @@ public:
 	unsigned short m_usFire_RIGHT;
 };
 
-class CFiveSeven: public CBasePlayerWeapon {
+class CFiveSeven: public CBasePlayerWeapon
+{
+	DECLARE_CLASS_TYPES(CFiveSeven, CBasePlayerWeapon);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -809,7 +871,9 @@ public:
 	unsigned short m_usFire;
 };
 
-class CUMP45: public CBasePlayerWeapon {
+class CUMP45: public CBasePlayerWeapon
+{
+	DECLARE_CLASS_TYPES(CUMP45, CBasePlayerWeapon);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -827,7 +891,9 @@ public:
 	unsigned short m_usFire;
 };
 
-class CSG550: public CBasePlayerWeapon {
+class CSG550: public CBasePlayerWeapon
+{
+	DECLARE_CLASS_TYPES(CSG550, CBasePlayerWeapon);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -845,7 +911,9 @@ public:
 	unsigned short m_usFire;
 };
 
-class CGalil: public CBasePlayerWeapon {
+class CGalil: public CBasePlayerWeapon
+{
+	DECLARE_CLASS_TYPES(CGalil, CBasePlayerWeapon);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -864,7 +932,9 @@ public:
 	unsigned short m_usFire;
 };
 
-class CFamas: public CBasePlayerWeapon {
+class CFamas: public CBasePlayerWeapon
+{
+	DECLARE_CLASS_TYPES(CFamas, CBasePlayerWeapon);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;

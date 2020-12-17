@@ -27,7 +27,9 @@
 */
 #pragma once
 
-class CPathCorner: public CPointEntity {
+class CPathCorner: public CPointEntity
+{
+	DECLARE_CLASS_TYPES(CPathCorner, CPointEntity);
 public:
 	virtual void Spawn() = 0;
 	virtual void KeyValue(KeyValueData *pkvd) = 0;

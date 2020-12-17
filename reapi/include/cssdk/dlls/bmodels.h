@@ -59,7 +59,9 @@
 #define SF_CONVEYOR_NOTSOLID            0x0002
 
 // This is just a solid wall if not inhibited
-class CFuncWall: public CBaseEntity {
+class CFuncWall: public CBaseEntity
+{
+	DECLARE_CLASS_TYPES(CFuncWall, CBaseEntity);
 public:
 	virtual void Spawn() = 0;
 
@@ -68,20 +70,26 @@ public:
 	virtual void Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value) = 0;
 };
 
-class CFuncWallToggle: public CFuncWall {
+class CFuncWallToggle: public CFuncWall
+{
+	DECLARE_CLASS_TYPES(CFuncWallToggle, CFuncWall);
 public:
 	virtual void Spawn() = 0;
 	virtual void Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value) = 0;
 };
 
-class CFuncConveyor: public CFuncWall {
+class CFuncConveyor: public CFuncWall
+{
+	DECLARE_CLASS_TYPES(CFuncConveyor, CFuncWall);
 public:
 	virtual void Spawn() = 0;
 	virtual void Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value) = 0;
 };
 
 // A simple entity that looks solid but lets you walk through it.
-class CFuncIllusionary: public CBaseToggle {
+class CFuncIllusionary: public CBaseToggle
+{
+	DECLARE_CLASS_TYPES(CFuncIllusionary, CBaseToggle);
 public:
 	virtual void Spawn() = 0;
 	virtual void KeyValue(KeyValueData *pkvd) = 0;
@@ -95,7 +103,9 @@ public:
 //
 // otherwise it will be invisible and not solid.  This can be used to keep
 // specific monsters out of certain areas
-class CFuncMonsterClip: public CFuncWall {
+class CFuncMonsterClip: public CFuncWall
+{
+	DECLARE_CLASS_TYPES(CFuncMonsterClip, CFuncWall);
 public:
 	virtual void Spawn() = 0;
 
@@ -103,7 +113,9 @@ public:
 	virtual void Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value) = 0;
 };
 
-class CFuncRotating: public CBaseEntity {
+class CFuncRotating: public CBaseEntity
+{
+	DECLARE_CLASS_TYPES(CFuncRotating, CBaseEntity);
 public:
 	// basic functions
 	virtual void Spawn() = 0;
@@ -125,7 +137,9 @@ public:
 	Vector m_angles;
 };
 
-class CPendulum: public CBaseEntity {
+class CPendulum: public CBaseEntity
+{
+	DECLARE_CLASS_TYPES(CPendulum, CBaseEntity);
 public:
 	virtual void Spawn() = 0;
 	virtual void KeyValue(KeyValueData *pkvd) = 0;

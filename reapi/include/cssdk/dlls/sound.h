@@ -100,7 +100,9 @@ typedef struct dynpitchvol
 
 } dynpitchvol_t;
 
-class CAmbientGeneric: public CBaseEntity {
+class CAmbientGeneric: public CBaseEntity
+{
+	DECLARE_CLASS_TYPES(CAmbientGeneric, CBaseEntity);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -116,7 +118,9 @@ public:
 	BOOL m_fLooping;	// TRUE when the sound played will loop
 };
 
-class CEnvSound: public CPointEntity {
+class CEnvSound: public CPointEntity
+{
+	DECLARE_CLASS_TYPES(CEnvSound, CPointEntity);
 public:
 	virtual void Spawn() = 0;
 	virtual void KeyValue(KeyValueData *pkvd) = 0;
@@ -128,7 +132,9 @@ public:
 	float m_flRoomtype;
 };
 
-class CSpeaker: public CBaseEntity {
+class CSpeaker: public CBaseEntity
+{
+	DECLARE_CLASS_TYPES(CSpeaker, CBaseEntity);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;

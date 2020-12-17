@@ -27,7 +27,9 @@
 */
 #pragma once
 
-class CCycler: public CBaseMonster {
+class CCycler: public CBaseMonster
+{
+	DECLARE_CLASS_TYPES(CCycler, CBaseMonster);
 public:
 	virtual void Spawn() = 0;
 	virtual int Save(CSave &save) = 0;
@@ -44,18 +46,24 @@ public:
 };
 
 // we should get rid of all the other cyclers and replace them with this.
-class CGenericCycler: public CCycler {
+class CGenericCycler: public CCycler
+{
+	DECLARE_CLASS_TYPES(CGenericCycler, CCycler);
 public:
 	virtual void Spawn() = 0;
 };
 
 // Probe droid imported for tech demo compatibility
-class CCyclerProbe: public CCycler {
+class CCyclerProbe: public CCycler
+{
+	DECLARE_CLASS_TYPES(CCyclerProbe, CCycler);
 public:
 	virtual void Spawn() = 0;
 };
 
-class CCyclerSprite: public CBaseEntity {
+class CCyclerSprite: public CBaseEntity
+{
+	DECLARE_CLASS_TYPES(CCyclerSprite, CBaseEntity);
 public:
 	virtual void Spawn() = 0;
 	virtual void Restart() = 0;
@@ -77,7 +85,9 @@ public:
 	vec3_t m_rendercolor;
 };
 
-class CWeaponCycler: public CBasePlayerWeapon {
+class CWeaponCycler: public CBasePlayerWeapon
+{
+	DECLARE_CLASS_TYPES(CWeaponCycler, CBasePlayerWeapon);
 public:
 	virtual void Spawn() = 0;
 	virtual int GetItemInfo(ItemInfo *p) = 0;
@@ -92,7 +102,9 @@ public:
 };
 
 // Flaming Wreakage
-class CWreckage: public CBaseMonster {
+class CWreckage: public CBaseMonster
+{
+	DECLARE_CLASS_TYPES(CWreckage, CBaseMonster);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;

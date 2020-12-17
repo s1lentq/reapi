@@ -27,7 +27,9 @@
 */
 #pragma once
 
-class CFuncMortarField: public CBaseToggle {
+class CFuncMortarField: public CBaseToggle
+{
+	DECLARE_CLASS_TYPES(CFuncMortarField, CBaseToggle);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -46,7 +48,9 @@ public:
 	int m_fControl;
 };
 
-class CMortar: public CGrenade {
+class CMortar: public CGrenade
+{
+	DECLARE_CLASS_TYPES(CMortar, CGrenade);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;

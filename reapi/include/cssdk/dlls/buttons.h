@@ -49,7 +49,9 @@
 #define SF_BTARGET_USE			0x0001
 #define SF_BTARGET_ON			0x0002
 
-class CEnvGlobal: public CPointEntity {
+class CEnvGlobal: public CPointEntity
+{
+	DECLARE_CLASS_TYPES(CEnvGlobal, CPointEntity);
 public:
 	virtual void Spawn() = 0;
 	virtual void KeyValue(KeyValueData *pkvd) = 0;
@@ -62,12 +64,16 @@ public:
 	int m_initialstate;
 };
 
-class CRotButton: public CBaseButton {
+class CRotButton: public CBaseButton
+{
+	DECLARE_CLASS_TYPES(CRotButton, CBaseButton);
 public:
 	virtual void Spawn() = 0;
 };
 
-class CMomentaryRotButton: public CBaseToggle {
+class CMomentaryRotButton: public CBaseToggle
+{
+	DECLARE_CLASS_TYPES(CMomentaryRotButton, CBaseToggle);
 public:
 	virtual void Spawn() = 0;
 	virtual void KeyValue(KeyValueData *pkvd) = 0;
@@ -84,7 +90,9 @@ public:
 	int m_sounds;
 };
 
-class CEnvSpark: public CBaseEntity {
+class CEnvSpark: public CBaseEntity
+{
+	DECLARE_CLASS_TYPES(CEnvSpark, CBaseEntity);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -95,7 +103,9 @@ public:
 	float m_flDelay;
 };
 
-class CButtonTarget: public CBaseEntity {
+class CButtonTarget: public CBaseEntity
+{
+	DECLARE_CLASS_TYPES(CButtonTarget, CBaseEntity);
 public:
 	virtual void Spawn() = 0;
 	virtual int ObjectCaps() = 0;

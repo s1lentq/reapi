@@ -29,7 +29,9 @@
 
 #define SF_LIGHT_START_OFF		1
 
-class CLight: public CPointEntity {
+class CLight: public CPointEntity
+{
+	DECLARE_CLASS_TYPES(CLight, CPointEntity);
 public:
 	virtual void Spawn() = 0;
 	virtual void Restart() = 0;
@@ -43,7 +45,9 @@ private:
 	BOOL m_iStartedOff;
 };
 
-class CEnvLight: public CLight {
+class CEnvLight: public CLight
+{
+	DECLARE_CLASS_TYPES(CEnvLight, CLight);
 public:
 	virtual void Spawn() = 0;
 	virtual void KeyValue(KeyValueData *pkvd) = 0;

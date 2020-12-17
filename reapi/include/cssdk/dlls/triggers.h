@@ -72,7 +72,9 @@
 #define SF_RENDER_MASKMODE	(1 << 2)
 #define SF_RENDER_MASKCOLOR	(1 << 3)
 
-class CFrictionModifier: public CBaseEntity {
+class CFrictionModifier: public CBaseEntity
+{
+	DECLARE_CLASS_TYPES(CFrictionModifier, CBaseEntity);
 public:
 	virtual void Spawn() = 0;
 	virtual void KeyValue(KeyValueData *pkvd) = 0;
@@ -85,7 +87,9 @@ public:
 
 // This trigger will fire when the level spawns (or respawns if not fire once)
 // It will check a global state before firing.  It supports delay and killtargets
-class CAutoTrigger: public CBaseDelay {
+class CAutoTrigger: public CBaseDelay
+{
+	DECLARE_CLASS_TYPES(CAutoTrigger, CBaseDelay);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -100,7 +104,9 @@ public:
 	USE_TYPE triggerType;
 };
 
-class CTriggerRelay: public CBaseDelay {
+class CTriggerRelay: public CBaseDelay
+{
+	DECLARE_CLASS_TYPES(CTriggerRelay, CBaseDelay);
 public:
 	virtual void Spawn() = 0;
 	virtual void KeyValue(KeyValueData *pkvd) = 0;
@@ -116,7 +122,9 @@ public:
 // at specified times.
 // FLAG:		THREAD (create clones when triggered)
 // FLAG:		CLONE (this is a clone for a threaded execution)
-class CMultiManager: public CBaseToggle {
+class CMultiManager: public CBaseToggle
+{
+	DECLARE_CLASS_TYPES(CMultiManager, CBaseToggle);
 public:
 	virtual void Spawn() = 0;
 	virtual void Restart() = 0;
@@ -137,13 +145,17 @@ public:
 //
 // This entity will copy its render parameters (renderfx, rendermode, rendercolor, renderamt)
 // to its targets when triggered.
-class CRenderFxManager: public CBaseEntity {
+class CRenderFxManager: public CBaseEntity
+{
+	DECLARE_CLASS_TYPES(CRenderFxManager, CBaseEntity);
 public:
 	virtual void Spawn() = 0;
 	virtual void Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value) = 0;
 };
 
-class CBaseTrigger: public CBaseToggle {
+class CBaseTrigger: public CBaseToggle
+{
+	DECLARE_CLASS_TYPES(CBaseTrigger, CBaseToggle);
 public:
 	virtual void KeyValue(KeyValueData *pkvd) = 0;
 	virtual int ObjectCaps() = 0;
@@ -151,14 +163,18 @@ public:
 
 // trigger_hurt - hurts anything that touches it. if the trigger has a targetname, firing it will toggle state
 // int gfToggleState = 0; // used to determine when all radiation trigger hurts have called 'RadiationThink'
-class CTriggerHurt: public CBaseTrigger {
+class CTriggerHurt: public CBaseTrigger
+{
+	DECLARE_CLASS_TYPES(CTriggerHurt, CBaseTrigger);
 public:
 	virtual void Spawn() = 0;
 	virtual void Restart() = 0;
 	virtual int ObjectCaps() = 0;
 };
 
-class CTriggerMonsterJump: public CBaseTrigger {
+class CTriggerMonsterJump: public CBaseTrigger
+{
+	DECLARE_CLASS_TYPES(CTriggerMonsterJump, CBaseTrigger);
 public:
 	virtual void Spawn() = 0;
 	virtual void Think() = 0;
@@ -166,7 +182,9 @@ public:
 };
 
 // trigger_cdaudio - starts/stops cd audio tracks
-class CTriggerCDAudio: public CBaseTrigger {
+class CTriggerCDAudio: public CBaseTrigger
+{
+	DECLARE_CLASS_TYPES(CTriggerCDAudio, CBaseTrigger);
 public:
 	virtual void Spawn() = 0;
 	virtual void Touch(CBaseEntity *pOther) = 0;
@@ -174,7 +192,9 @@ public:
 };
 
 // This plays a CD track when fired or when the player enters it's radius
-class CTargetCDAudio: public CPointEntity {
+class CTargetCDAudio: public CPointEntity
+{
+	DECLARE_CLASS_TYPES(CTargetCDAudio, CPointEntity);
 public:
 	virtual void Spawn() = 0;
 	virtual void KeyValue(KeyValueData *pkvd) = 0;
@@ -196,7 +216,9 @@ public:
 // 4)
 // NEW
 // if a trigger has a NETNAME, that NETNAME will become the TARGET of the triggered object.
-class CTriggerMultiple: public CBaseTrigger {
+class CTriggerMultiple: public CBaseTrigger
+{
+	DECLARE_CLASS_TYPES(CTriggerMultiple, CBaseTrigger);
 public:
 	virtual void Spawn() = 0;
 };
@@ -212,7 +234,9 @@ public:
 // 2)	beep beep
 // 3)	large switch
 // 4)
-class CTriggerOnce: public CTriggerMultiple {
+class CTriggerOnce: public CTriggerMultiple
+{
+	DECLARE_CLASS_TYPES(CTriggerOnce, CTriggerMultiple);
 public:
 	virtual void Spawn() = 0;
 	virtual void Restart() = 0;
@@ -223,19 +247,25 @@ public:
 // If nomessage is not set, it will print "1 more.. " etc when triggered and
 // "sequence complete" when finished.  After the counter has been triggered "cTriggersLeft"
 // times (default 2), it will fire all of it's targets and remove itself.
-class CTriggerCounter: public CBaseTrigger {
+class CTriggerCounter: public CBaseTrigger
+{
+	DECLARE_CLASS_TYPES(CTriggerCounter, CBaseTrigger);
 public:
 	virtual void Spawn() = 0;
 };
 
 // Derive from point entity so this doesn't move across levels
-class CTriggerVolume: public CPointEntity {
+class CTriggerVolume: public CPointEntity
+{
+	DECLARE_CLASS_TYPES(CTriggerVolume, CPointEntity);
 public:
 	virtual void Spawn() = 0;
 };
 
 // Fires a target after level transition and then dies
-class CFireAndDie: public CBaseDelay {
+class CFireAndDie: public CBaseDelay
+{
+	DECLARE_CLASS_TYPES(CFireAndDie, CBaseDelay);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -245,7 +275,9 @@ public:
 
 // QUAKED trigger_changelevel (0.5 0.5 0.5) ? NO_INTERMISSION
 // When the player touches this, he gets sent to the map listed in the "map" variable.  Unless the NO_INTERMISSION flag is set, the view will go to the info_intermission spot and display stats.
-class CChangeLevel: public CBaseTrigger {
+class CChangeLevel: public CBaseTrigger
+{
+	DECLARE_CLASS_TYPES(CChangeLevel, CBaseTrigger);
 public:
 	virtual void Spawn() = 0;
 	virtual void KeyValue(KeyValueData *pkvd) = 0;
@@ -258,14 +290,18 @@ public:
 	float m_changeTargetDelay;
 };
 
-class CLadder: public CBaseTrigger {
+class CLadder: public CBaseTrigger
+{
+	DECLARE_CLASS_TYPES(CLadder, CBaseTrigger);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
 	virtual void KeyValue(KeyValueData *pkvd) = 0;
 };
 
-class CTriggerPush: public CBaseTrigger {
+class CTriggerPush: public CBaseTrigger
+{
+	DECLARE_CLASS_TYPES(CTriggerPush, CBaseTrigger);
 public:
 	virtual void Spawn() = 0;
 	virtual void Restart() = 0;
@@ -274,54 +310,74 @@ public:
 	virtual void Touch(CBaseEntity *pOther) = 0;
 };
 
-class CTriggerTeleport: public CBaseTrigger {
+class CTriggerTeleport: public CBaseTrigger
+{
+	DECLARE_CLASS_TYPES(CTriggerTeleport, CBaseTrigger);
 public:
 	virtual void Spawn() = 0;
 };
 
-class CBuyZone: public CBaseTrigger {
+class CBuyZone: public CBaseTrigger
+{
+	DECLARE_CLASS_TYPES(CBuyZone, CBaseTrigger);
 public:
 	virtual void Spawn() = 0;
 };
 
-class CBombTarget: public CBaseTrigger {
+class CBombTarget: public CBaseTrigger
+{
+	DECLARE_CLASS_TYPES(CBombTarget, CBaseTrigger);
 public:
 	virtual void Spawn() = 0;
 };
 
-class CHostageRescue: public CBaseTrigger {
+class CHostageRescue: public CBaseTrigger
+{
+	DECLARE_CLASS_TYPES(CHostageRescue, CBaseTrigger);
 public:
 	virtual void Spawn() = 0;
 };
 
-class CEscapeZone: public CBaseTrigger {
+class CEscapeZone: public CBaseTrigger
+{
+	DECLARE_CLASS_TYPES(CEscapeZone, CBaseTrigger);
 public:
 	virtual void Spawn() = 0;
 };
 
-class CVIP_SafetyZone: public CBaseTrigger {
+class CVIP_SafetyZone: public CBaseTrigger
+{
+	DECLARE_CLASS_TYPES(CVIP_SafetyZone, CBaseTrigger);
 public:
 	virtual void Spawn() = 0;
 };
 
-class CTriggerSave: public CBaseTrigger {
+class CTriggerSave: public CBaseTrigger
+{
+	DECLARE_CLASS_TYPES(CTriggerSave, CBaseTrigger);
 public:
 	virtual void Spawn() = 0;
 };
 
-class CTriggerEndSection: public CBaseTrigger {
+class CTriggerEndSection: public CBaseTrigger
+{
+	DECLARE_CLASS_TYPES(CTriggerEndSection, CBaseTrigger);
 public:
 	virtual void Spawn() = 0;
 	virtual void KeyValue(KeyValueData *pkvd) = 0;
 };
 
-class CTriggerGravity: public CBaseTrigger {
+class CTriggerGravity: public CBaseTrigger
+{
+	DECLARE_CLASS_TYPES(CTriggerGravity, CBaseTrigger);
 public:
 	virtual void Spawn() = 0;
 };
 
 // this is a really bad idea.
-class CTriggerChangeTarget: public CBaseDelay {
+class CTriggerChangeTarget: public CBaseDelay
+{
+	DECLARE_CLASS_TYPES(CTriggerChangeTarget, CBaseDelay);
 public:
 	virtual void Spawn() = 0;
 	virtual void KeyValue(KeyValueData *pkvd) = 0;
@@ -333,7 +389,9 @@ private:
 	int m_iszNewTarget;
 };
 
-class CTriggerCamera: public CBaseDelay {
+class CTriggerCamera: public CBaseDelay
+{
+	DECLARE_CLASS_TYPES(CTriggerCamera, CBaseDelay);
 public:
 	virtual void Spawn() = 0;
 	virtual void KeyValue(KeyValueData *pkvd) = 0;
@@ -357,12 +415,16 @@ public:
 	int m_state;
 };
 
-class CWeather: public CBaseTrigger {
+class CWeather: public CBaseTrigger
+{
+	DECLARE_CLASS_TYPES(CWeather, CBaseTrigger);
 public:
 	virtual void Spawn() = 0;
 };
 
-class CClientFog: public CBaseEntity {
+class CClientFog: public CBaseEntity
+{
+	DECLARE_CLASS_TYPES(CClientFog, CBaseEntity);
 public:
 	virtual void Spawn() = 0;
 	virtual void KeyValue(KeyValueData *pkvd) = 0;

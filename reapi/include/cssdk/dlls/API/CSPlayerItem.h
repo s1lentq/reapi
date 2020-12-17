@@ -31,6 +31,7 @@
 class CBasePlayerItem;
 class CCSPlayerItem: public CCSAnimating
 {
+	DECLARE_CLASS_TYPES(CCSPlayerItem, CCSAnimating);
 public:
 	CCSPlayerItem()
 	{

@@ -41,7 +41,9 @@
 
 #define FGUNTARGET_START_ON	0x0001
 
-class CBasePlatTrain: public CBaseToggle {
+class CBasePlatTrain: public CBaseToggle
+{
+	DECLARE_CLASS_TYPES(CBasePlatTrain, CBaseToggle);
 public:
 	virtual void Precache() = 0;
 	virtual void KeyValue(KeyValueData *pkvd) = 0;
@@ -57,7 +59,9 @@ public:
 	float m_volume;
 };
 
-class CFuncPlat: public CBasePlatTrain {
+class CFuncPlat: public CBasePlatTrain
+{
+	DECLARE_CLASS_TYPES(CFuncPlat, CBasePlatTrain);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -68,7 +72,9 @@ public:
 	virtual void HitBottom() = 0;
 };
 
-class CPlatTrigger: public CBaseEntity {
+class CPlatTrigger: public CBaseEntity
+{
+	DECLARE_CLASS_TYPES(CPlatTrigger, CBaseEntity);
 public:
 	virtual int ObjectCaps() = 0;
 	virtual void Touch(CBaseEntity *pOther) = 0;
@@ -76,7 +82,9 @@ public:
 	CFuncPlat *m_pPlatform;
 };
 
-class CFuncPlatRot: public CFuncPlat {
+class CFuncPlatRot: public CFuncPlat
+{
+	DECLARE_CLASS_TYPES(CFuncPlatRot, CFuncPlat);
 public:
 	virtual void Spawn() = 0;
 	virtual int Save(CSave &save) = 0;
@@ -90,7 +98,9 @@ public:
 	Vector m_start;
 };
 
-class CFuncTrain: public CBasePlatTrain {
+class CFuncTrain: public CBasePlatTrain
+{
+	DECLARE_CLASS_TYPES(CFuncTrain, CBasePlatTrain);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -110,13 +120,17 @@ public:
 	BOOL m_activated;
 };
 
-class CFuncTrainControls: public CBaseEntity {
+class CFuncTrainControls: public CBaseEntity
+{
+	DECLARE_CLASS_TYPES(CFuncTrainControls, CBaseEntity);
 public:
 	virtual void Spawn() = 0;
 	virtual int ObjectCaps() = 0;
 };
 
-class CFuncTrackChange: public CFuncPlatRot {
+class CFuncTrackChange: public CFuncPlatRot
+{
+	DECLARE_CLASS_TYPES(CFuncTrackChange, CFuncPlatRot);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -155,13 +169,17 @@ public:
 	int m_use;
 };
 
-class CFuncTrackAuto: public CFuncTrackChange {
+class CFuncTrackAuto: public CFuncTrackChange
+{
+	DECLARE_CLASS_TYPES(CFuncTrackAuto, CFuncTrackChange);
 public:
 	virtual void Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value) = 0;
 	virtual void UpdateAutoTargets(int toggleState) = 0;
 };
 
-class CGunTarget: public CBaseMonster {
+class CGunTarget: public CBaseMonster
+{
+	DECLARE_CLASS_TYPES(CGunTarget, CBaseMonster);
 public:
 	virtual void Spawn() = 0;
 	virtual int Save(CSave &save) = 0;

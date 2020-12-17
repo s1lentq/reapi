@@ -27,7 +27,9 @@
 */
 #pragma once
 
-class CRecharge: public CBaseToggle {
+class CRecharge: public CBaseToggle
+{
+	DECLARE_CLASS_TYPES(CRecharge, CBaseToggle);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;

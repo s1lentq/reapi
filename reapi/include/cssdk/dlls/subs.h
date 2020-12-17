@@ -28,12 +28,16 @@
 
 #pragma once
 
-class CNullEntity: public CBaseEntity {
+class CNullEntity: public CBaseEntity
+{
+	DECLARE_CLASS_TYPES(CNullEntity, CBaseEntity);
 public:
 	virtual void Spawn() = 0;
 };
 
-class CBaseDMStart: public CPointEntity {
+class CBaseDMStart: public CPointEntity
+{
+	DECLARE_CLASS_TYPES(CBaseDMStart, CPointEntity);
 public:
 	virtual void KeyValue(KeyValueData *pkvd) = 0;
 	virtual BOOL IsTriggered(CBaseEntity *pEntity) = 0;

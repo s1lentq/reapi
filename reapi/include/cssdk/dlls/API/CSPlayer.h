@@ -37,7 +37,9 @@ enum WeaponInfiniteAmmoMode
 	WPNMODE_INFINITE_BPAMMO
 };
 
-class CCSPlayer: public CCSMonster {
+class CCSPlayer: public CCSMonster
+{
+	DECLARE_CLASS_TYPES(CCSPlayer, CCSMonster);
 public:
 	CCSPlayer() :
 		m_bForceShowMenu(false),

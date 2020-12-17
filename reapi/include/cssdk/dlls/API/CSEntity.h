@@ -31,6 +31,7 @@
 class CBaseEntity;
 class CCSEntity
 {
+	DECLARE_CLASS_TYPES(CCSEntity, CCSEntity);
 public:
 	CCSEntity() :
 		m_pContainingEntity(nullptr)
@@ -47,24 +48,28 @@ public:
 
 class CCSDelay: public CCSEntity
 {
+	DECLARE_CLASS_TYPES(CCSDelay, CCSEntity);
 public:
 
 };
 
 class CCSAnimating: public CCSDelay
 {
+	DECLARE_CLASS_TYPES(CCSAnimating, CCSDelay);
 public:
 
 };
 
 class CCSToggle: public CCSAnimating
 {
+	DECLARE_CLASS_TYPES(CCSToggle, CCSAnimating);
 public:
 
 };
 
 class CCSMonster: public CCSToggle
 {
+	DECLARE_CLASS_TYPES(CCSMonster, CCSToggle);
 public:
 
 };

@@ -79,7 +79,9 @@ extern CHostageManager *g_pHostages;
 extern int g_iHostageNumber;
 
 // A Counter-Strike Hostage Simple
-class CHostage: public CBaseMonster {
+class CHostage: public CBaseMonster
+{
+	DECLARE_CLASS_TYPES(CHostage, CBaseMonster);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;

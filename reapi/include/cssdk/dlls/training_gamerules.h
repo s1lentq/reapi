@@ -27,7 +27,9 @@
 */
 #pragma once
 
-class CHalfLifeTraining: public CHalfLifeMultiplay {
+class CHalfLifeTraining: public CHalfLifeMultiplay
+{
+	DECLARE_CLASS_TYPES(CHalfLifeTraining, CHalfLifeMultiplay);
 protected:
 	virtual ~CHalfLifeTraining() {};
 public:
@@ -50,7 +52,9 @@ public:
 	bool fVGUIMenus;
 };
 
-class CBaseGrenCatch: public CBaseEntity {
+class CBaseGrenCatch: public CBaseEntity
+{
+	DECLARE_CLASS_TYPES(CBaseGrenCatch, CBaseEntity);
 public:
 	virtual void Spawn() = 0;
 	virtual void KeyValue(KeyValueData *pkvd) = 0;
@@ -67,7 +71,9 @@ public:
 	bool m_fFlashTouched;
 };
 
-class CFuncWeaponCheck: public CBaseEntity {
+class CFuncWeaponCheck: public CBaseEntity
+{
+	DECLARE_CLASS_TYPES(CFuncWeaponCheck, CBaseEntity);
 public:
 	virtual void Spawn() = 0;
 	virtual void KeyValue(KeyValueData *pkvd) = 0;

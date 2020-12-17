@@ -211,7 +211,9 @@ enum
 
 class CItem;
 
-class CGameRules {
+class CGameRules
+{
+	DECLARE_CLASS_TYPES(CGameRules, CGameRules);
 protected:
 	virtual ~CGameRules() {};
 public:
@@ -335,7 +337,9 @@ public:
 #define GAMERULES_API_INTERFACE_VERSION "GAMERULES_API_INTERFACE_VERSION001"
 
 // CHalfLifeRules - rules for the single player Half-Life game.
-class CHalfLifeRules: public CGameRules {
+class CHalfLifeRules: public CGameRules
+{
+	DECLARE_CLASS_TYPES(CHalfLifeRules, CGameRules);
 protected:
 	virtual ~CHalfLifeRules() {};
 public:
@@ -417,7 +421,9 @@ public:
 };
 
 // CHalfLifeMultiplay - rules for the basic half life multiplayer competition
-class CHalfLifeMultiplay: public CGameRules {
+class CHalfLifeMultiplay: public CGameRules
+{
+	DECLARE_CLASS_TYPES(CHalfLifeMultiplay, CGameRules);
 protected:
 	virtual ~CHalfLifeMultiplay() {};
 public:
@@ -670,7 +676,9 @@ typedef struct mapcycle_s
 
 } mapcycle_t;
 
-class CCStrikeGameMgrHelper: public IVoiceGameMgrHelper {
+class CCStrikeGameMgrHelper: public IVoiceGameMgrHelper
+{
+	DECLARE_CLASS_TYPES(CCStrikeGameMgrHelper, IVoiceGameMgrHelper);
 public:
 	virtual bool CanPlayerHearPlayer(CBasePlayer *pListener, CBasePlayer *pSender) = 0;
 	virtual void ResetCanHearPlayer(edict_t* pEdict) = 0;

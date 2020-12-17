@@ -43,7 +43,9 @@ enum TANKBULLET
 	TANK_BULLET_12MM,	// explosion?
 };
 
-class CFuncTank: public CBaseEntity {
+class CFuncTank: public CBaseEntity
+{
+	DECLARE_CLASS_TYPES(CFuncTank, CBaseEntity);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -116,12 +118,16 @@ protected:
 	int m_iszMaster;		// Master entity (game_team_master or multisource)
 };
 
-class CFuncTankGun: public CFuncTank {
+class CFuncTankGun: public CFuncTank
+{
+	DECLARE_CLASS_TYPES(CFuncTankGun, CFuncTank);
 public:
 	virtual void Fire(const Vector &barrelEnd, const Vector &forward, entvars_t *pevAttacker) = 0;
 };
 
-class CFuncTankLaser: public CFuncTank {
+class CFuncTankLaser: public CFuncTank
+{
+	DECLARE_CLASS_TYPES(CFuncTankLaser, CFuncTank);
 public:
 	virtual void KeyValue(KeyValueData *pkvd) = 0;
 	virtual int Save(CSave &save) = 0;
@@ -134,19 +140,25 @@ private:
 	float m_laserTime;
 };
 
-class CFuncTankRocket: public CFuncTank {
+class CFuncTankRocket: public CFuncTank
+{
+	DECLARE_CLASS_TYPES(CFuncTankRocket, CFuncTank);
 public:
 	virtual void Precache() = 0;
 	virtual void Fire(const Vector &barrelEnd, const Vector &forward, entvars_t *pevAttacker) = 0;
 };
 
-class CFuncTankMortar: public CFuncTank {
+class CFuncTankMortar: public CFuncTank
+{
+	DECLARE_CLASS_TYPES(CFuncTankMortar, CFuncTank);
 public:
 	virtual void KeyValue(KeyValueData *pkvd) = 0;
 	virtual void Fire(const Vector &barrelEnd, const Vector &forward, entvars_t *pevAttacker) = 0;
 };
 
-class CFuncTankControls: public CBaseEntity {
+class CFuncTankControls: public CBaseEntity
+{
+	DECLARE_CLASS_TYPES(CFuncTankControls, CBaseEntity);
 public:
 	virtual void Spawn() = 0;
 	virtual int Save(CSave &save) = 0;

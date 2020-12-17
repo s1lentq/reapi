@@ -63,7 +63,9 @@
 #define SF_MESSAGE_ONCE			0x0001	// Fade in, not out
 #define SF_MESSAGE_ALL			0x0002	// Send to all clients
 
-class CSprite: public CPointEntity {
+class CSprite: public CPointEntity
+{
+	DECLARE_CLASS_TYPES(CSprite, CPointEntity);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -112,7 +114,9 @@ private:
 	float m_maxFrame;
 };
 
-class CBeam: public CBaseEntity {
+class CBeam: public CBaseEntity
+{
+	DECLARE_CLASS_TYPES(CBeam, CBaseEntity);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -164,7 +168,9 @@ public:
 	}
 };
 
-class CLaser: public CBeam {
+class CLaser: public CBeam
+{
+	DECLARE_CLASS_TYPES(CLaser, CBeam);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -178,7 +184,9 @@ public:
 	Vector m_firePosition;
 };
 
-class CBubbling: public CBaseEntity {
+class CBubbling: public CBaseEntity
+{
+	DECLARE_CLASS_TYPES(CBubbling, CBaseEntity);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -194,7 +202,9 @@ public:
 	int m_state;
 };
 
-class CLightning: public CBeam {
+class CLightning: public CBeam
+{
+	DECLARE_CLASS_TYPES(CLightning, CBeam);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -226,7 +236,9 @@ public:
 	float m_radius;
 };
 
-class CGlow: public CPointEntity {
+class CGlow: public CPointEntity
+{
+	DECLARE_CLASS_TYPES(CGlow, CPointEntity);
 public:
 	virtual void Spawn() = 0;
 	virtual int Save(CSave &save) = 0;
@@ -237,7 +249,9 @@ public:
 	float m_maxFrame;
 };
 
-class CBombGlow: public CSprite {
+class CBombGlow: public CSprite
+{
+	DECLARE_CLASS_TYPES(CBombGlow, CSprite);
 public:
 	virtual void Spawn() = 0;
 	virtual void Think() = 0;
@@ -247,7 +261,9 @@ public:
 	bool m_bSetModel;
 };
 
-class CGibShooter: public CBaseDelay {
+class CGibShooter: public CBaseDelay
+{
+	DECLARE_CLASS_TYPES(CGibShooter, CBaseDelay);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -267,7 +283,9 @@ public:
 	float m_flGibLife;
 };
 
-class CEnvShooter: public CGibShooter {
+class CEnvShooter: public CGibShooter
+{
+	DECLARE_CLASS_TYPES(CEnvShooter, CGibShooter);
 public:
 	virtual void Precache() = 0;
 	virtual void KeyValue(KeyValueData *pkvd) = 0;
@@ -276,7 +294,9 @@ public:
 
 #define MAX_BEAM 24
 
-class CTestEffect: public CBaseDelay {
+class CTestEffect: public CBaseDelay
+{
+	DECLARE_CLASS_TYPES(CTestEffect, CBaseDelay);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -291,7 +311,9 @@ public:
 	float m_flStartTime;
 };
 
-class CBlood: public CPointEntity {
+class CBlood: public CPointEntity
+{
+	DECLARE_CLASS_TYPES(CBlood, CPointEntity);
 public:
 	virtual void Spawn() = 0;
 	virtual void KeyValue(KeyValueData *pkvd) = 0;
@@ -305,7 +327,9 @@ public:
 	void SetBloodAmount(float amount) { pev->dmg = amount; }
 };
 
-class CShake: public CPointEntity {
+class CShake: public CPointEntity
+{
+	DECLARE_CLASS_TYPES(CShake, CPointEntity);
 public:
 	virtual void Spawn() = 0;
 	virtual void KeyValue(KeyValueData *pkvd) = 0;
@@ -322,7 +346,9 @@ public:
 	void SetRadius(float radius) { pev->dmg = radius; }
 };
 
-class CFade: public CPointEntity {
+class CFade: public CPointEntity
+{
+	DECLARE_CLASS_TYPES(CFade, CPointEntity);
 public:
 	virtual void Spawn() = 0;
 	virtual void KeyValue(KeyValueData *pkvd) = 0;
@@ -335,7 +361,9 @@ public:
 	void SetHoldTime(float hold) { pev->dmg_save = hold; }
 };
 
-class CMessage: public CPointEntity {
+class CMessage: public CPointEntity
+{
+	DECLARE_CLASS_TYPES(CMessage, CPointEntity);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -343,7 +371,9 @@ public:
 	virtual void Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value) = 0;
 };
 
-class CEnvFunnel: public CBaseDelay {
+class CEnvFunnel: public CBaseDelay
+{
+	DECLARE_CLASS_TYPES(CEnvFunnel, CBaseDelay);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
@@ -352,14 +382,18 @@ public:
 	int m_iSprite;
 };
 
-class CEnvBeverage: public CBaseDelay {
+class CEnvBeverage: public CBaseDelay
+{
+	DECLARE_CLASS_TYPES(CEnvBeverage, CBaseDelay);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
 	virtual void Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value) = 0;
 };
 
-class CItemSoda: public CBaseEntity {
+class CItemSoda: public CBaseEntity
+{
+	DECLARE_CLASS_TYPES(CItemSoda, CBaseEntity);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;

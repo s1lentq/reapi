@@ -27,70 +27,90 @@
 */
 #pragma once
 
-class C9MMAmmo: public CBasePlayerAmmo {
+class C9MMAmmo: public CBasePlayerAmmo
+{
+	DECLARE_CLASS_TYPES(C9MMAmmo, CBasePlayerAmmo);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
 	virtual BOOL AddAmmo(CBaseEntity *pOther) = 0;
 };
 
-class CBuckShotAmmo: public CBasePlayerAmmo {
+class CBuckShotAmmo: public CBasePlayerAmmo
+{
+	DECLARE_CLASS_TYPES(CBuckShotAmmo, CBasePlayerAmmo);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
 	virtual BOOL AddAmmo(CBaseEntity *pOther) = 0;
 };
 
-class C556NatoAmmo: public CBasePlayerAmmo {
+class C556NatoAmmo: public CBasePlayerAmmo
+{
+	DECLARE_CLASS_TYPES(C556NatoAmmo, CBasePlayerAmmo);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
 	virtual BOOL AddAmmo(CBaseEntity *pOther) = 0;
 };
 
-class C556NatoBoxAmmo: public CBasePlayerAmmo {
+class C556NatoBoxAmmo: public CBasePlayerAmmo
+{
+	DECLARE_CLASS_TYPES(C556NatoBoxAmmo, CBasePlayerAmmo);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
 	virtual BOOL AddAmmo(CBaseEntity *pOther) = 0;
 };
 
-class C762NatoAmmo: public CBasePlayerAmmo {
+class C762NatoAmmo: public CBasePlayerAmmo
+{
+	DECLARE_CLASS_TYPES(C762NatoAmmo, CBasePlayerAmmo);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
 	virtual BOOL AddAmmo(CBaseEntity *pOther) = 0;
 };
 
-class C45ACPAmmo: public CBasePlayerAmmo {
+class C45ACPAmmo: public CBasePlayerAmmo
+{
+	DECLARE_CLASS_TYPES(C45ACPAmmo, CBasePlayerAmmo);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
 	virtual BOOL AddAmmo(CBaseEntity *pOther) = 0;
 };
 
-class C50AEAmmo: public CBasePlayerAmmo {
+class C50AEAmmo: public CBasePlayerAmmo
+{
+	DECLARE_CLASS_TYPES(C50AEAmmo, CBasePlayerAmmo);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
 	virtual BOOL AddAmmo(CBaseEntity *pOther) = 0;
 };
 
-class C338MagnumAmmo: public CBasePlayerAmmo {
+class C338MagnumAmmo: public CBasePlayerAmmo
+{
+	DECLARE_CLASS_TYPES(C338MagnumAmmo, CBasePlayerAmmo);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
 	virtual BOOL AddAmmo(CBaseEntity *pOther) = 0;
 };
 
-class C57MMAmmo: public CBasePlayerAmmo {
+class C57MMAmmo: public CBasePlayerAmmo
+{
+	DECLARE_CLASS_TYPES(C57MMAmmo, CBasePlayerAmmo);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
 	virtual BOOL AddAmmo(CBaseEntity *pOther) = 0;
 };
 
-class C357SIGAmmo: public CBasePlayerAmmo {
+class C357SIGAmmo: public CBasePlayerAmmo
+{
+	DECLARE_CLASS_TYPES(C357SIGAmmo, CBasePlayerAmmo);
 public:
 	virtual void Spawn() = 0;
 	virtual void Precache() = 0;
