@@ -136,7 +136,7 @@ cell AMX_NATIVE_CALL set_member_s(AMX *amx, cell *params)
 
 	cell* value = getAmxAddr(amx, params[arg_value]);
 	size_t element = (PARAMS_COUNT == 4) ? *getAmxAddr(amx, params[arg_elem]) : 0;
-	CBaseEntity *pEntity = getPrivate<CBaseEntity>(pEdict);
+	void *pEntity = get_pdata_custom(getPrivate<CBaseEntity>(pEdict), params[arg_member]);
 
 	if (!member->pfnIsRefsToClass(pEntity))
 	{
@@ -145,7 +145,7 @@ cell AMX_NATIVE_CALL set_member_s(AMX *amx, cell *params)
 	}
 
 	return set_member(
-		get_pdata_custom(pEntity, params[arg_member]),
+		pEntity,
 		member,
 		value,
 		element
@@ -216,7 +216,7 @@ cell AMX_NATIVE_CALL get_member_s(AMX *amx, cell *params)
 		break;
 	}
 
-	CBaseEntity *pEntity = getPrivate<CBaseEntity>(pEdict);
+	void *pEntity = get_pdata_custom(getPrivate<CBaseEntity>(pEdict), params[arg_member]);
 
 	if (!member->pfnIsRefsToClass(pEntity))
 	{
@@ -225,7 +225,7 @@ cell AMX_NATIVE_CALL get_member_s(AMX *amx, cell *params)
 	}
 
 	return get_member(
-		get_pdata_custom(pEntity, params[arg_member]),
+		pEntity,
 		member,
 		dest,
 		element,
