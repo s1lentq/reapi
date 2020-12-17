@@ -37,7 +37,7 @@ public:
 		Q_memset(&m_ItemInfo, 0, sizeof(m_ItemInfo));
 	}
 
-	virtual void SetItemInfo(ItemInfo *pInfo);
+	virtual void SetItemInfo(ItemInfo *pInfo) = 0;
 
 	CBasePlayerItem *BasePlayerItem() const;
 
