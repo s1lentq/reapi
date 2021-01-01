@@ -660,20 +660,20 @@ enum PlayerMove
 	pm_vuser3,
 	pm_vuser4,
 	pm_numphysent,
-
-	/* physent_t physents[MAX_PHYSENTS];
-	pm_nummoveent;							// Number of momvement entities (ladders)
-	physent_t moveents[MAX_MOVEENTS];		// just a list of ladders
-	pm_numvisent;							// All things being rendered, for tracing against things you don't actually collide with
-	physent_t visents[MAX_PHYSENTS];*/
-
 	pm_cmd,
 	pm_numtouch,
-	//pm_touchindex,
 	pm_physinfo,
-	//pm_movevars,
 	pm_player_mins,
-	pm_player_maxs
+	pm_player_maxs,
+
+	// TODO: Impl me!
+	//pm_physents,
+	//pm_nummoveent,
+	//pm_moveents,
+	//pm_numvisent
+	//pm_visents,
+	//pm_touchindex,
+	//pm_movevars,
 };
 
 enum MoveVars

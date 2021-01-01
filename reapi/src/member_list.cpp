@@ -681,6 +681,15 @@ member_t memberlist_playermove[] = {
 	PMOVE_MEMBERS(physinfo),
 	PMOVE_MEMBERS(player_mins),
 	PMOVE_MEMBERS(player_maxs),
+
+	// TODO: Impl me!
+	//PMOVE_MEMBERS(physents),
+	//PMOVE_MEMBERS(nummoveent),
+	//PMOVE_MEMBERS(moveents),
+	//PMOVE_MEMBERS(numvisent),
+	//PMOVE_MEMBERS(visents),
+	//PMOVE_MEMBERS(touchindex),
+	//PMOVE_MEMBERS(movevars),
 };
 
 member_t memberlist_movevars[] = {
