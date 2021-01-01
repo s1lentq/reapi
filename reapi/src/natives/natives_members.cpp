@@ -577,14 +577,14 @@ cell AMX_NATIVE_CALL set_ucmd(AMX *amx, cell *params)
 }
 
 /*
-* Returns entvar data from an entity.
+* Returns usercmd data from an entity.
 * Use the ucmd_* UCmd enum
 *
 * native any:get_ucmd(const ucmd, const UCmd:var, any:...);
 */
 cell AMX_NATIVE_CALL get_ucmd(AMX *amx, cell *params)
 {
-	enum args_e { arg_count, arg_cmd, arg_var, arg_3, arg_4 };
+	enum args_e { arg_count, arg_cmd, arg_var, arg_3 };
 	member_t *member = memberlist[params[arg_var]];
 
 	if (unlikely(member == nullptr)) {
@@ -597,10 +597,10 @@ cell AMX_NATIVE_CALL get_ucmd(AMX *amx, cell *params)
 
 	if (PARAMS_COUNT == 3) {
 		dest = getAmxAddr(amx, params[arg_3]);
-		element = *getAmxAddr(amx, params[arg_4]);
+		element = 0;
 	}
 	else {
-		dest = (member->type != MEMBER_FLOAT) ? nullptr : getAmxAddr(amx, params[arg_3]);
+		dest = nullptr;
 		element = 0;
 	}
 
@@ -643,7 +643,7 @@ cell AMX_NATIVE_CALL set_pmtrace(AMX *amx, cell *params)
 */
 cell AMX_NATIVE_CALL get_pmtrace(AMX *amx, cell *params)
 {
-	enum args_e { arg_count, arg_tr, arg_var, arg_3, arg_4 };
+	enum args_e { arg_count, arg_tr, arg_var, arg_3 };
 	member_t *member = memberlist[params[arg_var]];
 
 	if (unlikely(member == nullptr)) {
@@ -656,7 +656,7 @@ cell AMX_NATIVE_CALL get_pmtrace(AMX *amx, cell *params)
 
 	if (PARAMS_COUNT == 3) {
 		dest = getAmxAddr(amx, params[arg_3]);
-		element = *getAmxAddr(amx, params[arg_4]);
+		element = 0;
 	}
 	else {
 		dest = nullptr;
