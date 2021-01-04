@@ -1,4 +1,5 @@
-# Reapi [![Build Status](http://teamcity.rehlds.org/app/rest/builds/buildType:(id:Reapi_Publish)/statusIcon)](http://teamcity.rehlds.org/viewType.html?buildTypeId=Reapi_Publish&guest=1) [![Download](https://camo.githubusercontent.com/a3ac64aab91dcea4e0f3dfd611808ad61cc05798/687474703a2f2f7265686c64732e6f72672f76657273696f6e2f72656170692e737667)](http://teamcity.rehlds.org/guestAuth/downloadArtifacts.html?buildTypeId=Reapi_Publish&buildId=lastSuccessful)
+# Reapi [![Build Status](http://teamcity.rehlds.org/app/rest/builds/buildType:(id:Reapi_Publish)/statusIcon)](http://teamcity.rehlds.org/viewType.html?buildTypeId=Reapi_Publish&guest=1) [![Download](https://camo.githubusercontent.com/1e445db0afba4545403a7600f1d51624c50cefc9be27417125a4eddfb6099f24/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f762f72656c656173652f73316c656e74712f72656170692e737667)](https://github.com/s1lentq/reapi/releases/latest) [![Percentage of issues still open](http://isitmaintained.com/badge/open/s1lentq/reapi.svg)](http://isitmaintained.com/project/s1lentq/reapi "Percentage of issues still open") [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
 AMX Mod X module, using API regamedll &amp; rehlds
 
 ## Build instructions
