@@ -1601,6 +1601,42 @@ cell AMX_NATIVE_CALL rg_instant_reload_weapons(AMX *amx, cell *params)
 }
 
 /*
+* Plant a bomb.
+*
+* @param index      Owner index or 0 for worldspawn.
+* @param origin     The origin of the bomb where it will be planted.
+* @param angles     The angles of the planted bomb.
+*
+* @return           Index of bomb entity or AMX_NULLENT (-1) otherwise
+*
+* native rg_plant_bomb(const index, Float:vecOrigin[3], Float:vecAngles[3] = {0.0,0.0,0.0});
+*/
+cell AMX_NATIVE_CALL rg_plant_bomb(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_origin, arg_angles };
+	CAmxArgs args(amx, params);
+
+	entvars_t *pevOwner = nullptr;
+
+	if (params[arg_index] != 0)
+	{
+		CHECK_ISPLAYER(arg_index);
+
+		CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_index]);
+		CHECK_CONNECTED(pPlayer, arg_index);
+		pevOwner = pPlayer->pev;
+	}
+
+	CGrenade *pBomb = g_ReGameFuncs->PlantBomb(pevOwner, args[arg_origin], args[arg_angles]);
+
+	// Sanity check anyway
+	if (pBomb)
+		return indexOfPDataAmx(pBomb);
+
+	return AMX_NULLENT;
+}
+
+/*
 * Sets the amount of reward in the game account for all players.
 *
 * @param rules_index    Look at the enum with name RewardRules
@@ -2231,7 +2267,7 @@ cell AMX_NATIVE_CALL rg_initialize_player_counts(AMX *amx, cell *params)
 	cell& numAliveCT        = *getAmxAddr(amx, params[arg_num_alive_ct]);
 	cell& numDeadTerrorist  = *getAmxAddr(amx, params[arg_num_dead_terrorist]);
 	cell& numDeadCT         = *getAmxAddr(amx, params[arg_num_dead_ct]);
-	
+
 	CSGameRules()->InitializePlayerCounts(numAliveTerrorist, numAliveCT, numDeadTerrorist, numDeadCT);
 	return TRUE;
 }
@@ -2371,6 +2407,7 @@ AMX_NATIVE_INFO Misc_Natives_RG[] =
 
 	{ "rg_transfer_c4",               rg_transfer_c4               },
 	{ "rg_instant_reload_weapons",    rg_instant_reload_weapons    },
+	{ "rg_plant_bomb",                rg_plant_bomb                },
 
 	{ "rg_set_account_rules",         rg_set_account_rules         },
 	{ "rg_get_account_rules",         rg_get_account_rules         },
