@@ -542,7 +542,6 @@ public:
 	virtual BOOL IsThereABomber() = 0;
 	virtual BOOL IsThereABomb() = 0;
 	virtual TeamName SelectDefaultTeam() = 0;
-	virtual CGrenade* CreateBomb(entvars_t* pevOwner, Vector vecOrigin, Vector vecAngles) = 0;
 
 	virtual bool HasRoundTimeExpired() = 0;
 	virtual bool IsBombPlanted() = 0;

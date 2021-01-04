@@ -658,6 +658,17 @@ native rg_transfer_c4(const index, const receiver = 0);
 native rg_instant_reload_weapons(const index, const weapon = 0);
 
 /*
+* Plant a bomb.
+*
+* @param index      Owner index or 0 for worldspawn.
+* @param origin     The origin of the bomb where it will be planted.
+* @param angles     The angles of the planted bomb.
+*
+* @return           Index of bomb entity or AMX_NULLENT (-1) otherwise
+*/
+native rg_plant_bomb(const index, Float:vecOrigin[3], Float:vecAngles[3] = {0.0,0.0,0.0});
+
+/*
 * Sets the amount of reward in the game account for all players.
 *
 * @param rules_index    Look at the enum with name RewardRules
@@ -901,14 +912,3 @@ native rg_set_can_hear_player(const listener, const sender, const bool:can_hear)
 * @return boolean
 */
 native bool:rg_get_can_hear_player(const listener, const sender);
-
-/*
-* Creates a bomb
-*
-* @param owner					id of player or 0
-* @param vecOrigin				The origin of the entity
-* @param vecAngles				The angles of the entity
-*
-* @return entindex
-*/
-native rg_create_bomb(owner = 0, Float:vecOrigin[3], Float:vecAngles[3] = {0.0, 0.0, 0.0});
