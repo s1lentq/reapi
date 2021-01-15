@@ -203,7 +203,7 @@ native any:get_pmtrace(const tracehandle, const PMTrace:var, any:...);
 *
 * @return           1 on success.
 */
-native set_rebuy(const RebuyHandle:rebuyhandle, const RebuyStruct:member, value);
+native set_rebuy(const RebuyHandle:rebuyhandle, const RebuyStruct:member, any:value);
 
 /*
 * Returns a RebuyStruct member
@@ -212,7 +212,7 @@ native set_rebuy(const RebuyHandle:rebuyhandle, const RebuyStruct:member, value)
 *
 * @return           If an integer or boolean or one byte, array or everything else is passed via the 3rd argument and more, look at the argument list for the specified RebuyStruct
 */
-native get_rebuy(const RebuyHandle:rebuyhandle, RebuyStruct:member);
+native any:get_rebuy(const RebuyHandle:rebuyhandle, RebuyStruct:member);
 
 /*
 * Assign the number of the player's animation.

@@ -674,7 +674,7 @@ cell AMX_NATIVE_CALL get_pmtrace(AMX *amx, cell *params)
 *
 * @return           1 on success.
 *
-* native set_rebuy(const rebuyhandle, const RebuyStruct:member, value);
+* native set_rebuy(const rebuyhandle, const RebuyStruct:member, any:value);
 */
 cell AMX_NATIVE_CALL set_rebuy(AMX *amx, cell *params)
 {
@@ -702,7 +702,7 @@ cell AMX_NATIVE_CALL set_rebuy(AMX *amx, cell *params)
 *
 * @return           If an integer or boolean or one byte, array or everything else is passed via the 3rd argument and more, look at the argument list for the specified RebuyStruct
 *
-* native get_rebuy(const rebuyhandle, RebuyStruct:member);
+* native any:get_rebuy(const rebuyhandle, RebuyStruct:member);
 */
 cell AMX_NATIVE_CALL get_rebuy(AMX *amx, cell *params)
 {
