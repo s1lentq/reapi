@@ -815,6 +815,13 @@ enum GamedllFunc_CBasePlayerWeapon
 	* Params:           (const this, iAnim, iStartAnim, Float:fDelay, Float:fStartDelay, const pszReloadSound1[], const pszReloadSound2[])
 	*/
 	RG_CBasePlayerWeapon_DefaultShotgunReload,
+
+	/*
+	* Description:      -
+	* Return type:      float
+	* Params:           (const this, const WeaponIdType:weaponID)
+	*/
+	RG_CBasePlayerWeapon_GetArmorPenetrationRatio,
 };
 
 /**

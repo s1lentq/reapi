@@ -205,6 +205,7 @@ hook_t hooklist_weapon[] = {
 	DLL(CBasePlayerWeapon_DefaultDeploy),
 	DLL(CBasePlayerWeapon_DefaultReload),
 	DLL(CBasePlayerWeapon_DefaultShotgunReload),
+	DLL(CBasePlayerWeapon_GetArmorPenetrationRatio),
 };
 
 hook_t hooklist_gib[] = {
