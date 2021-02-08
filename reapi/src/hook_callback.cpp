@@ -612,14 +612,14 @@ bool CBasePlayerWeapon_DefaultShotgunReload(IReGameHook_CBasePlayerWeapon_Defaul
 	return callForward<bool>(RG_CBasePlayerWeapon_DefaultShotgunReload, original, indexOfEdict(pthis->pev), iAnim, iStartAnim, fDelay, fStartDelay, pszReloadSound1, pszReloadSound2);
 }
 
-float CBasePlayerWeapon_GetArmorPenetrationRatio(IReGameHook_CBasePlayerWeapon_GetArmorPenetrationRatio *chain, CBasePlayerWeapon *pthis, WeaponIdType weaponId)
+float CBasePlayerWeapon_GetArmorDamageFactor(IReGameHook_CBasePlayerWeapon_GetArmorDamageFactor *chain, CBasePlayerWeapon *pthis, float flRatio, float flShieldRatio)
 {
-	auto original = [chain](int _pthis, WeaponIdType _weaponId)
+	auto original = [chain](int _pthis, float _flRatio, float _flShieldRatio)
 	{
-		return chain->callNext(getPrivate<CBasePlayerWeapon>(_pthis), _weaponId);
+		return chain->callNext(getPrivate<CBasePlayerWeapon>(_pthis), _flRatio, _flShieldRatio);
 	};
 
-	return callForward<float>(RG_CBasePlayerWeapon_GetArmorPenetrationRatio, original, indexOfEdict(pthis->pev), weaponId);
+	return callForward<float>(RG_CBasePlayerWeapon_GetArmorDamageFactor, original, indexOfEdict(pthis->pev), flRatio, flShieldRatio);
 }
 
 int GetForceCamera(IReGameHook_GetForceCamera *chain, CBasePlayer *pObserver)

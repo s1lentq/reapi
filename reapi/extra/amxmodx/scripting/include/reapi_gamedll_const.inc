@@ -819,9 +819,9 @@ enum GamedllFunc_CBasePlayerWeapon
 	/*
 	* Description:      -
 	* Return type:      float
-	* Params:           (const this, const WeaponIdType:weaponID)
+	* Params:           (const this, Float:flRatio, Float:flShieldRatio)
 	*/
-	RG_CBasePlayerWeapon_GetArmorPenetrationRatio,
+	RG_CBasePlayerWeapon_GetArmorDamageFactor,
 };
 
 /**
