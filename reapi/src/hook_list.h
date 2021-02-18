@@ -189,6 +189,7 @@ enum GamedllFunc_CBasePlayer
 	RG_CBasePlayer_HintMessageEx,
 	RG_CBasePlayer_UseEmpty,
 	RG_CBasePlayer_DropIdlePlayer,
+	RG_CBasePlayer_GetArmorDamageFactor,
 
 	// [...]
 };
@@ -218,7 +219,6 @@ enum GamedllFunc_CBasePlayerWeapon
 	RG_CBasePlayerWeapon_DefaultDeploy,
 	RG_CBasePlayerWeapon_DefaultReload,
 	RG_CBasePlayerWeapon_DefaultShotgunReload,
-	RG_CBasePlayerWeapon_GetArmorDamageFactor,
 
 	// [...]
 };

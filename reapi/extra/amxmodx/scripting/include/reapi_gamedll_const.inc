@@ -780,7 +780,14 @@ enum GamedllFunc_CBasePlayer
 	* Return type:      void
 	* Params:           (const this, const reason[])
 	*/
-	RG_CBasePlayer_DropIdlePlayer,	
+	RG_CBasePlayer_DropIdlePlayer,
+
+	/*
+	* Description:      -
+	* Return type:      float
+	* Params:           (const this, pevAttacker, pevInflictor, Float:flBonus, bitsDamageType)
+	*/
+	RG_CBasePlayer_GetArmorDamageFactor,
 };
 
 /**
@@ -815,13 +822,6 @@ enum GamedllFunc_CBasePlayerWeapon
 	* Params:           (const this, iAnim, iStartAnim, Float:fDelay, Float:fStartDelay, const pszReloadSound1[], const pszReloadSound2[])
 	*/
 	RG_CBasePlayerWeapon_DefaultShotgunReload,
-
-	/*
-	* Description:      -
-	* Return type:      float
-	* Params:           (const this, Float:flRatio, Float:flShieldRatio)
-	*/
-	RG_CBasePlayerWeapon_GetArmorDamageFactor,
 };
 
 /**

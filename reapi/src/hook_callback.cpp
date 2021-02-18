@@ -562,6 +562,16 @@ void CBasePlayer_DropIdlePlayer(IReGameHook_CBasePlayer_DropIdlePlayer *chain, C
 	callVoidForward(RG_CBasePlayer_DropIdlePlayer, original, indexOfEdict(pthis->pev), reason);
 }
 
+float CBasePlayer_GetArmorDamageFactor(IReGameHook_CBasePlayer_GetArmorDamageFactor *chain, CBasePlayer *pthis, entvars_t *pevAttacker, entvars_t *pevInflictor, float &flBonus, int bitsDamageType)
+{
+	auto original = [chain](int _pthis, int _pevAttacker, int _pevInflictor, float &_flBonus, int _bitsDamageType)
+	{
+		return chain->callNext(getPrivate<CBasePlayer>(_pthis), PEV(_pevAttacker), PEV(_pevInflictor), const_cast<float&>(_flBonus), _bitsDamageType);
+	};
+
+	return callForward<float>(RG_CBasePlayer_GetArmorDamageFactor, original, indexOfEdict(pthis->pev), indexOfEdict(pevAttacker), indexOfEdict(pevInflictor), flBonus, bitsDamageType);
+}
+
 void CBaseAnimating_ResetSequenceInfo(IReGameHook_CBaseAnimating_ResetSequenceInfo *chain, CBaseAnimating *pthis)
 {
 	auto original = [chain](int _pthis)
@@ -610,16 +620,6 @@ bool CBasePlayerWeapon_DefaultShotgunReload(IReGameHook_CBasePlayerWeapon_Defaul
 	};
 
 	return callForward<bool>(RG_CBasePlayerWeapon_DefaultShotgunReload, original, indexOfEdict(pthis->pev), iAnim, iStartAnim, fDelay, fStartDelay, pszReloadSound1, pszReloadSound2);
-}
-
-float CBasePlayerWeapon_GetArmorDamageFactor(IReGameHook_CBasePlayerWeapon_GetArmorDamageFactor *chain, CBasePlayerWeapon *pthis, float flRatio, float flShieldRatio)
-{
-	auto original = [chain](int _pthis, float _flRatio, float _flShieldRatio)
-	{
-		return chain->callNext(getPrivate<CBasePlayerWeapon>(_pthis), _flRatio, _flShieldRatio);
-	};
-
-	return callForward<float>(RG_CBasePlayerWeapon_GetArmorDamageFactor, original, indexOfEdict(pthis->pev), flRatio, flShieldRatio);
 }
 
 int GetForceCamera(IReGameHook_GetForceCamera *chain, CBasePlayer *pObserver)

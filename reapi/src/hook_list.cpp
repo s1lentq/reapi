@@ -158,6 +158,7 @@ hook_t hooklist_player[] = {
 	DLL(CBasePlayer_HintMessageEx),
 	DLL(CBasePlayer_UseEmpty),
 	DLL(CBasePlayer_DropIdlePlayer),
+	DLL(CBasePlayer_GetArmorDamageFactor),
 };
 
 hook_t hooklist_gamerules[] = {
@@ -205,7 +206,6 @@ hook_t hooklist_weapon[] = {
 	DLL(CBasePlayerWeapon_DefaultDeploy),
 	DLL(CBasePlayerWeapon_DefaultReload),
 	DLL(CBasePlayerWeapon_DefaultShotgunReload),
-	DLL(CBasePlayerWeapon_GetArmorDamageFactor),
 };
 
 hook_t hooklist_gib[] = {
