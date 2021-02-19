@@ -785,7 +785,7 @@ enum GamedllFunc_CBasePlayer
 	/*
 	* Description:      -
 	* Return type:      float
-	* Params:           (const this, pevAttacker, pevInflictor, Float:flBonus, bitsDamageType)
+	* Params:           (const this, pevAttacker, pevInflictor, Float:flBonus, Float:flBaseRatio, bitsDamageType)
 	*/
 	RG_CBasePlayer_GetArmorDamageFactor,
 };

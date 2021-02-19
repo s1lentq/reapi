@@ -418,7 +418,7 @@ void CBasePlayer_RemoveSpawnProtection(IReGameHook_CBasePlayer_RemoveSpawnProtec
 bool CBasePlayer_HintMessageEx(IReGameHook_CBasePlayer_HintMessageEx *chain, CBasePlayer *pthis, const char *pMessage, float duration, bool bDisplayIfPlayerDead, bool bOverride);
 void CBasePlayer_UseEmpty(IReGameHook_CBasePlayer_UseEmpty *chain, CBasePlayer *pthis);
 void CBasePlayer_DropIdlePlayer(IReGameHook_CBasePlayer_DropIdlePlayer *chain, CBasePlayer *pthis, const char *reason);
-float CBasePlayer_GetArmorDamageFactor(IReGameHook_CBasePlayer_GetArmorDamageFactor *chain, CBasePlayer *pthis, entvars_t *pevAttacker, entvars_t *pevInflictor, float &flBonus, int bitsDamageType);
+float CBasePlayer_GetArmorDamageFactor(IReGameHook_CBasePlayer_GetArmorDamageFactor *chain, CBasePlayer *pthis, entvars_t *pevAttacker, entvars_t *pevInflictor, float &flBonus, float flBaseRatio, int bitsDamageType);
 
 void CBaseAnimating_ResetSequenceInfo(IReGameHook_CBaseAnimating_ResetSequenceInfo *chain, CBaseAnimating *pthis);
 

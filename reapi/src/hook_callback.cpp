@@ -562,14 +562,14 @@ void CBasePlayer_DropIdlePlayer(IReGameHook_CBasePlayer_DropIdlePlayer *chain, C
 	callVoidForward(RG_CBasePlayer_DropIdlePlayer, original, indexOfEdict(pthis->pev), reason);
 }
 
-float CBasePlayer_GetArmorDamageFactor(IReGameHook_CBasePlayer_GetArmorDamageFactor *chain, CBasePlayer *pthis, entvars_t *pevAttacker, entvars_t *pevInflictor, float &flBonus, int bitsDamageType)
+float CBasePlayer_GetArmorDamageFactor(IReGameHook_CBasePlayer_GetArmorDamageFactor *chain, CBasePlayer *pthis, entvars_t *pevAttacker, entvars_t *pevInflictor, float &flBonus, float flBaseRatio, int bitsDamageType)
 {
-	auto original = [chain](int _pthis, int _pevAttacker, int _pevInflictor, float &_flBonus, int _bitsDamageType)
+	auto original = [chain](int _pthis, int _pevAttacker, int _pevInflictor, float &_flBonus, float _flBaseRatio, int _bitsDamageType)
 	{
-		return chain->callNext(getPrivate<CBasePlayer>(_pthis), PEV(_pevAttacker), PEV(_pevInflictor), const_cast<float&>(_flBonus), _bitsDamageType);
+		return chain->callNext(getPrivate<CBasePlayer>(_pthis), PEV(_pevAttacker), PEV(_pevInflictor), const_cast<float&>(_flBonus), _flBaseRatio, _bitsDamageType);
 	};
 
-	return callForward<float>(RG_CBasePlayer_GetArmorDamageFactor, original, indexOfEdict(pthis->pev), indexOfEdict(pevAttacker), indexOfEdict(pevInflictor), flBonus, bitsDamageType);
+	return callForward<float>(RG_CBasePlayer_GetArmorDamageFactor, original, indexOfEdict(pthis->pev), indexOfEdict(pevAttacker), indexOfEdict(pevInflictor), flBonus, flBaseRatio, bitsDamageType);
 }
 
 void CBaseAnimating_ResetSequenceInfo(IReGameHook_CBaseAnimating_ResetSequenceInfo *chain, CBaseAnimating *pthis)
