@@ -39,7 +39,7 @@
 #include <API/CSInterfaces.h>
 
 #define REGAMEDLL_API_VERSION_MAJOR 5
-#define REGAMEDLL_API_VERSION_MINOR 20
+#define REGAMEDLL_API_VERSION_MINOR 21
 
 // CBasePlayer::Spawn hook
 typedef IHookChainClass<void, class CBasePlayer> IReGameHook_CBasePlayer_Spawn;
@@ -462,8 +462,8 @@ typedef IHookChainClass<bool, class CBasePlayerWeapon, int, int, float, float, c
 typedef IHookChainRegistryClass<bool, class CBasePlayerWeapon, int, int, float, float, const char *, const char *> IReGameHookRegistry_CBasePlayerWeapon_DefaultShotgunReload;
 
 // CBasePlayer::DropIdlePlayer hook
-typedef IHookChainClass<void, CBasePlayer, const char *> IReGameHook_CBasePlayer_DropIdlePlayer;
-typedef IHookChainRegistryClass<void, CBasePlayer, const char *> IReGameHookRegistry_CBasePlayer_DropIdlePlayer;
+typedef IHookChainClass<void, class CBasePlayer, const char *> IReGameHook_CBasePlayer_DropIdlePlayer;
+typedef IHookChainRegistryClass<void, class CBasePlayer, const char *> IReGameHookRegistry_CBasePlayer_DropIdlePlayer;
 
 // CreateWeaponBox hook
 typedef IHookChain<class CWeaponBox *, class CBasePlayerItem *, class CBasePlayer *, const char *, Vector &, Vector &, Vector &, float, bool> IReGameHook_CreateWeaponBox;
@@ -489,9 +489,22 @@ typedef IHookChainRegistryClass<void, class CGib, CBaseEntity *> IReGameHookRegi
 typedef IHookChainClass<void, class CGib> IReGameHook_CGib_WaitTillLand;
 typedef IHookChainRegistryClass<void, class CGib> IReGameHookRegistry_CGib_WaitTillLand;
 
+// CBaseEntity::FireBullets hook
+typedef IHookChainClass<void, class CBaseEntity, ULONG, Vector &, Vector &, Vector &, float, int, int, int, entvars_t *> IReGameHook_CBaseEntity_FireBullets;
+typedef IHookChainRegistryClass<void, class CBaseEntity, ULONG, Vector &, Vector &, Vector &, float, int, int, int, entvars_t *> IReGameHookRegistry_CBaseEntity_FireBullets;
+
+// CBaseEntity::FireBuckshots hook
+typedef IHookChainClass<void, class CBaseEntity, ULONG, Vector &, Vector &, Vector &, float, int, int, entvars_t *> IReGameHook_CBaseEntity_FireBuckshots;
+typedef IHookChainRegistryClass<void, class CBaseEntity, ULONG, Vector &, Vector &, Vector &, float, int, int, entvars_t *> IReGameHookRegistry_CBaseEntity_FireBuckshots;
+
+// CBaseEntity::FireBullets3 hook
+typedef IHookChainClass<Vector &, class CBaseEntity, Vector &, Vector &, float, float, int, int, int, float, entvars_t *, bool, int> IReGameHook_CBaseEntity_FireBullets3;
+typedef IHookChainRegistryClass<Vector &, class CBaseEntity, Vector &, Vector &, float, float, int, int, int, float, entvars_t *, bool, int> IReGameHookRegistry_CBaseEntity_FireBullets3;
+
 // CBasePlayer::GetArmorDamageFactor hook
 typedef IHookChainClass<float, class CBasePlayer, struct entvars_s *, struct entvars_s *, float &, float, int> IReGameHook_CBasePlayer_GetArmorDamageFactor;
 typedef IHookChainRegistryClass<float, class CBasePlayer, struct entvars_s *, struct entvars_s *, float &, float, int> IReGameHookRegistry_CBasePlayer_GetArmorDamageFactor;
+
 
 class IReGameHookchains {
 public:
@@ -615,6 +628,10 @@ public:
 	virtual IReGameHookRegistry_CGib_Spawn *CGib_Spawn() = 0;
 	virtual IReGameHookRegistry_CGib_BounceGibTouch *CGib_BounceGibTouch() = 0;
 	virtual IReGameHookRegistry_CGib_WaitTillLand *CGib_WaitTillLand() = 0;
+
+	virtual IReGameHookRegistry_CBaseEntity_FireBullets *CBaseEntity_FireBullets() = 0;
+	virtual IReGameHookRegistry_CBaseEntity_FireBuckshots *CBaseEntity_FireBuckshots() = 0;
+	virtual IReGameHookRegistry_CBaseEntity_FireBullets3 *CBaseEntity_FireBullets3() = 0;
 	virtual IReGameHookRegistry_CBasePlayer_GetArmorDamageFactor *CBasePlayer_GetArmorDamageFactor() = 0;
 };
 
