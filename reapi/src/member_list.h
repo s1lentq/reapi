@@ -1059,6 +1059,7 @@ enum CSPlayerWeapon_Members
 {
 	m_Weapon_bHasSecondaryAttack = BEGIN_MEMBER_REGION(csplayerweapon),
 	m_Weapon_flBaseDamage,
+	m_Weapon_flArmorDamageFactor,
 };
 
 enum CGib_Members

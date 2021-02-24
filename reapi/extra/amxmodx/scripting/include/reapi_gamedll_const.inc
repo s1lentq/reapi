@@ -780,7 +780,14 @@ enum GamedllFunc_CBasePlayer
 	* Return type:      void
 	* Params:           (const this, const reason[])
 	*/
-	RG_CBasePlayer_DropIdlePlayer,	
+	RG_CBasePlayer_DropIdlePlayer,
+
+	/*
+	* Description:      -
+	* Return type:      float
+	* Params:           (const this, pevAttacker, pevInflictor, Float:flBonus, Float:flBaseRatio, bitsDamageType)
+	*/
+	RG_CBasePlayer_GetArmorDamageFactor,
 };
 
 /**
@@ -5979,6 +5986,14 @@ enum CCSPlayerWeapon_Members
 	* Set params:       set_member(index, member, Float:value);
 	*/
 	m_Weapon_flBaseDamage,
+	
+	/*
+	* Description:      -
+	* Member type:      float
+	* Get params:       Float:get_member(index, member);
+	* Set params:       set_member(index, member, Float:value);
+	*/
+	m_Weapon_flArmorDamageFactor,
 };
 
 /**

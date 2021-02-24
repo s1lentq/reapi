@@ -1033,6 +1033,7 @@ member_t memberlist_mapinfo[] = {
 member_t memberlist_csplayerweapon[] = {
 	CSPLWPN_MEMBERS(bHasSecondaryAttack),
 	CSPLWPN_MEMBERS(flBaseDamage),
+	CSPLWPN_MEMBERS(flArmorDamageFactor),
 };
 
 member_t memberlist_gib[] = {
