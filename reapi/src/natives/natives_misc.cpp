@@ -1616,7 +1616,8 @@ cell AMX_NATIVE_CALL rg_plant_bomb(AMX *amx, cell *params)
 	enum args_e { arg_count, arg_index, arg_origin, arg_angles };
 	CAmxArgs args(amx, params);
 
-	entvars_t *pevOwner = nullptr;
+	// C++'s nullptr will crash server
+	entvars_t *pevOwner = 0;
 
 	if (params[arg_index] != 0)
 	{
