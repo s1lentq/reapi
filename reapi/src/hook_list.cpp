@@ -20,45 +20,53 @@ inline size_t getFwdParamType(void(*)(const char *))            { return FP_STRI
 inline size_t getFwdParamType(void(*)(char *))                  { return FP_STRING; }
 inline size_t getFwdParamType(void(*)(IResourceBuffer*))        { return FP_CELL;   }
 
-template<typename T>
+template <typename T>
 inline size_t getFwdParamType(void(*)(T *))                     { return FP_CELL;   }
-
-template<size_t current = 0>
-void setupParamTypes(size_t param_types[], void (*)())
-{
-	param_types[current] = FP_DONE;
-}
-
-template<size_t current = 0, typename T, typename ...t_args>
-void setupParamTypes(size_t param_types[], void(*)(T, t_args...))
-{
-	void (*func)(T) = nullptr;
-	param_types[current] = getFwdParamType(func);
-	void (*next)(t_args...) = nullptr;
-	setupParamTypes<current + 1>(param_types, next);
-}
-
-template<typename... f_args>
-struct regargs
-{
-	regargs(void (*)(f_args...))
-	{
-		void (*func)(f_args...) = nullptr;
-		setupParamTypes(types, func);
-	}
-
-	size_t types[sizeof...(f_args) + 1]; // + FP_DONE
-};
 
 struct regfunc
 {
-	template<typename R, typename T, typename... f_args>
+	template <typename ...f_args>
+	struct regargs
+	{
+		regargs()
+		{
+			void (*func)(f_args...) = nullptr;
+			setArgs(args, func);
+		}
+
+		template <size_t ...Is>
+		int Register(AMX *amx, const char *name, std::index_sequence<Is...>) const
+		{
+			return g_amxxapi.RegisterSPForwardByName(amx, name, args[Is]...);
+		}
+
+	protected:
+		template <size_t current = 0>
+		void setArgs(size_t param_types[], void (*)())
+		{
+			param_types[current] = FP_DONE;
+		}
+
+		template <size_t current = 0, typename T, typename ...t_args>
+		void setArgs(size_t param_types[], void (*)(T, t_args...))
+		{
+			void (*func)(T) = nullptr;
+			param_types[current] = getFwdParamType(func);
+			void (*next)(t_args...) = nullptr;
+			setArgs<current + 1>(param_types, next);
+		}
+
+	private:
+		size_t args[sizeof...(f_args) + 1]; // + FP_DONE
+	};
+
+	template <typename R, typename T, typename ...f_args>
 	regfunc(R (*)(T, f_args...))
 	{
-		func = [](AMX *amx, const char *name) {
-			void (*func)(f_args...) = nullptr;
-			regargs<f_args...> args(func);
-			return g_amxxapi.RegisterSPForwardByName(amx, name, args);
+		func = [](AMX *amx, const char *name)
+		{
+			regargs<f_args...> args;
+			return args.Register(amx, name, std::make_index_sequence<sizeof...(f_args) + 1>{});
 		};
 	}
 

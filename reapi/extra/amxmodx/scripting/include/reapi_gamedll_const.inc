@@ -34,6 +34,9 @@
 	#define m_Shield_hEntToIgnoreTouchesFrom m_Shield_EntToIgnoreTouchesFrom
 	#define RG_CBasePlayer_RemoveSpawnProtection RG_CBasePlayer_RemoveProtection
 	#define RG_CBasePlayer_SetSpawnProtection RG_CBasePlayer_SetProtection
+	#define RG_CBasePlayerWeapon_DefaultDeploy RG_CBaseWeapon_DefDeploy
+	#define RG_CBasePlayerWeapon_DefaultReload RG_CBaseWeapon_DefReload
+	#define RG_CBasePlayerWeapon_DefaultShotgunReload RG_CBaseWeapon_DefShotgunReload
 #endif
 
 /**
