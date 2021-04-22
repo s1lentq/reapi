@@ -40,12 +40,6 @@
 #define GROUP_OP_AND		0
 #define GROUP_OP_NAND		1
 
-extern globalvars_t *gpGlobals;
-
-// Use this instead of ALLOC_STRING on constant strings
-#define STRING(offset)		((const char *)(gpGlobals->pStringBase + (unsigned int)(offset)))
-#define MAKE_STRING(str)	((uint64)(str) - (uint64)(STRING(0)))
-
 // Dot products for view cone checking
 #define VIEW_FIELD_FULL		-1.0		// +-180 degrees
 #define VIEW_FIELD_WIDE		-0.7		// +-135 degrees 0.1 // +-85 degrees, used for full FOV checks

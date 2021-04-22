@@ -1055,7 +1055,7 @@ cell AMX_NATIVE_CALL rg_set_user_bpammo(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	auto pWeapon = pPlayer->ForEachItem<CBasePlayerWeapon>([pPlayer, pInfo](CBasePlayerWeapon *pWeapon) {
+	auto pWeapon = pPlayer->ForEachItem<CBasePlayerWeapon>([pInfo](CBasePlayerWeapon *pWeapon) {
 		return (pWeapon->IsWeapon() && pWeapon->m_iId == pInfo->id);
 	});
 
@@ -1091,7 +1091,7 @@ cell AMX_NATIVE_CALL rg_get_user_bpammo(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	auto pWeapon = pPlayer->ForEachItem<CBasePlayerWeapon>([pPlayer, pInfo](CBasePlayerWeapon *pWeapon) {
+	auto pWeapon = pPlayer->ForEachItem<CBasePlayerWeapon>([pInfo](CBasePlayerWeapon *pWeapon) {
 		return (pWeapon->IsWeapon() && pWeapon->m_iId == pInfo->id);
 	});
 
@@ -1127,7 +1127,7 @@ cell AMX_NATIVE_CALL rg_set_user_ammo(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	auto pWeapon = pPlayer->ForEachItem<CBasePlayerWeapon>(pInfo->slot, [pPlayer, pInfo](CBasePlayerWeapon *pWeapon) {
+	auto pWeapon = pPlayer->ForEachItem<CBasePlayerWeapon>(pInfo->slot, [pInfo](CBasePlayerWeapon *pWeapon) {
 		return (pWeapon->IsWeapon() && pWeapon->m_iId == pInfo->id);
 	});
 
@@ -1163,7 +1163,7 @@ cell AMX_NATIVE_CALL rg_get_user_ammo(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	auto pWeapon = pPlayer->ForEachItem<CBasePlayerWeapon>(pInfo->slot, [pPlayer, pInfo](CBasePlayerWeapon *pWeapon) {
+	auto pWeapon = pPlayer->ForEachItem<CBasePlayerWeapon>(pInfo->slot, [pInfo](CBasePlayerWeapon *pWeapon) {
 		return (pWeapon->IsWeapon() && pWeapon->m_iId == pInfo->id);
 	});
 

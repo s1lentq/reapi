@@ -93,7 +93,7 @@ typedef int64   cell;
 #define UNLIMITED	(~1u >> 1)
 
 struct tagAMX;
-typedef cell(AMX_NATIVE_CALL *AMX_NATIVE)(struct tagAMX *amx, cell *params);
+typedef cell(/*AMX_NATIVE_CALL*/ *AMX_NATIVE)(struct tagAMX *amx, cell *params);
 typedef int (AMXAPI *AMX_CALLBACK)(struct tagAMX *amx, cell index, cell *result, cell *params);
 typedef int (AMXAPI *AMX_DEBUG)(struct tagAMX *amx);
 #if !defined _FAR

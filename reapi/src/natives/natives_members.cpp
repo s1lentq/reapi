@@ -359,7 +359,7 @@ cell AMX_NATIVE_CALL get_entvar(AMX *amx, cell *params)
 	CHECK_ISENTITY(arg_index);
 
 	edict_t *pEdict = edictByIndexAmx(params[arg_index]);
-	if (unlikely(pEdict == nullptr || &pEdict->v == nullptr)) {
+	if (unlikely(pEdict == nullptr)) {
 		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
 		return FALSE;
 	}

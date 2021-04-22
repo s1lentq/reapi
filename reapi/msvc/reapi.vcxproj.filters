@@ -800,9 +800,6 @@
     <ClCompile Include="..\src\mods\mod_reunion_api.cpp">
       <Filter>src\mods</Filter>
     </ClCompile>
-    <ClCompile Include="..\version\version.cpp">
-      <Filter>version</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\natives\natives_common.cpp">
       <Filter>src\natives</Filter>
     </ClCompile>

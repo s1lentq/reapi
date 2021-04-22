@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio Version 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "reapi", "..\reapi\msvc\reapi.vcxproj", "{74E2532F-BE55-4B2B-8C34-C9A4B5EC11AC}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "version", "..\reapi\version\msvc\version.vcxproj", "{8520B2EC-8DE2-4B76-8FA7-02F156C79C04}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +17,15 @@ Global
 		{74E2532F-BE55-4B2B-8C34-C9A4B5EC11AC}.Debug|Win32.Build.0 = Debug|Win32
 		{74E2532F-BE55-4B2B-8C34-C9A4B5EC11AC}.Release|Win32.ActiveCfg = Release|Win32
 		{74E2532F-BE55-4B2B-8C34-C9A4B5EC11AC}.Release|Win32.Build.0 = Release|Win32
+		{8520B2EC-8DE2-4B76-8FA7-02F156C79C04}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8520B2EC-8DE2-4B76-8FA7-02F156C79C04}.Debug|Win32.Build.0 = Debug|Win32
+		{8520B2EC-8DE2-4B76-8FA7-02F156C79C04}.Release|Win32.ActiveCfg = Release|Win32
+		{8520B2EC-8DE2-4B76-8FA7-02F156C79C04}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {ED60E017-84B1-4D63-8802-644D7E6B4EA8}
 	EndGlobalSection
 EndGlobal
