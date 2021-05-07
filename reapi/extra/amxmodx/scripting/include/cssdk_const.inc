@@ -291,7 +291,7 @@
 #define SF_WALL_TOOGLE_NOTSOLID         0x0008
 
 /**
-* func_converyor
+* func_conveyor
 */
 #define SF_CONVEYOR_VISUAL              0x0001
 #define SF_CONVEYOR_NOTSOLID            0x0002
