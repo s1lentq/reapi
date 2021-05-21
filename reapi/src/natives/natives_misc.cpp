@@ -1151,7 +1151,7 @@ cell AMX_NATIVE_CALL rg_set_user_ammo(AMX *amx, cell *params)
 */
 cell AMX_NATIVE_CALL rg_get_user_ammo(AMX *amx, cell *params)
 {
-	enum args_e { arg_count, arg_index, arg_weapon_id, arg_amount };
+	enum args_e { arg_count, arg_index, arg_weapon_id };
 
 	CHECK_ISPLAYER(arg_index);
 
