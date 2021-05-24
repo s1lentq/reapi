@@ -893,6 +893,12 @@ cell AMX_NATIVE_CALL rg_remove_items_by_slot(AMX *amx, cell *params)
 
 			if (pPlayer->RemovePlayerItem(pItem)) {
 				pPlayer->pev->weapons &= ~(1 << pItem->m_iId);
+
+				// No more weapon
+				if ((pPlayer->pev->weapons & ~(1 << WEAPON_SUIT)) == 0) {
+					pPlayer->m_iHideHUD |= HIDEHUD_WEAPONS;
+				}
+
 				pItem->Kill();
 			}
 
