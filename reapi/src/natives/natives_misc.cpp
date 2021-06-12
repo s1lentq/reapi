@@ -453,7 +453,7 @@ cell AMX_NATIVE_CALL rg_round_end(AMX *amx, cell *params)
 	float tmDelay = CAmxArg(amx, params[arg_delay]);
 	if (params[arg_trigger] != 0)
 	{
-		return callForward<BOOL>(RG_RoundEnd,
+		return callForward<bool>(RG_RoundEnd,
 				[&message](int _winStatus, ScenarioEventEndRound _event, float _tmDelay)
 				{
 					CSGameRules()->EndRoundMessage(message, _event);
