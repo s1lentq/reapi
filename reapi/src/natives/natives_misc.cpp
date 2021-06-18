@@ -875,26 +875,39 @@ cell AMX_NATIVE_CALL rg_remove_items_by_slot(AMX *amx, cell *params)
 	CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_index]);
 	CHECK_CONNECTED(pPlayer, arg_index);
 
-	pPlayer->ForEachItem(params[arg_slot], [pPlayer](CBasePlayerItem *pItem)
+	if (params[arg_slot] == C4_SLOT)
 	{
-		if (pItem->IsWeapon()) {
-			if (pItem == pPlayer->m_pActiveItem) {
-				((CBasePlayerWeapon *)pItem)->RetireWeapon();
+		pPlayer->CSPlayer()->RemovePlayerItemEx("weapon_c4", true);
+	}
+	else
+	{
+		pPlayer->ForEachItem(params[arg_slot], [pPlayer](CBasePlayerItem *pItem)
+		{
+			if (pItem->IsWeapon()) {
+				if (pItem == pPlayer->m_pActiveItem) {
+					((CBasePlayerWeapon *)pItem)->RetireWeapon();
+				}
+
+				pPlayer->m_rgAmmo[ pItem->PrimaryAmmoIndex() ] = 0;
 			}
 
-			pPlayer->m_rgAmmo[ pItem->PrimaryAmmoIndex() ] = 0;
+			if (pPlayer->RemovePlayerItem(pItem)) {
+				pPlayer->pev->weapons &= ~(1 << pItem->m_iId);
+
+				// No more weapon
+				if ((pPlayer->pev->weapons & ~(1 << WEAPON_SUIT)) == 0) {
+					pPlayer->m_iHideHUD |= HIDEHUD_WEAPONS;
+				}
+
+				pItem->Kill();
+			}
+
+			return false;
+		});
+
+		if (!pPlayer->m_rgpPlayerItems[PRIMARY_WEAPON_SLOT]) {
+			pPlayer->m_bHasPrimary = false;
 		}
-
-		if (pPlayer->RemovePlayerItem(pItem)) {
-			pPlayer->pev->weapons &= ~(1 << pItem->m_iId);
-			pItem->Kill();
-		}
-
-		return false;
-	});
-
-	if (!pPlayer->m_rgpPlayerItems[PRIMARY_WEAPON_SLOT]) {
-		pPlayer->m_bHasPrimary = false;
 	}
 
 	return TRUE;
