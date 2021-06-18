@@ -1323,8 +1323,8 @@ enum InfoMapBuyParam
 #define USE_TOGGLE                      3
 
 /**
- * For CBasePlayer:m_iWeaponVolume
- */
+* For CBasePlayer:m_iWeaponVolume
+*/
 #define LOUD_GUN_VOLUME                 1000
 #define NORMAL_GUN_VOLUME               600
 #define QUIET_GUN_VOLUME                200
@@ -1333,8 +1333,8 @@ enum InfoMapBuyParam
 #define SMALL_EXPLOSION_VOLUME          512
 
 /**
- * For CBasePlayer:m_iWeaponFlash
- */
+* For CBasePlayer:m_iWeaponFlash
+*/
 #define BRIGHT_GUN_FLASH                512
 #define NORMAL_GUN_FLASH                256
 #define DIM_GUN_FLASH                   128
