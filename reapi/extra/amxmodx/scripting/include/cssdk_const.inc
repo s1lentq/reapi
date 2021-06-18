@@ -291,7 +291,7 @@
 #define SF_WALL_TOOGLE_NOTSOLID         0x0008
 
 /**
-* func_converyor
+* func_conveyor
 */
 #define SF_CONVEYOR_VISUAL              0x0001
 #define SF_CONVEYOR_NOTSOLID            0x0002
@@ -1321,3 +1321,13 @@ enum InfoMapBuyParam
 #define USE_ON                          1
 #define USE_SET                         2
 #define USE_TOGGLE                      3
+
+/**
+* Player zoom
+* For m_iFOV
+*/
+#define LARGE_AWP_ZOOM                  10
+#define LARGE_OTHER_SNIPERS_ZOOM        15
+#define SMALL_SNIPERS_ZOOM              40
+#define AUG_SG552_ZOOM                  55
+#define NO_ZOOM                         90
