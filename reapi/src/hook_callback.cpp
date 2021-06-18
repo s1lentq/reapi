@@ -1100,7 +1100,7 @@ CGrenade *PlantBomb(IReGameHook_PlantBomb *chain, entvars_t *pevOwner, Vector &v
 		return indexOfPDataAmx(chain->callNext(PEV(_pevOwner), vecStartCopy, vecVelocityCopy));
 	};
 
-	return getPrivate<CGrenade>(callForward<size_t>(RG_PlantBomb, original, pevOwner != nullptr ? indexOfEdict(pevOwner) : 0, getAmxVector(vecStartCopy), getAmxVector(vecVelocityCopy)));
+	return getPrivate<CGrenade>(callForward<size_t>(RG_PlantBomb, original, indexOfEdictAmx(pevOwner), getAmxVector(vecStartCopy), getAmxVector(vecVelocityCopy)));
 }
 
 bool IsPenetrableEntity(IReGameHook_IsPenetrableEntity *chain, Vector &vecSrc, Vector &vecEnd, entvars_t *pevAttacker, edict_t *pHit)
