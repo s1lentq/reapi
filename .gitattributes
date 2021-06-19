@@ -1,0 +1,37 @@
+###############################################################################
+# Set default behavior to automatically normalize line endings.
+###############################################################################
+* text=auto
+
+# Sources
+*.c               text eol=crlf diff=c
+*.cc              text eol=crlf diff=cpp
+*.cxx             text eol=crlf diff=cpp
+*.cpp             text eol=crlf diff=cpp
+*.c++             text eol=crlf diff=cpp
+*.hpp             text eol=crlf diff=cpp
+*.h               text eol=crlf diff=c
+*.h++             text eol=crlf diff=cpp
+*.hh              text eol=crlf diff=cpp
+*.inc             text eol=crlf linguist-language=pawn
+*.sma             text eol=crlf linguist-language=pawn
+
+# Scripts
+*.sh              text eol=lf
+*.bat             text eol=crlf
+*.def             text eol=crlf
+*.rc              text eol=crlf
+
+# Compiled Object files
+*.o               binary
+*.a               binary
+*.obj             binary
+*.lib             binary
+
+# Resources files
+*.zip             binary
+
+# Project files
+*.sln             text eol=crlf
+*.vcxproj         text eol=crlf
+*.vcxproj.filters text eol=crlf

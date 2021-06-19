@@ -285,7 +285,6 @@
     </ClCompile>
     <ClCompile Include="..\src\reapi_utils.cpp" />
     <ClCompile Include="..\src\sdk_util.cpp" />
-    <ClCompile Include="..\version\version.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="reapi.rc" />
@@ -304,6 +303,11 @@
     <None Include="..\extra\amxmodx\scripting\reapi_test.sma" />
     <None Include="..\version\reapi_version.inc" />
     <None Include="reapi.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\version\msvc\version.vcxproj">
+      <Project>{8520b2ec-8de2-4b76-8fa7-02f156c79c04}</Project>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{74E2532F-BE55-4B2B-8C34-C9A4B5EC11AC}</ProjectGuid>

@@ -141,7 +141,7 @@ struct hookctx_t
 	};
 
 	size_t args_count               = 0;
-	args_t args[MAX_HOOKCHAIN_ARGS] = {0u, ATYPE_INTEGER};
+	args_t args[MAX_HOOKCHAIN_ARGS] = {};
 	static CTempStrings s_temp_strings;
 };
 
@@ -282,7 +282,7 @@ NOINLINE R DLLEXPORT _callForward(hook_t* hook, original_t original, f_args&&...
 				break;
 		}
 	}
-	
+
 	hook->wasCalled = false;
 
 	return *(R *)&hookCtx->retVal._integer;

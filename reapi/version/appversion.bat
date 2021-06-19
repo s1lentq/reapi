@@ -4,8 +4,11 @@
 :: Pre-build auto-versioning script
 ::
 
+chcp 65001
+
 set srcdir=%~1
 set repodir=%~2
+set fileinc=%~3
 
 set old_version=
 set old_version_inc=
@@ -13,6 +16,7 @@ set version_major=0
 set version_minor=0
 set version_maintenance=0
 set version_modifed=
+set genereate_inc=0
 
 set commitSHA=
 set commitURL=
@@ -29,8 +33,8 @@ set "sec=%dt:~12,2%"
 
 ::
 :: Remove leading zero from MM (e.g 09 > 9)
-for /f "tokens=* delims=0" %%I in ("%MM%") do set MM=%%I
 ::
+for /f "tokens=* delims=0" %%I in ("%MM%") do set MM=%%I
 
 ::
 :: Index into array to get month name
@@ -59,15 +63,24 @@ IF EXIST "%srcdir%\appversion.h" (
 )
 
 ::
-:: Read old reapi_version.inc, if present
+:: Check %fileinc% if present to generate
 ::
-IF EXIST "%srcdir%\reapi_version.inc" (
-	FOR /F "usebackq tokens=1,2,3" %%i in ("%srcdir%\reapi_version.inc") do (
-		IF %%i==#define (
-			IF %%j==REAPI_VERSION (
-				:: Remove quotes
-				set v=%%k
-				set old_version_inc=!v:"=!
+IF NOT [%fileinc%]==[] (
+	set genereate_inc=1
+)
+
+::
+:: Read old %fileinc%, if present
+::
+IF [%genereate_inc%]==[1] (
+	IF EXIST "%srcdir%\%fileinc%" (
+		FOR /F "usebackq tokens=1,2,3" %%i in ("%srcdir%\%fileinc%") do (
+			IF %%i==#define (
+				IF %%j==REAPI_VERSION (
+					:: Remove quotes
+					set v=%%k
+					set old_version_inc=!v:"=!
+				)
 			)
 		)
 	)
@@ -91,14 +104,6 @@ IF EXIST "%srcdir%\version.h" (
 			IF %%j==VERSION_MAJOR set version_major=%%k
 			IF %%j==VERSION_MINOR set version_minor=%%k
 			IF %%j==VERSION_MAINTENANCE set version_maintenance=%%k
-		)
-	)
-) ELSE (
-	FOR /F "usebackq tokens=1,2,3,* delims==" %%i in ("%repodir%..\gradle.properties") do (
-		IF NOT [%%j] == [] (
-			IF %%i==majorVersion set version_major=%%j
-			IF %%i==minorVersion set version_minor=%%j
-			IF %%i==maintenanceVersion set version_maintenance=%%j
 		)
 	)
 )
@@ -167,9 +172,9 @@ IF NOT %errlvl% == "1" (
 
 		:: append extra string
 		If NOT "!commitURL!"=="!commitURL:bitbucket.org=!" (
-			set commitURL=https://!commitURL!/commits/
-		) ELSE (
 			set commitURL=https://!commitURL!/commit/
+		) ELSE (
+			set commitURL=https://!commitURL!/commits/
 		)
 	)
 )
@@ -203,11 +208,13 @@ IF NOT "%new_version%"=="%old_version%" (
 )
 
 ::
-:: Update reapi_version.inc if version has changed or modifications/mixed revisions detected
+:: Update %fileinc% if version has changed or modifications/mixed revisions detected
 ::
 
-IF NOT "%new_version_inc%"=="%old_version_inc%" (
-	goto _update
+IF [%genereate_inc%]==[1] (
+	IF NOT "%new_version_inc%"=="%old_version_inc%" (
+		goto _update
+	)
 )
 
 goto _exit
@@ -215,20 +222,22 @@ goto _exit
 :_update
 
 ::
-:: Write reapi_version.inc
+:: Write %fileinc%
 ::
-echo Updating reapi_version.inc, new version is "%new_version_inc%", the old one was %old_version_inc%
+IF [%genereate_inc%]==[1] (
+	echo Updating %fileinc%, new version is "%new_version_inc%", the old one was %old_version_inc%
 
-echo #if defined _reapi_version_included>"%srcdir%\reapi_version.inc"
-echo 	#endinput>>"%srcdir%\reapi_version.inc"
-echo #endif>>"%srcdir%\reapi_version.inc"
-echo #define _reapi_version_included>>"%srcdir%\reapi_version.inc"
+	echo #if defined _reapi_version_included>"%srcdir%\%fileinc%"
+	echo 	#endinput>>"%srcdir%\%fileinc%"
+	echo #endif>>"%srcdir%\%fileinc%"
+	echo #define _reapi_version_included>>"%srcdir%\%fileinc%"
 
-echo.>>"%srcdir%\reapi_version.inc"
->>"%srcdir%\reapi_version.inc" echo // reapi version
->>"%srcdir%\reapi_version.inc" echo #define REAPI_VERSION %version_major%%version_minor%%commitCount%
->>"%srcdir%\reapi_version.inc" echo #define REAPI_VERSION_MAJOR %version_major%
->>"%srcdir%\reapi_version.inc" echo #define REAPI_VERSION_MINOR %version_minor%
+	echo.>>"%srcdir%\%fileinc%"
+	>>"%srcdir%\%fileinc%" echo // REAPI version
+	>>"%srcdir%\%fileinc%" echo #define REAPI_VERSION %version_major%%version_minor%%commitCount%
+	>>"%srcdir%\%fileinc%" echo #define REAPI_VERSION_MAJOR %version_major%
+	>>"%srcdir%\%fileinc%" echo #define REAPI_VERSION_MINOR %version_minor%
+)
 
 ::
 :: Write appversion.h
@@ -238,10 +247,10 @@ echo Updating appversion.h, new version is "%new_version%", the old one was %old
 echo #ifndef __APPVERSION_H__>"%srcdir%\appversion.h"
 echo #define __APPVERSION_H__>>"%srcdir%\appversion.h"
 echo.>>"%srcdir%\appversion.h"
-echo // >>"%srcdir%\appversion.h"
+echo //>>"%srcdir%\appversion.h"
 echo // This file is generated automatically.>>"%srcdir%\appversion.h"
 echo // Don't edit it.>>"%srcdir%\appversion.h"
-echo // >>"%srcdir%\appversion.h"
+echo //>>"%srcdir%\appversion.h"
 echo.>>"%srcdir%\appversion.h"
 echo // Version defines>>"%srcdir%\appversion.h"
 echo #define APP_VERSION "%new_version%">>"%srcdir%\appversion.h"
@@ -261,12 +270,6 @@ echo.>>"%srcdir%\appversion.h"
 
 echo #endif //__APPVERSION_H__>>"%srcdir%\appversion.h"
 echo.>>"%srcdir%\appversion.h"
-
-::
-:: Do update of version.cpp file last modify time to force it recompile
-::
-copy /b "%srcdir%\version.cpp"+,, "%srcdir%\version.cpp"
-endlocal
 
 :_exit
 exit /B 0

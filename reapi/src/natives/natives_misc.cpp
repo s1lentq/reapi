@@ -453,7 +453,7 @@ cell AMX_NATIVE_CALL rg_round_end(AMX *amx, cell *params)
 	float tmDelay = CAmxArg(amx, params[arg_delay]);
 	if (params[arg_trigger] != 0)
 	{
-		return callForward<BOOL>(RG_RoundEnd,
+		return callForward<bool>(RG_RoundEnd,
 				[&message](int _winStatus, ScenarioEventEndRound _event, float _tmDelay)
 				{
 					CSGameRules()->EndRoundMessage(message, _event);
@@ -875,26 +875,39 @@ cell AMX_NATIVE_CALL rg_remove_items_by_slot(AMX *amx, cell *params)
 	CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_index]);
 	CHECK_CONNECTED(pPlayer, arg_index);
 
-	pPlayer->ForEachItem(params[arg_slot], [pPlayer](CBasePlayerItem *pItem)
+	if (params[arg_slot] == C4_SLOT)
 	{
-		if (pItem->IsWeapon()) {
-			if (pItem == pPlayer->m_pActiveItem) {
-				((CBasePlayerWeapon *)pItem)->RetireWeapon();
+		pPlayer->CSPlayer()->RemovePlayerItemEx("weapon_c4", true);
+	}
+	else
+	{
+		pPlayer->ForEachItem(params[arg_slot], [pPlayer](CBasePlayerItem *pItem)
+		{
+			if (pItem->IsWeapon()) {
+				if (pItem == pPlayer->m_pActiveItem) {
+					((CBasePlayerWeapon *)pItem)->RetireWeapon();
+				}
+
+				pPlayer->m_rgAmmo[ pItem->PrimaryAmmoIndex() ] = 0;
 			}
 
-			pPlayer->m_rgAmmo[ pItem->PrimaryAmmoIndex() ] = 0;
+			if (pPlayer->RemovePlayerItem(pItem)) {
+				pPlayer->pev->weapons &= ~(1 << pItem->m_iId);
+
+				// No more weapon
+				if ((pPlayer->pev->weapons & ~(1 << WEAPON_SUIT)) == 0) {
+					pPlayer->m_iHideHUD |= HIDEHUD_WEAPONS;
+				}
+
+				pItem->Kill();
+			}
+
+			return false;
+		});
+
+		if (!pPlayer->m_rgpPlayerItems[PRIMARY_WEAPON_SLOT]) {
+			pPlayer->m_bHasPrimary = false;
 		}
-
-		if (pPlayer->RemovePlayerItem(pItem)) {
-			pPlayer->pev->weapons &= ~(1 << pItem->m_iId);
-			pItem->Kill();
-		}
-
-		return false;
-	});
-
-	if (!pPlayer->m_rgpPlayerItems[PRIMARY_WEAPON_SLOT]) {
-		pPlayer->m_bHasPrimary = false;
 	}
 
 	return TRUE;
@@ -1055,7 +1068,7 @@ cell AMX_NATIVE_CALL rg_set_user_bpammo(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	auto pWeapon = pPlayer->ForEachItem<CBasePlayerWeapon>([pPlayer, pInfo](CBasePlayerWeapon *pWeapon) {
+	auto pWeapon = pPlayer->ForEachItem<CBasePlayerWeapon>([pInfo](CBasePlayerWeapon *pWeapon) {
 		return (pWeapon->IsWeapon() && pWeapon->m_iId == pInfo->id);
 	});
 
@@ -1091,7 +1104,7 @@ cell AMX_NATIVE_CALL rg_get_user_bpammo(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	auto pWeapon = pPlayer->ForEachItem<CBasePlayerWeapon>([pPlayer, pInfo](CBasePlayerWeapon *pWeapon) {
+	auto pWeapon = pPlayer->ForEachItem<CBasePlayerWeapon>([pInfo](CBasePlayerWeapon *pWeapon) {
 		return (pWeapon->IsWeapon() && pWeapon->m_iId == pInfo->id);
 	});
 
@@ -1127,7 +1140,7 @@ cell AMX_NATIVE_CALL rg_set_user_ammo(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	auto pWeapon = pPlayer->ForEachItem<CBasePlayerWeapon>(pInfo->slot, [pPlayer, pInfo](CBasePlayerWeapon *pWeapon) {
+	auto pWeapon = pPlayer->ForEachItem<CBasePlayerWeapon>(pInfo->slot, [pInfo](CBasePlayerWeapon *pWeapon) {
 		return (pWeapon->IsWeapon() && pWeapon->m_iId == pInfo->id);
 	});
 
@@ -1151,7 +1164,7 @@ cell AMX_NATIVE_CALL rg_set_user_ammo(AMX *amx, cell *params)
 */
 cell AMX_NATIVE_CALL rg_get_user_ammo(AMX *amx, cell *params)
 {
-	enum args_e { arg_count, arg_index, arg_weapon_id, arg_amount };
+	enum args_e { arg_count, arg_index, arg_weapon_id };
 
 	CHECK_ISPLAYER(arg_index);
 
@@ -1163,7 +1176,7 @@ cell AMX_NATIVE_CALL rg_get_user_ammo(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	auto pWeapon = pPlayer->ForEachItem<CBasePlayerWeapon>(pInfo->slot, [pPlayer, pInfo](CBasePlayerWeapon *pWeapon) {
+	auto pWeapon = pPlayer->ForEachItem<CBasePlayerWeapon>(pInfo->slot, [pInfo](CBasePlayerWeapon *pWeapon) {
 		return (pWeapon->IsWeapon() && pWeapon->m_iId == pInfo->id);
 	});
 

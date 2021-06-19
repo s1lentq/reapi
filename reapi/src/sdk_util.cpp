@@ -13,8 +13,9 @@ void NORETURN UTIL_SysError(const char *fmt, ...)
 
 	//TerminateProcess(GetCurrentProcess(), 1);
 
-	*((int *)NULL) = 0;
-	while (true);
+	volatile int *null = 0;
+	*null = 0;
+	exit(-1);
 }
 
 char *UTIL_VarArgs(char *format, ...)

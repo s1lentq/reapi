@@ -15,8 +15,8 @@ private:
 		CQueryFileHandler(AMX *amx, const char *funcname);
 		~CQueryFileHandler();
 
-		const int GetAmxxID()   const { return m_amxId;    };
-		const int GetUniqueID() const { return m_uniqueId; };
+		int GetAmxxID()   const { return m_amxId;    };
+		int GetUniqueID() const { return m_uniqueId; };
 
 	private:
 		int m_amxId;
