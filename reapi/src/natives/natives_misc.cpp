@@ -2517,8 +2517,8 @@ AMX_NATIVE_INFO Misc_Natives_RG[] =
 	{ "rg_set_can_hear_player",       rg_set_can_hear_player       },
 	{ "rg_get_can_hear_player",       rg_get_can_hear_player       },
 
-	{ "rg_spawn_random_gibs",         rg_spawn_random_gibs         },
 	{ "rg_spawn_head_gib",            rg_spawn_head_gib            },
+	{ "rg_spawn_random_gibs",         rg_spawn_random_gibs         },
 
 	{ nullptr, nullptr }
 };
