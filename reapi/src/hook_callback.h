@@ -20,7 +20,8 @@ enum AType : uint8
 	ATYPE_CLASSPTR,
 	ATYPE_EDICT,
 	ATYPE_EVARS,
-	ATYPE_BOOL
+	ATYPE_BOOL,
+	ATYPE_VECTOR
 };
 
 struct retval_t
@@ -36,11 +37,13 @@ struct retval_t
 		CBaseEntity*	_classptr;
 		edict_t*		_edict;
 		entvars_t*		_pev;
+		Vector			_vector;
 	};
 };
 
 inline AType getApiType(int)			{ return ATYPE_INTEGER; }
 inline AType getApiType(unsigned)		{ return ATYPE_INTEGER; }
+inline AType getApiType(ULONG)			{ return ATYPE_INTEGER; }
 inline AType getApiType(float)			{ return ATYPE_FLOAT; }
 inline AType getApiType(const char *)	{ return ATYPE_STRING; }
 inline AType getApiType(char[])			{ return ATYPE_STRING; }
@@ -48,6 +51,7 @@ inline AType getApiType(CBaseEntity *)	{ return ATYPE_CLASSPTR; }
 inline AType getApiType(edict_t *)		{ return ATYPE_EDICT; }
 inline AType getApiType(entvars_t *)	{ return ATYPE_EVARS; }
 inline AType getApiType(bool)			{ return ATYPE_BOOL; }
+inline AType getApiType(Vector)         { return ATYPE_VECTOR; }
 
 template<typename T>
 inline AType getApiType(T *) { return ATYPE_INTEGER; }
@@ -291,7 +295,7 @@ NOINLINE R DLLEXPORT _callForward(hook_t* hook, original_t original, f_args&&...
 template <typename R, typename original_t, typename ...f_args>
 R callForward(size_t func, original_t original, f_args&&... args)
 {
-	static_assert(sizeof(R) <= sizeof(int), "invalid hookchain return type size > sizeof(int)");
+	static_assert(sizeof(R) <= sizeof(Vector), "invalid hookchain return type size > sizeof(Vector)");
 
 	hookctx_t hookCtx(sizeof...(args), args...);
 	hookctx_t* save = g_hookCtx;
@@ -464,6 +468,11 @@ void CGrenade_ExplodeBomb(IReGameHook_CGrenade_ExplodeBomb *chain, CGrenade *pth
 void CGib_Spawn(IReGameHook_CGib_Spawn *chain, CGib *pthis, const char *szGibModel);
 void CGib_BounceGibTouch(IReGameHook_CGib_BounceGibTouch *chain, CGib *pthis, CBaseEntity *pOther);
 void CGib_WaitTillLand(IReGameHook_CGib_WaitTillLand *chain, CGib *pthis);
+
+// regamedll functions - cbaseentity
+void CBaseEntity_FireBullets(IReGameHook_CBaseEntity_FireBullets *chain, CBaseEntity *pPlayer, ULONG cShots, Vector &vecSrc, Vector &vecDirShooting, Vector &vecSpread, float flDistance, int iBulletType, int iTracerFreq, int iDamage, entvars_t *pevAttacker);
+void CBaseEntity_FireBuckshots(IReGameHook_CBaseEntity_FireBuckshots *chain, CBaseEntity *pPlayer, ULONG cShots, Vector &vecSrc, Vector &vecDirShooting, Vector &vecSpread, float flDistance, int iTracerFreq, int iDamage, entvars_t *pevAttacker);
+Vector &CBaseEntity_FireBullets3(IReGameHook_CBaseEntity_FireBullets3 *chain, CBaseEntity *pPlayer, Vector &vecSrc, Vector &vecDirShooting, float vecSpread, float flDistance, int iPenetration, int iBulletType, int iDamage, float flRangeModifier, entvars_t *pevAttacker, bool bPistol, int shared_rand);
 
 extern int g_iClientStartSpeak;
 extern int g_iClientStopSpeak;
