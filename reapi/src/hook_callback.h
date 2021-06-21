@@ -295,7 +295,7 @@ NOINLINE R DLLEXPORT _callForward(hook_t* hook, original_t original, f_args&&...
 template <typename R, typename original_t, typename ...f_args>
 R callForward(size_t func, original_t original, f_args&&... args)
 {
-	static_assert(sizeof(R) <= sizeof(Vector), "invalid hookchain return type size > sizeof(Vector)");
+	static_assert(sizeof(R) <= sizeof(int), "invalid hookchain return type size > sizeof(int)");
 
 	hookctx_t hookCtx(sizeof...(args), args...);
 	hookctx_t* save = g_hookCtx;
