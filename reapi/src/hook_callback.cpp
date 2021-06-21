@@ -1198,7 +1198,7 @@ Vector &CBaseEntity_FireBullets3(IReGameHook_CBaseEntity_FireBullets3 *chain, CB
 		return chain->callNext(getPrivate<CBaseEntity>(_pEntity), vecSrcCopy, vecDirShootingCopy, _vecSpread, _flDistance, _iPenetration, _iBulletType, _iDamage, _flRangeModifier, PEV(_pevAttacker), _bPistol, _shared_rand);
 	};
 
-	return callForward<Vector>(RG_CBaseEntity_FireBullets3, original, indexOfEdict(pEntity->pev), getAmxVector(vecSrcCopy), getAmxVector(vecDirShootingCopy), vecSpread, flDistance, iPenetration, iBulletType, iDamage, flRangeModifier, indexOfEdict(pevAttacker), bPistol, shared_rand);
+	return callVectorForward<Vector>(RG_CBaseEntity_FireBullets3, original, indexOfEdict(pEntity->pev), getAmxVector(vecSrcCopy), getAmxVector(vecDirShootingCopy), vecSpread, flDistance, iPenetration, iBulletType, iDamage, flRangeModifier, indexOfEdict(pevAttacker), bPistol, shared_rand);
 }
 
 int g_iClientStartSpeak, g_iClientStopSpeak;
