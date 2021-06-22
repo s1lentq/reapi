@@ -1193,15 +1193,18 @@ Vector &CBaseEntity_FireBullets3(IReGameHook_CBaseEntity_FireBullets3 *chain, CB
 {
 	Vector vecSrcCopy(vecSrc), vecDirShootingCopy(vecDirShooting);
 
-	auto original = [chain, &vecSrcCopy, &vecDirShootingCopy](int _pEntity, cell _vecSrc, cell _vecDirShooting, float _vecSpread, float _flDistance, int _iPenetration, int _iBulletType, int _iDamage, float _flRangeModifier, int _pevAttacker, bool _bPistol, int _shared_rand)
+	auto original = [chain, &vecSrcCopy, &vecDirShootingCopy](int _pEntity, cell _vecSrc, cell _vecDirShooting, float _vecSpread, float _flDistance, int _iPenetration, int _iBulletType, int _iDamage, float _flRangeModifier, int _pevAttacker, bool _bPistol, int _shared_rand) -> Vector&
 	{
 		return chain->callNext(getPrivate<CBaseEntity>(_pEntity), vecSrcCopy, vecDirShootingCopy, _vecSpread, _flDistance, _iPenetration, _iBulletType, _iDamage, _flRangeModifier, PEV(_pevAttacker), _bPistol, _shared_rand);
 	};
 
-	static Vector vecRet;
-	vecRet = callVectorForward<Vector>(RG_CBaseEntity_FireBullets3, original, indexOfEdict(pEntity->pev), getAmxVector(vecSrcCopy), getAmxVector(vecDirShootingCopy), vecSpread, flDistance, iPenetration, iBulletType, iDamage, flRangeModifier, indexOfEdict(pevAttacker), bPistol, shared_rand);
-	
-	return vecRet;
+	return callForward<Vector &>(RG_CBaseEntity_FireBullets3, original,
+		indexOfEdict(pEntity->pev),
+		getAmxVector(vecSrcCopy), getAmxVector(vecDirShootingCopy),
+		vecSpread, flDistance, iPenetration, iBulletType, iDamage, flRangeModifier,
+		indexOfEdict(pevAttacker),
+		bPistol,
+		shared_rand);
 }
 
 int g_iClientStartSpeak, g_iClientStopSpeak;

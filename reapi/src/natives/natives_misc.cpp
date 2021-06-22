@@ -458,7 +458,7 @@ cell AMX_NATIVE_CALL rg_round_end(AMX *amx, cell *params)
 				{
 					CSGameRules()->EndRoundMessage(message, _event);
 					CSGameRules()->TerminateRound(_tmDelay, _winStatus);
-					return TRUE;
+					return true;
 				},
 			winstatus, event, tmDelay);
 	}

@@ -102,6 +102,9 @@ cell AMX_NATIVE_CALL DisableHookChain(AMX *amx, cell *params)
 	return TRUE;
 }
 
+static CTempAnyData<Vector, 16> s_tmpVectors;
+static CTempAnyData<char, 16, 1024> s_tmpStrings;
+
 /*
 * Sets the return value of a hookchain.
 *
@@ -148,12 +151,9 @@ cell AMX_NATIVE_CALL SetHookChainReturn(AMX *amx, cell *params)
 
 	case ATYPE_STRING:
 	{
-		if (retVal._string != nullptr)
-			delete[] retVal._string;
-
 		size_t len;
 		const char *dest = getAmxString(srcAddr, string, &len);
-		retVal._string = strcpy(new char[len + 1], dest);
+		retVal._string = strcpy(s_tmpStrings.Alloc(), dest);
 		break;
 	}
 	case ATYPE_CLASSPTR:
@@ -166,14 +166,9 @@ cell AMX_NATIVE_CALL SetHookChainReturn(AMX *amx, cell *params)
 		retVal._pev = PEV(*srcAddr);
 		break;
 	case ATYPE_VECTOR:
-	{
-		REAL fX = *((float*)&srcAddr[0]);
-		REAL fY = *((float*)&srcAddr[1]);
-		REAL fZ = *((float*)&srcAddr[2]);
-		Vector vSet = Vector(fX, fY, fZ);
-		retVal._vector = &vSet;
+		retVal._vector  = s_tmpVectors.Alloc();
+		*retVal._vector = *(Vector *)srcAddr;
 		break;
-	}
 	default:
 		return FALSE;
 	}
@@ -233,7 +228,7 @@ cell AMX_NATIVE_CALL GetHookChainReturn(AMX *amx, cell *params)
 		return retVal._integer != 0 ? TRUE : FALSE;
 	case ATYPE_STRING:
 	{
-		if (PARAMS_COUNT != 2)
+		if (PARAMS_COUNT != 3)
 			return FALSE;
 
 		setAmxString(dstAddr, retVal._string, params[arg_maxlen]);
@@ -247,10 +242,11 @@ cell AMX_NATIVE_CALL GetHookChainReturn(AMX *amx, cell *params)
 		return indexOfEdict(retVal._pev);
 	case ATYPE_VECTOR:
 	{
-		Vector* vRetVal = retVal._vector;
-		*dstAddr++ = *((cell*)&vRetVal->x);
-		*dstAddr++ = *((cell*)&vRetVal->y);
-		*dstAddr++ = *((cell*)&vRetVal->z);
+		if (PARAMS_COUNT != 2)
+			return FALSE;
+
+		Vector &pDest = *(Vector *)dstAddr;
+		pDest = *retVal._vector;
 		return TRUE;
 	}
 	default:

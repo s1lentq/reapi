@@ -218,8 +218,10 @@ void callVoidForward(size_t func, original_t original, f_args&&... args)
 template <typename R, typename original_t, typename ...f_args>
 NOINLINE R DLLEXPORT _callForward(hook_t* hook, original_t original, f_args&&... args)
 {
+	using R2 = std::decay<R>::type;
+
 	auto hookCtx = g_hookCtx;
-	hookCtx->reset(getApiType(R()));
+	hookCtx->reset(getApiType(R2()));
 
 	int hc_state = HC_CONTINUE;
 
@@ -243,7 +245,7 @@ NOINLINE R DLLEXPORT _callForward(hook_t* hook, original_t original, f_args&&...
 			}
 
 			if (unlikely(ret == HC_BREAK)) {
-				return *(R *)&hookCtx->retVal._integer;
+				return *(R2 *)&hookCtx->retVal._integer;
 			}
 
 			if (unlikely(ret > hc_state))
@@ -254,7 +256,7 @@ NOINLINE R DLLEXPORT _callForward(hook_t* hook, original_t original, f_args&&...
 	if (likely(hc_state != HC_SUPERCEDE))
 	{
 		g_hookCtx = nullptr;
-		auto retVal = original(std::forward<f_args &&>(args)...);
+		R retVal = original(std::forward<f_args &&>(args)...);
 		g_hookCtx = hookCtx;
 		hook->wasCalled = true;
 
@@ -269,6 +271,9 @@ NOINLINE R DLLEXPORT _callForward(hook_t* hook, original_t original, f_args&&...
 			case sizeof(int32):
 				hookCtx->retVal._integer = *(int32 *)&retVal;
 				break;
+			case sizeof(Vector):
+				hookCtx->retVal._vector = (Vector *)&retVal;
+				break;
 			}
 			hookCtx->retVal.set = true;
 		}
@@ -289,105 +294,20 @@ NOINLINE R DLLEXPORT _callForward(hook_t* hook, original_t original, f_args&&...
 
 	hook->wasCalled = false;
 
-	return *(R *)&hookCtx->retVal._integer;
+	if (std::is_reference<R>::value)
+		return *(R2 *)hookCtx->retVal._integer;
+	else
+		return *(R2 *)&hookCtx->retVal._integer;
 }
 
 template <typename R, typename original_t, typename ...f_args>
 R callForward(size_t func, original_t original, f_args&&... args)
 {
-	static_assert(sizeof(R) <= sizeof(int), "invalid hookchain return type size > sizeof(int)");
-
 	hookctx_t hookCtx(sizeof...(args), args...);
 	hookctx_t* save = g_hookCtx;
 
 	g_hookCtx = &hookCtx;
-	auto ret = _callForward<R>(g_hookManager.getHookFast(func), original, args...);
-	g_hookCtx = save;
-
-	if (hasStringArgs(args...)) {
-		hookCtx.clear_temp_strings();
-	}
-
-	return ret;
-}
-
-template <typename R, typename original_t, typename ...f_args>
-NOINLINE R DLLEXPORT _callVectorForward(hook_t* hook, original_t original, f_args&&... args)
-{
-	auto hookCtx = g_hookCtx;
-	hookCtx->reset(getApiType(R()));
-
-	int hc_state = HC_CONTINUE;
-
-	hook->wasCalled = false;
-
-	for (auto fwd : hook->pre)
-	{
-		if (likely(fwd->GetState() == FSTATE_ENABLED))
-		{
-			hookCtx->SetId(fwd->GetIndex()); // set current handler hook
-			auto ret = g_amxxapi.ExecuteForward(fwd->GetFwdIndex(), std::forward<f_args&&>(args)...);
-			hookCtx->ResetId();
-
-			if (unlikely(ret != HC_SUPERCEDE && ret != HC_BREAK)) {
-				continue;
-			}
-
-			if (unlikely(!hookCtx->retVal.set)) {
-				fwd->Error(AMX_ERR_ASSERT, "Can't suppress original function call without new return value set, so you must call SetHookChainReturn.");
-				continue;
-			}
-
-			if (unlikely(ret == HC_BREAK)) {
-				return *(R*)&hookCtx->retVal._vector;
-			}
-
-			if (unlikely(ret > hc_state))
-				hc_state = ret;
-		}
-	}
-
-	if (likely(hc_state != HC_SUPERCEDE))
-	{
-		g_hookCtx = nullptr;
-		auto retVal = original(std::forward<f_args&&>(args)...);
-		g_hookCtx = hookCtx;
-		hook->wasCalled = true;
-
-		if (unlikely(!hookCtx->retVal.set)) {
-			hookCtx->retVal._vector = &(Vector)retVal;
-			hookCtx->retVal.set = true;
-		}
-	}
-
-	for (auto fwd : hook->post)
-	{
-		if (likely(fwd->GetState() == FSTATE_ENABLED))
-		{
-			hookCtx->SetId(fwd->GetIndex()); // set current handler hook
-			auto ret = g_amxxapi.ExecuteForward(fwd->GetFwdIndex(), std::forward<f_args&&>(args)...);
-			hookCtx->ResetId();
-
-			if (unlikely(ret == HC_BREAK))
-				break;
-		}
-	}
-
-	hook->wasCalled = false;
-
-	return *(R*)&hookCtx->retVal._vector;
-}
-
-template <typename R, typename original_t, typename ...f_args>
-R callVectorForward(size_t func, original_t original, f_args&&... args)
-{
-	static_assert(sizeof(R) <= sizeof(Vector), "invalid hookchain return type size > sizeof(Vector)");
-
-	hookctx_t hookCtx(sizeof...(args), args...);
-	hookctx_t* save = g_hookCtx;
-
-	g_hookCtx = &hookCtx;
-	auto ret = _callVectorForward<R>(g_hookManager.getHookFast(func), original, args...);
+	R ret = _callForward<R>(g_hookManager.getHookFast(func), original, args...);
 	g_hookCtx = save;
 
 	if (hasStringArgs(args...)) {
