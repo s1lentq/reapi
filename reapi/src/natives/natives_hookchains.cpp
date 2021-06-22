@@ -322,9 +322,6 @@ cell AMX_NATIVE_CALL SetHookChainArg(AMX *amx, cell *params)
 	case ATYPE_EVARS:
 		*(entvars_t **)destAddr = PEV(*srcAddr);
 		break;
-	case ATYPE_VECTOR:
-		*(Vector **)destAddr = (Vector *)*srcAddr;
-		break;
 	}
 
 	return TRUE;
