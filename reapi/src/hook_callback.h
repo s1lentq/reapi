@@ -556,9 +556,9 @@ void CGib_BounceGibTouch(IReGameHook_CGib_BounceGibTouch *chain, CGib *pthis, CB
 void CGib_WaitTillLand(IReGameHook_CGib_WaitTillLand *chain, CGib *pthis);
 
 // regamedll functions - cbaseentity
-void CBaseEntity_FireBullets(IReGameHook_CBaseEntity_FireBullets *chain, CBaseEntity *pPlayer, ULONG cShots, Vector &vecSrc, Vector &vecDirShooting, Vector &vecSpread, float flDistance, int iBulletType, int iTracerFreq, int iDamage, entvars_t *pevAttacker);
-void CBaseEntity_FireBuckshots(IReGameHook_CBaseEntity_FireBuckshots *chain, CBaseEntity *pPlayer, ULONG cShots, Vector &vecSrc, Vector &vecDirShooting, Vector &vecSpread, float flDistance, int iTracerFreq, int iDamage, entvars_t *pevAttacker);
-Vector &CBaseEntity_FireBullets3(IReGameHook_CBaseEntity_FireBullets3 *chain, CBaseEntity *pPlayer, Vector &vecSrc, Vector &vecDirShooting, float vecSpread, float flDistance, int iPenetration, int iBulletType, int iDamage, float flRangeModifier, entvars_t *pevAttacker, bool bPistol, int shared_rand);
+void CBaseEntity_FireBullets(IReGameHook_CBaseEntity_FireBullets *chain, CBaseEntity *pEntity, ULONG cShots, Vector &vecSrc, Vector &vecDirShooting, Vector &vecSpread, float flDistance, int iBulletType, int iTracerFreq, int iDamage, entvars_t *pevAttacker);
+void CBaseEntity_FireBuckshots(IReGameHook_CBaseEntity_FireBuckshots *chain, CBaseEntity *pEntity, ULONG cShots, Vector &vecSrc, Vector &vecDirShooting, Vector &vecSpread, float flDistance, int iTracerFreq, int iDamage, entvars_t *pevAttacker);
+Vector &CBaseEntity_FireBullets3(IReGameHook_CBaseEntity_FireBullets3 *chain, CBaseEntity *pEntity, Vector &vecSrc, Vector &vecDirShooting, float vecSpread, float flDistance, int iPenetration, int iBulletType, int iDamage, float flRangeModifier, entvars_t *pevAttacker, bool bPistol, int shared_rand);
 
 extern int g_iClientStartSpeak;
 extern int g_iClientStopSpeak;
