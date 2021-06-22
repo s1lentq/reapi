@@ -171,7 +171,7 @@ cell AMX_NATIVE_CALL SetHookChainReturn(AMX *amx, cell *params)
 		REAL fY = *((float*)&srcAddr[1]);
 		REAL fZ = *((float*)&srcAddr[2]);
 		Vector vSet = Vector(fX, fY, fZ);
-		retVal._vector = vSet;
+		retVal._vector = &vSet;
 		break;
 	}
 	default:
@@ -247,10 +247,10 @@ cell AMX_NATIVE_CALL GetHookChainReturn(AMX *amx, cell *params)
 		return indexOfEdict(retVal._pev);
 	case ATYPE_VECTOR:
 	{
-		Vector& vRetVal = retVal._vector;
-		dstAddr[0] = *((cell*)&vRetVal.x);
-		dstAddr[1] = *((cell*)&vRetVal.y);
-		dstAddr[2] = *((cell*)&vRetVal.z);
+		Vector* vRetVal = retVal._vector;
+		*dstAddr++ = *((cell*)&vRetVal->x);
+		*dstAddr++ = *((cell*)&vRetVal->y);
+		*dstAddr++ = *((cell*)&vRetVal->z);
 		return TRUE;
 	}
 	default:
