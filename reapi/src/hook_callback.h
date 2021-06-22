@@ -37,7 +37,7 @@ struct retval_t
 		CBaseEntity*	_classptr;
 		edict_t*		_edict;
 		entvars_t*		_pev;
-		Vector			_vector;
+		Vector*			_vector;
 	};
 };
 
@@ -355,7 +355,7 @@ NOINLINE R DLLEXPORT _callVectorForward(hook_t* hook, original_t original, f_arg
 		hook->wasCalled = true;
 
 		if (unlikely(!hookCtx->retVal.set)) {
-			hookCtx->retVal._vector = *(Vector*)&retVal;
+			hookCtx->retVal._vector = &(Vector)retVal;
 			hookCtx->retVal.set = true;
 		}
 	}
