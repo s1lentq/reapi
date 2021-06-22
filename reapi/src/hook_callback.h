@@ -218,7 +218,7 @@ void callVoidForward(size_t func, original_t original, f_args&&... args)
 template <typename R, typename original_t, typename ...f_args>
 NOINLINE R DLLEXPORT _callForward(hook_t* hook, original_t original, f_args&&... args)
 {
-	using R2 = std::decay<R>::type;
+	using R2 = typename std::decay<R>::type;
 
 	auto hookCtx = g_hookCtx;
 	hookCtx->reset(getApiType(R2()));
