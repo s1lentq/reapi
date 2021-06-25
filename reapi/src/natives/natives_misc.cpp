@@ -326,6 +326,48 @@ cell AMX_NATIVE_CALL rg_fire_bullets(AMX *amx, cell *params)
 }
 
 /*
+* Fires buckshots from entity.
+*
+* @param inflictor          Inflictor is the entity that caused the damage (such as a gun)
+* @param attacker           Attacker is the entity that tirggered the damage (such as the gun's owner)
+* @param shots              The number of shots
+* @param vecSrc             The source position of the barrel
+* @param vecDirShooting     Shooting direction
+* @param vecSpread          Spread
+* @param flDistance         Max shot distance
+* @param iTracerFreq        Tracer frequency
+* @param iDamage            Damage amount
+*
+* @noreturn
+*
+* native rg_fire_buckshots(const inflictor, const attacker, const shots, Float:vecSrc[3], Float:vecDirShooting[3], Float:vecSpread[3], const Float:flDistance, const iTracerFreq, const iDamage);
+*/
+cell AMX_NATIVE_CALL rg_fire_buckshots(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_inflictor, arg_attacker, arg_shots, arg_vecSrc, arg_dir, arg_spread, arg_dist, arg_tracefrq, arg_dmg };
+
+	CHECK_ISENTITY(arg_inflictor);
+	CHECK_ISENTITY(arg_attacker);
+
+	CAmxArgs args(amx, params);
+	CBaseEntity *pInflictor = args[arg_inflictor];
+
+	pInflictor->m_pEntity->FireBuckshots
+	(
+		args[arg_shots],
+		args[arg_vecSrc],
+		args[arg_dir],
+		args[arg_spread],
+		args[arg_dist],
+		args[arg_tracefrq],
+		args[arg_dmg],
+		args[arg_attacker]
+	);
+
+	return TRUE;
+}
+
+/*
 * Fires bullets from player's weapon.
 *
 * @param inflictor          Inflictor is the entity that caused the damage (such as a gun)
@@ -2380,6 +2422,7 @@ AMX_NATIVE_INFO Misc_Natives_RG[] =
 	{ "rg_multidmg_add",              rg_multidmg_add              },
 
 	{ "rg_fire_bullets",              rg_fire_bullets              },
+	{ "rg_fire_buckshots",            rg_fire_buckshots            },
 	{ "rg_fire_bullets3",             rg_fire_bullets3             },
 
 	{ "rg_round_end",                 rg_round_end                 },
