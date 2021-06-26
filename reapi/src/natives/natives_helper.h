@@ -28,6 +28,10 @@ public:
 	{
 		return m_value;
 	}
+	operator ULONG() const
+	{
+		return ULONG(m_value);
+	}
 	operator size_t() const
 	{
 		return size_t(m_value);
