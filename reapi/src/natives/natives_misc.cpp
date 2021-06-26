@@ -2377,7 +2377,6 @@ cell AMX_NATIVE_CALL rg_get_can_hear_player(AMX* amx, cell* params)
 cell AMX_NATIVE_CALL rg_spawn_head_gib(AMX* amx, cell* params)
 {
 	enum args_e { arg_count, arg_index };
-	CAmxArgs args(amx, params);
 
 	CHECK_ISENTITY(arg_index);
 
@@ -2411,7 +2410,6 @@ cell AMX_NATIVE_CALL rg_spawn_head_gib(AMX* amx, cell* params)
 cell AMX_NATIVE_CALL rg_spawn_random_gibs(AMX* amx, cell* params)
 {
 	enum args_e { arg_count, arg_index, arg_gibs, arg_human };
-	CAmxArgs args(amx, params);
 
 	CHECK_ISENTITY(arg_index);
 
