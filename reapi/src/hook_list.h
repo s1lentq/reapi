@@ -37,6 +37,7 @@ extern hook_t hooklist_grenade[];
 extern hook_t hooklist_weaponbox[];
 extern hook_t hooklist_weapon[];
 extern hook_t hooklist_gib[];
+extern hook_t hooklist_cbaseentity[];
 
 enum
 {
@@ -63,6 +64,7 @@ struct hooklist_t
 			CASE(weaponbox)
 			CASE(weapon)
 			CASE(gib)
+			CASE(cbaseentity)
 		}
 
 		#undef CASE
@@ -85,6 +87,7 @@ struct hooklist_t
 		ht_weaponbox,
 		ht_weapon,
 		ht_gib,
+		ht_cbaseentity,
 	};
 };
 
@@ -258,6 +261,15 @@ enum GamedllFunc_CGib
 	RG_CGib_Spawn = BEGIN_FUNC_REGION(gib),
 	RG_CGib_BounceGibTouch,
 	RG_CGib_WaitTillLand,
+
+	// [...]
+};
+
+enum GamedllFunc_CBaseEntity
+{
+	RG_CBaseEntity_FireBullets = BEGIN_FUNC_REGION(cbaseentity),
+	RG_CBaseEntity_FireBuckshots,
+	RG_CBaseEntity_FireBullets3,
 
 	// [...]
 };

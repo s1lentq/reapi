@@ -489,6 +489,19 @@ typedef IHookChainRegistryClass<void, class CGib, CBaseEntity *> IReGameHookRegi
 typedef IHookChainClass<void, class CGib> IReGameHook_CGib_WaitTillLand;
 typedef IHookChainRegistryClass<void, class CGib> IReGameHookRegistry_CGib_WaitTillLand;
 
+// CBaseEntity::FireBullets hook
+typedef IHookChainClass<void, class CBaseEntity, ULONG, Vector&, Vector&, Vector&, float, int, int, int, entvars_t*> IReGameHook_CBaseEntity_FireBullets;
+typedef IHookChainRegistryClass<void, class CBaseEntity, ULONG, Vector&, Vector&, Vector&, float, int, int, int, entvars_t*> IReGameHookRegistry_CBaseEntity_FireBullets;
+
+// CBaseEntity::FireBuckshots hook
+typedef IHookChainClass<void, class CBaseEntity, ULONG, Vector&, Vector&, Vector&, float, int, int, entvars_t*> IReGameHook_CBaseEntity_FireBuckshots;
+typedef IHookChainRegistryClass<void, class CBaseEntity, ULONG, Vector&, Vector&, Vector&, float, int, int, entvars_t*> IReGameHookRegistry_CBaseEntity_FireBuckshots;
+
+// CBaseEntity::FireBullets3 hook
+typedef IHookChainClass<Vector&, class CBaseEntity, Vector&, Vector&, float, float, int, int, int, float, entvars_t*, bool, int> IReGameHook_CBaseEntity_FireBullets3;
+typedef IHookChainRegistryClass<Vector&, class CBaseEntity, Vector&, Vector&, float, float, int, int, int, float, entvars_t*, bool, int> IReGameHookRegistry_CBaseEntity_FireBullets3;
+
+
 class IReGameHookchains {
 public:
 	virtual ~IReGameHookchains() {}
@@ -611,6 +624,10 @@ public:
 	virtual IReGameHookRegistry_CGib_Spawn *CGib_Spawn() = 0;
 	virtual IReGameHookRegistry_CGib_BounceGibTouch *CGib_BounceGibTouch() = 0;
 	virtual IReGameHookRegistry_CGib_WaitTillLand *CGib_WaitTillLand() = 0;
+
+	virtual IReGameHookRegistry_CBaseEntity_FireBullets *CBaseEntity_FireBullets() = 0;
+	virtual IReGameHookRegistry_CBaseEntity_FireBuckshots *CBaseEntity_FireBuckshots() = 0;
+	virtual IReGameHookRegistry_CBaseEntity_FireBullets3 *CBaseEntity_FireBullets3() = 0;
 };
 
 struct ReGameFuncs_t {
