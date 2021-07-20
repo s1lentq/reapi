@@ -158,6 +158,7 @@ member_t memberlist_gamerules[] = {
 	GM_MEMBERS(m_bFreezePeriod),
 	GM_MEMBERS(m_bBombDropped),
 	GM_MEMBERS(m_GameDesc),
+	GM_MEMBERS(m_bGameOver),
 	// m_VoiceGameMgr ->
 		GM_VOICE_MEMBERS(m_msgPlayerVoiceMask),
 		GM_VOICE_MEMBERS(m_msgRequestState),
