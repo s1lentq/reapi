@@ -1037,8 +1037,8 @@ enum CSGameRules_Members
 	/*
 	* Description:      Whether round is last or not
 	* Member type:      bool
-	* Get params:       get_member_game(member, dest[], const lenght);
-	* Set params:       set_member_game(member, const source[]);
+	* Get params:       get_member_game(member);
+	* Set params:       set_member_game(member, bool:value);
 	*/
 	m_bGameOver,
 
