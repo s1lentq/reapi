@@ -1033,6 +1033,14 @@ enum CSGameRules_Members
 	* Set params:       set_member_game(member, const source[]);
 	*/
 	m_GameDesc,
+	
+	/*
+	* Description:      Whether round is last or not
+	* Member type:      bool
+	* Get params:       get_member_game(member, dest[], const lenght);
+	* Set params:       set_member_game(member, const source[]);
+	*/
+	m_bGameOver,
 
 	/*
 	* Description:      -
