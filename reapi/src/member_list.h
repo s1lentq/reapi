@@ -128,6 +128,7 @@ enum CSGameRules_Members
 	m_bFreezePeriod = BEGIN_MEMBER_REGION(gamerules),
 	m_bBombDropped,
 	m_GameDesc,
+	m_bGameOver,
 
 	// m_VoiceGameMgr -> CVoiceGameMgr
 	m_msgPlayerVoiceMask,
