@@ -167,6 +167,8 @@ hook_t hooklist_player[] = {
 	DLL(CBasePlayer_HintMessageEx),
 	DLL(CBasePlayer_UseEmpty),
 	DLL(CBasePlayer_DropIdlePlayer),
+
+	DLL(CBasePlayer_Observer_SetMode),
 };
 
 hook_t hooklist_gamerules[] = {

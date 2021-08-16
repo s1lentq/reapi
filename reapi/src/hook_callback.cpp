@@ -1207,6 +1207,16 @@ Vector &CBaseEntity_FireBullets3(IReGameHook_CBaseEntity_FireBullets3 *chain, CB
 		shared_rand);
 }
 
+void CBasePlayer_Observer_SetMode(IReGameHook_CBasePlayer_Observer_SetMode *chain, CBasePlayer *pthis, int iMode)
+{
+	auto original = [chain](int _pthis, int _iMode)
+	{
+		chain->callNext(getPrivate<CBasePlayer>(_pthis), _iMode);
+	};
+
+	callVoidForward(RG_CBasePlayer_Observer_SetMode, original, indexOfEdict(pthis->pev), iMode);
+}
+
 int g_iClientStartSpeak, g_iClientStopSpeak;
 
 void OnClientStartSpeak(size_t clientIndex)

@@ -39,7 +39,7 @@
 #include <API/CSInterfaces.h>
 
 #define REGAMEDLL_API_VERSION_MAJOR 5
-#define REGAMEDLL_API_VERSION_MINOR 20
+#define REGAMEDLL_API_VERSION_MINOR 21
 
 // CBasePlayer::Spawn hook
 typedef IHookChainClass<void, class CBasePlayer> IReGameHook_CBasePlayer_Spawn;
@@ -501,6 +501,10 @@ typedef IHookChainRegistryClass<void, class CBaseEntity, ULONG, Vector&, Vector&
 typedef IHookChainClass<Vector&, class CBaseEntity, Vector&, Vector&, float, float, int, int, int, float, entvars_t*, bool, int> IReGameHook_CBaseEntity_FireBullets3;
 typedef IHookChainRegistryClass<Vector&, class CBaseEntity, Vector&, Vector&, float, float, int, int, int, float, entvars_t*, bool, int> IReGameHookRegistry_CBaseEntity_FireBullets3;
 
+// CBasePlayer::Observer_SetMode hook
+typedef IHookChainClass<void, class CBasePlayer, int> IReGameHook_CBasePlayer_Observer_SetMode;
+typedef IHookChainRegistryClass<void, class CBasePlayer, int> IReGameHookRegistry_CBasePlayer_Observer_SetMode;
+
 
 class IReGameHookchains {
 public:
@@ -628,6 +632,8 @@ public:
 	virtual IReGameHookRegistry_CBaseEntity_FireBullets *CBaseEntity_FireBullets() = 0;
 	virtual IReGameHookRegistry_CBaseEntity_FireBuckshots *CBaseEntity_FireBuckshots() = 0;
 	virtual IReGameHookRegistry_CBaseEntity_FireBullets3 *CBaseEntity_FireBullets3() = 0;
+
+	virtual IReGameHookRegistry_CBasePlayer_Observer_SetMode *CBasePlayer_Observer_SetMode() = 0;
 };
 
 struct ReGameFuncs_t {

@@ -37,6 +37,7 @@
 	#define RG_CBasePlayerWeapon_DefaultDeploy RG_CBaseWeapon_DefDeploy
 	#define RG_CBasePlayerWeapon_DefaultReload RG_CBaseWeapon_DefReload
 	#define RG_CBasePlayerWeapon_DefaultShotgunReload RG_CBaseWeapon_DefShotgunReload
+	#define RG_CBasePlayer_Observer_SetMode RG_CBasePlayer_Observer_SetMod
 #endif
 
 /**
@@ -784,6 +785,12 @@ enum GamedllFunc_CBasePlayer
 	* Params:           (const this, const reason[])
 	*/
 	RG_CBasePlayer_DropIdlePlayer,
+
+	/*
+	* Description:      Attempt to change the observer mode
+	* Params:           (const this, iMode)
+	*/
+	RG_CBasePlayer_Observer_SetMode,
 };
 
 /**

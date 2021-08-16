@@ -193,6 +193,7 @@ enum GamedllFunc_CBasePlayer
 	RG_CBasePlayer_UseEmpty,
 	RG_CBasePlayer_DropIdlePlayer,
 
+	RG_CBasePlayer_Observer_SetMode,
 	// [...]
 };
 
