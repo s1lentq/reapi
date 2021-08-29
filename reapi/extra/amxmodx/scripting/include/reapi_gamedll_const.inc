@@ -784,6 +784,27 @@ enum GamedllFunc_CBasePlayer
 	* Params:           (const this, const reason[])
 	*/
 	RG_CBasePlayer_DropIdlePlayer,
+	
+	/*
+	* Description:      Called when a player take a pain.
+	* Return type:      void
+	* Params:           (const this)
+	*/
+	RG_CBasePlayer_Pain,
+	
+	/*
+	* Description:      Called when a player death.
+	* Return type:      void
+	* Params:           (const this, lastHitGroup, bool:hasArmour)
+	*/
+	RG_CBasePlayer_DeathSound,
+	
+	/*
+	* Description:      Called when a player joining after connect on server.
+	* Return type:      void
+	* Params:           (const this)
+	*/
+	RG_CBasePlayer_JoiningThink,
 };
 
 /**
