@@ -629,6 +629,12 @@ enum GamedllFunc_CBasePlayer
 
 	/*
 	* Description:      -
+	* Params:           (const this, bool bReverse, name[])
+	*/
+	RG_CBasePlayer_Observer_FindNextPlayer,
+
+	/*
+	* Description:      -
 	* Params:           (const this, PLAYER_ANIM:playerAnim)
 	*/
 	RG_CBasePlayer_SetAnimation,

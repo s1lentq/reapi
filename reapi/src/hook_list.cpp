@@ -143,6 +143,7 @@ hook_t hooklist_player[] = {
 	DLL(CBasePlayer_SetClientUserInfoName),
 
 	DLL(CBasePlayer_Observer_IsValidTarget),
+	DLL(CBasePlayer_Observer_FindNextPlayer),
 	DLL(CBasePlayer_SetAnimation),
 	DLL(CBasePlayer_GiveDefaultItems),
 	DLL(CBasePlayer_GiveNamedItem),

@@ -298,6 +298,16 @@ CBasePlayer *CBasePlayer_Observer_IsValidTarget(IReGameHook_CBasePlayer_Observer
 	return getPrivate<CBasePlayer>(callForward<size_t>(RG_CBasePlayer_Observer_IsValidTarget, original, indexOfEdict(pthis->pev), iPlayerIndex, bSameTeam));
 }
 
+void CBasePlayer_Observer_FindNextPlayer(IReGameHook_CBasePlayer_Observer_FindNextPlayer *chain, CBasePlayer *pthis, bool bReverse, const char *name)
+{
+	auto original = [chain](int _pthis, bool _bReverse, const char *_name)
+	{
+		chain->callNext(getPrivate<CBasePlayer>(_pthis), _bReverse, _name);
+	};
+
+	callVoidForward(RG_CBasePlayer_Observer_FindNextPlayer, original, indexOfEdict(pthis->pev), bReverse, name);
+}
+
 void CBasePlayer_SetAnimation(IReGameHook_CBasePlayer_SetAnimation *chain, CBasePlayer *pthis, PLAYER_ANIM playerAnim)
 {
 	auto original = [chain](int _pthis, PLAYER_ANIM _playerAnim)
