@@ -63,6 +63,16 @@ void SV_WriteFullClientUpdate(IRehldsHook_SV_WriteFullClientUpdate *chain, IGame
 	SV_WriteFullClientUpdate_AMXX(&data, client, (size_t)buffer, receiver);
 }
 
+void SV_EmitPings(IRehldsHook_SV_EmitPings *chain, IGameClient *cl, sizebuf_t *msg)
+{
+	auto original = [chain](int _cl, sizebuf_t *_msg)
+	{
+		chain->callNext(g_RehldsSvs->GetClient(_cl - 1), _msg);
+	};
+
+	callVoidForward(RH_SV_EmitPings, original, cl->GetId() + 1, msg);
+}
+
 /*
 * ReGameDLL functions
 */
