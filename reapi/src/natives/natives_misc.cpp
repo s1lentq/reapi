@@ -2366,6 +2366,66 @@ cell AMX_NATIVE_CALL rg_get_can_hear_player(AMX* amx, cell* params)
 	return CSGameRules()->m_VoiceGameMgr.m_pHelper->GetCanHearPlayer(pListener, pSender);
 }
 
+/*
+* Spawn a head gib
+*
+* @param index                 Entity id
+*
+* @return                      Index of head gib entity or AMX_NULLENT (-1) otherwise
+*
+* native rg_spawn_head_gib(const index);
+*/
+cell AMX_NATIVE_CALL rg_spawn_head_gib(AMX* amx, cell* params)
+{
+	enum args_e { arg_count, arg_index };
+
+	CHECK_ISENTITY(arg_index);
+
+	CBaseEntity *pEntity = getPrivate<CBaseEntity>(params[arg_index]);
+	if (unlikely(pEntity == nullptr)) {
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
+		return FALSE;
+	}
+
+	entvars_t *pevEntity = pEntity->pev;
+	CGib *pHeadGib = g_ReGameFuncs->SpawnHeadGib(pevEntity);
+
+	// Sanity check anyway
+	if (pHeadGib)
+		return indexOfPDataAmx(pHeadGib);
+
+	return AMX_NULLENT;
+}
+
+/*
+* Spawn random gibs
+*
+* @param index                 Entity id
+* @param cGibs                 Count gibs
+* @param bHuman                Set gibs of a human or alien
+*
+* @noreturn
+*
+* native rg_spawn_random_gibs(const index, const cGibs, const bool:bHuman = true);
+*/
+cell AMX_NATIVE_CALL rg_spawn_random_gibs(AMX* amx, cell* params)
+{
+	enum args_e { arg_count, arg_index, arg_gibs, arg_human };
+
+	CHECK_ISENTITY(arg_index);
+
+	CBaseEntity *pEntity = getPrivate<CBaseEntity>(params[arg_index]);
+	if (unlikely(pEntity == nullptr)) {
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
+		return FALSE;
+	}
+
+	entvars_t *pevEntity = pEntity->pev;
+
+	g_ReGameFuncs->SpawnRandomGibs(pevEntity, params[arg_gibs], params[arg_human]);
+	return TRUE;
+}
+
 AMX_NATIVE_INFO Misc_Natives_RG[] =
 {
 	{ "rg_set_animation",             rg_set_animation             },
@@ -2455,6 +2515,9 @@ AMX_NATIVE_INFO Misc_Natives_RG[] =
 	{ "rg_reset_can_hear_player",     rg_reset_can_hear_player     },
 	{ "rg_set_can_hear_player",       rg_set_can_hear_player       },
 	{ "rg_get_can_hear_player",       rg_get_can_hear_player       },
+
+	{ "rg_spawn_head_gib",            rg_spawn_head_gib            },
+	{ "rg_spawn_random_gibs",         rg_spawn_random_gibs         },
 
 	{ nullptr, nullptr }
 };
