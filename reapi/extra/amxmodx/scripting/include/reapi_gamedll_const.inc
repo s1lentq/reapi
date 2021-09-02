@@ -38,6 +38,7 @@
 	#define RG_CBasePlayerWeapon_DefaultReload RG_CBaseWeapon_DefReload
 	#define RG_CBasePlayerWeapon_DefaultShotgunReload RG_CBaseWeapon_DefShotgunReload
 	#define RG_CBasePlayer_Observer_SetMode RG_CBasePlayer_Observer_SetMod
+	#define RG_CBasePlayer_Observer_FindNextPlayer RG_CBasePlayer_Observer_FindNxt
 #endif
 
 /**
