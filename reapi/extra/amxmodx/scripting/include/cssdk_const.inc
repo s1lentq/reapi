@@ -291,7 +291,7 @@
 #define SF_WALL_TOOGLE_NOTSOLID         0x0008
 
 /**
-* func_converyor
+* func_conveyor
 */
 #define SF_CONVEYOR_VISUAL              0x0001
 #define SF_CONVEYOR_NOTSOLID            0x0002
@@ -1338,3 +1338,13 @@ enum InfoMapBuyParam
 #define BRIGHT_GUN_FLASH                512
 #define NORMAL_GUN_FLASH                256
 #define DIM_GUN_FLASH                   128
+
+/**
+* Player zoom constants
+* For m_iFOV
+*/
+#define DEFAULT_LARGE_AWP_ZOOM            10
+#define DEFAULT_LARGE_OTHER_SNIPERS_ZOOM  15
+#define DEFAULT_SMALL_SNIPERS_ZOOM        40
+#define DEFAULT_AUG_SG552_ZOOM            55
+#define DEFAULT_NO_ZOOM                   90
