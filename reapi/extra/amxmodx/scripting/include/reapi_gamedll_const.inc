@@ -787,7 +787,7 @@ enum GamedllFunc_CBasePlayer
 	RG_CBasePlayer_DropIdlePlayer,
 
 	/*
-	* Description:      Attempt to change the observer mode
+	* Description:      Called when a client attempt to change the observer mode.
 	* Params:           (const this, iMode)
 	*/
 	RG_CBasePlayer_Observer_SetMode,

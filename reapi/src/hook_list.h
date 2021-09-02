@@ -192,11 +192,13 @@ enum GamedllFunc_CBasePlayer
 	RG_CBasePlayer_HintMessageEx,
 	RG_CBasePlayer_UseEmpty,
 	RG_CBasePlayer_DropIdlePlayer,
+
+	RG_CBasePlayer_Observer_SetMode,
+
 	RG_CBasePlayer_Pain,
 	RG_CBasePlayer_DeathSound,
 	RG_CBasePlayer_JoiningThink,
 
-	RG_CBasePlayer_Observer_SetMode,
 	// [...]
 };
 

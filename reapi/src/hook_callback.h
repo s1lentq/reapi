@@ -402,7 +402,6 @@ void CBasePlayer_RoundRespawn(IReGameHook_CBasePlayer_RoundRespawn *chain, CBase
 void CBasePlayer_Blind(IReGameHook_CBasePlayer_Blind *chain, CBasePlayer *pthis, float flUntilTime, float flHoldTime, float flFadeTime, int iAlpha);
 
 CBasePlayer *CBasePlayer_Observer_IsValidTarget(IReGameHook_CBasePlayer_Observer_IsValidTarget *chain, CBasePlayer *pthis, int iPlayerIndex, bool bSameTeam);
-void CBasePlayer_Observer_SetMode(IReGameHook_CBasePlayer_Observer_SetMode *chain, CBasePlayer *pthis, int iMode);
 void CBasePlayer_SetAnimation(IReGameHook_CBasePlayer_SetAnimation *chain, CBasePlayer *pthis, PLAYER_ANIM playerAnim);
 void CBasePlayer_GiveDefaultItems(IReGameHook_CBasePlayer_GiveDefaultItems *chain, CBasePlayer *pthis);
 CBaseEntity *CBasePlayer_GiveNamedItem(IReGameHook_CBasePlayer_GiveNamedItem *chain, CBasePlayer *pthis, const char *pszName);
@@ -429,6 +428,7 @@ void CBasePlayer_RemoveSpawnProtection(IReGameHook_CBasePlayer_RemoveSpawnProtec
 bool CBasePlayer_HintMessageEx(IReGameHook_CBasePlayer_HintMessageEx *chain, CBasePlayer *pthis, const char *pMessage, float duration, bool bDisplayIfPlayerDead, bool bOverride);
 void CBasePlayer_UseEmpty(IReGameHook_CBasePlayer_UseEmpty *chain, CBasePlayer *pthis);
 void CBasePlayer_DropIdlePlayer(IReGameHook_CBasePlayer_DropIdlePlayer *chain, CBasePlayer *pthis, const char *reason);
+void CBasePlayer_Observer_SetMode(IReGameHook_CBasePlayer_Observer_SetMode *chain, CBasePlayer *pthis, int iMode);
 void CBasePlayer_Pain(IReGameHook_CBasePlayer_Pain *chain, CBasePlayer *pthis, int iLastHitGroup, bool bHasArmour);
 void CBasePlayer_DeathSound(IReGameHook_CBasePlayer_DeathSound *chain, CBasePlayer *pthis);
 void CBasePlayer_JoiningThink(IReGameHook_CBasePlayer_JoiningThink *chain, CBasePlayer *pthis);
