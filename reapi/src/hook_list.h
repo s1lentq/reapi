@@ -194,6 +194,7 @@ enum GamedllFunc_CBasePlayer
 	RG_CBasePlayer_DropIdlePlayer,
 
 	RG_CBasePlayer_Observer_SetMode,
+	RG_CBasePlayer_Observer_FindNextPlayer,
 
 	RG_CBasePlayer_Pain,
 	RG_CBasePlayer_DeathSound,

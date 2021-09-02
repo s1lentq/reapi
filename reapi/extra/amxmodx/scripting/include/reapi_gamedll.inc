@@ -951,3 +951,23 @@ native rg_set_can_hear_player(const listener, const sender, const bool:can_hear)
 * @return boolean
 */
 native bool:rg_get_can_hear_player(const listener, const sender);
+
+/*
+* Spawn a head gib
+*
+* @param index                 Entity id
+*
+* @return                      Index of head gib entity or AMX_NULLENT (-1) otherwise
+*/
+native rg_spawn_head_gib(const index);
+
+/*
+* Spawn random gibs
+*
+* @param index                 Entity id
+* @param cGibs                 Count gibs
+* @param bHuman                Set gibs of a human or alien
+*
+* @noreturn
+*/
+native rg_spawn_random_gibs(const index, const cGibs, const bool:bHuman = true);

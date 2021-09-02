@@ -38,6 +38,7 @@
 	#define RG_CBasePlayerWeapon_DefaultReload RG_CBaseWeapon_DefReload
 	#define RG_CBasePlayerWeapon_DefaultShotgunReload RG_CBaseWeapon_DefShotgunReload
 	#define RG_CBasePlayer_Observer_SetMode RG_CBasePlayer_Observer_SetMod
+	#define RG_CBasePlayer_Observer_FindNextPlayer RG_CBasePlayer_Observer_FindNxt
 #endif
 
 /**
@@ -791,7 +792,14 @@ enum GamedllFunc_CBasePlayer
 	* Params:           (const this, iMode)
 	*/
 	RG_CBasePlayer_Observer_SetMode,
-	
+
+	/*
+	* Description:      Called when a client attempt to find the next observer.
+	* Return type:      void
+	* Params:           (const this, bool bReverse, name[])
+	*/
+	RG_CBasePlayer_Observer_FindNextPlayer,
+
 	/*
 	* Description:      Called when a client emits a "pain sound" after received damage.
 	* Return type:      void
