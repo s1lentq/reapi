@@ -630,12 +630,6 @@ enum GamedllFunc_CBasePlayer
 
 	/*
 	* Description:      -
-	* Params:           (const this, bool bReverse, name[])
-	*/
-	RG_CBasePlayer_Observer_FindNextPlayer,
-
-	/*
-	* Description:      -
 	* Params:           (const this, PLAYER_ANIM:playerAnim)
 	*/
 	RG_CBasePlayer_SetAnimation,
@@ -797,7 +791,13 @@ enum GamedllFunc_CBasePlayer
 	* Params:           (const this, iMode)
 	*/
 	RG_CBasePlayer_Observer_SetMode,
-	
+
+	/*
+	* Description:      -
+	* Params:           (const this, bool bReverse, name[])
+	*/
+	RG_CBasePlayer_Observer_FindNextPlayer,
+
 	/*
 	* Description:      Called when a client emits a "pain sound" after received damage.
 	* Return type:      void

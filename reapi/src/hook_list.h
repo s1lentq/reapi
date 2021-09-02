@@ -167,7 +167,6 @@ enum GamedllFunc_CBasePlayer
 	RG_CBasePlayer_SetClientUserInfoModel,
 	RG_CBasePlayer_SetClientUserInfoName,
 	RG_CBasePlayer_Observer_IsValidTarget,
-	RG_CBasePlayer_Observer_FindNextPlayer,
 	RG_CBasePlayer_SetAnimation,
 	RG_CBasePlayer_GiveDefaultItems,
 	RG_CBasePlayer_GiveNamedItem,
@@ -195,6 +194,7 @@ enum GamedllFunc_CBasePlayer
 	RG_CBasePlayer_DropIdlePlayer,
 
 	RG_CBasePlayer_Observer_SetMode,
+	RG_CBasePlayer_Observer_FindNextPlayer,
 
 	RG_CBasePlayer_Pain,
 	RG_CBasePlayer_DeathSound,
