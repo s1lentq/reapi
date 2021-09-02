@@ -793,7 +793,7 @@ enum GamedllFunc_CBasePlayer
 	RG_CBasePlayer_Observer_SetMode,
 
 	/*
-	* Description:      -
+	* Description:      Called when a client attempt to find the next observer.
 	* Params:           (const this, bool bReverse, name[])
 	*/
 	RG_CBasePlayer_Observer_FindNextPlayer,
