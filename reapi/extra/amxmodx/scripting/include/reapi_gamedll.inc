@@ -328,7 +328,7 @@ native rg_multidmg_add(const inflictor, const victim, const Float:flDamage, cons
 * Fires bullets from entity.
 *
 * @param inflictor          Inflictor is the entity that caused the damage (such as a gun)
-* @param attacker           Attacker is the entity that tirggered the damage (such as the gun's owner)
+* @param attacker           Attacker is the entity that triggered the damage (such as the gun's owner)
 * @param shots              The number of shots
 * @param vecSrc             The source position of the barrel
 * @param vecDirShooting     Shooting direction
@@ -346,7 +346,7 @@ native rg_fire_bullets(const inflictor, const attacker, const shots, Float:vecSr
 * Fires bullets from player's weapon.
 *
 * @param inflictor          Inflictor is the entity that caused the damage (such as a gun)
-* @param attacker           Attacker is the entity that tirggered the damage (such as the gun's owner)
+* @param attacker           Attacker is the entity that triggered the damage (such as the gun's owner)
 * @param vecSrc             The source position of the barrel
 * @param vecDirShooting     Shooting direction
 * @param vecSpread          Spread
@@ -934,3 +934,23 @@ native rg_set_can_hear_player(const listener, const sender, const bool:can_hear)
 * @return boolean
 */
 native bool:rg_get_can_hear_player(const listener, const sender);
+
+/*
+* Spawn a head gib
+*
+* @param index                 Entity id
+*
+* @return                      Index of head gib entity or AMX_NULLENT (-1) otherwise
+*/
+native rg_spawn_head_gib(const index);
+
+/*
+* Spawn random gibs
+*
+* @param index                 Entity id
+* @param cGibs                 Count gibs
+* @param bHuman                Set gibs of a human or alien
+*
+* @noreturn
+*/
+native rg_spawn_random_gibs(const index, const cGibs, const bool:bHuman = true);

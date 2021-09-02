@@ -8,6 +8,11 @@ IRehldsServerStatic* g_RehldsSvs;
 
 bool RehldsApi_Init()
 {
+	if (!IS_DEDICATED_SERVER())
+	{
+		return false;
+	}
+
 #ifdef WIN32
 	CSysModule* engineModule = Sys_LoadModule("swds.dll");
 #else
