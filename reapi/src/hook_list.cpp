@@ -169,6 +169,10 @@ hook_t hooklist_player[] = {
 	DLL(CBasePlayer_DropIdlePlayer),
 
 	DLL(CBasePlayer_Observer_SetMode),
+
+	DLL(CBasePlayer_Pain),
+	DLL(CBasePlayer_DeathSound),
+	DLL(CBasePlayer_JoiningThink),
 };
 
 hook_t hooklist_gamerules[] = {
