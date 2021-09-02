@@ -795,6 +795,7 @@ enum GamedllFunc_CBasePlayer
 
 	/*
 	* Description:      Called when a client attempt to find the next observer.
+	* Return type:      void
 	* Params:           (const this, bool bReverse, name[])
 	*/
 	RG_CBasePlayer_Observer_FindNextPlayer,
