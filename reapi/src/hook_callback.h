@@ -20,7 +20,8 @@ enum AType : uint8
 	ATYPE_CLASSPTR,
 	ATYPE_EDICT,
 	ATYPE_EVARS,
-	ATYPE_BOOL
+	ATYPE_BOOL,
+	ATYPE_VECTOR
 };
 
 struct retval_t
@@ -36,11 +37,13 @@ struct retval_t
 		CBaseEntity*	_classptr;
 		edict_t*		_edict;
 		entvars_t*		_pev;
+		Vector*			_vector;
 	};
 };
 
 inline AType getApiType(int)			{ return ATYPE_INTEGER; }
 inline AType getApiType(unsigned)		{ return ATYPE_INTEGER; }
+inline AType getApiType(ULONG)			{ return ATYPE_INTEGER; }
 inline AType getApiType(float)			{ return ATYPE_FLOAT; }
 inline AType getApiType(const char *)	{ return ATYPE_STRING; }
 inline AType getApiType(char[])			{ return ATYPE_STRING; }
@@ -48,6 +51,7 @@ inline AType getApiType(CBaseEntity *)	{ return ATYPE_CLASSPTR; }
 inline AType getApiType(edict_t *)		{ return ATYPE_EDICT; }
 inline AType getApiType(entvars_t *)	{ return ATYPE_EVARS; }
 inline AType getApiType(bool)			{ return ATYPE_BOOL; }
+inline AType getApiType(Vector)         { return ATYPE_VECTOR; }
 
 template<typename T>
 inline AType getApiType(T *) { return ATYPE_INTEGER; }
@@ -214,8 +218,10 @@ void callVoidForward(size_t func, original_t original, f_args&&... args)
 template <typename R, typename original_t, typename ...f_args>
 NOINLINE R DLLEXPORT _callForward(hook_t* hook, original_t original, f_args&&... args)
 {
+	using R2 = typename std::decay<R>::type;
+
 	auto hookCtx = g_hookCtx;
-	hookCtx->reset(getApiType(R()));
+	hookCtx->reset(getApiType(R2()));
 
 	int hc_state = HC_CONTINUE;
 
@@ -239,7 +245,7 @@ NOINLINE R DLLEXPORT _callForward(hook_t* hook, original_t original, f_args&&...
 			}
 
 			if (unlikely(ret == HC_BREAK)) {
-				return *(R *)&hookCtx->retVal._integer;
+				return *(R2 *)&hookCtx->retVal._integer;
 			}
 
 			if (unlikely(ret > hc_state))
@@ -250,7 +256,7 @@ NOINLINE R DLLEXPORT _callForward(hook_t* hook, original_t original, f_args&&...
 	if (likely(hc_state != HC_SUPERCEDE))
 	{
 		g_hookCtx = nullptr;
-		auto retVal = original(std::forward<f_args &&>(args)...);
+		R retVal = original(std::forward<f_args &&>(args)...);
 		g_hookCtx = hookCtx;
 		hook->wasCalled = true;
 
@@ -264,6 +270,9 @@ NOINLINE R DLLEXPORT _callForward(hook_t* hook, original_t original, f_args&&...
 				break;
 			case sizeof(int32):
 				hookCtx->retVal._integer = *(int32 *)&retVal;
+				break;
+			case sizeof(Vector):
+				hookCtx->retVal._vector = (Vector *)&retVal;
 				break;
 			}
 			hookCtx->retVal.set = true;
@@ -285,19 +294,20 @@ NOINLINE R DLLEXPORT _callForward(hook_t* hook, original_t original, f_args&&...
 
 	hook->wasCalled = false;
 
-	return *(R *)&hookCtx->retVal._integer;
+	if (std::is_reference<R>::value)
+		return *(R2 *)hookCtx->retVal._integer;
+	else
+		return *(R2 *)&hookCtx->retVal._integer;
 }
 
 template <typename R, typename original_t, typename ...f_args>
 R callForward(size_t func, original_t original, f_args&&... args)
 {
-	static_assert(sizeof(R) <= sizeof(int), "invalid hookchain return type size > sizeof(int)");
-
 	hookctx_t hookCtx(sizeof...(args), args...);
 	hookctx_t* save = g_hookCtx;
 
 	g_hookCtx = &hookCtx;
-	auto ret = _callForward<R>(g_hookManager.getHookFast(func), original, args...);
+	R ret = _callForward<R>(g_hookManager.getHookFast(func), original, args...);
 	g_hookCtx = save;
 
 	if (hasStringArgs(args...)) {
@@ -418,6 +428,10 @@ void CBasePlayer_RemoveSpawnProtection(IReGameHook_CBasePlayer_RemoveSpawnProtec
 bool CBasePlayer_HintMessageEx(IReGameHook_CBasePlayer_HintMessageEx *chain, CBasePlayer *pthis, const char *pMessage, float duration, bool bDisplayIfPlayerDead, bool bOverride);
 void CBasePlayer_UseEmpty(IReGameHook_CBasePlayer_UseEmpty *chain, CBasePlayer *pthis);
 void CBasePlayer_DropIdlePlayer(IReGameHook_CBasePlayer_DropIdlePlayer *chain, CBasePlayer *pthis, const char *reason);
+void CBasePlayer_Observer_SetMode(IReGameHook_CBasePlayer_Observer_SetMode *chain, CBasePlayer *pthis, int iMode);
+void CBasePlayer_Pain(IReGameHook_CBasePlayer_Pain *chain, CBasePlayer *pthis, int iLastHitGroup, bool bHasArmour);
+void CBasePlayer_DeathSound(IReGameHook_CBasePlayer_DeathSound *chain, CBasePlayer *pthis);
+void CBasePlayer_JoiningThink(IReGameHook_CBasePlayer_JoiningThink *chain, CBasePlayer *pthis);
 
 void CBaseAnimating_ResetSequenceInfo(IReGameHook_CBaseAnimating_ResetSequenceInfo *chain, CBaseAnimating *pthis);
 
@@ -464,6 +478,11 @@ void CGrenade_ExplodeBomb(IReGameHook_CGrenade_ExplodeBomb *chain, CGrenade *pth
 void CGib_Spawn(IReGameHook_CGib_Spawn *chain, CGib *pthis, const char *szGibModel);
 void CGib_BounceGibTouch(IReGameHook_CGib_BounceGibTouch *chain, CGib *pthis, CBaseEntity *pOther);
 void CGib_WaitTillLand(IReGameHook_CGib_WaitTillLand *chain, CGib *pthis);
+
+// regamedll functions - cbaseentity
+void CBaseEntity_FireBullets(IReGameHook_CBaseEntity_FireBullets *chain, CBaseEntity *pEntity, ULONG cShots, Vector &vecSrc, Vector &vecDirShooting, Vector &vecSpread, float flDistance, int iBulletType, int iTracerFreq, int iDamage, entvars_t *pevAttacker);
+void CBaseEntity_FireBuckshots(IReGameHook_CBaseEntity_FireBuckshots *chain, CBaseEntity *pEntity, ULONG cShots, Vector &vecSrc, Vector &vecDirShooting, Vector &vecSpread, float flDistance, int iTracerFreq, int iDamage, entvars_t *pevAttacker);
+Vector &CBaseEntity_FireBullets3(IReGameHook_CBaseEntity_FireBullets3 *chain, CBaseEntity *pEntity, Vector &vecSrc, Vector &vecDirShooting, float vecSpread, float flDistance, int iPenetration, int iBulletType, int iDamage, float flRangeModifier, entvars_t *pevAttacker, bool bPistol, int shared_rand);
 
 extern int g_iClientStartSpeak;
 extern int g_iClientStopSpeak;

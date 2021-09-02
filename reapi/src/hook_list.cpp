@@ -4,6 +4,7 @@ inline size_t getFwdParamType(void(*)(int))                     { return FP_CELL
 inline size_t getFwdParamType(void(*)(size_t))                  { return FP_CELL;   }
 inline size_t getFwdParamType(void(*)(short))                   { return FP_CELL;   }
 inline size_t getFwdParamType(void(*)(unsigned short))          { return FP_CELL;   }
+inline size_t getFwdParamType(void(*)(ULONG))                   { return FP_CELL;   }
 inline size_t getFwdParamType(void(*)(bool))                    { return FP_CELL;   }
 inline size_t getFwdParamType(void(*)(Vector&))                 { return FP_ARRAY;  }
 inline size_t getFwdParamType(void(*)(TeamName))                { return FP_CELL;   }
@@ -166,6 +167,12 @@ hook_t hooklist_player[] = {
 	DLL(CBasePlayer_HintMessageEx),
 	DLL(CBasePlayer_UseEmpty),
 	DLL(CBasePlayer_DropIdlePlayer),
+
+	DLL(CBasePlayer_Observer_SetMode),
+
+	DLL(CBasePlayer_Pain),
+	DLL(CBasePlayer_DeathSound),
+	DLL(CBasePlayer_JoiningThink),
 };
 
 hook_t hooklist_gamerules[] = {
@@ -221,6 +228,12 @@ hook_t hooklist_gib[] = {
 	DLL(CGib_WaitTillLand),
 };
 
+hook_t hooklist_cbaseentity[] = {
+	DLL(CBaseEntity_FireBullets),
+	DLL(CBaseEntity_FireBuckshots),
+	DLL(CBaseEntity_FireBullets3),
+};
+
 #define RCHECK(h,...) { {}, {}, #h, "ReChecker", [](){ return api_cfg.hasRechecker(); }, ((!(RC_##h & (MAX_REGION_RANGE - 1)) ? regfunc::current_cell = 1, true : false) || (RC_##h & (MAX_REGION_RANGE - 1)) == regfunc::current_cell++) ? regfunc(h##__VA_ARGS__) : regfunc(#h#__VA_ARGS__), [](){ g_RecheckerHookchains->h()->registerHook(&h); }, [](){ g_RecheckerHookchains->h()->unregisterHook(&h); }, false}
 hook_t hooklist_rechecker[] = {
 	RCHECK(FileConsistencyProcess, _AMXX),
@@ -246,6 +259,7 @@ hook_t* hooklist_t::getHookSafe(size_t hook)
 		CASE(weaponbox)
 		CASE(weapon)
 		CASE(gib)
+		CASE(cbaseentity)
 	}
 
 	return nullptr;
@@ -265,6 +279,7 @@ void hooklist_t::clear()
 	FOREACH_CLEAR(weaponbox);
 	FOREACH_CLEAR(weapon);
 	FOREACH_CLEAR(gib);
+	FOREACH_CLEAR(cbaseentity);
 }
 
 void hook_t::clear()
