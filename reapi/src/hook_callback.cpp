@@ -572,6 +572,36 @@ void CBasePlayer_DropIdlePlayer(IReGameHook_CBasePlayer_DropIdlePlayer *chain, C
 	callVoidForward(RG_CBasePlayer_DropIdlePlayer, original, indexOfEdict(pthis->pev), reason);
 }
 
+void CBasePlayer_Pain(IReGameHook_CBasePlayer_Pain *chain, CBasePlayer *pthis, int iLastHitGroup, bool bHasArmour)
+{
+	auto original = [chain](int _pthis, int _iLastHitGroup, bool _bHasArmour)
+	{
+		return chain->callNext(getPrivate<CBasePlayer>(_pthis), _iLastHitGroup, _bHasArmour);
+	};
+
+	callVoidForward(RG_CBasePlayer_Pain, original, indexOfEdict(pthis->pev), iLastHitGroup, bHasArmour);
+}
+
+void CBasePlayer_DeathSound(IReGameHook_CBasePlayer_DeathSound *chain, CBasePlayer *pthis)
+{
+	auto original = [chain](int _pthis)
+	{
+		return chain->callNext(getPrivate<CBasePlayer>(_pthis));
+	};
+
+	callVoidForward(RG_CBasePlayer_DeathSound, original, indexOfEdict(pthis->pev));
+}
+
+void CBasePlayer_JoiningThink(IReGameHook_CBasePlayer_JoiningThink *chain, CBasePlayer *pthis)
+{
+	auto original = [chain](int _pthis)
+	{
+		return chain->callNext(getPrivate<CBasePlayer>(_pthis));
+	};
+
+	callVoidForward(RG_CBasePlayer_JoiningThink, original, indexOfEdict(pthis->pev));
+}
+
 void CBaseAnimating_ResetSequenceInfo(IReGameHook_CBaseAnimating_ResetSequenceInfo *chain, CBaseAnimating *pthis)
 {
 	auto original = [chain](int _pthis)
@@ -1215,6 +1245,16 @@ Vector &CBaseEntity_FireBullets3(IReGameHook_CBaseEntity_FireBullets3 *chain, CB
 		indexOfEdict(pevAttacker),
 		bPistol,
 		shared_rand);
+}
+
+void CBasePlayer_Observer_SetMode(IReGameHook_CBasePlayer_Observer_SetMode *chain, CBasePlayer *pthis, int iMode)
+{
+	auto original = [chain](int _pthis, int _iMode)
+	{
+		chain->callNext(getPrivate<CBasePlayer>(_pthis), _iMode);
+	};
+
+	callVoidForward(RG_CBasePlayer_Observer_SetMode, original, indexOfEdict(pthis->pev), iMode);
 }
 
 int g_iClientStartSpeak, g_iClientStopSpeak;
