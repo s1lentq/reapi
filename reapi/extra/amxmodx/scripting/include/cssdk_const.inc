@@ -1323,11 +1323,11 @@ enum InfoMapBuyParam
 #define USE_TOGGLE                      3
 
 /**
-* Player zoom
+* Player zoom constants
 * For m_iFOV
 */
-#define LARGE_AWP_ZOOM                  10
-#define LARGE_OTHER_SNIPERS_ZOOM        15
-#define SMALL_SNIPERS_ZOOM              40
-#define AUG_SG552_ZOOM                  55
-#define NO_ZOOM                         90
+#define DEFAULT_LARGE_AWP_ZOOM            10
+#define DEFAULT_LARGE_OTHER_SNIPERS_ZOOM  15
+#define DEFAULT_SMALL_SNIPERS_ZOOM        40
+#define DEFAULT_AUG_SG552_ZOOM            55
+#define DEFAULT_NO_ZOOM                   90
