@@ -37,6 +37,7 @@
 	#define RG_CBasePlayerWeapon_DefaultDeploy RG_CBaseWeapon_DefDeploy
 	#define RG_CBasePlayerWeapon_DefaultReload RG_CBaseWeapon_DefReload
 	#define RG_CBasePlayerWeapon_DefaultShotgunReload RG_CBaseWeapon_DefShotgunReload
+	#define RG_CBasePlayer_Observer_SetMode RG_CBasePlayer_Observer_SetMod
 #endif
 
 /**
@@ -784,6 +785,34 @@ enum GamedllFunc_CBasePlayer
 	* Params:           (const this, const reason[])
 	*/
 	RG_CBasePlayer_DropIdlePlayer,
+
+	/*
+	* Description:      Called when a client attempt to change the observer mode.
+	* Params:           (const this, iMode)
+	*/
+	RG_CBasePlayer_Observer_SetMode,
+	
+	/*
+	* Description:      Called when a client emits a "pain sound" after received damage.
+	* Return type:      void
+	* Params:           (const this)
+	*/
+	RG_CBasePlayer_Pain,
+	
+	/*
+	* Description:      Called when a client emits a "death sound" after death.
+	* Return type:      void
+	* Params:           (const this, lastHitGroup, bool:hasArmour)
+	*/
+	RG_CBasePlayer_DeathSound,
+	
+	/*
+	* Description:      Called when a client "thinks for the join status".
+	*                   (permanently called on each call of "CBasePlayer::PreThink", and only when he is not assigned as specatator or not playing)
+	* Return type:      void
+	* Params:           (const this)
+	*/
+	RG_CBasePlayer_JoiningThink,
 };
 
 /**
@@ -842,6 +871,34 @@ enum GamedllFunc_CGib
 	* Params:           (const this)
 	*/
 	RG_CGib_WaitTillLand,
+};
+
+/**
+* GamedllFunc CBaseEntity
+*/
+enum GamedllFunc_CBaseEntity
+{
+	/*
+	* Description:      -
+	* Return type:      void
+	* Params:           (pEntity, cShots, Float:vecSrc[3], Float:vecDirShooting[3], Float:vecSpread[3], Float:flDistance, iBulletType, iTracerFreq, iDamage, pevAttacker)
+
+	*/
+	RG_CBaseEntity_FireBullets = BEGIN_FUNC_REGION(cbaseentity),
+
+	/*
+	* Description:      -
+	* Return type:      void
+	* Params:           (pEntity, cShots, Float:vecSrc[3], Float:vecDirShooting[3], Float:vecSpread[3], Float:flDistance, iTracerFreq, iDamage, pevAttacker)
+	*/
+	RG_CBaseEntity_FireBuckshots,
+
+	/*
+	* Description:      -
+	* Return type:      Vector [3]
+	* Params:           (pEntity, Float:vecSrc[3], Float:vecDirShooting[3], Float:vecSpread, Float:flDistance, iPenetration, iBulletType, iDamage, Float:flRangeModifier, pevAttacker, bool:bPistol, shared_rand)
+	*/
+	RG_CBaseEntity_FireBullets3,
 };
 
 /**
