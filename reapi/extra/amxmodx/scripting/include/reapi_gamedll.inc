@@ -343,6 +343,23 @@ native rg_multidmg_add(const inflictor, const victim, const Float:flDamage, cons
 native rg_fire_bullets(const inflictor, const attacker, const shots, Float:vecSrc[3], Float:vecDirShooting[3], Float:vecSpread[3], const Float:flDistance, const Bullet:iBulletType, const iTracerFreq, const iDamage);
 
 /*
+* Fires buckshots from entity.
+*
+* @param inflictor          Inflictor is the entity that caused the damage (such as a gun)
+* @param attacker           Attacker is the entity that triggered the damage (such as the gun's owner)
+* @param shots              The number of shots
+* @param vecSrc             The source position of the barrel
+* @param vecDirShooting     Shooting direction
+* @param vecSpread          Spread
+* @param flDistance         Max shot distance
+* @param iTracerFreq        Tracer frequency
+* @param iDamage            Damage amount
+*
+* @noreturn
+*/
+native rg_fire_buckshots(const inflictor, const attacker, const shots, Float:vecSrc[3], Float:vecDirShooting[3], Float:vecSpread[3], const Float:flDistance, const iTracerFreq, const iDamage);
+
+/*
 * Fires bullets from player's weapon.
 *
 * @param inflictor          Inflictor is the entity that caused the damage (such as a gun)
