@@ -343,6 +343,17 @@ struct SV_WriteFullClientUpdate_args_t
 using SV_WriteFullClientUpdate_t = hookdata_t<IRehldsHook_SV_WriteFullClientUpdate *, SV_WriteFullClientUpdate_args_t &>;
 void SV_WriteFullClientUpdate_AMXX(SV_WriteFullClientUpdate_t *data, IGameClient *client, size_t buffer, IGameClient *receiver);
 void SV_WriteFullClientUpdate(IRehldsHook_SV_WriteFullClientUpdate *chain, IGameClient *client, char *buffer, size_t maxlen, sizebuf_t *sb, IGameClient *receiver);
+
+struct SV_EmitPings_args_t
+{
+	SV_EmitPings_args_t(IGameClient* cl, sizebuf_t *msg) : client(cl), message(msg) {}
+
+	IGameClient *client;
+	sizebuf_t* message;
+};
+
+using SV_EmitPings_t = hookdata_t<IRehldsHook_SV_EmitPings *, SV_EmitPings_args_t &>;
+void SV_EmitPings_AMXX(SV_EmitPings_t *data, IGameClient *client);
 void SV_EmitPings(IRehldsHook_SV_EmitPings *chain, IGameClient *client, sizebuf_t *msg);
 
 // regamedll functions

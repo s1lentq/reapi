@@ -63,14 +63,22 @@ void SV_WriteFullClientUpdate(IRehldsHook_SV_WriteFullClientUpdate *chain, IGame
 	SV_WriteFullClientUpdate_AMXX(&data, client, (size_t)buffer, receiver);
 }
 
-void SV_EmitPings(IRehldsHook_SV_EmitPings *chain, IGameClient *cl, sizebuf_t *msg)
+void SV_EmitPings_AMXX(SV_EmitPings_t* data, IGameClient* cl)
 {
-	auto original = [chain](int _cl, sizebuf_t *_msg)
+	auto original = [data](int _cl)
 	{
-		chain->callNext(g_RehldsSvs->GetClient(_cl - 1), _msg);
+		data->m_chain->callNext(g_RehldsSvs->GetClient(_cl - 1), data->m_args.message);
 	};
 
-	callVoidForward(RH_SV_EmitPings, original, cl->GetId() + 1, msg);
+	callVoidForward(RH_SV_EmitPings, original, cl->GetId() + 1);
+}
+
+void SV_EmitPings(IRehldsHook_SV_EmitPings *chain, IGameClient *cl, sizebuf_t *msg)
+{
+
+	SV_EmitPings_args_t args(cl, msg);
+	SV_EmitPings_t data(chain, args);
+	SV_EmitPings_AMXX(&data, cl);
 }
 
 /*

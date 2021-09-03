@@ -55,7 +55,7 @@ enum EngineFunc
 	RH_SV_WriteFullClientUpdate,
 
 	/*
-	* Description:  -
+	* Description:  Called when client it's in the scoreboard
 	* Params:       (const this)
 	*/
 	RH_SV_EmitPings,
