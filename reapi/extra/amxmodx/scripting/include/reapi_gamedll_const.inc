@@ -747,7 +747,7 @@ enum GamedllFunc_CBasePlayer
 
 	/*
 	* Description:      Called when a player throws the grenade.
-	* Return type:      CGrenade * (Entity index of hegrenade)
+	* Return type:      CGrenade * (Entity index of grenade)
 	* Params:           (const this, const grenade, Float:vecSrc[3], Float:vecThrow[3], Float:time, const usEvent)
 	*/
 	RG_CBasePlayer_ThrowGrenade,
