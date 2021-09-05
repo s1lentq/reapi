@@ -1348,3 +1348,13 @@ enum InfoMapBuyParam
 #define DEFAULT_SMALL_SNIPERS_ZOOM        40
 #define DEFAULT_AUG_SG552_ZOOM            55
 #define DEFAULT_NO_ZOOM                   90
+
+/**
+* Scoreboard attribute constants
+* For "ScoreAttrib" game event
+*/
+#define SCORE_ATTRIB_NONE                 0
+#define SCORE_ATTRIB_DEAD                 (1<<0)
+#define SCORE_ATTRIB_BOMB                 (1<<1)
+#define SCORE_ATTRIB_VIP                  (1<<2)
+#define SCORE_ATTRIB_DEFKIT               (1<<3)
