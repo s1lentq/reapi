@@ -53,6 +53,12 @@ enum EngineFunc
 	* Params:       (const client, buffer, const receiver)
 	*/
 	RH_SV_WriteFullClientUpdate,
+
+	/*
+	* Description:  -
+	* Params:       (const classname[])
+	*/
+	RH_GetEntityInit,
 };
 
 /**
