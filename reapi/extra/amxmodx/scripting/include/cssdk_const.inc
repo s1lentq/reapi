@@ -1353,8 +1353,8 @@ enum InfoMapBuyParam
 * Scoreboard attribute constants
 * For "ScoreAttrib" game event
 */
-#define SCORE_ATTRIB_NONE                 0
-#define SCORE_ATTRIB_DEAD                 (1<<0)
-#define SCORE_ATTRIB_BOMB                 (1<<1)
-#define SCORE_ATTRIB_VIP                  (1<<2)
-#define SCORE_ATTRIB_DEFKIT               (1<<3)
+#define SCORE_STATUS_NONE                 0
+#define SCORE_STATUS_DEAD                 (1<<0)
+#define SCORE_STATUS_BOMB                 (1<<1)
+#define SCORE_STATUS_VIP                  (1<<2)
+#define SCORE_STATUS_DEFKIT               (1<<3)
