@@ -63,6 +63,16 @@ void SV_WriteFullClientUpdate(IRehldsHook_SV_WriteFullClientUpdate *chain, IGame
 	SV_WriteFullClientUpdate_AMXX(&data, client, (size_t)buffer, receiver);
 }
 
+void SV_ConnectClient(IRehldsHook_SV_ConnectClient *chain)
+{
+	auto original = [chain]()
+	{
+		chain->callNext();
+	};
+
+	callVoidForward(RH_SV_ConnectClient, original);
+}
+
 /*
 * ReGameDLL functions
 */
