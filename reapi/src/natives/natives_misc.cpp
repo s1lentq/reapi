@@ -2723,6 +2723,28 @@ cell AMX_NATIVE_CALL rh_drop_client(AMX *amx, cell *params)
 	return TRUE;
 }
 
+/*
+* -
+*
+* @param output     Buffer to copy the ip address
+* @param len        Maximum buffer size
+* 
+* @noreturn
+*
+* native rh_get_net_from(output[], len);
+*/
+cell AMX_NATIVE_CALL rh_get_net_from(AMX* amx, cell* params)
+{
+	enum args_e { arg_count, arg_output, arg_maxlen };
+
+	cell *dest = getAmxAddr(amx, params[arg_output]);
+	char *addr = NET_AdrToString(*g_RehldsData->GetNetFrom());
+
+	setAmxString(dest, addr, params[arg_maxlen]);
+	
+	return TRUE;
+}
+
 AMX_NATIVE_INFO Misc_Natives_RH[] =
 {
 	{ "rh_set_mapname",      rh_set_mapname      },
@@ -2731,6 +2753,7 @@ AMX_NATIVE_INFO Misc_Natives_RH[] =
 	{ "rh_emit_sound2",      rh_emit_sound2      },
 	{ "rh_update_user_info", rh_update_user_info },
 	{ "rh_drop_client",      rh_drop_client      },
+	{ "rh_get_net_from",     rh_get_net_from     },
 
 	{ nullptr, nullptr }
 };

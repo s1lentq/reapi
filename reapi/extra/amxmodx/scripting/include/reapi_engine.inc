@@ -148,3 +148,14 @@ native rh_update_user_info(playerEntIndex);
 *
 */
 native rh_drop_client(const index, const message[] = "");
+
+/*
+* -
+*
+* @param output     Buffer to copy the ip address
+* @param len        Maximum buffer size
+*
+* @noreturn
+* 
+*/
+native rh_get_net_from(output[], len);
