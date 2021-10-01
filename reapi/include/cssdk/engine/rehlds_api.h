@@ -186,8 +186,32 @@ typedef IHookChain<int, enum sv_delta_s, IGameClient *, struct packet_entities_s
 typedef IHookChainRegistry<int, enum sv_delta_s, IGameClient *, struct packet_entities_s *, struct sizebuf_s *> IRehldsHookRegistry_SV_CreatePacketEntities;
 
 //SV_EmitSound2 hook
-typedef IHookChain<bool, edict_t *, IGameClient *, int, const char*, float, float, int, int, int, const float*> IRehldsHook_SV_EmitSound2;
-typedef IHookChainRegistry<bool, edict_t *, IGameClient *, int, const char*, float, float, int, int, int, const float*> IRehldsHookRegistry_SV_EmitSound2;
+typedef IHookChain<bool, edict_t*, IGameClient*, int, const char*, float, float, int, int, int, const float*> IRehldsHook_SV_EmitSound2;
+typedef IHookChainRegistry<bool, edict_t*, IGameClient*, int, const char*, float, float, int, int, int, const float*> IRehldsHookRegistry_SV_EmitSound2;
+
+//CreateFakeClient hook
+typedef IHookChain<edict_t*, const char*> IRehldsHook_CreateFakeClient;
+typedef IHookChainRegistry<edict_t*, const char*> IRehldsHookRegistry_CreateFakeClient;
+
+//SV_CheckConnectionLessRateLimits
+typedef IHookChain<bool, netadr_t&, const uint8_t*, int> IRehldsHook_SV_CheckConnectionLessRateLimits;
+typedef IHookChainRegistry<bool, netadr_t&, const uint8_t*, int> IRehldsHookRegistry_SV_CheckConnectionLessRateLimits;
+
+//SV_Frame hook
+typedef IVoidHookChain<> IRehldsHook_SV_Frame;
+typedef IVoidHookChainRegistry<> IRehldsHookRegistry_SV_Frame;
+
+//SV_ShouldSendConsistencyList hook
+typedef IHookChain<bool, IGameClient*, bool> IRehldsHook_SV_ShouldSendConsistencyList;
+typedef IHookChainRegistry<bool, IGameClient*, bool> IRehldsHookRegistry_SV_ShouldSendConsistencyList;
+
+//GetEntityInit hook
+typedef IHookChain<entvars_t, char*> IRehldsHook_GetEntityInit;
+typedef IHookChainRegistry<entvars_t, char*> IRehldsHookRegistry_GetEntityInit;
+
+//Con_Printf hook
+typedef IHookChain<void, const char *> IRehldsHook_Con_Printf;
+typedef IHookChainRegistry<void, const char *> IRehldsHookRegistry_Con_Printf;
 
 class IRehldsHookchains {
 public:
@@ -231,6 +255,12 @@ public:
 	virtual IRehldsHookRegistry_SV_Spawn_f* SV_Spawn_f() = 0;
 	virtual IRehldsHookRegistry_SV_CreatePacketEntities* SV_CreatePacketEntities() = 0;
 	virtual IRehldsHookRegistry_SV_EmitSound2* SV_EmitSound2() = 0;
+	virtual IRehldsHookRegistry_CreateFakeClient* CreateFakeClient() = 0;
+	virtual IRehldsHookRegistry_SV_CheckConnectionLessRateLimits* SV_CheckConnectionLessRateLimits() = 0;
+	virtual IRehldsHookRegistry_SV_Frame* SV_Frame() = 0;
+	virtual IRehldsHookRegistry_SV_ShouldSendConsistencyList* SV_ShouldSendConsistencyList() = 0;
+	virtual IRehldsHookRegistry_GetEntityInit* GetEntityInit() = 0;
+	virtual IRehldsHookRegistry_Con_Printf* Con_Printf() = 0;
 };
 
 struct RehldsFuncs_t {

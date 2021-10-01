@@ -53,6 +53,12 @@ enum EngineFunc
 	* Params:       (const client, buffer, const receiver)
 	*/
 	RH_SV_WriteFullClientUpdate,
+	
+	/*
+	* Description:  -
+	* Params:       (const char *string)
+	*/
+	RH_Con_Printf,
 };
 
 /**
