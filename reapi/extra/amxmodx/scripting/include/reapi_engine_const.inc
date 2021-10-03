@@ -53,6 +53,12 @@ enum EngineFunc
 	* Params:       (const client, buffer, const receiver)
 	*/
 	RH_SV_WriteFullClientUpdate,
+
+	/*
+	* Description:  Called after processing a client connection request.
+	* Params:       (const client)
+	*/
+	RH_ClientConnected,
 };
 
 /**
