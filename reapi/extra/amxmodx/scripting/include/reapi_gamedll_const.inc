@@ -4626,6 +4626,14 @@ enum CCSPlayer_Members
 	* Get params:       get_member(index, member);
 	* Set params:       set_member(index, member, bool:value);
 	*/
+	m_bGameForcingRespawn,
+
+	/*
+	* Description:      -
+	* Member type:      bool
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, bool:value);
+	*/
 	m_bAutoBunnyHopping,
 
 	/*

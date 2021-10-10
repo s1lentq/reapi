@@ -757,6 +757,7 @@ member_t memberlist_csplayer[] = {
 	CSPL_MEMBERS(m_iWeaponInfiniteAmmo),
 	CSPL_MEMBERS(m_iWeaponInfiniteIds),
 	CSPL_MEMBERS(m_bCanShootOverride),
+	CSPL_MEMBERS(m_bGameForcingRespawn),
 	CSPL_MEMBERS(m_bAutoBunnyHopping),
 	CSPL_MEMBERS(m_bMegaBunnyJumping),
 };
