@@ -746,6 +746,8 @@ enum CSPlayer_Members
 	m_iWeaponInfiniteAmmo,
 	m_iWeaponInfiniteIds,
 	m_bCanShootOverride,
+	m_bAutoBunnyHopping,
+	m_bMegaBunnyJumping,
 };
 
 enum CBasePlayerItem_Members
