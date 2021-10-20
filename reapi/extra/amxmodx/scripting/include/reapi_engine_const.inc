@@ -60,6 +60,7 @@ enum EngineFunc
 	*/
 	RH_GetEntityInit,
 
+	/*
 	* Description:  Called after processing a client connection request.
 	* Params:       (const client)
 	*/
