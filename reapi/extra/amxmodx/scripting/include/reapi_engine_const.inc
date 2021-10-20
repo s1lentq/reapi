@@ -55,6 +55,11 @@ enum EngineFunc
 	RH_SV_WriteFullClientUpdate,
 
 	/*
+	* Description:  -
+	* Params:       (const classname[])
+	*/
+	RH_GetEntityInit,
+
 	* Description:  Called after processing a client connection request.
 	* Params:       (const client)
 	*/

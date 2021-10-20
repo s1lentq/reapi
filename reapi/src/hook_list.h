@@ -98,6 +98,7 @@ enum EngineFunc
 	RH_SV_ActivateServer,
 	RH_Cvar_DirectSet,
 	RH_SV_WriteFullClientUpdate,
+	RH_GetEntityInit,
 	RH_ClientConnected
 
 	// [...]
