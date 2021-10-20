@@ -331,6 +331,7 @@ void SV_StartSound(IRehldsHook_SV_StartSound *chain, int recipients, edict_t *en
 void SV_DropClient(IRehldsHook_SV_DropClient *chain, IGameClient *cl, bool crash, const char *fmt);
 void SV_ActivateServer(IRehldsHook_SV_ActivateServer *chain, int runPhysics);
 void Cvar_DirectSet(IRehldsHook_Cvar_DirectSet *chain, cvar_t *var, const char *value);
+void ClientConnected(IRehldsHook_ClientConnected* chain, IGameClient* cl);
 
 struct SV_WriteFullClientUpdate_args_t
 {

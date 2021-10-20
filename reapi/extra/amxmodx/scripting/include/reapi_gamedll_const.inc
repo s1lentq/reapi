@@ -2065,9 +2065,9 @@ enum CBaseMonster_Members
 
 	/*
 	* Description:      -
-	* Member type:      usigned char [5]
-	* Get params:       get_member_game(member);
-	* Set params:       set_member_game(member, value, element);
+	* Member type:      byte [8]
+	* Get params:       get_member(index, member, TimeBasedDamage:element);
+	* Set params:       set_member(index, member, value, TimeBasedDamage:element);
 	*/
 	m_rgbTimeBasedDamage,
 
@@ -4619,6 +4619,30 @@ enum CCSPlayer_Members
 	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_bCanShootOverride,
+
+	/*
+	* Description:      -
+	* Member type:      bool
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, bool:value);
+	*/
+	m_bGameForcingRespawn,
+
+	/*
+	* Description:      -
+	* Member type:      bool
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, bool:value);
+	*/
+	m_bAutoBunnyHopping,
+
+	/*
+	* Description:      -
+	* Member type:      bool
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, bool:value);
+	*/
+	m_bMegaBunnyJumping,
 };
 
 /**
