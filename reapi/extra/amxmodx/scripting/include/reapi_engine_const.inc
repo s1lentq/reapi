@@ -54,11 +54,22 @@ enum EngineFunc
 	*/
 	RH_SV_WriteFullClientUpdate,
 
+	* Description:  -
+	* Params:       (const classname[])
+	*/
+	RH_GetEntityInit,
+
+	/*
+	* Description:  Called after processing a client connection request.
+	* Params:       (const client)
+	*/
+	RH_ClientConnected,
+
 	/*
 	* Description:  Called when client it's in the scoreboard
 	* Params:       (const this)
 	*/
-	RH_SV_EmitPings,
+	RH_SV_EmitPings
 };
 
 /**
@@ -708,33 +719,33 @@ enum EntVars
 
 	/*
 	* Description:      -
-	* Member type:      int
-	* Get params:       get_entvar(index, EntVars:var);
-	* Set params:       set_entvar(index, EntVars:var, value);
+	* Member type:      float
+	* Get params:       Float:get_entvar(index, EntVars:var);
+	* Set params:       set_entvar(index, EntVars:var, Float:value);
 	*/
 	var_dmg_take,
 
 	/*
 	* Description:      -
-	* Member type:      int
-	* Get params:       get_entvar(index, EntVars:var);
-	* Set params:       set_entvar(index, EntVars:var, value);
+	* Member type:      float
+	* Get params:       Float:get_entvar(index, EntVars:var);
+	* Set params:       set_entvar(index, EntVars:var, Float:value);
 	*/
 	var_dmg_save,
 
 	/*
 	* Description:      -
-	* Member type:      int
-	* Get params:       get_entvar(index, EntVars:var);
-	* Set params:       set_entvar(index, EntVars:var, value);
+	* Member type:      float
+	* Get params:       Float:get_entvar(index, EntVars:var);
+	* Set params:       set_entvar(index, EntVars:var, Float:value);
 	*/
 	var_dmg,
 
 	/*
 	* Description:      -
-	* Member type:      int
-	* Get params:       get_entvar(index, EntVars:var);
-	* Set params:       set_entvar(index, EntVars:var, value);
+	* Member type:      float
+	* Get params:       Float:get_entvar(index, EntVars:var);
+	* Set params:       set_entvar(index, EntVars:var, Float:value);
 	*/
 	var_dmgtime,
 
