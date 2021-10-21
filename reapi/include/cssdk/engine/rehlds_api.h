@@ -209,9 +209,22 @@ typedef IHookChainRegistry<bool, IGameClient*, bool> IRehldsHookRegistry_SV_Shou
 typedef IHookChain<struct entvars_s*, char*> IRehldsHook_GetEntityInit;
 typedef IHookChainRegistry<struct entvars_s*, char*> IRehldsHookRegistry_GetEntityInit;
 
+//SV_EmitPings hook
+typedef IHookChain<void, IGameClient*, sizebuf_t*> IRehldsHook_SV_EmitPings;
+typedef IHookChainRegistry<void, IGameClient*, sizebuf_t*> IRehldsHookRegistry_SV_EmitPings;
+
+//ED_Alloc hook
+typedef IHookChain<edict_t*> IRehldsHook_ED_Alloc;
+typedef IHookChainRegistry<edict_t*> IRehldsHookRegistry_ED_Alloc;
+
+//ED_Free hook
+typedef IVoidHookChain<edict_t*> IRehldsHook_ED_Free;
+typedef IVoidHookChainRegistry<edict_t*> IRehldsHookRegistry_ED_Free;
+
 //Con_Printf hook
-typedef IHookChain<void, const char *> IRehldsHook_Con_Printf;
-typedef IHookChainRegistry<void, const char *> IRehldsHookRegistry_Con_Printf;
+typedef IHookChain<void, const char*> IRehldsHook_Con_Printf;
+typedef IHookChainRegistry<void, const char*> IRehldsHookRegistry_Con_Printf;
+
 
 class IRehldsHookchains {
 public:
@@ -260,6 +273,9 @@ public:
 	virtual IRehldsHookRegistry_SV_Frame* SV_Frame() = 0;
 	virtual IRehldsHookRegistry_SV_ShouldSendConsistencyList* SV_ShouldSendConsistencyList() = 0;
 	virtual IRehldsHookRegistry_GetEntityInit* GetEntityInit() = 0;
+	virtual IRehldsHookRegistry_SV_EmitPings* SV_EmitPings() = 0;
+	virtual IRehldsHookRegistry_ED_Alloc* ED_Alloc() = 0;
+	virtual IRehldsHookRegistry_ED_Free* ED_Free() = 0;
 	virtual IRehldsHookRegistry_Con_Printf* Con_Printf() = 0;
 };
 
