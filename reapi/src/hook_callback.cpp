@@ -73,6 +73,26 @@ void Con_Printf(IRehldsHook_Con_Printf *chain, const char *string)
 	callVoidForward(RH_Con_Printf, original, string);
 }
 
+entvars_t *GetEntityInit(IRehldsHook_GetEntityInit *chain, char *classname)
+{
+	auto original = [chain](char *_classname)
+	{
+		return (entvars_t *)chain->callNext(_classname);
+	};
+
+	return callForward<entvars_t *>(RH_GetEntityInit, original, classname);
+}
+
+void ClientConnected(IRehldsHook_ClientConnected* chain, IGameClient* cl)
+{
+	auto original = [chain](int client)
+	{
+		chain->callNext(g_RehldsSvs->GetClient(client - 1));
+	};
+
+	callVoidForward(RH_ClientConnected, original, cl->GetId() + 1);
+}
+
 /*
 * ReGameDLL functions
 */
