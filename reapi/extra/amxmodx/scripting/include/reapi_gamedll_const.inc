@@ -4619,6 +4619,30 @@ enum CCSPlayer_Members
 	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_bCanShootOverride,
+
+	/*
+	* Description:      -
+	* Member type:      bool
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, bool:value);
+	*/
+	m_bGameForcingRespawn,
+
+	/*
+	* Description:      -
+	* Member type:      bool
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, bool:value);
+	*/
+	m_bAutoBunnyHopping,
+
+	/*
+	* Description:      -
+	* Member type:      bool
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, bool:value);
+	*/
+	m_bMegaBunnyJumping,
 };
 
 /**
