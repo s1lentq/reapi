@@ -206,32 +206,12 @@ typedef IHookChain<bool, IGameClient*, bool> IRehldsHook_SV_ShouldSendConsistenc
 typedef IHookChainRegistry<bool, IGameClient*, bool> IRehldsHookRegistry_SV_ShouldSendConsistencyList;
 
 //GetEntityInit hook
-typedef IHookChain<entvars_t, char*> IRehldsHook_GetEntityInit;
-typedef IHookChainRegistry<entvars_t, char*> IRehldsHookRegistry_GetEntityInit;
+typedef IHookChain<struct entvars_s*, char*> IRehldsHook_GetEntityInit;
+typedef IHookChainRegistry<struct entvars_s*, char*> IRehldsHookRegistry_GetEntityInit;
 
 //Con_Printf hook
 typedef IHookChain<void, const char *> IRehldsHook_Con_Printf;
 typedef IHookChainRegistry<void, const char *> IRehldsHookRegistry_Con_Printf;
-
-//CreateFakeClient hook
-typedef IHookChain<edict_t *, const char *> IRehldsHook_CreateFakeClient;
-typedef IHookChainRegistry<edict_t *, const char *> IRehldsHookRegistry_CreateFakeClient;
-
-//SV_CheckConnectionLessRateLimits
-typedef IHookChain<bool, netadr_t &, const uint8_t *, int> IRehldsHook_SV_CheckConnectionLessRateLimits;
-typedef IHookChainRegistry<bool, netadr_t &, const uint8_t *, int> IRehldsHookRegistry_SV_CheckConnectionLessRateLimits;
-
-//SV_Frame hook
-typedef IVoidHookChain<> IRehldsHook_SV_Frame;
-typedef IVoidHookChainRegistry<> IRehldsHookRegistry_SV_Frame;
-
-//SV_ShouldSendConsistencyList hook
-typedef IHookChain<bool, IGameClient *, bool> IRehldsHook_SV_ShouldSendConsistencyList;
-typedef IHookChainRegistry<bool, IGameClient *, bool> IRehldsHookRegistry_SV_ShouldSendConsistencyList;
-
-//GetEntityInit hook
-typedef IHookChain<struct entvars_s *, char *> IRehldsHook_GetEntityInit;
-typedef IHookChainRegistry<struct entvars_s *, char *> IRehldsHookRegistry_GetEntityInit;
 
 class IRehldsHookchains {
 public:
