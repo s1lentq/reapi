@@ -54,6 +54,7 @@ enum EngineFunc
 	*/
 	RH_SV_WriteFullClientUpdate,
 
+	/*
 	* Description:  -
 	* Params:       (const classname[])
 	*/
