@@ -65,6 +65,19 @@ enum EngineFunc
 	* Params:       (const client)
 	*/
 	RH_ClientConnected,
+	
+	/*
+	* Description:  Called when an entity is created.
+	* Return type:  Edict * (Entity index)
+	* Params:       ()
+	*/
+	RH_ED_Alloc,
+
+	/*
+	* Description:  Called when an entity is removed (freed from server).
+	* Params:       (const entity)
+	*/
+	RH_ED_Free,
 };
 
 /**
