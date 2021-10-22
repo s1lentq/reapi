@@ -99,7 +99,9 @@ enum EngineFunc
 	RH_Cvar_DirectSet,
 	RH_SV_WriteFullClientUpdate,
 	RH_GetEntityInit,
-	RH_ClientConnected
+	RH_ClientConnected,
+	RH_ED_Alloc,
+	RH_ED_Free
 
 	// [...]
 };
