@@ -268,9 +268,9 @@ public:
 	virtual IRehldsHookRegistry_SV_Frame* SV_Frame() = 0;
 	virtual IRehldsHookRegistry_SV_ShouldSendConsistencyList* SV_ShouldSendConsistencyList() = 0;
 	virtual IRehldsHookRegistry_GetEntityInit* GetEntityInit() = 0;
+	virtual IRehldsHookRegistry_SV_EmitPings* SV_EmitPings() = 0;
 	virtual IRehldsHookRegistry_ED_Alloc* ED_Alloc() = 0;
 	virtual IRehldsHookRegistry_ED_Free* ED_Free() = 0;
-	virtual IRehldsHookRegistry_SV_EmitPings* SV_EmitPings() = 0;
 };
 
 struct RehldsFuncs_t {
