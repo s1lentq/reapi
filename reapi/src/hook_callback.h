@@ -345,6 +345,8 @@ using SV_WriteFullClientUpdate_t = hookdata_t<IRehldsHook_SV_WriteFullClientUpda
 void SV_WriteFullClientUpdate_AMXX(SV_WriteFullClientUpdate_t *data, IGameClient *client, size_t buffer, IGameClient *receiver);
 void SV_WriteFullClientUpdate(IRehldsHook_SV_WriteFullClientUpdate *chain, IGameClient *client, char *buffer, size_t maxlen, sizebuf_t *sb, IGameClient *receiver);
 entvars_s *GetEntityInit(IRehldsHook_GetEntityInit *chain, char *classname);
+edict_t *ED_Alloc(IRehldsHook_ED_Alloc* chain);
+void ED_Free(IRehldsHook_ED_Free* chain, edict_t *entity);
 
 // regamedll functions
 int GetForceCamera(IReGameHook_GetForceCamera *chain, CBasePlayer *pObserver);
