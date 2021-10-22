@@ -83,6 +83,26 @@ void ClientConnected(IRehldsHook_ClientConnected* chain, IGameClient* cl)
 	callVoidForward(RH_ClientConnected, original, cl->GetId() + 1);
 }
 
+edict_t *ED_Alloc(IRehldsHook_ED_Alloc* chain)
+{
+	auto original = [chain]()
+	{
+		return indexOfEdict(chain->callNext());
+	};
+
+	return edictByIndexAmx(callForward<size_t>(RH_ED_Alloc, original));
+}
+
+void ED_Free(IRehldsHook_ED_Free* chain, edict_t *entity)
+{
+	auto original = [chain](int _entity)
+	{
+		chain->callNext(edictByIndexAmx(_entity));
+	};
+
+	callVoidForward(RH_ED_Free, original, indexOfEdict(entity));
+}
+
 /*
 * ReGameDLL functions
 */
