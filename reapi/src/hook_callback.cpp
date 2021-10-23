@@ -67,7 +67,7 @@ ENTITYINIT GetEntityInit(IRehldsHook_GetEntityInit *chain, char *classname)
 {
 	auto original = [chain](char *_classname)
 	{
-		return (ENTITYINIT)chain->callNext(_classname);
+		return chain->callNext(_classname);
 	};
 
 	return callForward<ENTITYINIT>(RH_GetEntityInit, original, classname);
