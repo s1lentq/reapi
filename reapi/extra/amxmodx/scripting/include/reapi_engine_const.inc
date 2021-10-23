@@ -54,11 +54,22 @@ enum EngineFunc
 	*/
 	RH_SV_WriteFullClientUpdate,
 
+	* Description:  -
+	* Params:       (const classname[])
+	*/
+	RH_GetEntityInit,
+
+	/*
+	* Description:  Called after processing a client connection request.
+	* Params:       (const client)
+	*/
+	RH_ClientConnected,
+
 	/*
 	* Description:  Called when processing a 'connect' client connectionless packet.
 	* Params:       ()
 	*/
-	RH_SV_ConnectClient,
+	RH_SV_ConnectClient
 };
 
 /**
