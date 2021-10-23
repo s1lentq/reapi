@@ -33,6 +33,7 @@
 #include "FlightRecorder.h"
 #include "interface.h"
 #include "model.h"
+#include "pr_dlls.h"
 
 #define REHLDS_API_VERSION_MAJOR 3
 #define REHLDS_API_VERSION_MINOR 11
@@ -206,8 +207,8 @@ typedef IHookChain<bool, IGameClient*, bool> IRehldsHook_SV_ShouldSendConsistenc
 typedef IHookChainRegistry<bool, IGameClient*, bool> IRehldsHookRegistry_SV_ShouldSendConsistencyList;
 
 //GetEntityInit hook
-typedef IHookChain<struct entvars_s *, char *> IRehldsHook_GetEntityInit;
-typedef IHookChainRegistry<struct entvars_s *, char *> IRehldsHookRegistry_GetEntityInit;
+typedef IHookChain<ENTITYINIT, char *> IRehldsHook_GetEntityInit;
+typedef IHookChainRegistry<ENTITYINIT, char *> IRehldsHookRegistry_GetEntityInit;
 
 //SV_EmitPings hook
 typedef IHookChain<void, IGameClient *, sizebuf_t *> IRehldsHook_SV_EmitPings;

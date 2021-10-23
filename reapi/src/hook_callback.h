@@ -41,17 +41,18 @@ struct retval_t
 	};
 };
 
-inline AType getApiType(int)			{ return ATYPE_INTEGER; }
-inline AType getApiType(unsigned)		{ return ATYPE_INTEGER; }
-inline AType getApiType(ULONG)			{ return ATYPE_INTEGER; }
-inline AType getApiType(float)			{ return ATYPE_FLOAT; }
-inline AType getApiType(const char *)	{ return ATYPE_STRING; }
-inline AType getApiType(char[])			{ return ATYPE_STRING; }
-inline AType getApiType(CBaseEntity *)	{ return ATYPE_CLASSPTR; }
-inline AType getApiType(edict_t *)		{ return ATYPE_EDICT; }
-inline AType getApiType(entvars_t *)	{ return ATYPE_EVARS; }
-inline AType getApiType(bool)			{ return ATYPE_BOOL; }
+inline AType getApiType(int)            { return ATYPE_INTEGER; }
+inline AType getApiType(unsigned)       { return ATYPE_INTEGER; }
+inline AType getApiType(ULONG)          { return ATYPE_INTEGER; }
+inline AType getApiType(float)          { return ATYPE_FLOAT; }
+inline AType getApiType(const char *)   { return ATYPE_STRING; }
+inline AType getApiType(char[])         { return ATYPE_STRING; }
+inline AType getApiType(CBaseEntity *)  { return ATYPE_CLASSPTR; }
+inline AType getApiType(edict_t *)      { return ATYPE_EDICT; }
+inline AType getApiType(entvars_t *)    { return ATYPE_EVARS; }
+inline AType getApiType(bool)           { return ATYPE_BOOL; }
 inline AType getApiType(Vector)         { return ATYPE_VECTOR; }
+inline AType getApiType(ENTITYINIT)     { return ATYPE_INTEGER; }
 
 template<typename T>
 inline AType getApiType(T *) { return ATYPE_INTEGER; }
@@ -344,7 +345,7 @@ struct SV_WriteFullClientUpdate_args_t
 using SV_WriteFullClientUpdate_t = hookdata_t<IRehldsHook_SV_WriteFullClientUpdate *, SV_WriteFullClientUpdate_args_t &>;
 void SV_WriteFullClientUpdate_AMXX(SV_WriteFullClientUpdate_t *data, IGameClient *client, size_t buffer, IGameClient *receiver);
 void SV_WriteFullClientUpdate(IRehldsHook_SV_WriteFullClientUpdate *chain, IGameClient *client, char *buffer, size_t maxlen, sizebuf_t *sb, IGameClient *receiver);
-entvars_s *GetEntityInit(IRehldsHook_GetEntityInit *chain, char *classname);
+ENTITYINIT GetEntityInit(IRehldsHook_GetEntityInit *chain, char *classname);
 
 struct SV_EmitPings_args_t
 {
