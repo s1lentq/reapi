@@ -66,11 +66,22 @@ enum EngineFunc
 	*/
 	RH_ClientConnected,
 
+	* Description:  Called when processing a 'connect' client connectionless packet.
+	* Params:       ()
+	*/
+	RH_SV_ConnectClient,
+
+	/*
+	* Description:  Called when client it's in the scoreboard
+	* Params:       (const this)
+	*/
+	RH_SV_EmitPings,
+
 	/*
 	* Description:  -
 	* Params:       (const char *string)
 	*/
-	RH_Con_Printf,
+	RH_Con_Printf
 };
 
 /**
