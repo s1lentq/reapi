@@ -100,8 +100,10 @@ enum EngineFunc
 	RH_SV_WriteFullClientUpdate,
 	RH_GetEntityInit,
 	RH_ClientConnected,
+	RH_SV_ConnectClient,
+	RH_SV_EmitPings,
 	RH_Con_Printf
-
+	
 	// [...]
 };
 

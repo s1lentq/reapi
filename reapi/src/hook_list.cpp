@@ -89,6 +89,8 @@ hook_t hooklist_engine[] = {
 	ENG(SV_WriteFullClientUpdate, _AMXX),
 	ENG(GetEntityInit),
 	ENG(ClientConnected),
+	ENG(SV_ConnectClient),
+	ENG(SV_EmitPings, _AMXX),
 	ENG(Con_Printf)
 };
 
