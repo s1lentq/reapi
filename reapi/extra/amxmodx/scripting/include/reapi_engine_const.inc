@@ -80,7 +80,7 @@ enum EngineFunc
 
 	/*
 	* Description:  -
-	* Params:       (const char *string)
+	* Params:       (const string[])
 	*/
 	RH_Con_Printf
 };
