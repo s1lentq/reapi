@@ -52,6 +52,7 @@ inline AType getApiType(edict_t *)		{ return ATYPE_EDICT; }
 inline AType getApiType(entvars_t *)	{ return ATYPE_EVARS; }
 inline AType getApiType(bool)			{ return ATYPE_BOOL; }
 inline AType getApiType(Vector)         { return ATYPE_VECTOR; }
+inline AType getApiType(ENTITYINIT)     { return ATYPE_INTEGER; }
 
 template<typename T>
 inline AType getApiType(T *) { return ATYPE_INTEGER; }
