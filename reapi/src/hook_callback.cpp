@@ -83,6 +83,16 @@ void ClientConnected(IRehldsHook_ClientConnected* chain, IGameClient* cl)
 	callVoidForward(RH_ClientConnected, original, cl->GetId() + 1);
 }
 
+void SV_ConnectClient(IRehldsHook_SV_ConnectClient *chain)
+{
+	auto original = [chain]()
+	{
+		chain->callNext();
+	};
+
+	callVoidForward(RH_SV_ConnectClient, original);
+}
+
 void SV_EmitPings_AMXX(SV_EmitPings_t* data, IGameClient* cl)
 {
 	auto original = [data](int _cl)
