@@ -66,6 +66,7 @@ enum EngineFunc
 	*/
 	RH_ClientConnected,
 
+	/*
 	* Description:  Called when processing a 'connect' client connectionless packet.
 	* Params:       ()
 	*/
