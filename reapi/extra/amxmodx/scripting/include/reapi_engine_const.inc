@@ -55,7 +55,7 @@ enum EngineFunc
 	RH_SV_WriteFullClientUpdate,
 
 	/*
-	* Description:  -
+	* Description:  Called when processing a 'connect' client connectionless packet.
 	* Params:       ()
 	*/
 	RH_SV_ConnectClient,
