@@ -187,16 +187,16 @@ typedef IHookChain<int, enum sv_delta_s, IGameClient *, struct packet_entities_s
 typedef IHookChainRegistry<int, enum sv_delta_s, IGameClient *, struct packet_entities_s *, struct sizebuf_s *> IRehldsHookRegistry_SV_CreatePacketEntities;
 
 //SV_EmitSound2 hook
-typedef IHookChain<bool, edict_t*, IGameClient*, int, const char*, float, float, int, int, int, const float*> IRehldsHook_SV_EmitSound2;
-typedef IHookChainRegistry<bool, edict_t*, IGameClient*, int, const char*, float, float, int, int, int, const float*> IRehldsHookRegistry_SV_EmitSound2;
+typedef IHookChain<bool, edict_t *, IGameClient *, int, const char*, float, float, int, int, int, const float *> IRehldsHook_SV_EmitSound2;
+typedef IHookChainRegistry<bool, edict_t *, IGameClient *, int, const char*, float, float, int, int, int, const float *> IRehldsHookRegistry_SV_EmitSound2;
 
 //CreateFakeClient hook
-typedef IHookChain<edict_t*, const char*> IRehldsHook_CreateFakeClient;
-typedef IHookChainRegistry<edict_t*, const char*> IRehldsHookRegistry_CreateFakeClient;
+typedef IHookChain<edict_t *, const char *> IRehldsHook_CreateFakeClient;
+typedef IHookChainRegistry<edict_t *, const char*> IRehldsHookRegistry_CreateFakeClient;
 
 //SV_CheckConnectionLessRateLimits
-typedef IHookChain<bool, netadr_t&, const uint8_t*, int> IRehldsHook_SV_CheckConnectionLessRateLimits;
-typedef IHookChainRegistry<bool, netadr_t&, const uint8_t*, int> IRehldsHookRegistry_SV_CheckConnectionLessRateLimits;
+typedef IHookChain<bool, netadr_t &, const uint8_t *, int> IRehldsHook_SV_CheckConnectionLessRateLimits;
+typedef IHookChainRegistry<bool, netadr_t &, const uint8_t *, int> IRehldsHookRegistry_SV_CheckConnectionLessRateLimits;
 
 //SV_Frame hook
 typedef IVoidHookChain<> IRehldsHook_SV_Frame;
@@ -223,8 +223,8 @@ typedef IVoidHookChain<edict_t *> IRehldsHook_ED_Free;
 typedef IVoidHookChainRegistry<edict_t *> IRehldsHookRegistry_ED_Free;
 
 //Con_Printf hook
-typedef IHookChain<void, const char*> IRehldsHook_Con_Printf;
-typedef IHookChainRegistry<void, const char*> IRehldsHookRegistry_Con_Printf;
+typedef IHookChain<void, const char *> IRehldsHook_Con_Printf;
+typedef IHookChainRegistry<void, const char *> IRehldsHookRegistry_Con_Printf;
 
 class IRehldsHookchains {
 public:

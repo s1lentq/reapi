@@ -359,7 +359,7 @@ struct SV_EmitPings_args_t
 using SV_EmitPings_t = hookdata_t<IRehldsHook_SV_EmitPings *, SV_EmitPings_args_t &>;
 void SV_EmitPings_AMXX(SV_EmitPings_t *data, IGameClient *client);
 void SV_EmitPings(IRehldsHook_SV_EmitPings *chain, IGameClient *client, sizebuf_t *msg);
-void Con_Printf(IRehldsHook_Con_Printf* chain, const char* string);
+void Con_Printf(IRehldsHook_Con_Printf *chain, const char *string);
 
 // regamedll functions
 int GetForceCamera(IReGameHook_GetForceCamera *chain, CBasePlayer *pObserver);
