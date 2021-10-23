@@ -41,16 +41,16 @@ struct retval_t
 	};
 };
 
-inline AType getApiType(int)			{ return ATYPE_INTEGER; }
-inline AType getApiType(unsigned)		{ return ATYPE_INTEGER; }
-inline AType getApiType(ULONG)			{ return ATYPE_INTEGER; }
-inline AType getApiType(float)			{ return ATYPE_FLOAT; }
-inline AType getApiType(const char *)	{ return ATYPE_STRING; }
-inline AType getApiType(char[])			{ return ATYPE_STRING; }
-inline AType getApiType(CBaseEntity *)	{ return ATYPE_CLASSPTR; }
-inline AType getApiType(edict_t *)		{ return ATYPE_EDICT; }
-inline AType getApiType(entvars_t *)	{ return ATYPE_EVARS; }
-inline AType getApiType(bool)			{ return ATYPE_BOOL; }
+inline AType getApiType(int)            { return ATYPE_INTEGER; }
+inline AType getApiType(unsigned)       { return ATYPE_INTEGER; }
+inline AType getApiType(ULONG)          { return ATYPE_INTEGER; }
+inline AType getApiType(float)          { return ATYPE_FLOAT; }
+inline AType getApiType(const char *)   { return ATYPE_STRING; }
+inline AType getApiType(char[])         { return ATYPE_STRING; }
+inline AType getApiType(CBaseEntity *)  { return ATYPE_CLASSPTR; }
+inline AType getApiType(edict_t *)      { return ATYPE_EDICT; }
+inline AType getApiType(entvars_t *)    { return ATYPE_EVARS; }
+inline AType getApiType(bool)           { return ATYPE_BOOL; }
 inline AType getApiType(Vector)         { return ATYPE_VECTOR; }
 inline AType getApiType(ENTITYINIT)     { return ATYPE_INTEGER; }
 
