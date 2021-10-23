@@ -83,6 +83,24 @@ void ClientConnected(IRehldsHook_ClientConnected* chain, IGameClient* cl)
 	callVoidForward(RH_ClientConnected, original, cl->GetId() + 1);
 }
 
+void SV_EmitPings_AMXX(SV_EmitPings_t* data, IGameClient* cl)
+{
+	auto original = [data](int _cl)
+	{
+		data->m_chain->callNext(g_RehldsSvs->GetClient(_cl - 1), data->m_args.message);
+	};
+
+	callVoidForward(RH_SV_EmitPings, original, cl->GetId() + 1);
+}
+
+void SV_EmitPings(IRehldsHook_SV_EmitPings *chain, IGameClient *cl, sizebuf_t *msg)
+{
+
+	SV_EmitPings_args_t args(cl, msg);
+	SV_EmitPings_t data(chain, args);
+	SV_EmitPings_AMXX(&data, cl);
+}
+
 /*
 * ReGameDLL functions
 */

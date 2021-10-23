@@ -346,6 +346,18 @@ void SV_WriteFullClientUpdate_AMXX(SV_WriteFullClientUpdate_t *data, IGameClient
 void SV_WriteFullClientUpdate(IRehldsHook_SV_WriteFullClientUpdate *chain, IGameClient *client, char *buffer, size_t maxlen, sizebuf_t *sb, IGameClient *receiver);
 entvars_s *GetEntityInit(IRehldsHook_GetEntityInit *chain, char *classname);
 
+struct SV_EmitPings_args_t
+{
+	SV_EmitPings_args_t(IGameClient* cl, sizebuf_t *msg) : client(cl), message(msg) {}
+
+	IGameClient *client;
+	sizebuf_t* message;
+};
+
+using SV_EmitPings_t = hookdata_t<IRehldsHook_SV_EmitPings *, SV_EmitPings_args_t &>;
+void SV_EmitPings_AMXX(SV_EmitPings_t *data, IGameClient *client);
+void SV_EmitPings(IRehldsHook_SV_EmitPings *chain, IGameClient *client, sizebuf_t *msg);
+
 // regamedll functions
 int GetForceCamera(IReGameHook_GetForceCamera *chain, CBasePlayer *pObserver);
 void PlayerBlind(IReGameHook_PlayerBlind *chain, CBasePlayer *pPlayer, entvars_t *pevInflictor, entvars_t *pevAttacker, float fadeTime, float fadeHold, int alpha, Vector& color);

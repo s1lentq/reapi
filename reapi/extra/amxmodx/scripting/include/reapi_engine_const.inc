@@ -65,6 +65,12 @@ enum EngineFunc
 	* Params:       (const client)
 	*/
 	RH_ClientConnected,
+
+	/*
+	* Description:  Called when client it's in the scoreboard
+	* Params:       (const this)
+	*/
+	RH_SV_EmitPings
 };
 
 /**
