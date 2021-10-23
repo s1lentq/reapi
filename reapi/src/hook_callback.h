@@ -331,6 +331,7 @@ void SV_StartSound(IRehldsHook_SV_StartSound *chain, int recipients, edict_t *en
 void SV_DropClient(IRehldsHook_SV_DropClient *chain, IGameClient *cl, bool crash, const char *fmt);
 void SV_ActivateServer(IRehldsHook_SV_ActivateServer *chain, int runPhysics);
 void Cvar_DirectSet(IRehldsHook_Cvar_DirectSet *chain, cvar_t *var, const char *value);
+void ClientConnected(IRehldsHook_ClientConnected* chain, IGameClient* cl);
 void SV_ConnectClient(IRehldsHook_SV_ConnectClient* chain);
 
 struct SV_WriteFullClientUpdate_args_t
@@ -344,6 +345,7 @@ struct SV_WriteFullClientUpdate_args_t
 using SV_WriteFullClientUpdate_t = hookdata_t<IRehldsHook_SV_WriteFullClientUpdate *, SV_WriteFullClientUpdate_args_t &>;
 void SV_WriteFullClientUpdate_AMXX(SV_WriteFullClientUpdate_t *data, IGameClient *client, size_t buffer, IGameClient *receiver);
 void SV_WriteFullClientUpdate(IRehldsHook_SV_WriteFullClientUpdate *chain, IGameClient *client, char *buffer, size_t maxlen, sizebuf_t *sb, IGameClient *receiver);
+entvars_s *GetEntityInit(IRehldsHook_GetEntityInit *chain, char *classname);
 
 // regamedll functions
 int GetForceCamera(IReGameHook_GetForceCamera *chain, CBasePlayer *pObserver);

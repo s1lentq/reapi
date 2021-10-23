@@ -63,6 +63,26 @@ void SV_WriteFullClientUpdate(IRehldsHook_SV_WriteFullClientUpdate *chain, IGame
 	SV_WriteFullClientUpdate_AMXX(&data, client, (size_t)buffer, receiver);
 }
 
+entvars_t *GetEntityInit(IRehldsHook_GetEntityInit *chain, char *classname)
+{
+	auto original = [chain](char *_classname)
+	{
+		return (entvars_t *)chain->callNext(_classname);
+	};
+
+	return callForward<entvars_t *>(RH_GetEntityInit, original, classname);
+}
+
+void ClientConnected(IRehldsHook_ClientConnected* chain, IGameClient* cl)
+{
+	auto original = [chain](int client)
+	{
+		chain->callNext(g_RehldsSvs->GetClient(client - 1));
+	};
+
+	callVoidForward(RH_ClientConnected, original, cl->GetId() + 1);
+}
+
 void SV_ConnectClient(IRehldsHook_SV_ConnectClient *chain)
 {
 	auto original = [chain]()
