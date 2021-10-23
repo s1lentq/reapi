@@ -59,4 +59,6 @@ void RemoveOrDropItem(CBasePlayer *pPlayer, CBasePlayerItem *pItem, GiveType typ
 
 const char *getATypeStr(AType type);
 
+char *NET_AdrToString(const netadr_t& a);
+
 extern void NORETURN UTIL_SysError(const char *fmt, ...);
