@@ -187,12 +187,12 @@ typedef IHookChain<int, enum sv_delta_s, IGameClient *, struct packet_entities_s
 typedef IHookChainRegistry<int, enum sv_delta_s, IGameClient *, struct packet_entities_s *, struct sizebuf_s *> IRehldsHookRegistry_SV_CreatePacketEntities;
 
 //SV_EmitSound2 hook
-typedef IHookChain<bool, edict_t *, IGameClient *, int, const char*, float, float, int, int, int, const float *> IRehldsHook_SV_EmitSound2;
-typedef IHookChainRegistry<bool, edict_t *, IGameClient *, int, const char*, float, float, int, int, int, const float *> IRehldsHookRegistry_SV_EmitSound2;
+typedef IHookChain<bool, edict_t *, IGameClient *, int, const char *, float, float, int, int, int, const float *> IRehldsHook_SV_EmitSound2;
+typedef IHookChainRegistry<bool, edict_t *, IGameClient *, int, const char *, float, float, int, int, int, const float *> IRehldsHookRegistry_SV_EmitSound2;
 
 //CreateFakeClient hook
 typedef IHookChain<edict_t *, const char *> IRehldsHook_CreateFakeClient;
-typedef IHookChainRegistry<edict_t *, const char*> IRehldsHookRegistry_CreateFakeClient;
+typedef IHookChainRegistry<edict_t *, const char *> IRehldsHookRegistry_CreateFakeClient;
 
 //SV_CheckConnectionLessRateLimits
 typedef IHookChain<bool, netadr_t &, const uint8_t *, int> IRehldsHook_SV_CheckConnectionLessRateLimits;
@@ -203,8 +203,8 @@ typedef IVoidHookChain<> IRehldsHook_SV_Frame;
 typedef IVoidHookChainRegistry<> IRehldsHookRegistry_SV_Frame;
 
 //SV_ShouldSendConsistencyList hook
-typedef IHookChain<bool, IGameClient*, bool> IRehldsHook_SV_ShouldSendConsistencyList;
-typedef IHookChainRegistry<bool, IGameClient*, bool> IRehldsHookRegistry_SV_ShouldSendConsistencyList;
+typedef IHookChain<bool, IGameClient *, bool> IRehldsHook_SV_ShouldSendConsistencyList;
+typedef IHookChainRegistry<bool, IGameClient *, bool> IRehldsHookRegistry_SV_ShouldSendConsistencyList;
 
 //GetEntityInit hook
 typedef IHookChain<ENTITYINIT, char *> IRehldsHook_GetEntityInit;
