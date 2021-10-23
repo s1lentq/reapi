@@ -54,6 +54,7 @@ enum EngineFunc
 	*/
 	RH_SV_WriteFullClientUpdate,
 
+	/*
 	* Description:  -
 	* Params:       (const classname[])
 	*/
@@ -69,7 +70,13 @@ enum EngineFunc
 	* Description:  Called when processing a 'connect' client connectionless packet.
 	* Params:       ()
 	*/
-	RH_SV_ConnectClient
+	RH_SV_ConnectClient,
+
+	/*
+	* Description:  Called when client it's in the scoreboard
+	* Params:       (const this)
+	*/
+	RH_SV_EmitPings
 };
 
 /**
