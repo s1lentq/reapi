@@ -222,18 +222,6 @@ typedef IHookChainRegistry<edict_t *> IRehldsHookRegistry_ED_Alloc;
 typedef IVoidHookChain<edict_t *> IRehldsHook_ED_Free;
 typedef IVoidHookChainRegistry<edict_t *> IRehldsHookRegistry_ED_Free;
 
-//SV_EmitPings hook
-typedef IHookChain<void, IGameClient *, sizebuf_t *> IRehldsHook_SV_EmitPings;
-typedef IHookChainRegistry<void, IGameClient *, sizebuf_t *> IRehldsHookRegistry_SV_EmitPings;
-
-//ED_Alloc hook
-typedef IHookChain<edict_t *> IRehldsHook_ED_Alloc;
-typedef IHookChainRegistry<edict_t *> IRehldsHookRegistry_ED_Alloc;
-
-//ED_Free hook
-typedef IVoidHookChain<edict_t *> IRehldsHook_ED_Free;
-typedef IVoidHookChainRegistry<edict_t *> IRehldsHookRegistry_ED_Free;
-
 class IRehldsHookchains {
 public:
 	virtual ~IRehldsHookchains() { }
