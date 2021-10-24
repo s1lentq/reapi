@@ -76,7 +76,20 @@ enum EngineFunc
 	* Description:  Called when client it's in the scoreboard
 	* Params:       (const this)
 	*/
-	RH_SV_EmitPings
+	RH_SV_EmitPings,
+	
+	/*
+	* Description:  Called when an entity is created.
+	* Return type:  Edict * (Entity index)
+	* Params:       ()
+	*/
+	RH_ED_Alloc,
+
+	/*
+	* Description:  Called when an entity is removed (freed from server).
+	* Params:       (const entity)
+	*/
+	RH_ED_Free,
 };
 
 /**
