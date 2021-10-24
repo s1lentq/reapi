@@ -63,14 +63,14 @@ void SV_WriteFullClientUpdate(IRehldsHook_SV_WriteFullClientUpdate *chain, IGame
 	SV_WriteFullClientUpdate_AMXX(&data, client, (size_t)buffer, receiver);
 }
 
-entvars_t *GetEntityInit(IRehldsHook_GetEntityInit *chain, char *classname)
+ENTITYINIT GetEntityInit(IRehldsHook_GetEntityInit *chain, char *classname)
 {
 	auto original = [chain](char *_classname)
 	{
-		return (entvars_t *)chain->callNext(_classname);
+		return chain->callNext(_classname);
 	};
 
-	return callForward<entvars_t *>(RH_GetEntityInit, original, classname);
+	return callForward<ENTITYINIT>(RH_GetEntityInit, original, classname);
 }
 
 void ClientConnected(IRehldsHook_ClientConnected* chain, IGameClient* cl)
@@ -81,6 +81,34 @@ void ClientConnected(IRehldsHook_ClientConnected* chain, IGameClient* cl)
 	};
 
 	callVoidForward(RH_ClientConnected, original, cl->GetId() + 1);
+}
+
+void SV_ConnectClient(IRehldsHook_SV_ConnectClient *chain)
+{
+	auto original = [chain]()
+	{
+		chain->callNext();
+	};
+
+	callVoidForward(RH_SV_ConnectClient, original);
+}
+
+void SV_EmitPings_AMXX(SV_EmitPings_t* data, IGameClient* cl)
+{
+	auto original = [data](int _cl)
+	{
+		data->m_chain->callNext(g_RehldsSvs->GetClient(_cl - 1), data->m_args.message);
+	};
+
+	callVoidForward(RH_SV_EmitPings, original, cl->GetId() + 1);
+}
+
+void SV_EmitPings(IRehldsHook_SV_EmitPings *chain, IGameClient *cl, sizebuf_t *msg)
+{
+
+	SV_EmitPings_args_t args(cl, msg);
+	SV_EmitPings_t data(chain, args);
+	SV_EmitPings_AMXX(&data, cl);
 }
 
 edict_t *ED_Alloc(IRehldsHook_ED_Alloc* chain)
