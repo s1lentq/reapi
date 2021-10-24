@@ -121,6 +121,26 @@ void SV_EmitPings(IRehldsHook_SV_EmitPings *chain, IGameClient *cl, sizebuf_t *m
 	SV_EmitPings_AMXX(&data, cl);
 }
 
+edict_t *ED_Alloc(IRehldsHook_ED_Alloc* chain)
+{
+	auto original = [chain]()
+	{
+		return indexOfEdict(chain->callNext());
+	};
+
+	return edictByIndexAmx(callForward<size_t>(RH_ED_Alloc, original));
+}
+
+void ED_Free(IRehldsHook_ED_Free* chain, edict_t *entity)
+{
+	auto original = [chain](int _entity)
+	{
+		chain->callNext(edictByIndexAmx(_entity));
+	};
+
+	callVoidForward(RH_ED_Free, original, indexOfEdict(entity));
+}
+
 /*
 * ReGameDLL functions
 */

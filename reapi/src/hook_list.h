@@ -102,8 +102,10 @@ enum EngineFunc
 	RH_ClientConnected,
 	RH_SV_ConnectClient,
 	RH_SV_EmitPings,
+	RH_ED_Alloc,
+	RH_ED_Free,
 	RH_Con_Printf
-	
+    
 	// [...]
 };
 
