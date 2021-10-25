@@ -63,6 +63,16 @@ void SV_WriteFullClientUpdate(IRehldsHook_SV_WriteFullClientUpdate *chain, IGame
 	SV_WriteFullClientUpdate_AMXX(&data, client, (size_t)buffer, receiver);
 }
 
+void Con_Printf(IRehldsHook_Con_Printf *chain, const char *string)
+{
+	auto original = [chain](const char *_string)
+	{
+		chain->callNext(_string);
+	};
+
+	callVoidForward(RH_Con_Printf, original, string);
+}
+
 ENTITYINIT GetEntityInit(IRehldsHook_GetEntityInit *chain, char *classname)
 {
 	auto original = [chain](char *_classname)
