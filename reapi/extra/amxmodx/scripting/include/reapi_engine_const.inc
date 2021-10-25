@@ -77,7 +77,6 @@ enum EngineFunc
 	* Params:       (const this)
 	*/
 	RH_SV_EmitPings,
-  
 	/*
 	* Description:  Called when an entity is created.
 	* Return type:  Edict * (Entity index)
@@ -95,7 +94,7 @@ enum EngineFunc
 	* Description:  -
 	* Params:       (const string[])
 	*/
-	RH_Con_Printf
+	RH_Con_Printf,
 };
 
 /**
