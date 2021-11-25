@@ -1258,7 +1258,7 @@ cell AMX_NATIVE_CALL rg_give_defusekit(AMX *amx, cell *params)
 		return FALSE;
 	}
 	
-	if (pPlayer->m_iTeam != TEAM_CT) {
+	if (pPlayer->m_iTeam != CT) {
 		return FALSE;
 	}
 
