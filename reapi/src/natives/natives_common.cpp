@@ -151,6 +151,7 @@ cell AMX_NATIVE_CALL amx_get_key_value(AMX *amx, cell *params)
 * @param value      Value to set
 *
 * @noreturn
+* @error            If invalid buffer handler provided, an error will be thrown.
 *
 * native set_key_value(const &pbuffer, const key[], const value[]);
 */
