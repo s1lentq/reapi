@@ -39,7 +39,7 @@ native any:get_ucmd(const ucmd, const UCmd:var, any:...);
 * @param maxlen     Maximum size of the buffer
 *
 * @return           Number of cells written to buffer
-* @error            If invalid buffer handler provided
+* @error            If invalid buffer handler provided, an error will be thrown.
 */
 native get_key_value(const pbuffer, const key[], const value[], const maxlen);
 
@@ -51,6 +51,7 @@ native get_key_value(const pbuffer, const key[], const value[], const maxlen);
 * @param value      Value to set
 *
 * @noreturn
+* @error            If invalid buffer handler provided, an error will be thrown.
 */
 native set_key_value(const pbuffer, const key[], const value[]);
 
