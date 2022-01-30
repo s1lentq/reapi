@@ -40,6 +40,18 @@ native REU_GetProtocol(const index);
 native client_auth_type:REU_GetAuthtype(const index);
 
 /*
+* Get client authkey
+*
+* @param index  Client index
+* @param index  Buffer to copy the authkey
+* @param index  Maximum buffer size
+*
+* @return       Number of cells copied to buffer
+*
+*/
+native REU_GetAuthKey(const index, dest[], maxlen);
+
+/*
 * Check if the client is running RevEmu with limited user rights.
 *
 * @param index  Client index
