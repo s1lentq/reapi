@@ -338,12 +338,15 @@ native rg_multidmg_add(const inflictor, const victim, const Float:flDamage, cons
 * @param iTracerFreq        Tracer frequency
 * @param iDamage            Damage amount
 *
+* @note: This native doesn't create a decal effect
+* @note: Decal creation is handled by PlaybackEvent, including shot animation and shot sound
+*
 * @noreturn
 */
 native rg_fire_bullets(const inflictor, const attacker, const shots, Float:vecSrc[3], Float:vecDirShooting[3], Float:vecSpread[3], const Float:flDistance, const Bullet:iBulletType, const iTracerFreq, const iDamage);
 
 /*
-* Fires buckshots from entity.
+* Fires buckshots from entity (used at XM1014 and M3 weapons).
 *
 * @param inflictor          Inflictor is the entity that caused the damage (such as a gun)
 * @param attacker           Attacker is the entity that triggered the damage (such as the gun's owner)
@@ -354,6 +357,9 @@ native rg_fire_bullets(const inflictor, const attacker, const shots, Float:vecSr
 * @param flDistance         Max shot distance
 * @param iTracerFreq        Tracer frequency
 * @param iDamage            Damage amount
+*
+* @note: This native doesn't create a decal effect
+* @note: Decal creation is handled by PlaybackEvent, including shot animation and shot sound
 *
 * @noreturn
 */
@@ -374,6 +380,9 @@ native rg_fire_buckshots(const inflictor, const attacker, const shots, Float:vec
 * @param flRangeModifier    Damage range modifier
 * @param bPistol            Pistol shot
 * @param shared_rand        Use player's random seed, get circular gaussian spread
+*
+* @note: This native doesn't create a decal effect
+* @note: Decal creation is handled by PlaybackEvent, including shot animation and shot sound
 *
 * @return Float:[3]         The spread result
 */
