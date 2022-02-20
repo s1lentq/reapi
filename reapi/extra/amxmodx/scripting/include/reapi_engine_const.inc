@@ -95,6 +95,12 @@ enum EngineFunc
 	* Params:       (const string[])
 	*/
 	RH_Con_Printf,
+	
+	/*
+	* Description:  -
+	* Params:        (adr[], userinfo[], bool:reconnect, reconnectSlot, name[])
+	*/
+	RH_SV_CheckUserInfo,
 };
 
 /**

@@ -334,6 +334,7 @@ void SV_ActivateServer(IRehldsHook_SV_ActivateServer *chain, int runPhysics);
 void Cvar_DirectSet(IRehldsHook_Cvar_DirectSet *chain, cvar_t *var, const char *value);
 void ClientConnected(IRehldsHook_ClientConnected* chain, IGameClient* cl);
 void SV_ConnectClient(IRehldsHook_SV_ConnectClient* chain);
+int SV_CheckUserInfo(IRehldsHook_SV_CheckUserInfo* chain, netadr_t *adr, char *userinfo, qboolean bIsReconnecting, int iReconnectSlot, char *name);
 
 struct SV_WriteFullClientUpdate_args_t
 {

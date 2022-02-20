@@ -105,6 +105,7 @@ enum EngineFunc
 	RH_ED_Alloc,
 	RH_ED_Free,
 	RH_Con_Printf,
+	RH_SV_CheckUserInfo,
     
 	// [...]
 };
