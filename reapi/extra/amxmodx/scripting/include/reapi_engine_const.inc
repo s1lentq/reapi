@@ -98,8 +98,8 @@ enum EngineFunc
 	
 	/*
 	* Description:  -
-	* Note:			 Param adr is unused, guaranteed to return nothing.
-	* Note 2:		 In order for param name work, hook needs to be registered as Post.
+	* @note			 Param adr is unused, guaranteed to return nothing.
+	* @note		 	 In order for param name work, hook needs to be registered as Post.
 	* Params:        (adr, userinfo[], bool:reconnect, reconnectSlot, name[])
 	*/
 	RH_SV_CheckUserInfo,
