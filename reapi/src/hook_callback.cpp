@@ -147,7 +147,7 @@ int SV_CheckUserInfo(IRehldsHook_SV_CheckUserInfo *chain, netadr_t *adr, char *u
 		return chain->callNext(_adr, _userinfo, _bIsReconnecting, _iReconnectSlot, _name);
 	};
 
-	return callForward<int>(RH_SV_CheckUserInfo, original, adr, userinfo, bIsReconnecting, iReconnectSlot, name);
+	return callForward<int>(RH_SV_CheckUserInfo, original, netadrToChar(adr), userinfo, bIsReconnecting, iReconnectSlot, name);
 }
 
 /*
