@@ -91,16 +91,17 @@ enum EngineFunc
 	RH_ED_Free,
 
 	/*
-	* Description:  -
+	* Description:  Called when a message is being sent to the server's console.
 	* Params:       (const string[])
 	*/
 	RH_Con_Printf,
 	
 	/*
-	* Description:  -
-	* @note			 Param adr is unused, guaranteed to return nothing.
-	* @note		 	 In order for param name work, hook needs to be registered as Post.
+	* Description:   Called when a player's userinfo is being checked.
 	* Params:        (adr, userinfo[], bool:reconnect, reconnectSlot, name[])
+	*
+	* @note			 Param adr is unused, guaranteed to return nothing also, don't send anything through it.
+	* @note		 	 In order for param name work, hook needs to be registered as Post.
 	*/
 	RH_SV_CheckUserInfo,
 };
