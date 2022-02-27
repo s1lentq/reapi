@@ -133,18 +133,6 @@ inline T get_member_direct(edict_t *pEntity, int offset, int element = 0, int si
 	return get_member_direct<T>(pEntity->pvPrivateData, offset, element, size);
 }
 
-inline netadr_t* netadrToChar(const netadr_t *adr)
-{
-	char* address[64] = nullptr;
-
-	if(likely(adr != nullptr))
-	{
-		Q_memset(address, 0, sizeof(address));
-		address = NET_AdrToString(*adr);
-	}
-	return address;
-}
-
 class CTempStrings
 {
 public:

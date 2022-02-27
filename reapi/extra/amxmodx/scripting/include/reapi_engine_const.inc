@@ -98,7 +98,8 @@ enum EngineFunc
 	
 	/*
 	* Description:  -
-	* Params:        (adr[], userinfo[], bool:reconnect, reconnectSlot, name[])
+	* Note:			 Param adr is unused, guaranteed to return nothing.
+	* Params:        (adr, userinfo[], bool:reconnect, reconnectSlot, name[])
 	*/
 	RH_SV_CheckUserInfo,
 };
