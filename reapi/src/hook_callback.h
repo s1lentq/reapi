@@ -362,7 +362,7 @@ void SV_EmitPings_AMXX(SV_EmitPings_t *data, IGameClient *client);
 void SV_EmitPings(IRehldsHook_SV_EmitPings *chain, IGameClient *client, sizebuf_t *msg);
 void Con_Printf(IRehldsHook_Con_Printf *chain, const char *string);
 int PF_precache_generic_I(IRehldsHook_PF_precache_generic_I *chain, const char *s);
-int PF_precache_model_I(IRehldsHook_PF_precache_model_I *chain, const char *s);
+int PF_precache_model_I(IRehldsHook_PF_precache_model_I *chain, char *s);
 int PF_precache_sound_I(IRehldsHook_PF_precache_sound_I *chain, const char *s);
 
 edict_t *ED_Alloc(IRehldsHook_ED_Alloc* chain);
