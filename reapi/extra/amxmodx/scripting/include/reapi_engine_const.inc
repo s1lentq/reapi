@@ -95,7 +95,7 @@ enum EngineFunc
 	* Params:       (const string[])
 	*/
 	RH_Con_Printf,
-  
+
 	* Description:   Called when a player's userinfo is being checked.
 	* Params:        (adr, userinfo[], bool:reconnect, reconnectSlot, name[])
 	*
@@ -121,7 +121,6 @@ enum EngineFunc
 	* Params:       (const string[])
 	*/
 	RH_PF_precache_sound_I,
-	
 };
 
 /**
