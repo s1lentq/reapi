@@ -106,18 +106,21 @@ enum EngineFunc
   
 	/*
 	* Description:  Called when a generic resource is being added to generic precache list.
+	* Return type:  int
 	* Params:       (const string[])
 	*/
 	RH_PF_precache_generic_I,
 	
 	/*
 	* Description:  Called when a model is being added to model precache list.
+	* Return type:  int
 	* Params:       (const string[])
 	*/
 	RH_PF_precache_model_I,
 	
 	/*
 	* Description:  Called when a sound is being added to sound precache list.
+	* Return type:  int
 	* Params:       (const string[])
 	*/
 	RH_PF_precache_sound_I,
