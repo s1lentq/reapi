@@ -17,6 +17,7 @@ enum MapNameType
 * For RH_SV_AddResource hook
 */
 enum ResourceType
+{
 	t_sound = 0,
 	t_skin,
 	t_model,
