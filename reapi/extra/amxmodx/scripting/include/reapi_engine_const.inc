@@ -16,7 +16,7 @@ enum MapNameType
 /*
 * For RH_SV_AddResource hook
 */
-enum ResourceType
+enum ResourceType_t
 {
 	t_sound = 0,
 	t_skin,
@@ -152,7 +152,7 @@ enum EngineFunc
 	
 	/*
 	* Description:  Called when a resource is being added to resource list.
-	* Params:       (ResourceType:type, const filename[], size, flags, index)
+	* Params:       (ResourceType_t:type, const filename[], size, flags, index)
 	*/
 	RH_SV_AddResource,
 };
