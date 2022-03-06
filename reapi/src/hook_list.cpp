@@ -20,6 +20,7 @@ inline size_t getFwdParamType(void(*)(float&))                  { return FP_FLOA
 inline size_t getFwdParamType(void(*)(const char *))            { return FP_STRING; }
 inline size_t getFwdParamType(void(*)(char *))                  { return FP_STRING; }
 inline size_t getFwdParamType(void(*)(IResourceBuffer*))        { return FP_CELL;   }
+inline size_t getFwdParamType(void(*)(resourcetype_t))          { return FP_CELL;   }
 
 template <typename T>
 inline size_t getFwdParamType(void(*)(T *))                     { return FP_CELL;   }
