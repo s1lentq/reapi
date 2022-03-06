@@ -242,6 +242,14 @@ typedef IHookChainRegistry<int, char*> IRehldsHookRegistry_PF_precache_model_I;
 typedef IHookChain<int, const char*> IRehldsHook_PF_precache_sound_I;
 typedef IHookChainRegistry<int, const char*> IRehldsHookRegistry_PF_precache_sound_I;
 
+//EV_Precache hook
+typedef IHookChain<unsigned short, int, const char *> IRehldsHook_EV_Precache;
+typedef IHookChainRegistry<unsigned short, int, const char *> IRehldsHookRegistry_EV_Precache;
+
+//SV_AddResource hook
+typedef IVoidHookChain<resourcetype_t, const char *, int, unsigned char, int> IRehldsHook_SV_AddResource;
+typedef IVoidHookChainRegistry<resourcetype_t, const char *, int, unsigned char, int> IRehldsHookRegistry_SV_AddResource;
+
 class IRehldsHookchains {
 public:
 	virtual ~IRehldsHookchains() { }
@@ -297,6 +305,8 @@ public:
 	virtual IRehldsHookRegistry_PF_precache_generic_I* PF_precache_generic_I() = 0;
 	virtual IRehldsHookRegistry_PF_precache_model_I* PF_precache_model_I() = 0;
 	virtual IRehldsHookRegistry_PF_precache_sound_I* PF_precache_sound_I() = 0;
+	virtual IRehldsHookRegistry_EV_Precache* EV_Precache() = 0;
+	virtual IRehldsHookRegistry_SV_AddResource* SV_AddResource() = 0;
 };
 
 struct RehldsFuncs_t {

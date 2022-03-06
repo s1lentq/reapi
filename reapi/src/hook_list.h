@@ -109,6 +109,8 @@ enum EngineFunc
 	RH_PF_precache_generic_I,
 	RH_PF_precache_model_I,
 	RH_PF_precache_sound_I,
+	RH_EV_Precache,
+	RH_SV_AddResource,
     
 	// [...]
 };

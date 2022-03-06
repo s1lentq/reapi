@@ -180,6 +180,26 @@ int PF_precache_sound_I(IRehldsHook_PF_precache_sound_I *chain, const char *s)
 	return callForward<int>(RH_PF_precache_sound_I, original, s);
 }
 
+unsigned short EV_Precache(IRehldsHook_EV_Precache *chain, int type, const char *psz)
+{
+	auto original = [chain](int _type, const char *_psz)
+	{
+		return chain->callNext(_type, _psz);
+	};
+
+	return callForward<int>(RH_EV_Precache, original, type, psz);
+}
+
+void SV_AddResource(IRehldsHook_SV_AddResource *chain, resourcetype_t type, const char *name, int size, unsigned char flags, int index)
+{
+	auto original = [chain](resourcetype_t _type, const char *_name, int _size, unsigned char _flags, int _index)
+	{
+		chain->callNext(_type, _name, _size, _flags, _index);
+	};
+
+	callVoidForward(RH_SV_AddResource, original, type, name, size, flags, index);
+}
+
 /*
 * ReGameDLL functions
 */

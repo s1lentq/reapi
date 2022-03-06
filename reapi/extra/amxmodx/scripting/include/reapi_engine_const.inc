@@ -13,6 +13,22 @@ enum MapNameType
 	MNT_SET     // return the name of the current map
 };
 
+/*
+* For RH_SV_AddResource hook
+*/
+enum ResourceType
+	t_sound = 0,
+	t_skin,
+	t_model,
+	t_decal,
+	t_generic,
+	t_eventscript,
+	t_world,		// Fake type for world, is really t_model
+	rt_unk,
+
+	rt_max
+};
+
 /**
 * rh_emit_sound2 flags
 */
@@ -125,6 +141,19 @@ enum EngineFunc
 	* Params:       (const string[])
 	*/
 	RH_PF_precache_sound_I,
+	
+	/*
+	* Description:  Called when an event is being added to event precache list.
+	* Return type:  int
+	* Params:       (type, const string[])
+	*/
+	RH_EV_Precache,
+	
+	/*
+	* Description:  Called when a resource is being added to resource list.
+	* Params:       (ResourceType:type, const filename[], size, flags, index)
+	*/
+	RH_SV_AddResource,
 };
 
 /**

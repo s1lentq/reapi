@@ -364,7 +364,8 @@ void Con_Printf(IRehldsHook_Con_Printf *chain, const char *string);
 int PF_precache_generic_I(IRehldsHook_PF_precache_generic_I *chain, const char *s);
 int PF_precache_model_I(IRehldsHook_PF_precache_model_I *chain, char *s);
 int PF_precache_sound_I(IRehldsHook_PF_precache_sound_I *chain, const char *s);
-
+unsigned short EV_Precache(int type, const char *psz)
+void SV_AddResource(resourcetype_t type, const char *name, int size, unsigned char flags, int index)
 edict_t *ED_Alloc(IRehldsHook_ED_Alloc* chain);
 void ED_Free(IRehldsHook_ED_Free* chain, edict_t *entity);
 
