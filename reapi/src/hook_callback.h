@@ -368,6 +368,7 @@ unsigned short EV_Precache(IRehldsHook_EV_Precache *chain, int type, const char 
 void SV_AddResource(IRehldsHook_SV_AddResource *chain, resourcetype_t type, const char *name, int size, unsigned char flags, int index);
 edict_t *ED_Alloc(IRehldsHook_ED_Alloc* chain);
 void ED_Free(IRehldsHook_ED_Free* chain, edict_t *entity);
+void SV_ClientPrintf(IRehldsHook_SV_ClientPrintf* chain, const char *string);
 
 // regamedll functions
 int GetForceCamera(IReGameHook_GetForceCamera *chain, CBasePlayer *pObserver);

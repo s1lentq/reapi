@@ -155,6 +155,13 @@ enum EngineFunc
 	* Params:       (ResourceType_t:type, const filename[], size, flags, index)
 	*/
 	RH_SV_AddResource,
+	
+	/*
+	* Description:  Called when message is being printed to client console.
+	* Params:       (const string[])
+	*/
+	RH_SV_ClientPrintf,
+
 };
 
 /**

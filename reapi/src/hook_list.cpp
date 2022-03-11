@@ -102,6 +102,7 @@ hook_t hooklist_engine[] = {
 	ENG(PF_precache_sound_I),
 	ENG(EV_Precache),
 	ENG(SV_AddResource),
+	ENG(SV_ClientPrintf),
 
 };
 

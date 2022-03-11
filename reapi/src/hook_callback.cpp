@@ -200,6 +200,16 @@ void SV_AddResource(IRehldsHook_SV_AddResource *chain, resourcetype_t type, cons
 	callVoidForward(RH_SV_AddResource, original, type, name, size, flags, index);
 }
 
+void SV_ClientPrintf(IRehldsHook_SV_ClientPrintf *chain, const char *string)
+{
+	auto original = [chain](const char *_string)
+	{
+		chain->callNext(_string);
+	};
+
+	callVoidForward(RH_SV_ClientPrintf, original, string);
+}
+
 /*
 * ReGameDLL functions
 */
