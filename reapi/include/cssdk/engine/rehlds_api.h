@@ -247,12 +247,12 @@ typedef IHookChain<unsigned short, int, const char *> IRehldsHook_EV_Precache;
 typedef IHookChainRegistry<unsigned short, int, const char *> IRehldsHookRegistry_EV_Precache;
 
 //SV_AddResource hook
-typedef IHookChain<void, resourcetype_t, const char *, int, unsigned char, int> IRehldsHook_SV_AddResource;
-typedef IHookChainRegistry<void, resourcetype_t, const char *, int, unsigned char, int> IRehldsHookRegistry_SV_AddResource;
+typedef IVoidHookChain<resourcetype_t, const char *, int, unsigned char, int> IRehldsHook_SV_AddResource;
+typedef IVoidHookChainRegistry<resourcetype_t, const char *, int, unsigned char, int> IRehldsHookRegistry_SV_AddResource;
 
 //SV_ClientPrintf hook
-typedef IHookChain<void, const char *> IRehldsHook_SV_ClientPrintf;
-typedef IHookChainRegistry<void, const char *> IRehldsHookRegistry_SV_ClientPrintf;
+typedef IVoidHookChain<const char *> IRehldsHook_SV_ClientPrintf;
+typedef IVoidHookChainRegistry<const char *> IRehldsHookRegistry_SV_ClientPrintf;
 
 class IRehldsHookchains {
 public:
