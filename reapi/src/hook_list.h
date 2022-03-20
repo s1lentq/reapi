@@ -235,6 +235,7 @@ enum GamedllFunc_CBasePlayerWeapon
 	RG_CBasePlayerWeapon_DefaultDeploy,
 	RG_CBasePlayerWeapon_DefaultReload,
 	RG_CBasePlayerWeapon_DefaultShotgunReload,
+	RG_CBasePlayerWeapon_KickBack,
 
 	// [...]
 };

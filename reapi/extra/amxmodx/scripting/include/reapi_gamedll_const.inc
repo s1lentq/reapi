@@ -855,6 +855,13 @@ enum GamedllFunc_CBasePlayerWeapon
 	* Params:           (const this, iAnim, iStartAnim, Float:fDelay, Float:fStartDelay, const pszReloadSound1[], const pszReloadSound2[])
 	*/
 	RG_CBasePlayerWeapon_DefaultShotgunReload,
+	
+	/*
+	* Description:      -
+	* Return type:      void
+	* Params:           (Float:up_base, Float:lateral_base, Float:up_modifier, Float:lateral_modifier, Float:p_max,  Float:lateral_max, direction_change)
+	*/
+	RG_CBasePlayerWeapon_KickBack,
 };
 
 /**
