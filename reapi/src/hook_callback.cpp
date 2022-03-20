@@ -737,7 +737,7 @@ void CBasePlayerWeapon_KickBack(IReGameHook_CBasePlayerWeapon_KickBack *chain, C
 		return chain->callNext(getPrivate<CBasePlayerWeapon>(_pthis), _up_base, _lateral_base, _up_modifier, _lateral_modifier, _up_max, _lateral_max, _direction_change);
 	};
 
-	callVoidForward(RG_CBasePlayerWeapon_KickBack, original, indexOfEdict(pthis->pev), float up_base, float lateral_base, float up_modifier, float lateral_modifier, float up_max, float lateral_max, int direction_change);
+	callVoidForward(RG_CBasePlayerWeapon_KickBack, original, indexOfEdict(pthis->pev), up_base, lateral_base, up_modifier, lateral_modifier, up_max, lateral_max, direction_change);
 }
 
 int GetForceCamera(IReGameHook_GetForceCamera *chain, CBasePlayer *pObserver)
