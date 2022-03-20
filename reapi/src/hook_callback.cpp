@@ -734,7 +734,7 @@ void CBasePlayerWeapon_KickBack(IReGameHook_CBasePlayerWeapon_KickBack *chain, C
 {
 	auto original = [chain](int _pthis, float _up_base, float _lateral_base, float _up_modifier, float _lateral_modifier, float _up_max, float _lateral_max, int _direction_change)
 	{
-		return chain->callNext(getPrivate<CBasePlayerWeapon>(_pthis), _up_base, _lateral_base, _up_modifier, _lateral_modifier, _up_max, _lateral_max, _direction_change);
+		chain->callNext(getPrivate<CBasePlayerWeapon>(_pthis), _up_base, _lateral_base, _up_modifier, _lateral_modifier, _up_max, _lateral_max, _direction_change);
 	};
 
 	callVoidForward(RG_CBasePlayerWeapon_KickBack, original, indexOfEdict(pthis->pev), up_base, lateral_base, up_modifier, lateral_modifier, up_max, lateral_max, direction_change);
