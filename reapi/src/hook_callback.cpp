@@ -803,6 +803,23 @@ void PM_AirMove(IReGameHook_PM_AirMove *chain, int playerIndex)
 	callVoidForward(RG_PM_AirMove, original, playerIndex);
 }
 
+void PM_LadderMove_AMXX(Phys_T *data, int playerIndex)
+{
+	auto original = [data](int _playerIndex)
+	{
+		data->m_chain->callNext(data->m_args.pLadder);
+	};
+
+	callVoidForward(RG_PM_LadderMove, original, playerIndex);
+}
+
+void PM_LadderMove(IReGameHook_PM_LadderMove *chain, physent_t *pLadder)
+{
+	PM_LadderMove_args_t args(pLadder);
+	Phys_T data(chain, args);
+	PM_LadderMove_AMXX(&data, pLadder-> player + 1);
+}
+
 BOOL CSGameRules_FShouldSwitchWeapon(IReGameHook_CSGameRules_FShouldSwitchWeapon *chain, CBasePlayer *pPlayer, CBasePlayerItem *pWeapon)
 {
 	auto original = [chain](int _pPlayer, int _pWeapon)

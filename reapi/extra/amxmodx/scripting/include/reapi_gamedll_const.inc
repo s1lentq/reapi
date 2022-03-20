@@ -400,6 +400,12 @@ enum GamedllFunc
 	* Params:           (pevVictim, cGibs, human)
 	*/
 	RG_SpawnRandomGibs,
+	
+	/*
+	* Description:      Called when a player is on a ladder.
+	* Params:           (const playerIndex)
+	*/
+	RG_PM_LadderMove,
 };
 
 /**
