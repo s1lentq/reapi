@@ -857,9 +857,9 @@ enum GamedllFunc_CBasePlayerWeapon
 	RG_CBasePlayerWeapon_DefaultShotgunReload,
 	
 	/*
-	* Description:      -
+	* Description:      Called when a weapon bullet knocks an enemy.
 	* Return type:      void
-	* Params:           (Float:up_base, Float:lateral_base, Float:up_modifier, Float:lateral_modifier, Float:p_max,  Float:lateral_max, direction_change)
+	* Params:           (const this, Float:up_base, Float:lateral_base, Float:up_modifier, Float:lateral_modifier, Float:p_max,  Float:lateral_max, direction_change)
 	*/
 	RG_CBasePlayerWeapon_KickBack,
 };
