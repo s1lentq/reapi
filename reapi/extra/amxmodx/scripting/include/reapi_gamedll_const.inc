@@ -857,7 +857,7 @@ enum GamedllFunc_CBasePlayerWeapon
 	RG_CBasePlayerWeapon_DefaultShotgunReload,
 	
 	/*
-	* Description:      Called when a weapon is modifying punchangles of player ( X and Y axis ).
+	* Description:      Called when a weapon is modifying punchangles of attacker ( X and Y axis ).
 	* Return type:      void
 	* Params:           (const this, Float:up_base, Float:lateral_base, Float:up_modifier, Float:lateral_modifier, Float:p_max,  Float:lateral_max, direction_change)
 	*/
