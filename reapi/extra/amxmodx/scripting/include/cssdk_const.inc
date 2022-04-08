@@ -900,7 +900,7 @@ enum WeaponIdType
 */
 enum TimeBasedDamage
 {
-	ITDB_PRALYZE,
+	ITDB_PARALYZE,
 	ITDB_NERVEGAS,
 	ITDB_POISON,
 	ITDB_RADIATION,
