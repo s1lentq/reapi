@@ -2767,7 +2767,7 @@ cell AMX_NATIVE_CALL rh_get_client_connect_time(AMX *amx, cell *params)
 		return FALSE;
 	}
 	
-	return (cell)pClient->netchan.connect_time;
+	return (cell)(g_RehldsFuncs->GetRealTime() - pClient->netchan.connect_time);
 }
 
 AMX_NATIVE_INFO Misc_Natives_RH[] =
