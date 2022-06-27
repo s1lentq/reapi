@@ -2745,6 +2745,31 @@ cell AMX_NATIVE_CALL rh_get_net_from(AMX* amx, cell* params)
 	return TRUE;
 }
 
+/*
+* Returns client's netchan playing time in seconds.
+*
+* @param index     Client index
+*
+* @return          Netchan connection time in seconds or 0 if client index is invalid or client is not connected
+*
+* native rh_get_client_connect_time(const index);
+*/
+cell AMX_NATIVE_CALL rh_get_client_connect_time(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index };
+
+	CHECK_ISPLAYER(arg_index);
+
+	client_t *pClient = clientOfIndex(params[arg_index]);
+	if (unlikely(pClient == nullptr || !(pClient->active | pClient->spawned | pClient->connected)))
+	{
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
+		return FALSE;
+	}
+	
+	return (cell)pClient->netchan.connect_time;
+}
+
 AMX_NATIVE_INFO Misc_Natives_RH[] =
 {
 	{ "rh_set_mapname",      rh_set_mapname      },
@@ -2754,6 +2779,8 @@ AMX_NATIVE_INFO Misc_Natives_RH[] =
 	{ "rh_update_user_info", rh_update_user_info },
 	{ "rh_drop_client",      rh_drop_client      },
 	{ "rh_get_net_from",     rh_get_net_from     },
+
+	{ "rh_get_client_connect_time", rh_get_client_connect_time },
 
 	{ nullptr, nullptr }
 };
