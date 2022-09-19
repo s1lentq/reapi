@@ -180,14 +180,21 @@ int PF_precache_sound_I(IRehldsHook_PF_precache_sound_I *chain, const char *s)
 	return callForward<int>(RH_PF_precache_sound_I, original, s);
 }
 
-unsigned short EV_Precache(IRehldsHook_EV_Precache *chain, int type, const char *psz)
+unsigned short EV_Precache_AMXX(EventPrecache_t *data, const char *psz)
 {
-	auto original = [chain](int _type, const char *_psz)
+	auto original = [data](const char *_psz)
 	{
-		return chain->callNext(_type, _psz);
+		return data->m_chain->callNext(data->m_args.type, _psz);
 	};
 
-	return callForward<int>(RH_EV_Precache, original, type, psz);
+	return callForward<unsigned short>(RH_EV_Precache, original, psz);
+}
+
+unsigned short EV_Precache(IRehldsHook_EV_Precache *chain, int type, const char *psz)
+{
+	EventPrecache_args_t args(type);
+	EventPrecache_t data(chain, args);
+	return EV_Precache_AMXX(&data, psz);
 }
 
 void SV_AddResource(IRehldsHook_SV_AddResource *chain, resourcetype_t type, const char *name, int size, unsigned char flags, int index)

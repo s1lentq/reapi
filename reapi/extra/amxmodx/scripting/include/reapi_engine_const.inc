@@ -146,7 +146,7 @@ enum EngineFunc
 	/*
 	* Description:  Called when an event is being added to event precache list.
 	* Return type:  int
-	* Params:       (type, const string[])
+	* Params:       (const string[])
 	*/
 	RH_EV_Precache,
 	
