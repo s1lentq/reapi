@@ -24,7 +24,7 @@
 // Customization
 // passed to pfnPlayerCustomization
 // For automatic downloading.
-enum resourcetype_t
+typedef enum
 {
 	t_sound = 0,
 	t_skin,
@@ -36,7 +36,8 @@ enum resourcetype_t
 	rt_unk,
 
 	rt_max
-};
+} resourcetype_t;
+
 
 typedef struct
 {
