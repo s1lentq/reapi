@@ -105,6 +105,13 @@ enum EngineFunc
 	RH_ED_Alloc,
 	RH_ED_Free,
 	RH_Con_Printf,
+	RH_SV_CheckUserInfo,
+	RH_PF_precache_generic_I,
+	RH_PF_precache_model_I,
+	RH_PF_precache_sound_I,
+	RH_EV_Precache,
+	RH_SV_AddResource,
+	RH_SV_ClientPrintf,
     
 	// [...]
 };

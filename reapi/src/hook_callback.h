@@ -334,6 +334,7 @@ void SV_ActivateServer(IRehldsHook_SV_ActivateServer *chain, int runPhysics);
 void Cvar_DirectSet(IRehldsHook_Cvar_DirectSet *chain, cvar_t *var, const char *value);
 void ClientConnected(IRehldsHook_ClientConnected* chain, IGameClient* cl);
 void SV_ConnectClient(IRehldsHook_SV_ConnectClient* chain);
+int SV_CheckUserInfo(IRehldsHook_SV_CheckUserInfo* chain, netadr_t *adr, char *userinfo, qboolean bIsReconnecting, int iReconnectSlot, char *name);
 
 struct SV_WriteFullClientUpdate_args_t
 {
@@ -360,9 +361,23 @@ using SV_EmitPings_t = hookdata_t<IRehldsHook_SV_EmitPings *, SV_EmitPings_args_
 void SV_EmitPings_AMXX(SV_EmitPings_t *data, IGameClient *client);
 void SV_EmitPings(IRehldsHook_SV_EmitPings *chain, IGameClient *client, sizebuf_t *msg);
 void Con_Printf(IRehldsHook_Con_Printf *chain, const char *string);
+int PF_precache_generic_I(IRehldsHook_PF_precache_generic_I *chain, const char *s);
+int PF_precache_model_I(IRehldsHook_PF_precache_model_I *chain, char *s);
+int PF_precache_sound_I(IRehldsHook_PF_precache_sound_I *chain, const char *s);
 
+struct EventPrecache_args_t
+{
+	EventPrecache_args_t(int _type) : type(_type) {}
+	int type;
+};
+
+using EventPrecache_t = hookdata_t<IRehldsHook_EV_Precache *, EventPrecache_args_t &>;
+unsigned short EV_Precache_AMXX(EventPrecache_t *data, const char *psz);
+unsigned short EV_Precache(IRehldsHook_EV_Precache *chain, int type, const char *psz);
+void SV_AddResource(IRehldsHook_SV_AddResource *chain, resourcetype_t type, const char *name, int size, unsigned char flags, int index);
 edict_t *ED_Alloc(IRehldsHook_ED_Alloc* chain);
 void ED_Free(IRehldsHook_ED_Free* chain, edict_t *entity);
+void SV_ClientPrintf(IRehldsHook_SV_ClientPrintf* chain, const char *string);
 
 // regamedll functions
 int GetForceCamera(IReGameHook_GetForceCamera *chain, CBasePlayer *pObserver);

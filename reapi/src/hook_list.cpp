@@ -20,6 +20,8 @@ inline size_t getFwdParamType(void(*)(float&))                  { return FP_FLOA
 inline size_t getFwdParamType(void(*)(const char *))            { return FP_STRING; }
 inline size_t getFwdParamType(void(*)(char *))                  { return FP_STRING; }
 inline size_t getFwdParamType(void(*)(IResourceBuffer*))        { return FP_CELL;   }
+inline size_t getFwdParamType(void(*)(unsigned char))           { return FP_CELL;   }
+inline size_t getFwdParamType(void(*)(resourcetype_t))          { return FP_CELL;   }
 
 template <typename T>
 inline size_t getFwdParamType(void(*)(T *))                     { return FP_CELL;   }
@@ -94,6 +96,14 @@ hook_t hooklist_engine[] = {
 	ENG(ED_Alloc),
 	ENG(ED_Free),
 	ENG(Con_Printf),
+	ENG(SV_CheckUserInfo),
+	ENG(PF_precache_generic_I),
+	ENG(PF_precache_model_I),
+	ENG(PF_precache_sound_I),
+	ENG(EV_Precache, _AMXX),
+	ENG(SV_AddResource),
+	ENG(SV_ClientPrintf),
+
 };
 
 #define DLL(h,...) { {}, {}, #h, "ReGameDLL", [](){ return api_cfg.hasReGameDLL(); }, ((!(RG_##h & (MAX_REGION_RANGE - 1)) ? regfunc::current_cell = 1, true : false) || (RG_##h & (MAX_REGION_RANGE - 1)) == regfunc::current_cell++) ? regfunc(h##__VA_ARGS__) : regfunc(#h#__VA_ARGS__), [](){ g_ReGameHookchains->h()->registerHook(&h); }, [](){ g_ReGameHookchains->h()->unregisterHook(&h); }, false}
