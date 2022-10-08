@@ -13,6 +13,23 @@ enum MapNameType
 	MNT_SET     // return the name of the current map
 };
 
+/*
+* For RH_SV_AddResource hook
+*/
+enum ResourceType_t
+{
+	t_sound = 0,
+	t_skin,
+	t_model,
+	t_decal,
+	t_generic,
+	t_eventscript,
+	t_world,		// Fake type for world, is really t_model
+	rt_unk,
+
+	rt_max
+};
+
 /**
 * rh_emit_sound2 flags
 */
@@ -91,10 +108,60 @@ enum EngineFunc
 	RH_ED_Free,
 
 	/*
-	* Description:  -
+	* Description:  Called when a message is being sent to the server's console.
 	* Params:       (const string[])
 	*/
 	RH_Con_Printf,
+
+	/*
+	* Description:   Called when a player's userinfo is being checked.
+	* Params:        (adr, userinfo[], bool:reconnect, reconnectSlot, name[])
+	*
+	* @note          Param adr is unused, guaranteed to return nothing also, don't send anything through it.
+	* @note          In order for param name work, hook needs to be registered as Post.
+	*/
+	RH_SV_CheckUserInfo,
+  
+	/*
+	* Description:  Called when a generic resource is being added to generic precache list.
+	* Return type:  int
+	* Params:       (const string[])
+	*/
+	RH_PF_precache_generic_I,
+	
+	/*
+	* Description:  Called when a model is being added to model precache list.
+	* Return type:  int
+	* Params:       (const string[])
+	*/
+	RH_PF_precache_model_I,
+	
+	/*
+	* Description:  Called when a sound is being added to sound precache list.
+	* Return type:  int
+	* Params:       (const string[])
+	*/
+	RH_PF_precache_sound_I,
+	
+	/*
+	* Description:  Called when an event is being added to event precache list.
+	* Return type:  int
+	* Params:       (const string[])
+	*/
+	RH_EV_Precache,
+	
+	/*
+	* Description:  Called when a resource is being added to resource list.
+	* Params:       (ResourceType_t:type, const filename[], size, flags, index)
+	*/
+	RH_SV_AddResource,
+	
+	/*
+	* Description:  Called when message is being printed to client console.
+	* Params:       (const string[])
+	*/
+	RH_SV_ClientPrintf,
+
 };
 
 /**

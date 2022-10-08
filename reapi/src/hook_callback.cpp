@@ -115,7 +115,6 @@ void SV_EmitPings_AMXX(SV_EmitPings_t* data, IGameClient* cl)
 
 void SV_EmitPings(IRehldsHook_SV_EmitPings *chain, IGameClient *cl, sizebuf_t *msg)
 {
-
 	SV_EmitPings_args_t args(cl, msg);
 	SV_EmitPings_t data(chain, args);
 	SV_EmitPings_AMXX(&data, cl);
@@ -139,6 +138,83 @@ void ED_Free(IRehldsHook_ED_Free* chain, edict_t *entity)
 	};
 
 	callVoidForward(RH_ED_Free, original, indexOfEdict(entity));
+}
+
+int SV_CheckUserInfo(IRehldsHook_SV_CheckUserInfo *chain, netadr_t *adr, char *userinfo, qboolean bIsReconnecting, int iReconnectSlot, char *name)
+{
+	auto original = [chain](netadr_t *_adr, char *_userinfo, qboolean _bIsReconnecting, int _iReconnectSlot, char *_name)
+	{
+		return chain->callNext(_adr, _userinfo, _bIsReconnecting, _iReconnectSlot, _name);
+	};
+
+	return callForward<int>(RH_SV_CheckUserInfo, original, adr, userinfo, bIsReconnecting, iReconnectSlot, name);
+}
+
+int PF_precache_generic_I(IRehldsHook_PF_precache_generic_I *chain, const char *s)
+{
+	auto original = [chain](const char *_s)
+	{
+		return chain->callNext(_s);
+	};
+
+	return callForward<int>(RH_PF_precache_generic_I, original, s);
+}
+
+int PF_precache_model_I(IRehldsHook_PF_precache_model_I *chain, char *s)
+{
+	auto original = [chain](char *_s)
+	{
+		return chain->callNext(_s);
+	};
+
+	return callForward<int>(RH_PF_precache_model_I, original, s);
+}
+
+int PF_precache_sound_I(IRehldsHook_PF_precache_sound_I *chain, const char *s)
+{
+	auto original = [chain](const char *_s)
+	{
+		return chain->callNext(_s);
+	};
+
+	return callForward<int>(RH_PF_precache_sound_I, original, s);
+}
+
+unsigned short EV_Precache_AMXX(EventPrecache_t *data, const char *psz)
+{
+	auto original = [data](const char *_psz)
+	{
+		return data->m_chain->callNext(data->m_args.type, _psz);
+	};
+
+	return callForward<unsigned short>(RH_EV_Precache, original, psz);
+}
+
+unsigned short EV_Precache(IRehldsHook_EV_Precache *chain, int type, const char *psz)
+{
+	EventPrecache_args_t args(type);
+	EventPrecache_t data(chain, args);
+	return EV_Precache_AMXX(&data, psz);
+}
+
+void SV_AddResource(IRehldsHook_SV_AddResource *chain, resourcetype_t type, const char *name, int size, unsigned char flags, int index)
+{
+	auto original = [chain](resourcetype_t _type, const char *_name, int _size, unsigned char _flags, int _index)
+	{
+		chain->callNext(_type, _name, _size, _flags, _index);
+	};
+
+	callVoidForward(RH_SV_AddResource, original, type, name, size, flags, index);
+}
+
+void SV_ClientPrintf(IRehldsHook_SV_ClientPrintf *chain, const char *string)
+{
+	auto original = [chain](const char *_string)
+	{
+		chain->callNext(_string);
+	};
+
+	callVoidForward(RH_SV_ClientPrintf, original, string);
 }
 
 /*
