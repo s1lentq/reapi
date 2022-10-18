@@ -221,7 +221,7 @@ void ExecuteServerStringCmd(IRehldsHook_ExecuteServerStringCmd* chain, const cha
 {
 	auto original = [data](const char* _cmdName, cmd_source_t _cmdSrc, int client)
 	{
-		chain->callNext(_cmd, _cmdSrc, _cmdSrc == src_client ? g_RehldsSvs->GetClient(client) - 1 : 0);
+		chain->callNext(_cmdName, _cmdSrc, _cmdSrc == src_client ? g_RehldsSvs->GetClient(client) - 1 : 0);
 	};
 
 	callVoidForward(RH_ExecuteServerStringCmd, original, cmdName, cmdSrc, cmdSrc == src_client ? cl->GetId() + 1 : 0);
