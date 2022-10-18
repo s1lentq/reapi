@@ -219,7 +219,7 @@ void SV_ClientPrintf(IRehldsHook_SV_ClientPrintf *chain, const char *string)
 
 void ExecuteServerStringCmd(IRehldsHook_ExecuteServerStringCmd* chain, const char* cmdName, cmd_source_t cmdSrc, IGameClient* cl)
 {
-	auto original = [data](const char* _cmdName, cmd_source_t _cmdSrc, int client)
+	auto original = [chain](const char* _cmdName, cmd_source_t _cmdSrc, int client)
 	{
 		chain->callNext(_cmdName, _cmdSrc, _cmdSrc == src_client ? g_RehldsSvs->GetClient(client) - 1 : 0);
 	};
