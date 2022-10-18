@@ -112,6 +112,8 @@ enum EngineFunc
 	RH_EV_Precache,
 	RH_SV_AddResource,
 	RH_SV_ClientPrintf,
+	RH_ExecuteServerStringCmd,
+
     
 	// [...]
 };

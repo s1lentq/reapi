@@ -103,6 +103,7 @@ hook_t hooklist_engine[] = {
 	ENG(EV_Precache, _AMXX),
 	ENG(SV_AddResource),
 	ENG(SV_ClientPrintf),
+	ENG(ExecuteServerStringCmd),
 
 };
 
