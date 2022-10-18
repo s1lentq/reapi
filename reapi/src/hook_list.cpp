@@ -22,6 +22,7 @@ inline size_t getFwdParamType(void(*)(char *))                  { return FP_STRI
 inline size_t getFwdParamType(void(*)(IResourceBuffer*))        { return FP_CELL;   }
 inline size_t getFwdParamType(void(*)(unsigned char))           { return FP_CELL;   }
 inline size_t getFwdParamType(void(*)(resourcetype_t))          { return FP_CELL;   }
+inline size_t getFwdParamType(void(*)(cmd_source_t))            { return FP_CELL;   }
 
 template <typename T>
 inline size_t getFwdParamType(void(*)(T *))                     { return FP_CELL;   }
