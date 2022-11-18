@@ -651,7 +651,7 @@ void CBasePlayer_SwitchTeam(IReGameHook_CBasePlayer_SwitchTeam *chain, CBasePlay
 		chain->callNext(getPrivate<CBasePlayer>(_pthis));
 	};
 
-	callVoidForward(RG_CBasePlayer_CanSwitchTeam, original, indexOfEdict(pthis->pev));
+	callVoidForward(RG_CBasePlayer_SwitchTeam, original, indexOfEdict(pthis->pev));
 }
 
 bool CBasePlayer_CanSwitchTeam(IReGameHook_CBasePlayer_CanSwitchTeam *chain, CBasePlayer *pthis, TeamName teamToSwap)
