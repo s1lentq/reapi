@@ -140,6 +140,16 @@ void ED_Free(IRehldsHook_ED_Free* chain, edict_t *entity)
 	callVoidForward(RH_ED_Free, original, indexOfEdict(entity));
 }
 
+bool SV_AllowPhysent(IRehldsHook_SV_AllowPhysent* chain, edict_t* check, edict_t* sv_player)
+{
+	auto original = [chain](int _check, int _sv_player)
+	{
+		return chain->callNext(edictByIndexAmx(_check), edictByIndexAmx(_sv_player));
+	};
+
+	return callForward<bool>(RH_SV_AllowPhysent, original, indexOfEdict(check), indexOfEdict(sv_player));
+}
+
 int SV_CheckUserInfo(IRehldsHook_SV_CheckUserInfo *chain, netadr_t *adr, char *userinfo, qboolean bIsReconnecting, int iReconnectSlot, char *name)
 {
 	auto original = [chain](netadr_t *_adr, char *_userinfo, qboolean _bIsReconnecting, int _iReconnectSlot, char *_name)
