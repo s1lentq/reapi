@@ -466,6 +466,8 @@ native bool:rg_has_item_by_name(const index, const item[]);
 * @param weapon name or id      Weapon id, see WEAPON_* constants, WeaponIdType or weapon_* name
 * @param WpnInfo:type           Info type, see WI_* constants
 *
+* @note weapon_* name can only be used to get WI_ID
+*
 * @return                       Weapon information
 * @error                        If weapon_id or type are out of bounds, an error will be thrown
 */
