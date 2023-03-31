@@ -272,6 +272,7 @@
 #define ITEM_FLAG_NOAUTOSWITCHEMPTY     (1<<2)
 #define ITEM_FLAG_LIMITINWORLD          (1<<3)
 #define ITEM_FLAG_EXHAUSTIBLE           (1<<4)
+#define ITEM_FLAG_NOFIREUNDERWATER      (1<<5)
 
 /**
 * @section get_entvar(entity, var_spawnflags) values

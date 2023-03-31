@@ -168,6 +168,13 @@ enum EngineFunc
 	*/
 	RH_ExecuteServerStringCmd,
 
+	/*
+	* Description:  Called before adding an entity to the physents of a player.
+	* Return type:  bool
+	* Params:       (const entity, const client)
+	*/
+	RH_SV_AllowPhysent,
+
 };
 
 /**
