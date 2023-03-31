@@ -898,10 +898,11 @@ enum WeaponIdType
 
 /**
 * For CBaseMonster::m_rgbTimeBasedDamage
+* prefix should be ITBD_
 */
 enum TimeBasedDamage
 {
-	ITDB_PRALYZE,
+	ITDB_PARALYZE,
 	ITDB_NERVEGAS,
 	ITDB_POISON,
 	ITDB_RADIATION,
