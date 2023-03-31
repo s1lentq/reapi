@@ -159,3 +159,12 @@ native rh_drop_client(const index, const message[] = "");
 * 
 */
 native rh_get_net_from(output[], len);
+
+/*
+* Returns client's netchan playing time in seconds.
+*
+* @param index     Client index
+*
+* @return          Netchan connection time in seconds or 0 if client index is invalid or client is not connected
+*/
+native rh_get_client_connect_time(const index);
