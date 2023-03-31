@@ -161,6 +161,12 @@ enum EngineFunc
 	* Params:       (const string[])
 	*/
 	RH_SV_ClientPrintf,
+	
+	/*
+	* Description:  Called when a command is being sent to server.
+	* Params:       (const cmd[], source, id)
+	*/
+	RH_ExecuteServerStringCmd,
 
 	/*
 	* Description:  Called before adding an entity to the physents of a player.
