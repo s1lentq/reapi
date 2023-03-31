@@ -1259,6 +1259,10 @@ cell AMX_NATIVE_CALL rg_give_defusekit(AMX *amx, cell *params)
 	if (CSGameRules() != nullptr && !CSGameRules()->m_bMapHasBombTarget && !CSGameRules()->m_bMapHasBombZone) {
 		return FALSE;
 	}
+	
+	if (pPlayer->m_iTeam != CT) {
+		return FALSE;
+	}
 
 	pPlayer->m_bHasDefuser = params[arg_def] ? true : false;
 	pPlayer->pev->body     = params[arg_def] ? 1 : 0;
