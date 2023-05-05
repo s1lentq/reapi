@@ -400,6 +400,13 @@ enum GamedllFunc
 	* Params:           (pevVictim, cGibs, human)
 	*/
 	RG_SpawnRandomGibs,
+
+	/*
+	* Description:      Called when a player drops a weapon (usually manual drop or death)
+	* Return type:      CWeaponBox * (Entity index of weaponbox)
+	* Params:           (const weaponent, const owner, modelName[], Float:origin[3], Float:angles[3], Float:velocity[3], Float:lifeTime, bool:packAmmo)
+	*/
+	RG_CreateWeaponBox,
 };
 
 /**

@@ -1329,6 +1329,18 @@ bool IsPenetrableEntity(IReGameHook_IsPenetrableEntity *chain, Vector &vecSrc, V
 	return callForward<bool>(RG_IsPenetrableEntity, original, getAmxVector(vecSrcCopy), getAmxVector(vecEndCopy), indexOfEdict(pevAttacker), indexOfEdict(pHit));
 }
 
+CWeaponBox *CreateWeaponBox(IReGameHook_CreateWeaponBox *chain, CBasePlayerItem *pItem, CBasePlayer *pPlayerOwner, const char *modelName, Vector &origin, Vector &angles, Vector &velocity, float lifeTime, bool packAmmo)
+{
+	Vector vecOriginCopy(origin), vecAnglesCopy(angles), vecVelocityCopy(velocity);
+
+	auto original = [chain, &vecOriginCopy, &vecAnglesCopy, &vecVelocityCopy](int _pItem, int _pPlayerOwner, const char *_modelName, cell _origin, cell _angles, cell _velocity, float _lifeTime, bool _packAmmo)
+	{
+		return indexOfPDataAmx(chain->callNext(getPrivate<CBasePlayerItem>(_pItem), getPrivate<CBasePlayer>(_pPlayerOwner), _modelName, vecOriginCopy, vecAnglesCopy, vecVelocityCopy, _lifeTime, _packAmmo));
+	};
+
+	return getPrivate<CWeaponBox>(callForward<size_t>(RG_CreateWeaponBox, original, indexOfEdictAmx(pItem->pev), indexOfEdictAmx(pPlayerOwner->pev), modelName, getAmxVector(vecOriginCopy), getAmxVector(vecAnglesCopy), getAmxVector(vecVelocityCopy), lifeTime, packAmmo));
+}
+
 CGib *SpawnHeadGib(IReGameHook_SpawnHeadGib *chain, entvars_t *pevVictim)
 {
 	auto original = [chain](int _pevVictim)
