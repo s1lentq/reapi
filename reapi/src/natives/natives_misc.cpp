@@ -2684,6 +2684,8 @@ AMX_NATIVE_INFO Misc_Natives_RG[] =
 
 	{ "rg_set_iteminfo",              rg_set_iteminfo              },
 	{ "rg_get_iteminfo",              rg_get_iteminfo              },
+	{ "rg_set_global_iteminfo",       rg_set_global_iteminfo       },
+	{ "rg_get_global_iteminfo",       rg_get_global_iteminfo       },
 
 	{ "rg_hint_message",              rg_hint_message              },
 
