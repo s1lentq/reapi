@@ -2260,7 +2260,7 @@ cell AMX_NATIVE_CALL rg_set_global_iteminfo(AMX *amx, cell *params)
 	enum args_e { arg_count, arg_weapon_id, arg_type, arg_value };
 
 	WeaponIdType weaponId = static_cast<WeaponIdType>(params[arg_weapon_id]);
-	if (!GetWeaponInfoRange(weaponId, true))
+	if (!GetWeaponInfoRange(weaponId, false))
 	{
 		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid weapon id %i", __FUNCTION__, weaponId);
 		return FALSE;
@@ -2307,7 +2307,7 @@ cell AMX_NATIVE_CALL rg_get_global_iteminfo(AMX *amx, cell *params)
 	enum args_e { arg_count, arg_weapon_id, arg_type, arg_output, arg_length };
 
 	WeaponIdType weaponId = static_cast<WeaponIdType>(params[arg_weapon_id]);
-	if (!GetWeaponInfoRange(weaponId, true))
+	if (!GetWeaponInfoRange(weaponId, false))
 	{
 		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid weapon id %i", __FUNCTION__, weaponId);
 		return FALSE;
