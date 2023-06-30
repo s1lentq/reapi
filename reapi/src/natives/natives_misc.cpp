@@ -2250,8 +2250,8 @@ cell AMX_NATIVE_CALL rg_get_iteminfo(AMX *amx, cell *params)
 *		force it's alteration by sending again to the specific client.
 *		Hooking WeaponList message with AMXX's register_message is a choice.
 *
-* @param weapon Weapon id, see WEAPON_* constants
-* @param type   Item info type. See ItemInfo constants.
+* @param weapon_id Weapon id, see WEAPON_* constants
+* @param type      Item info type. See ItemInfo constants.
 *
 * native rg_set_global_iteminfo(const {WeaponIdType,_}:weapon_id, ItemInfo:type, any:...);
 */
@@ -2297,8 +2297,8 @@ cell AMX_NATIVE_CALL rg_set_global_iteminfo(AMX *amx, cell *params)
 /**
 * Gets a parameter of the global CBasePlayerItem::m_ItemInfoArray array
 *
-* @param weapon Weapon id, see WEAPON_* constants
-* @param type   Item info type. See ItemInfo constants.
+* @param weapon_id Weapon id, see WEAPON_* constants
+* @param type      Item info type. See ItemInfo constants.
 *
 * native rg_get_global_iteminfo(const {WeaponIdType,_}:weapon_id, ItemInfo:type, any:...);
 */
