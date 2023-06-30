@@ -2266,7 +2266,7 @@ cell AMX_NATIVE_CALL rg_set_global_iteminfo(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	ItemInfo* II = g_ReGameFuncs->GetItemInfo(weaponId);
+	ItemInfo* II = g_ReGameApi->GetItemInfo(weaponId);
 
 	char itembuf[256];
 	cell *ptr = getAmxAddr(amx, params[arg_value]);
@@ -2320,7 +2320,7 @@ cell AMX_NATIVE_CALL rg_get_global_iteminfo(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	ItemInfo* II = g_ReGameFuncs->GetItemInfo(weaponId);
+	ItemInfo* II = g_ReGameApi->GetItemInfo(weaponId);
 
 	cell *dest = getAmxAddr(amx, params[arg_output]);
 	size_t length = (PARAMS_COUNT == 4) ? *getAmxAddr(amx, params[arg_length]) : 0;
