@@ -97,7 +97,7 @@ CBaseEntity *GiveNamedItemInternal(AMX *amx, CBasePlayer *pPlayer, const char *p
 	return pEntity;
 }
 
-void StudioFrameAdvanceEnt(edict_t *pEdict)
+void StudioFrameAdvanceEnt(studiohdr_t *pstudiohdr, edict_t *pEdict)
 {
 	float flInterval = gpGlobals->time - pEdict->v.animtime;
 	if (flInterval <= 0.001f) {
@@ -109,10 +109,8 @@ void StudioFrameAdvanceEnt(edict_t *pEdict)
 		flInterval = 0.0f;
 	}
 
-	studiohdr_t *pstudiohdr = static_cast<studiohdr_t *>(GET_MODEL_PTR(pEdict));
-	if (!pstudiohdr) {
+	if (!pstudiohdr)
 		return;
-	}
 
 	if (pEdict->v.sequence >= pstudiohdr->numseq || pEdict->v.sequence < 0) {
 		return;
@@ -160,8 +158,18 @@ void GetBonePosition(CBaseEntity *pEntity, int iBone, Vector *pVecOrigin, Vector
 	Vector vecOrigin, vecAngles;
 	edict_t *pEdict = pEntity->edict();
 
+	if (pVecOrigin) *pVecOrigin = Vector(0, 0, 0);
+	if (pVecAngles) *pVecAngles = Vector(0, 0, 0);
+
+	studiohdr_t *pstudiohdr = static_cast<studiohdr_t *>(GET_MODEL_PTR(pEdict));
+	if (!pstudiohdr)
+		return;
+
+	if (iBone < 0 || iBone >= pstudiohdr->numbones)
+		return; // invalid bone
+
 	// force to update frame
-	StudioFrameAdvanceEnt(pEdict);
+	StudioFrameAdvanceEnt(pstudiohdr, pEdict);
 
 	pEntity->pev->angles.x = -pEntity->pev->angles.x;
 	GET_BONE_POSITION(pEdict, iBone, vecOrigin, vecAngles);
@@ -180,15 +188,25 @@ void GetBonePosition(CBaseEntity *pEntity, int iBone, Vector *pVecOrigin, Vector
 	}
 }
 
-void GetAttachment(CBaseEntity *pEntity, int iBone, Vector *pVecOrigin, Vector *pVecAngles)
+void GetAttachment(CBaseEntity *pEntity, int iAttachment, Vector *pVecOrigin, Vector *pVecAngles)
 {
 	Vector vecOrigin, vecAngles;
 	edict_t *pEdict = pEntity->edict();
 
-	// force to update frame
-	StudioFrameAdvanceEnt(pEdict);
+	if (pVecOrigin) *pVecOrigin = Vector(0, 0, 0);
+	if (pVecAngles) *pVecAngles = Vector(0, 0, 0);
 
-	GET_ATTACHMENT(pEdict, iBone, vecOrigin, vecAngles);
+	studiohdr_t *pstudiohdr = static_cast<studiohdr_t *>(GET_MODEL_PTR(pEdict));
+	if (!pstudiohdr)
+		return;
+
+	if (iAttachment < 0 || iAttachment >= pstudiohdr->numattachments)
+		return; // invalid attachment
+
+	// force to update frame
+	StudioFrameAdvanceEnt(pstudiohdr, pEdict);
+
+	GET_ATTACHMENT(pEdict, iAttachment, vecOrigin, vecAngles);
 
 	if (!pEntity->IsPlayer()) {
 		FixupAngles(pEdict, vecOrigin);

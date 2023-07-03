@@ -236,7 +236,7 @@ cell AMX_NATIVE_CALL amx_GetBonePosition(AMX *amx, cell *params)
 */
 cell AMX_NATIVE_CALL amx_GetAttachment(AMX *amx, cell *params)
 {
-	enum args_e { arg_count, arg_index, arg_bone, arg_attachment, arg_angles };
+	enum args_e { arg_count, arg_index, arg_attachment, arg_origin, arg_angles };
 
 	CHECK_ISENTITY(arg_index);
 
@@ -251,9 +251,9 @@ cell AMX_NATIVE_CALL amx_GetAttachment(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	Vector *pVecOrigin = (Vector *)getAmxAddr(amx, params[arg_attachment]);
+	Vector *pVecOrigin = (Vector *)getAmxAddr(amx, params[arg_origin]);
 	Vector *pVecAngles = (PARAMS_COUNT == 4) ? (Vector *)getAmxAddr(amx, params[arg_angles]) : nullptr;
-	GetAttachment(pEntity, params[arg_bone], pVecOrigin, pVecAngles);
+	GetAttachment(pEntity, params[arg_attachment], pVecOrigin, pVecAngles);
 	return TRUE;
 }
 
