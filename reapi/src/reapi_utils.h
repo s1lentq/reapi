@@ -53,8 +53,8 @@ ModelName GetModelAuto(TeamName team);
 void UTIL_ServerPrint(const char *fmt, ...);
 CBaseEntity *GiveNamedItemInternal(AMX *amx, CBasePlayer *pPlayer, const char *pszItemName, const size_t uid = 0);
 
-void GetBonePosition(CBaseEntity *pEntity, int iBone, Vector *vecOrigin, Vector *vecAngles);
-void GetAttachment(CBaseEntity *pEntity, int iBone, Vector *pVecOrigin, Vector *pVecAngles);
+void GetBonePosition(CBaseEntity *pEntity, int iBone, Vector *pVecOrigin, Vector *pVecAngles);
+void GetAttachment(CBaseEntity *pEntity, int iAttachment, Vector *pVecOrigin, Vector *pVecAngles);
 void RemoveOrDropItem(CBasePlayer *pPlayer, CBasePlayerItem *pItem, GiveType type);
 
 const char *getATypeStr(AType type);
