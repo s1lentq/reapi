@@ -322,6 +322,8 @@ cell AMX_NATIVE_CALL SetHookChainArg(AMX *amx, cell *params)
 	case ATYPE_EVARS:
 		*(entvars_t **)destAddr = PEV(*srcAddr);
 		break;
+	default:
+		return FALSE;
 	}
 
 	return TRUE;
