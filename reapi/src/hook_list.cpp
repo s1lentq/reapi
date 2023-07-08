@@ -130,7 +130,6 @@ hook_t hooklist_gamedll[] = {
 	DLL(IsPenetrableEntity),
 	DLL(SpawnHeadGib),
 	DLL(SpawnRandomGibs),
-	DLL(CreateWeaponBox),
 };
 
 hook_t hooklist_animating[] = {
