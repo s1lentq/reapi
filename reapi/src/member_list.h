@@ -749,6 +749,8 @@ enum CSPlayer_Members
 	m_bGameForcingRespawn,
 	m_bAutoBunnyHopping,
 	m_bMegaBunnyJumping,
+	m_bPlantC4Anywhere,
+	m_bSpawnProtectionEffects,
 };
 
 enum CBasePlayerItem_Members
