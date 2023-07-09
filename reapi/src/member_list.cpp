@@ -1002,6 +1002,7 @@ member_t memberlist_knife[] = {
 	KNIFE_MEMBERS(flSwingBaseDamage_Fast),
 	KNIFE_MEMBERS(flStabDistance),
 	KNIFE_MEMBERS(flSwingDistance),
+	KNIFE_MEMBERS(flBackStabMultiplier),
 };
 
 member_t memberlist_p90[] = {
