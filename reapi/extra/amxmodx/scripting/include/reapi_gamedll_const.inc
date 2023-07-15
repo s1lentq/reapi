@@ -407,6 +407,12 @@ enum GamedllFunc
 	* Params:           (const weaponent, const owner, modelName[], Float:origin[3], Float:angles[3], Float:velocity[3], Float:lifeTime, bool:packAmmo)
 	*/
 	RG_CreateWeaponBox,
+
+	/*
+	* Description:      Called when a player is on a ladder.
+	* Params:           (const playerIndex)
+	*/
+	RG_PM_LadderMove,
 };
 
 /**

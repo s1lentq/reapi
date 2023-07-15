@@ -131,6 +131,7 @@ hook_t hooklist_gamedll[] = {
 	DLL(SpawnHeadGib),
 	DLL(SpawnRandomGibs),
 	DLL(CreateWeaponBox),
+	DLL(PM_LadderMove),
 };
 
 hook_t hooklist_animating[] = {
