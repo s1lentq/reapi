@@ -623,6 +623,7 @@ public:
 	float m_flSwingBaseDamage_Fast;
 	float m_flStabDistance;
 	float m_flSwingDistance;
+	float m_flBackStabMultiplier;
 };
 
 class CM249: public CBasePlayerWeapon

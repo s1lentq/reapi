@@ -329,7 +329,9 @@ struct hookdata_t
 	A m_args;
 };
 
-// rehlds functions
+/*
+* ReHLDS functions
+*/
 void SV_StartSound(IRehldsHook_SV_StartSound *chain, int recipients, edict_t *entity, int channel, const char *sample, int volume, float attenuation, int fFlags, int pitch);
 void SV_DropClient(IRehldsHook_SV_DropClient *chain, IGameClient *cl, bool crash, const char *fmt);
 void SV_ActivateServer(IRehldsHook_SV_ActivateServer *chain, int runPhysics);
@@ -383,44 +385,9 @@ void ED_Free(IRehldsHook_ED_Free* chain, edict_t *entity);
 void SV_ClientPrintf(IRehldsHook_SV_ClientPrintf* chain, const char *string);
 bool SV_AllowPhysent(IRehldsHook_SV_AllowPhysent* chain, edict_t* check, edict_t* sv_player);
 
-// regamedll functions
-int GetForceCamera(IReGameHook_GetForceCamera *chain, CBasePlayer *pObserver);
-void PlayerBlind(IReGameHook_PlayerBlind *chain, CBasePlayer *pPlayer, entvars_t *pevInflictor, entvars_t *pevAttacker, float fadeTime, float fadeHold, int alpha, Vector& color);
-void RadiusFlash_TraceLine(IReGameHook_RadiusFlash_TraceLine *chain, CBasePlayer *pPlayer, entvars_t *pevInflictor, entvars_t *pevAttacker, Vector& vecSrc, Vector& vecSpot, TraceResult *ptr);
-bool RoundEnd(IReGameHook_RoundEnd *chain, int winStatus, ScenarioEventEndRound event, float tmDelay);
-
-struct Move_args_t
-{
-	Move_args_t(playermove_t *_ppmove, int _server) : ppmove(_ppmove), server(_server) {}
-
-	playermove_t *ppmove;
-	int server;
-};
-
-using Move_t = hookdata_t<IReGameHook_PM_Move *, Move_args_t &>;
-void PM_Move_AMXX(Move_t *data, int playerIndex);
-void PM_Move(IReGameHook_PM_Move *chain, playermove_t *ppmove, int server);
-
-void PM_AirMove(IReGameHook_PM_AirMove *chain, int playerIndex);
-void PM_LadderMove_AMXX(IReGameHook_PM_LadderMove *chain, physent_t *pLadder, int playerIndex);
-void PM_LadderMove(IReGameHook_PM_LadderMove *chain, physent_t *pLadder);
-
-void HandleMenu_ChooseAppearance(IReGameHook_HandleMenu_ChooseAppearance *chain, CBasePlayer *pPlayer, int slot);
-BOOL HandleMenu_ChooseTeam(IReGameHook_HandleMenu_ChooseTeam *chain, CBasePlayer *pPlayer, int slot);
-void ShowMenu(IReGameHook_ShowMenu *chain, CBasePlayer *pPlayer, int bitsValidSlots, int nDisplayTime, BOOL fNeedMore, char *pszText);
-void ShowVGUIMenu(IReGameHook_ShowVGUIMenu *chain, CBasePlayer *pPlayer, int MenuType, int BitMask, char *szOldMenu);
-bool BuyGunAmmo(IReGameHook_BuyGunAmmo *chain, CBasePlayer *player, CBasePlayerItem *weapon, bool bBlinkMoney);
-CBaseEntity *BuyWeaponByWeaponID(IReGameHook_BuyWeaponByWeaponID *chain, CBasePlayer *pPlayer, WeaponIdType weaponID);
-CGrenade *ThrowHeGrenade(IReGameHook_ThrowHeGrenade *chain, entvars_t *pevOwner, Vector &vecStart, Vector &vecVelocity, float time, int iTeam, unsigned short usEvent);
-CGrenade *ThrowFlashbang(IReGameHook_ThrowFlashbang *chain, entvars_t *pevOwner, Vector &vecStart, Vector &vecVelocity, float time);
-CGrenade *ThrowSmokeGrenade(IReGameHook_ThrowSmokeGrenade *chain, entvars_t *pevOwner, Vector &vecStart, Vector &vecVelocity, float time, unsigned short usEvent);
-CGrenade *PlantBomb(IReGameHook_PlantBomb *chain, entvars_t *pevOwner, Vector &vecStart, Vector &vecVelocity);
-bool IsPenetrableEntity(IReGameHook_IsPenetrableEntity *chain, Vector &vecSrc, Vector &vecEnd, entvars_t *pevAttacker, edict_t *pHit);
-CWeaponBox *CreateWeaponBox(IReGameHook_CreateWeaponBox *chain, CBasePlayerItem *pItem, CBasePlayer *pPlayerOwner, const char *modelName, Vector &origin, Vector &angles, Vector &velocity, float lifeTime, bool packAmmo);
-CGib *SpawnHeadGib(IReGameHook_SpawnHeadGib *chain, entvars_t *pevVictim);
-void SpawnRandomGibs(IReGameHook_SpawnRandomGibs *chain, entvars_t *pevVictim, int cGibs, int human);
-
-// regamedll functions - player
+/*
+* ReGameDLL functions
+*/
 void CBasePlayer_Spawn(IReGameHook_CBasePlayer_Spawn *chain, CBasePlayer *pthis);
 void CBasePlayer_Precache(IReGameHook_CBasePlayer_Precache *chain, CBasePlayer *pthis);
 int CBasePlayer_ObjectCaps(IReGameHook_CBasePlayer_ObjectCaps *chain, CBasePlayer *pthis);
@@ -445,7 +412,6 @@ void CBasePlayer_RoundRespawn(IReGameHook_CBasePlayer_RoundRespawn *chain, CBase
 void CBasePlayer_Blind(IReGameHook_CBasePlayer_Blind *chain, CBasePlayer *pthis, float flUntilTime, float flHoldTime, float flFadeTime, int iAlpha);
 
 CBasePlayer *CBasePlayer_Observer_IsValidTarget(IReGameHook_CBasePlayer_Observer_IsValidTarget *chain, CBasePlayer *pthis, int iPlayerIndex, bool bSameTeam);
-void CBasePlayer_Observer_FindNextPlayer(IReGameHook_CBasePlayer_Observer_FindNextPlayer *chain, CBasePlayer *pthis, bool bReverse, const char *name);
 void CBasePlayer_SetAnimation(IReGameHook_CBasePlayer_SetAnimation *chain, CBasePlayer *pthis, PLAYER_ANIM playerAnim);
 void CBasePlayer_GiveDefaultItems(IReGameHook_CBasePlayer_GiveDefaultItems *chain, CBasePlayer *pthis);
 CBaseEntity *CBasePlayer_GiveNamedItem(IReGameHook_CBasePlayer_GiveNamedItem *chain, CBasePlayer *pthis, const char *pszName);
@@ -463,26 +429,33 @@ void CBasePlayer_MakeVIP(IReGameHook_CBasePlayer_MakeVIP *chain, CBasePlayer *pt
 bool CBasePlayer_MakeBomber(IReGameHook_CBasePlayer_MakeBomber *chain, CBasePlayer *pthis);
 void CBasePlayer_StartObserver(IReGameHook_CBasePlayer_StartObserver *chain, CBasePlayer *pthis, Vector &vecPosition, Vector &vecViewAngle);
 bool CBasePlayer_GetIntoGame(IReGameHook_CBasePlayer_GetIntoGame *chain, CBasePlayer *pthis);
-void CBasePlayer_StartDeathCam(IReGameHook_CBasePlayer_StartDeathCam *chain, CBasePlayer *pthis);
-void CBasePlayer_SwitchTeam(IReGameHook_CBasePlayer_SwitchTeam *chain, CBasePlayer *pthis);
-bool CBasePlayer_CanSwitchTeam(IReGameHook_CBasePlayer_CanSwitchTeam *chain, CBasePlayer *pthis, TeamName teamToSwap);
-CGrenade *CBasePlayer_ThrowGrenade(IReGameHook_CBasePlayer_ThrowGrenade *chain, CBasePlayer *pthis, CBasePlayerWeapon *pWeapon, Vector &vecSrc, Vector &vecThrow, float time, unsigned short usEvent);
-void CBasePlayer_SetSpawnProtection(IReGameHook_CBasePlayer_SetSpawnProtection *chain, CBasePlayer *pthis, float flProtectionTime);
-void CBasePlayer_RemoveSpawnProtection(IReGameHook_CBasePlayer_RemoveSpawnProtection *chain, CBasePlayer *pthis);
-bool CBasePlayer_HintMessageEx(IReGameHook_CBasePlayer_HintMessageEx *chain, CBasePlayer *pthis, const char *pMessage, float duration, bool bDisplayIfPlayerDead, bool bOverride);
-void CBasePlayer_UseEmpty(IReGameHook_CBasePlayer_UseEmpty *chain, CBasePlayer *pthis);
-void CBasePlayer_DropIdlePlayer(IReGameHook_CBasePlayer_DropIdlePlayer *chain, CBasePlayer *pthis, const char *reason);
-void CBasePlayer_Observer_SetMode(IReGameHook_CBasePlayer_Observer_SetMode *chain, CBasePlayer *pthis, int iMode);
-void CBasePlayer_Pain(IReGameHook_CBasePlayer_Pain *chain, CBasePlayer *pthis, int iLastHitGroup, bool bHasArmour);
-void CBasePlayer_DeathSound(IReGameHook_CBasePlayer_DeathSound *chain, CBasePlayer *pthis);
-void CBasePlayer_JoiningThink(IReGameHook_CBasePlayer_JoiningThink *chain, CBasePlayer *pthis);
 
 void CBaseAnimating_ResetSequenceInfo(IReGameHook_CBaseAnimating_ResetSequenceInfo *chain, CBaseAnimating *pthis);
 
-BOOL CBasePlayerWeapon_CanDeploy(IReGameHook_CBasePlayerWeapon_CanDeploy *chain, CBasePlayerWeapon *pthis);
-BOOL CBasePlayerWeapon_DefaultDeploy(IReGameHook_CBasePlayerWeapon_DefaultDeploy *chain, CBasePlayerWeapon *pthis, char *szViewModel, char *szWeaponModel, int iAnim, char *szAnimExt, int skiplocal);
-int CBasePlayerWeapon_DefaultReload(IReGameHook_CBasePlayerWeapon_DefaultReload *chain, CBasePlayerWeapon *pthis, int iClipSize, int iAnim, float fDelay);
-bool CBasePlayerWeapon_DefaultShotgunReload(IReGameHook_CBasePlayerWeapon_DefaultShotgunReload *chain, CBasePlayerWeapon *pthis, int iAnim, int iStartAnim, float fDelay, float fStartDelay, const char *pszReloadSound1, const char *pszReloadSound2);
+int GetForceCamera(IReGameHook_GetForceCamera *chain, CBasePlayer *pObserver);
+void PlayerBlind(IReGameHook_PlayerBlind *chain, CBasePlayer *pPlayer, entvars_t *pevInflictor, entvars_t *pevAttacker, float fadeTime, float fadeHold, int alpha, Vector& color);
+void RadiusFlash_TraceLine(IReGameHook_RadiusFlash_TraceLine *chain, CBasePlayer *pPlayer, entvars_t *pevInflictor, entvars_t *pevAttacker, Vector& vecSrc, Vector& vecSpot, TraceResult *ptr);
+bool RoundEnd(IReGameHook_RoundEnd *chain, int winStatus, ScenarioEventEndRound event, float tmDelay);
+// TODO: pending InstallGameRules
+// TODO: pending PM_Init
+struct Move_args_t
+{
+	Move_args_t(playermove_t *_ppmove, int _server) : ppmove(_ppmove), server(_server) {}
+
+	playermove_t *ppmove;
+	int server;
+};
+using Move_t = hookdata_t<IReGameHook_PM_Move *, Move_args_t &>;
+void PM_Move_AMXX(Move_t *data, int playerIndex);
+void PM_Move(IReGameHook_PM_Move *chain, playermove_t *ppmove, int server);
+void PM_AirMove(IReGameHook_PM_AirMove *chain, int playerIndex);
+void HandleMenu_ChooseAppearance(IReGameHook_HandleMenu_ChooseAppearance *chain, CBasePlayer *pPlayer, int slot);
+BOOL HandleMenu_ChooseTeam(IReGameHook_HandleMenu_ChooseTeam *chain, CBasePlayer *pPlayer, int slot);
+void ShowMenu(IReGameHook_ShowMenu *chain, CBasePlayer *pPlayer, int bitsValidSlots, int nDisplayTime, BOOL fNeedMore, char *pszText);
+void ShowVGUIMenu(IReGameHook_ShowVGUIMenu *chain, CBasePlayer *pPlayer, int MenuType, int BitMask, char *szOldMenu);
+bool BuyGunAmmo(IReGameHook_BuyGunAmmo *chain, CBasePlayer *player, CBasePlayerItem *weapon, bool bBlinkMoney);
+CBaseEntity *BuyWeaponByWeaponID(IReGameHook_BuyWeaponByWeaponID *chain, CBasePlayer *pPlayer, WeaponIdType weaponID);
+// TODO: pending InternalCommand
 
 BOOL CSGameRules_FShouldSwitchWeapon(IReGameHook_CSGameRules_FShouldSwitchWeapon *chain, CBasePlayer *pPlayer, CBasePlayerItem *pWeapon);
 BOOL CSGameRules_GetNextBestWeapon(IReGameHook_CSGameRules_GetNextBestWeapon *chain, CBasePlayer *pPlayer, CBasePlayerItem *pCurrentWeapon);
@@ -507,32 +480,68 @@ void CSGameRules_ChangeLevel(IReGameHook_CSGameRules_ChangeLevel *chain);
 void CSGameRules_GoToIntermission(IReGameHook_CSGameRules_GoToIntermission *chain);
 void CSGameRules_BalanceTeams(IReGameHook_CSGameRules_BalanceTeams *chain);
 void CSGameRules_OnRoundFreezeEnd(IReGameHook_CSGameRules_OnRoundFreezeEnd *chain);
+// TODO: pending PM_UpdateStepSound
+void CBasePlayer_StartDeathCam(IReGameHook_CBasePlayer_StartDeathCam *chain, CBasePlayer *pthis);
+void CBasePlayer_SwitchTeam(IReGameHook_CBasePlayer_SwitchTeam *chain, CBasePlayer *pthis);
+bool CBasePlayer_CanSwitchTeam(IReGameHook_CBasePlayer_CanSwitchTeam *chain, CBasePlayer *pthis, TeamName teamToSwap);
+CGrenade *CBasePlayer_ThrowGrenade(IReGameHook_CBasePlayer_ThrowGrenade *chain, CBasePlayer *pthis, CBasePlayerWeapon *pWeapon, Vector &vecSrc, Vector &vecThrow, float time, unsigned short usEvent);
 bool CSGameRules_CanPlayerHearPlayer(IReGameHook_CSGameRules_CanPlayerHearPlayer *chain, CBasePlayer *pListener, CBasePlayer *pSender);
-
 void CWeaponBox_SetModel(IReGameHook_CWeaponBox_SetModel *chain, CWeaponBox *pthis, const char *pszModelName);
-
 void CGrenade_DefuseBombStart(IReGameHook_CGrenade_DefuseBombStart *chain, CGrenade *pthis, CBasePlayer *pPlayer);
 void CGrenade_DefuseBombEnd(IReGameHook_CGrenade_DefuseBombEnd *chain, CGrenade *pthis, CBasePlayer *pPlayer, bool bDefused);
 void CGrenade_ExplodeHeGrenade(IReGameHook_CGrenade_ExplodeHeGrenade *chain, CGrenade *pthis, TraceResult *ptr, int bitsDamageType);
 void CGrenade_ExplodeFlashbang(IReGameHook_CGrenade_ExplodeFlashbang *chain, CGrenade *pthis, TraceResult *ptr, int bitsDamageType);
 void CGrenade_ExplodeSmokeGrenade(IReGameHook_CGrenade_ExplodeSmokeGrenade *chain, CGrenade *pthis);
 void CGrenade_ExplodeBomb(IReGameHook_CGrenade_ExplodeBomb *chain, CGrenade *pthis, TraceResult *ptr, int bitsDamageType);
+CGrenade *ThrowHeGrenade(IReGameHook_ThrowHeGrenade *chain, entvars_t *pevOwner, Vector &vecStart, Vector &vecVelocity, float time, int iTeam, unsigned short usEvent);
+CGrenade *ThrowFlashbang(IReGameHook_ThrowFlashbang *chain, entvars_t *pevOwner, Vector &vecStart, Vector &vecVelocity, float time);
+CGrenade *ThrowSmokeGrenade(IReGameHook_ThrowSmokeGrenade *chain, entvars_t *pevOwner, Vector &vecStart, Vector &vecVelocity, float time, unsigned short usEvent);
+CGrenade *PlantBomb(IReGameHook_PlantBomb *chain, entvars_t *pevOwner, Vector &vecStart, Vector &vecVelocity);
+void CBasePlayer_RemoveSpawnProtection(IReGameHook_CBasePlayer_RemoveSpawnProtection *chain, CBasePlayer *pthis);
+void CBasePlayer_SetSpawnProtection(IReGameHook_CBasePlayer_SetSpawnProtection *chain, CBasePlayer *pthis, float flProtectionTime);
+bool IsPenetrableEntity(IReGameHook_IsPenetrableEntity *chain, Vector &vecSrc, Vector &vecEnd, entvars_t *pevAttacker, edict_t *pHit);
+bool CBasePlayer_HintMessageEx(IReGameHook_CBasePlayer_HintMessageEx *chain, CBasePlayer *pthis, const char *pMessage, float duration, bool bDisplayIfPlayerDead, bool bOverride);
+void CBasePlayer_UseEmpty(IReGameHook_CBasePlayer_UseEmpty *chain, CBasePlayer *pthis);
+BOOL CBasePlayerWeapon_CanDeploy(IReGameHook_CBasePlayerWeapon_CanDeploy *chain, CBasePlayerWeapon *pthis);
+BOOL CBasePlayerWeapon_DefaultDeploy(IReGameHook_CBasePlayerWeapon_DefaultDeploy *chain, CBasePlayerWeapon *pthis, char *szViewModel, char *szWeaponModel, int iAnim, char *szAnimExt, int skiplocal);
+int CBasePlayerWeapon_DefaultReload(IReGameHook_CBasePlayerWeapon_DefaultReload *chain, CBasePlayerWeapon *pthis, int iClipSize, int iAnim, float fDelay);
+bool CBasePlayerWeapon_DefaultShotgunReload(IReGameHook_CBasePlayerWeapon_DefaultShotgunReload *chain, CBasePlayerWeapon *pthis, int iAnim, int iStartAnim, float fDelay, float fStartDelay, const char *pszReloadSound1, const char *pszReloadSound2);
+void CBasePlayer_DropIdlePlayer(IReGameHook_CBasePlayer_DropIdlePlayer *chain, CBasePlayer *pthis, const char *reason);
+CWeaponBox *CreateWeaponBox(IReGameHook_CreateWeaponBox *chain, CBasePlayerItem *pItem, CBasePlayer *pPlayerOwner, const char *modelName, Vector &origin, Vector &angles, Vector &velocity, float lifeTime, bool packAmmo);
 
-// regamedll functions - gib
+CGib *SpawnHeadGib(IReGameHook_SpawnHeadGib *chain, entvars_t *pevVictim);
+void SpawnRandomGibs(IReGameHook_SpawnRandomGibs *chain, entvars_t *pevVictim, int cGibs, int human);
 void CGib_Spawn(IReGameHook_CGib_Spawn *chain, CGib *pthis, const char *szGibModel);
 void CGib_BounceGibTouch(IReGameHook_CGib_BounceGibTouch *chain, CGib *pthis, CBaseEntity *pOther);
 void CGib_WaitTillLand(IReGameHook_CGib_WaitTillLand *chain, CGib *pthis);
 
-// regamedll functions - cbaseentity
 void CBaseEntity_FireBullets(IReGameHook_CBaseEntity_FireBullets *chain, CBaseEntity *pEntity, ULONG cShots, Vector &vecSrc, Vector &vecDirShooting, Vector &vecSpread, float flDistance, int iBulletType, int iTracerFreq, int iDamage, entvars_t *pevAttacker);
 void CBaseEntity_FireBuckshots(IReGameHook_CBaseEntity_FireBuckshots *chain, CBaseEntity *pEntity, ULONG cShots, Vector &vecSrc, Vector &vecDirShooting, Vector &vecSpread, float flDistance, int iTracerFreq, int iDamage, entvars_t *pevAttacker);
 Vector &CBaseEntity_FireBullets3(IReGameHook_CBaseEntity_FireBullets3 *chain, CBaseEntity *pEntity, Vector &vecSrc, Vector &vecDirShooting, float vecSpread, float flDistance, int iPenetration, int iBulletType, int iDamage, float flRangeModifier, entvars_t *pevAttacker, bool bPistol, int shared_rand);
 
+void CBasePlayer_Observer_SetMode(IReGameHook_CBasePlayer_Observer_SetMode *chain, CBasePlayer *pthis, int iMode);
+void CBasePlayer_Observer_FindNextPlayer(IReGameHook_CBasePlayer_Observer_FindNextPlayer *chain, CBasePlayer *pthis, bool bReverse, const char *name);
+
+void CBasePlayer_Pain(IReGameHook_CBasePlayer_Pain *chain, CBasePlayer *pthis, int iLastHitGroup, bool bHasArmour);
+void CBasePlayer_DeathSound(IReGameHook_CBasePlayer_DeathSound *chain, CBasePlayer *pthis);
+void CBasePlayer_JoiningThink(IReGameHook_CBasePlayer_JoiningThink *chain, CBasePlayer *pthis);
+
+// TODO: pending FreeGameRules
+void PM_LadderMove_AMXX(IReGameHook_PM_LadderMove *chain, physent_t *pLadder, int playerIndex);
+void PM_LadderMove(IReGameHook_PM_LadderMove *chain, physent_t *pLadder);
+
+/*
+* VTC functions
+*/
 extern int g_iClientStartSpeak;
 extern int g_iClientStopSpeak;
 
 void OnClientStartSpeak(size_t clientIndex);
 void OnClientStopSpeak(size_t clientIndex);
+
+/*
+* ReChecker functions
+*/
 
 using CmdExec_t = hookdata_t<IRecheckerHook_CmdExec *, IResourceBuffer *>;
 void CmdExec_AMXX(CmdExec_t *chain, IGameClient *cl, const char *filename, char *cmd, uint32 responseHash);

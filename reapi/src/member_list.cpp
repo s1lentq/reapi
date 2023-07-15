@@ -760,6 +760,8 @@ member_t memberlist_csplayer[] = {
 	CSPL_MEMBERS(m_bGameForcingRespawn),
 	CSPL_MEMBERS(m_bAutoBunnyHopping),
 	CSPL_MEMBERS(m_bMegaBunnyJumping),
+	CSPL_MEMBERS(m_bPlantC4Anywhere),
+	CSPL_MEMBERS(m_bSpawnProtectionEffects),
 };
 
 member_t memberlist_baseitem[] = {
@@ -1002,6 +1004,7 @@ member_t memberlist_knife[] = {
 	KNIFE_MEMBERS(flSwingBaseDamage_Fast),
 	KNIFE_MEMBERS(flStabDistance),
 	KNIFE_MEMBERS(flSwingDistance),
+	KNIFE_MEMBERS(flBackStabMultiplier),
 };
 
 member_t memberlist_p90[] = {
