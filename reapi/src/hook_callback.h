@@ -386,7 +386,7 @@ void PM_AirMove(IReGameHook_PM_AirMove *chain, int playerIndex);
 
 struct PM_LadderMove_args_t
 {
-	PM_LadderMove_args_t(physent_t* _ladder) : pLadder(_ladder) {}
+	PM_LadderMove_args_t(physent_t *_ladder) : pLadder(_ladder) {}
 
 	physent_t *pLadder;
 };
