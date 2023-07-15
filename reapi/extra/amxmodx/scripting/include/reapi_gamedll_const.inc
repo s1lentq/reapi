@@ -2278,7 +2278,7 @@ enum CBasePlayer_Members
 	m_bResumeZoom,
 
 	/*
-	* Description:      -
+	* Description:      Delay to call EjectBrass function on M3, Scout and AWP (rest of weapons are client-side).
 	* Member type:      float
 	* Get params:       Float:get_member(index, member);
 	* Set params:       set_member(index, member, Float:value);
