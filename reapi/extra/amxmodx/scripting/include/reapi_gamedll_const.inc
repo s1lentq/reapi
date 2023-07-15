@@ -410,7 +410,7 @@ enum GamedllFunc
 
 	/*
 	* Description:      Called when a player is on a ladder.
-	* Params:           (const playerIndex)
+	* Params:           (const pLadder, const playerIndex)
 	*/
 	RG_PM_LadderMove,
 };
@@ -819,14 +819,14 @@ enum GamedllFunc_CBasePlayer
 	* Params:           (const this)
 	*/
 	RG_CBasePlayer_Pain,
-	
+
 	/*
 	* Description:      Called when a client emits a "death sound" after death.
 	* Return type:      void
 	* Params:           (const this, lastHitGroup, bool:hasArmour)
 	*/
 	RG_CBasePlayer_DeathSound,
-	
+
 	/*
 	* Description:      Called when a client "thinks for the join status".
 	*                   (permanently called on each call of "CBasePlayer::PreThink", and only when he is not assigned as specatator or not playing)
