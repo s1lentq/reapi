@@ -402,16 +402,7 @@ void PM_Move_AMXX(Move_t *data, int playerIndex);
 void PM_Move(IReGameHook_PM_Move *chain, playermove_t *ppmove, int server);
 
 void PM_AirMove(IReGameHook_PM_AirMove *chain, int playerIndex);
-
-struct PM_LadderMove_args_t
-{
-	PM_LadderMove_args_t(physent_t *_ladder) : pLadder(_ladder) {}
-
-	physent_t *pLadder;
-};
-
-using Phys_T = hookdata_t<IReGameHook_PM_LadderMove *, PM_LadderMove_args_t &>;
-void PM_LadderMove_AMXX(Phys_T *data);
+void PM_LadderMove_AMXX(IReGameHook_PM_LadderMove *chain, physent_t *pLadder, int playerIndex);
 void PM_LadderMove(IReGameHook_PM_LadderMove *chain, physent_t *pLadder);
 
 void HandleMenu_ChooseAppearance(IReGameHook_HandleMenu_ChooseAppearance *chain, CBasePlayer *pPlayer, int slot);
