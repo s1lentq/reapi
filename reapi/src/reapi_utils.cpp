@@ -250,7 +250,8 @@ const char *getATypeStr(AType type)
 		"ATYPE_EDICT",
 		"ATYPE_EVARS",
 		"ATYPE_BOOL",
-		"ATYPE_VECTOR"
+		"ATYPE_VECTOR",
+		"ATYPE_TRACE"
 	};
 
 	if (type >= arraysize(s_ATypes))

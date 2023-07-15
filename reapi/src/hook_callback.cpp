@@ -1238,6 +1238,7 @@ void CBasePlayer_UseEmpty(IReGameHook_CBasePlayer_UseEmpty *chain, CBasePlayer *
 
 	callVoidForward(RG_CBasePlayer_UseEmpty, original, indexOfEdict(pthis->pev));
 }
+
 BOOL CBasePlayerWeapon_CanDeploy(IReGameHook_CBasePlayerWeapon_CanDeploy *chain, CBasePlayerWeapon *pthis)
 {
 	auto original = [chain](int _pthis)
@@ -1286,6 +1287,18 @@ void CBasePlayer_DropIdlePlayer(IReGameHook_CBasePlayer_DropIdlePlayer *chain, C
 	};
 
 	callVoidForward(RG_CBasePlayer_DropIdlePlayer, original, indexOfEdict(pthis->pev), reason);
+}
+
+CWeaponBox *CreateWeaponBox(IReGameHook_CreateWeaponBox *chain, CBasePlayerItem *pItem, CBasePlayer *pPlayerOwner, const char *modelName, Vector &origin, Vector &angles, Vector &velocity, float lifeTime, bool packAmmo)
+{
+	Vector vecOriginCopy(origin), vecAnglesCopy(angles), vecVelocityCopy(velocity);
+
+	auto original = [chain, &vecOriginCopy, &vecAnglesCopy, &vecVelocityCopy](int _pItem, int _pPlayerOwner, const char *_modelName, cell _origin, cell _angles, cell _velocity, float _lifeTime, bool _packAmmo)
+	{
+		return indexOfPDataAmx(chain->callNext(getPrivate<CBasePlayerItem>(_pItem), getPrivate<CBasePlayer>(_pPlayerOwner), _modelName, vecOriginCopy, vecAnglesCopy, vecVelocityCopy, _lifeTime, _packAmmo));
+	};
+
+	return getPrivate<CWeaponBox>(callForward<size_t>(RG_CreateWeaponBox, original, indexOfEdictAmx(pItem->pev), indexOfEdictAmx(pPlayerOwner->pev), modelName, getAmxVector(vecOriginCopy), getAmxVector(vecAnglesCopy), getAmxVector(vecVelocityCopy), lifeTime, packAmmo));
 }
 
 CGib *SpawnHeadGib(IReGameHook_SpawnHeadGib *chain, entvars_t *pevVictim)
@@ -1428,6 +1441,21 @@ void CBasePlayer_JoiningThink(IReGameHook_CBasePlayer_JoiningThink *chain, CBase
 	};
 
 	callVoidForward(RG_CBasePlayer_JoiningThink, original, indexOfEdict(pthis->pev));
+}
+
+void PM_LadderMove_AMXX(IReGameHook_PM_LadderMove *chain, physent_t *pLadder, int playerIndex)
+{
+	auto original = [chain](physent_t *_pLadder, int _playerIndex)
+	{
+		chain->callNext(_pLadder);
+	};
+
+	callVoidForward(RG_PM_LadderMove, original, pLadder, playerIndex);
+}
+
+void PM_LadderMove(IReGameHook_PM_LadderMove *chain, physent_t *pLadder)
+{
+	PM_LadderMove_AMXX(chain, pLadder, pLadder->player + 1);
 }
 
 /*

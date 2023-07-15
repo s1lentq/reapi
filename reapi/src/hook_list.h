@@ -144,6 +144,9 @@ enum GamedllFunc
 	RG_SpawnHeadGib,
 	RG_SpawnRandomGibs,
 
+	RG_CreateWeaponBox,
+	RG_PM_LadderMove,
+
 	// [...]
 };
 

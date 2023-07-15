@@ -400,6 +400,19 @@ enum GamedllFunc
 	* Params:           (pevVictim, cGibs, human)
 	*/
 	RG_SpawnRandomGibs,
+
+	/*
+	* Description:      Called when a player drops a weapon (usually manual drop or death)
+	* Return type:      CWeaponBox * (Entity index of weaponbox)
+	* Params:           (const weaponent, const owner, modelName[], Float:origin[3], Float:angles[3], Float:velocity[3], Float:lifeTime, bool:packAmmo)
+	*/
+	RG_CreateWeaponBox,
+
+	/*
+	* Description:      Called when a player is on a ladder.
+	* Params:           (const playerIndex)
+	*/
+	RG_PM_LadderMove,
 };
 
 /**
@@ -2278,7 +2291,7 @@ enum CBasePlayer_Members
 	m_bResumeZoom,
 
 	/*
-	* Description:      -
+	* Description:      Delay to call EjectBrass function on M3, Scout and AWP (rest of weapons are client-side).
 	* Member type:      float
 	* Get params:       Float:get_member(index, member);
 	* Set params:       set_member(index, member, Float:value);

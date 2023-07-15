@@ -21,7 +21,8 @@ enum AType : uint8
 	ATYPE_EDICT,
 	ATYPE_EVARS,
 	ATYPE_BOOL,
-	ATYPE_VECTOR
+	ATYPE_VECTOR,
+	ATYPE_TRACE
 };
 
 struct retval_t
@@ -53,6 +54,7 @@ inline AType getApiType(entvars_t *)    { return ATYPE_EVARS; }
 inline AType getApiType(bool)           { return ATYPE_BOOL; }
 inline AType getApiType(Vector)         { return ATYPE_VECTOR; }
 inline AType getApiType(ENTITYINIT)     { return ATYPE_INTEGER; }
+inline AType getApiType(TraceResult*)   { return ATYPE_TRACE; }
 
 template<typename T>
 inline AType getApiType(T *) { return ATYPE_INTEGER; }
@@ -505,7 +507,7 @@ BOOL CBasePlayerWeapon_DefaultDeploy(IReGameHook_CBasePlayerWeapon_DefaultDeploy
 int CBasePlayerWeapon_DefaultReload(IReGameHook_CBasePlayerWeapon_DefaultReload *chain, CBasePlayerWeapon *pthis, int iClipSize, int iAnim, float fDelay);
 bool CBasePlayerWeapon_DefaultShotgunReload(IReGameHook_CBasePlayerWeapon_DefaultShotgunReload *chain, CBasePlayerWeapon *pthis, int iAnim, int iStartAnim, float fDelay, float fStartDelay, const char *pszReloadSound1, const char *pszReloadSound2);
 void CBasePlayer_DropIdlePlayer(IReGameHook_CBasePlayer_DropIdlePlayer *chain, CBasePlayer *pthis, const char *reason);
-// TODO: pending CreateWeaponBox
+CWeaponBox *CreateWeaponBox(IReGameHook_CreateWeaponBox *chain, CBasePlayerItem *pItem, CBasePlayer *pPlayerOwner, const char *modelName, Vector &origin, Vector &angles, Vector &velocity, float lifeTime, bool packAmmo);
 
 CGib *SpawnHeadGib(IReGameHook_SpawnHeadGib *chain, entvars_t *pevVictim);
 void SpawnRandomGibs(IReGameHook_SpawnRandomGibs *chain, entvars_t *pevVictim, int cGibs, int human);
@@ -525,6 +527,8 @@ void CBasePlayer_DeathSound(IReGameHook_CBasePlayer_DeathSound *chain, CBasePlay
 void CBasePlayer_JoiningThink(IReGameHook_CBasePlayer_JoiningThink *chain, CBasePlayer *pthis);
 
 // TODO: pending FreeGameRules
+void PM_LadderMove_AMXX(IReGameHook_PM_LadderMove *chain, physent_t *pLadder, int playerIndex);
+void PM_LadderMove(IReGameHook_PM_LadderMove *chain, physent_t *pLadder);
 
 /*
 * VTC functions
