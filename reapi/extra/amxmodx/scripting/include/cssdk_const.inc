@@ -72,6 +72,14 @@
 #define FL_DORMANT                      (1<<31) // Entity is dormant, no updates to client
 
 /**
+* global_get(glb_trace_flags) values
+* @note Custom flags that we can retrieve in pfnShouldCollide/TraceLine/TraceHull
+*/
+#define FTRACE_BULLET			(1<<16)
+#define FTRACE_FLASH			(1<<17)
+#define FTRACE_KNIFE			(1<<18)
+
+/**
 * get_entvar(entity, var_movetype) values
 */
 #define MOVETYPE_NONE                   0  // Never moves
@@ -272,6 +280,7 @@
 #define ITEM_FLAG_NOAUTOSWITCHEMPTY     (1<<2)
 #define ITEM_FLAG_LIMITINWORLD          (1<<3)
 #define ITEM_FLAG_EXHAUSTIBLE           (1<<4)
+#define ITEM_FLAG_NOFIREUNDERWATER      (1<<5)
 
 /**
 * @section get_entvar(entity, var_spawnflags) values
@@ -897,10 +906,11 @@ enum WeaponIdType
 
 /**
 * For CBaseMonster::m_rgbTimeBasedDamage
+* prefix should be ITBD_
 */
 enum TimeBasedDamage
 {
-	ITDB_PRALYZE,
+	ITDB_PARALYZE,
 	ITDB_NERVEGAS,
 	ITDB_POISON,
 	ITDB_RADIATION,

@@ -115,7 +115,6 @@ void SV_EmitPings_AMXX(SV_EmitPings_t* data, IGameClient* cl)
 
 void SV_EmitPings(IRehldsHook_SV_EmitPings *chain, IGameClient *cl, sizebuf_t *msg)
 {
-
 	SV_EmitPings_args_t args(cl, msg);
 	SV_EmitPings_t data(chain, args);
 	SV_EmitPings_AMXX(&data, cl);
@@ -139,6 +138,103 @@ void ED_Free(IRehldsHook_ED_Free* chain, edict_t *entity)
 	};
 
 	callVoidForward(RH_ED_Free, original, indexOfEdict(entity));
+}
+
+bool SV_AllowPhysent(IRehldsHook_SV_AllowPhysent* chain, edict_t* check, edict_t* sv_player)
+{
+	auto original = [chain](int _check, int _sv_player)
+	{
+		return chain->callNext(edictByIndexAmx(_check), edictByIndexAmx(_sv_player));
+	};
+
+	return callForward<bool>(RH_SV_AllowPhysent, original, indexOfEdict(check), indexOfEdict(sv_player));
+}
+
+int SV_CheckUserInfo(IRehldsHook_SV_CheckUserInfo *chain, netadr_t *adr, char *userinfo, qboolean bIsReconnecting, int iReconnectSlot, char *name)
+{
+	auto original = [chain](netadr_t *_adr, char *_userinfo, qboolean _bIsReconnecting, int _iReconnectSlot, char *_name)
+	{
+		return chain->callNext(_adr, _userinfo, _bIsReconnecting, _iReconnectSlot, _name);
+	};
+
+	return callForward<int>(RH_SV_CheckUserInfo, original, adr, userinfo, bIsReconnecting, iReconnectSlot, name);
+}
+
+int PF_precache_generic_I(IRehldsHook_PF_precache_generic_I *chain, const char *s)
+{
+	auto original = [chain](const char *_s)
+	{
+		return chain->callNext(_s);
+	};
+
+	return callForward<int>(RH_PF_precache_generic_I, original, s);
+}
+
+int PF_precache_model_I(IRehldsHook_PF_precache_model_I *chain, char *s)
+{
+	auto original = [chain](char *_s)
+	{
+		return chain->callNext(_s);
+	};
+
+	return callForward<int>(RH_PF_precache_model_I, original, s);
+}
+
+int PF_precache_sound_I(IRehldsHook_PF_precache_sound_I *chain, const char *s)
+{
+	auto original = [chain](const char *_s)
+	{
+		return chain->callNext(_s);
+	};
+
+	return callForward<int>(RH_PF_precache_sound_I, original, s);
+}
+
+unsigned short EV_Precache_AMXX(EventPrecache_t *data, const char *psz)
+{
+	auto original = [data](const char *_psz)
+	{
+		return data->m_chain->callNext(data->m_args.type, _psz);
+	};
+
+	return callForward<unsigned short>(RH_EV_Precache, original, psz);
+}
+
+unsigned short EV_Precache(IRehldsHook_EV_Precache *chain, int type, const char *psz)
+{
+	EventPrecache_args_t args(type);
+	EventPrecache_t data(chain, args);
+	return EV_Precache_AMXX(&data, psz);
+}
+
+void SV_AddResource(IRehldsHook_SV_AddResource *chain, resourcetype_t type, const char *name, int size, unsigned char flags, int index)
+{
+	auto original = [chain](resourcetype_t _type, const char *_name, int _size, unsigned char _flags, int _index)
+	{
+		chain->callNext(_type, _name, _size, _flags, _index);
+	};
+
+	callVoidForward(RH_SV_AddResource, original, type, name, size, flags, index);
+}
+
+void SV_ClientPrintf(IRehldsHook_SV_ClientPrintf *chain, const char *string)
+{
+	auto original = [chain](const char *_string)
+	{
+		chain->callNext(_string);
+	};
+
+	callVoidForward(RH_SV_ClientPrintf, original, string);
+}
+
+void ExecuteServerStringCmd(IRehldsHook_ExecuteServerStringCmd* chain, const char* cmdName, cmd_source_t cmdSrc, IGameClient* cl)
+{
+	auto original = [chain](const char* _cmdName, cmd_source_t _cmdSrc, int client)
+	{
+		chain->callNext(_cmdName, _cmdSrc, _cmdSrc == src_client ? g_RehldsSvs->GetClient(client) - 1 : 0);
+	};
+
+	callVoidForward(RH_ExecuteServerStringCmd, original, cmdName, cmdSrc, cmdSrc == src_client ? cl->GetId() + 1 : 0);
 }
 
 /*
@@ -575,7 +671,7 @@ void CBasePlayer_SwitchTeam(IReGameHook_CBasePlayer_SwitchTeam *chain, CBasePlay
 		chain->callNext(getPrivate<CBasePlayer>(_pthis));
 	};
 
-	callVoidForward(RG_CBasePlayer_CanSwitchTeam, original, indexOfEdict(pthis->pev));
+	callVoidForward(RG_CBasePlayer_SwitchTeam, original, indexOfEdict(pthis->pev));
 }
 
 bool CBasePlayer_CanSwitchTeam(IReGameHook_CBasePlayer_CanSwitchTeam *chain, CBasePlayer *pthis, TeamName teamToSwap)
@@ -1248,6 +1344,18 @@ bool IsPenetrableEntity(IReGameHook_IsPenetrableEntity *chain, Vector &vecSrc, V
 	};
 
 	return callForward<bool>(RG_IsPenetrableEntity, original, getAmxVector(vecSrcCopy), getAmxVector(vecEndCopy), indexOfEdict(pevAttacker), indexOfEdict(pHit));
+}
+
+CWeaponBox *CreateWeaponBox(IReGameHook_CreateWeaponBox *chain, CBasePlayerItem *pItem, CBasePlayer *pPlayerOwner, const char *modelName, Vector &origin, Vector &angles, Vector &velocity, float lifeTime, bool packAmmo)
+{
+	Vector vecOriginCopy(origin), vecAnglesCopy(angles), vecVelocityCopy(velocity);
+
+	auto original = [chain, &vecOriginCopy, &vecAnglesCopy, &vecVelocityCopy](int _pItem, int _pPlayerOwner, const char *_modelName, cell _origin, cell _angles, cell _velocity, float _lifeTime, bool _packAmmo)
+	{
+		return indexOfPDataAmx(chain->callNext(getPrivate<CBasePlayerItem>(_pItem), getPrivate<CBasePlayer>(_pPlayerOwner), _modelName, vecOriginCopy, vecAnglesCopy, vecVelocityCopy, _lifeTime, _packAmmo));
+	};
+
+	return getPrivate<CWeaponBox>(callForward<size_t>(RG_CreateWeaponBox, original, indexOfEdictAmx(pItem->pev), indexOfEdictAmx(pPlayerOwner->pev), modelName, getAmxVector(vecOriginCopy), getAmxVector(vecAnglesCopy), getAmxVector(vecVelocityCopy), lifeTime, packAmmo));
 }
 
 CGib *SpawnHeadGib(IReGameHook_SpawnHeadGib *chain, entvars_t *pevVictim)

@@ -21,7 +21,8 @@ enum AType : uint8
 	ATYPE_EDICT,
 	ATYPE_EVARS,
 	ATYPE_BOOL,
-	ATYPE_VECTOR
+	ATYPE_VECTOR,
+	ATYPE_TRACE
 };
 
 struct retval_t
@@ -53,6 +54,7 @@ inline AType getApiType(entvars_t *)    { return ATYPE_EVARS; }
 inline AType getApiType(bool)           { return ATYPE_BOOL; }
 inline AType getApiType(Vector)         { return ATYPE_VECTOR; }
 inline AType getApiType(ENTITYINIT)     { return ATYPE_INTEGER; }
+inline AType getApiType(TraceResult*)   { return ATYPE_TRACE; }
 
 template<typename T>
 inline AType getApiType(T *) { return ATYPE_INTEGER; }
@@ -334,6 +336,7 @@ void SV_ActivateServer(IRehldsHook_SV_ActivateServer *chain, int runPhysics);
 void Cvar_DirectSet(IRehldsHook_Cvar_DirectSet *chain, cvar_t *var, const char *value);
 void ClientConnected(IRehldsHook_ClientConnected* chain, IGameClient* cl);
 void SV_ConnectClient(IRehldsHook_SV_ConnectClient* chain);
+int SV_CheckUserInfo(IRehldsHook_SV_CheckUserInfo* chain, netadr_t *adr, char *userinfo, qboolean bIsReconnecting, int iReconnectSlot, char *name);
 
 struct SV_WriteFullClientUpdate_args_t
 {
@@ -347,6 +350,7 @@ using SV_WriteFullClientUpdate_t = hookdata_t<IRehldsHook_SV_WriteFullClientUpda
 void SV_WriteFullClientUpdate_AMXX(SV_WriteFullClientUpdate_t *data, IGameClient *client, size_t buffer, IGameClient *receiver);
 void SV_WriteFullClientUpdate(IRehldsHook_SV_WriteFullClientUpdate *chain, IGameClient *client, char *buffer, size_t maxlen, sizebuf_t *sb, IGameClient *receiver);
 ENTITYINIT GetEntityInit(IRehldsHook_GetEntityInit *chain, char *classname);
+void ExecuteServerStringCmd(IRehldsHook_ExecuteServerStringCmd* chain, const char* cmdName, cmd_source_t src, IGameClient* client);
 
 struct SV_EmitPings_args_t
 {
@@ -360,9 +364,24 @@ using SV_EmitPings_t = hookdata_t<IRehldsHook_SV_EmitPings *, SV_EmitPings_args_
 void SV_EmitPings_AMXX(SV_EmitPings_t *data, IGameClient *client);
 void SV_EmitPings(IRehldsHook_SV_EmitPings *chain, IGameClient *client, sizebuf_t *msg);
 void Con_Printf(IRehldsHook_Con_Printf *chain, const char *string);
+int PF_precache_generic_I(IRehldsHook_PF_precache_generic_I *chain, const char *s);
+int PF_precache_model_I(IRehldsHook_PF_precache_model_I *chain, char *s);
+int PF_precache_sound_I(IRehldsHook_PF_precache_sound_I *chain, const char *s);
 
+struct EventPrecache_args_t
+{
+	EventPrecache_args_t(int _type) : type(_type) {}
+	int type;
+};
+
+using EventPrecache_t = hookdata_t<IRehldsHook_EV_Precache *, EventPrecache_args_t &>;
+unsigned short EV_Precache_AMXX(EventPrecache_t *data, const char *psz);
+unsigned short EV_Precache(IRehldsHook_EV_Precache *chain, int type, const char *psz);
+void SV_AddResource(IRehldsHook_SV_AddResource *chain, resourcetype_t type, const char *name, int size, unsigned char flags, int index);
 edict_t *ED_Alloc(IRehldsHook_ED_Alloc* chain);
 void ED_Free(IRehldsHook_ED_Free* chain, edict_t *entity);
+void SV_ClientPrintf(IRehldsHook_SV_ClientPrintf* chain, const char *string);
+bool SV_AllowPhysent(IRehldsHook_SV_AllowPhysent* chain, edict_t* check, edict_t* sv_player);
 
 // regamedll functions
 int GetForceCamera(IReGameHook_GetForceCamera *chain, CBasePlayer *pObserver);
@@ -406,6 +425,7 @@ CGrenade *ThrowFlashbang(IReGameHook_ThrowFlashbang *chain, entvars_t *pevOwner,
 CGrenade *ThrowSmokeGrenade(IReGameHook_ThrowSmokeGrenade *chain, entvars_t *pevOwner, Vector &vecStart, Vector &vecVelocity, float time, unsigned short usEvent);
 CGrenade *PlantBomb(IReGameHook_PlantBomb *chain, entvars_t *pevOwner, Vector &vecStart, Vector &vecVelocity);
 bool IsPenetrableEntity(IReGameHook_IsPenetrableEntity *chain, Vector &vecSrc, Vector &vecEnd, entvars_t *pevAttacker, edict_t *pHit);
+CWeaponBox *CreateWeaponBox(IReGameHook_CreateWeaponBox *chain, CBasePlayerItem *pItem, CBasePlayer *pPlayerOwner, const char *modelName, Vector &origin, Vector &angles, Vector &velocity, float lifeTime, bool packAmmo);
 CGib *SpawnHeadGib(IReGameHook_SpawnHeadGib *chain, entvars_t *pevVictim);
 void SpawnRandomGibs(IReGameHook_SpawnRandomGibs *chain, entvars_t *pevVictim, int cGibs, int human);
 
