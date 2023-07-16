@@ -145,6 +145,7 @@ enum GamedllFunc
 	RG_SpawnRandomGibs,
 
 	RG_CreateWeaponBox,
+	RG_PM_LadderMove,
 
 	// [...]
 };

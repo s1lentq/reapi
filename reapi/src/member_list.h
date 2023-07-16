@@ -749,6 +749,8 @@ enum CSPlayer_Members
 	m_bGameForcingRespawn,
 	m_bAutoBunnyHopping,
 	m_bMegaBunnyJumping,
+	m_bPlantC4Anywhere,
+	m_bSpawnProtectionEffects,
 };
 
 enum CBasePlayerItem_Members
@@ -1023,6 +1025,7 @@ enum CKnife_Members
 	m_Knife_flSwingBaseDamage_Fast,
 	m_Knife_flStabDistance,
 	m_Knife_flSwingDistance,
+	m_Knife_flBackStabMultiplier,
 };
 
 enum CP90_Members
