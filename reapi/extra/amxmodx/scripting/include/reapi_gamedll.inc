@@ -897,7 +897,7 @@ native rg_get_iteminfo(const ent, ItemInfo:type, any:...);
 
 /**
 * Sets a parameter of the global CBasePlayerItem::m_ItemInfoArray array
-* @note To have effect on client side (i.g. clip size on HUD) you should 
+* @note To have effect on client side (i.g. ammo size on HUD) you should 
 *       alter this value BEFORE WeaponList message is sent to client, or
 *		force it's alteration by sending again to the specific client.
 *		Hooking WeaponList message with AMXX's register_message is a choice.
