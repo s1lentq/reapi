@@ -36,6 +36,7 @@
 #include <gamerules.h>
 #include <client.h>
 #include <gib.h>
+#include <GameEvent.h>
 #include <API/CSInterfaces.h>
 
 #define REGAMEDLL_API_VERSION_MAJOR 5
