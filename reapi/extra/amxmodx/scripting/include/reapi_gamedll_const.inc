@@ -446,13 +446,13 @@ enum GamedllFunc
 
 	/*
 	* Description:      Called whenever player emits an step sound
-	* Params:           (const playerIndex, step, Float:fvol)
+	* Params:           (step, Float:fvol, const playerIndex)
 	*/
 	RG_PM_PlayStepSound,
 
 	/*
 	* Description:      Called whenever player is on air (not touching floor)
-	* Params:           (const playerIndex, Float:wishdir[3], Float:wishspeed, Float:accel)
+	* Params:           (Float:wishdir[3], Float:wishspeed, Float:accel, const playerIndex)
 	*/
 	RG_PM_AirAccelerate,
 

@@ -530,12 +530,19 @@ void CBasePlayer_JoiningThink(IReGameHook_CBasePlayer_JoiningThink *chain, CBase
 void PM_LadderMove_AMXX(IReGameHook_PM_LadderMove *chain, physent_t *pLadder, int playerIndex);
 void PM_LadderMove(IReGameHook_PM_LadderMove *chain, physent_t *pLadder);
 
+void PM_WaterJump_AMXX(IReGameHook_PM_WaterJump *chain, int playerIndex);
 void PM_WaterJump(IReGameHook_PM_WaterJump *chain);
+void PM_CheckWaterJump_AMXX(IReGameHook_PM_CheckWaterJump *chain, int playerIndex);
 void PM_CheckWaterJump(IReGameHook_PM_CheckWaterJump *chain);
+void PM_Jump_AMXX(IReGameHook_PM_Jump *chain, int playerIndex);
 void PM_Jump(IReGameHook_PM_Jump *chain);
-void PM_Duck(IReGameHook_PM_Duck *chain);
+void PM_Duck_AMXX(IReGameHook_PM_Duck *chain, int playerIndex);
+void PM_Duck(IReGameHook_PM_Duck *chain, int playerIndex);
+void PM_UnDuck_AMXX(IReGameHook_PM_UnDuck *chain, int playerIndex);
 void PM_UnDuck(IReGameHook_PM_UnDuck *chain);
+void PM_PlayStepSound_AMXX(IReGameHook_PM_PlayStepSound *chain, int step, float fvol, int playerIndex);
 void PM_PlayStepSound(IReGameHook_PM_PlayStepSound *chain, int step, float fvol);
+void PM_AirAccelerate_AMXX(IReGameHook_PM_AirAccelerate *chain, vec_t *wishdir, float wishspeed, float accel, int playerIndex);
 void PM_AirAccelerate(IReGameHook_PM_AirAccelerate *chain, vec_t *wishdir, float wishspeed, float accel);
 void ClearMultiDamage(IReGameHook_ClearMultiDamage *chain);
 void AddMultiDamage(IReGameHook_AddMultiDamage *chain, entvars_t *pevInflictor, CBaseEntity *pEntity, float flDamage, int bitsDamageType);

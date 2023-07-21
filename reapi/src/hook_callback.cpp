@@ -1458,10 +1458,8 @@ void PM_LadderMove(IReGameHook_PM_LadderMove *chain, physent_t *pLadder)
 	PM_LadderMove_AMXX(chain, pLadder, pLadder->player + 1);
 }
 
-void PM_WaterJump(IReGameHook_PM_WaterJump *chain)
+void PM_WaterJump_AMXX(IReGameHook_PM_WaterJump *chain, int playerIndex)
 {
-	int playerIndex = g_pMove->player_index + 1;
-
 	auto original = [chain](int _playerIndex)
 	{
 		chain->callNext();
@@ -1470,10 +1468,13 @@ void PM_WaterJump(IReGameHook_PM_WaterJump *chain)
 	callVoidForward(RG_PM_WaterJump, original, playerIndex);
 }
 
-void PM_CheckWaterJump(IReGameHook_PM_CheckWaterJump *chain)
+void PM_WaterJump(IReGameHook_PM_WaterJump *chain)
 {
-	int playerIndex = g_pMove->player_index + 1;
+	PM_WaterJump_AMXX(chain, g_pMove->player_index + 1);
+}
 
+void PM_CheckWaterJump_AMXX(IReGameHook_PM_CheckWaterJump *chain, int playerIndex)
+{
 	auto original = [chain](int _playerIndex)
 	{
 		chain->callNext();
@@ -1482,10 +1483,13 @@ void PM_CheckWaterJump(IReGameHook_PM_CheckWaterJump *chain)
 	callVoidForward(RG_PM_CheckWaterJump, original, playerIndex);
 }
 
-void PM_Jump(IReGameHook_PM_Jump *chain)
+void PM_CheckWaterJump(IReGameHook_PM_CheckWaterJump *chain)
 {
-	int playerIndex = g_pMove->player_index + 1;
+	PM_CheckWaterJump_AMXX(chain, g_pMove->player_index + 1);
+}
 
+void PM_Jump_AMXX(IReGameHook_PM_Jump *chain, int playerIndex)
+{
 	auto original = [chain](int _playerIndex)
 	{
 		chain->callNext();
@@ -1494,10 +1498,13 @@ void PM_Jump(IReGameHook_PM_Jump *chain)
 	callVoidForward(RG_PM_Jump, original, playerIndex);
 }
 
-void PM_Duck(IReGameHook_PM_Duck *chain)
+void PM_Jump(IReGameHook_PM_Jump *chain)
 {
-	int playerIndex = g_pMove->player_index + 1;
+	PM_Jump_AMXX(chain, g_pMove->player_index + 1);
+}
 
+void PM_Duck_AMXX(IReGameHook_PM_Duck *chain, int playerIndex)
+{
 	auto original = [chain](int _playerIndex)
 	{
 		chain->callNext();
@@ -1506,10 +1513,13 @@ void PM_Duck(IReGameHook_PM_Duck *chain)
 	callVoidForward(RG_PM_Duck, original, playerIndex);
 }
 
-void PM_UnDuck(IReGameHook_PM_UnDuck *chain)
+void PM_Duck(IReGameHook_PM_Duck *chain)
 {
-	int playerIndex = g_pMove->player_index + 1;
+	PM_Duck_AMXX(chain, g_pMove->player_index + 1);
+}
 
+void PM_UnDuck_AMXX(IReGameHook_PM_UnDuck *chain, int playerIndex)
+{
 	auto original = [chain](int _playerIndex)
 	{
 		chain->callNext();
@@ -1518,29 +1528,41 @@ void PM_UnDuck(IReGameHook_PM_UnDuck *chain)
 	callVoidForward(RG_PM_UnDuck, original, playerIndex);
 }
 
-void PM_PlayStepSound(IReGameHook_PM_PlayStepSound *chain, int step, float fvol)
+void PM_UnDuck(IReGameHook_PM_UnDuck *chain)
 {
-	int playerIndex = g_pMove->player_index + 1;
+	PM_UnDuck_AMXX(chain, g_pMove->player_index + 1);
+}
 
-	auto original = [chain](int _playerIndex, int _step, float _fvol)
+void PM_PlayStepSound_AMXX(IReGameHook_PM_PlayStepSound *chain, int step, float fvol, int playerIndex)
+{
+	auto original = [chain](int _step, float _fvol, int _playerIndex)
 	{
 		chain->callNext(_step, _fvol);
 	};
 
-	callVoidForward(RG_PM_PlayStepSound, original, playerIndex, step, fvol);
+	callVoidForward(RG_PM_PlayStepSound, original, step, fvol, playerIndex);
 }
 
-void PM_AirAccelerate(IReGameHook_PM_AirAccelerate *chain, vec_t *wishdir, float wishspeed, float accel)
+void PM_PlayStepSound(IReGameHook_PM_PlayStepSound *chain, int step, float fvol)
 {
-	int playerIndex = g_pMove->player_index + 1;
+	PM_PlayStepSound_AMXX(chain, step, fvol, g_pMove->player_index + 1);
+}
+
+void PM_AirAccelerate_AMXX(IReGameHook_PM_AirAccelerate *chain, vec_t *wishdir, float wishspeed, float accel, int playerIndex)
+{
 	Vector wishdirCopy(wishdir);
 
-	auto original = [chain, &wishdirCopy](int _playerIndex, cell _wishdir, float _wishspeed, float _accel)
+	auto original = [chain, &wishdirCopy](cell _wishdir, float _wishspeed, float _accel, int _playerIndex)
 	{
 		chain->callNext(wishdirCopy, _wishspeed, _accel);
 	};
 
-	callVoidForward(RG_PM_AirAccelerate, original, playerIndex, getAmxVector(*(Vector *)wishdir), wishspeed, accel);
+	callVoidForward(RG_PM_AirAccelerate, original, getAmxVector(*(Vector *)wishdir), wishspeed, accel, playerIndex);
+}
+
+void PM_AirAccelerate(IReGameHook_PM_AirAccelerate *chain, vec_t *wishdir, float wishspeed, float accel)
+{
+	PM_AirAccelerate_AMXX(chain, wishdir, wishspeed, accel, g_pMove->player_index + 1);
 }
 
 void ClearMultiDamage(IReGameHook_ClearMultiDamage *chain)
