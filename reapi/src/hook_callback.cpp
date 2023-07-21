@@ -1557,7 +1557,7 @@ void PM_AirAccelerate_AMXX(IReGameHook_PM_AirAccelerate *chain, vec_t *wishdir, 
 		chain->callNext(wishdirCopy, _wishspeed, _accel);
 	};
 
-	callVoidForward(RG_PM_AirAccelerate, original, getAmxVector(*(Vector *)wishdir), wishspeed, accel, playerIndex);
+	callVoidForward(RG_PM_AirAccelerate, original, getAmxVector(wishdirCopy), wishspeed, accel, playerIndex);
 }
 
 void PM_AirAccelerate(IReGameHook_PM_AirAccelerate *chain, vec_t *wishdir, float wishspeed, float accel)
