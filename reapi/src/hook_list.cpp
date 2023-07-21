@@ -132,7 +132,7 @@ hook_t hooklist_gamedll[] = {
 	DLL(SpawnHeadGib),
 	DLL(SpawnRandomGibs),
 	DLL(CreateWeaponBox),
-	DLL(PM_LadderMove),
+	DLL(PM_LadderMove, _AMXX),
 	DLL(PM_WaterJump),
 	DLL(PM_CheckWaterJump),
 	DLL(PM_Jump),
