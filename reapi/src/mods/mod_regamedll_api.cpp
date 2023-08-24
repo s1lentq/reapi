@@ -62,6 +62,12 @@ bool RegamedllApi_Init()
 	if (!g_ReGameApi->BGetICSEntity(CSENTITY_API_INTERFACE_VERSION))
 	{
 		UTIL_ServerPrint("[%s]: Interface CCSEntity API version '%s' not found.\n", Plugin_info.logtag, CSENTITY_API_INTERFACE_VERSION);
+
+		if (g_ReGameApi->BGetICSEntity("CSENTITY_API_INTERFACE_VERSION002"))
+			UTIL_ServerPrint("[%s]: Please update ReGameDLL to the latest version.\n", Plugin_info.logtag);
+		else
+			UTIL_ServerPrint("[%s]: Please update ReAPI to the latest version.\n", Plugin_info.logtag);
+
 		return false;
 	}
 

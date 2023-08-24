@@ -43,9 +43,14 @@ public:
 	virtual void FireBuckshots(ULONG cShots, Vector &vecSrc, Vector &vecDirShooting, Vector &vecSpread, float flDistance, int iTracerFreq, int iDamage, entvars_t *pevAttacker) = 0;
 	virtual Vector FireBullets3(Vector &vecSrc, Vector &vecDirShooting, float vecSpread, float flDistance, int iPenetration, int iBulletType, int iDamage, float flRangeModifier, entvars_t *pevAttacker, bool bPistol, int shared_rand) = 0;
 
+public:
+	CBaseEntity *m_pContainingEntity;
+
+private:
 #if defined(_MSC_VER)
-#pragma region reserve_vfuncs_Region
+#pragma region reserve_data_Region
 #endif
+	int CCSEntity_Reserve[0x1000];
 	virtual void func_reserve1() {};
 	virtual void func_reserve2() {};
 	virtual void func_reserve3() {};
@@ -79,9 +84,6 @@ public:
 #if defined(_MSC_VER)
 #pragma endregion
 #endif
-
-public:
-	CBaseEntity *m_pContainingEntity;
 };
 
 class CCSDelay: public CCSEntity
@@ -89,6 +91,8 @@ class CCSDelay: public CCSEntity
 	DECLARE_CLASS_TYPES(CCSDelay, CCSEntity);
 public:
 
+private:
+	int CCSDelay_Reserve[0x100];
 };
 
 class CCSAnimating: public CCSDelay
@@ -96,6 +100,8 @@ class CCSAnimating: public CCSDelay
 	DECLARE_CLASS_TYPES(CCSAnimating, CCSDelay);
 public:
 
+private:
+	int CCSAnimating_Reserve[0x100];
 };
 
 class CCSToggle: public CCSAnimating
@@ -103,6 +109,8 @@ class CCSToggle: public CCSAnimating
 	DECLARE_CLASS_TYPES(CCSToggle, CCSAnimating);
 public:
 
+private:
+	int CCSToggle_Reserve[0x100];
 };
 
 class CCSMonster: public CCSToggle
@@ -110,6 +118,8 @@ class CCSMonster: public CCSToggle
 	DECLARE_CLASS_TYPES(CCSMonster, CCSToggle);
 public:
 
+private:
+	int CCSMonster_Reserve[0x100];
 };
 
-#define CSENTITY_API_INTERFACE_VERSION "CSENTITY_API_INTERFACE_VERSION002"
+#define CSENTITY_API_INTERFACE_VERSION "CSENTITY_API_INTERFACE_VERSION003"

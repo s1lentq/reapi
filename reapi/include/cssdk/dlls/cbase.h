@@ -173,6 +173,7 @@ public:
 
 public:
 	CCSEntity *m_pEntity;						// NOTE: it was replaced on member "int *current_ammo" because it is useless.
+	CCSEntity *CSEntity() const;
 
 	// We use this variables to store each ammo count.
 	float currentammo;
@@ -251,6 +252,11 @@ inline void CBaseEntity::SetBlocked(void (T::*pfn)(CBaseEntity *pOther))
 inline void CBaseEntity::SetBlocked(std::nullptr_t)
 {
 	m_pfnBlocked = nullptr;
+}
+
+inline CCSEntity *CBaseEntity::CSEntity() const
+{
+	return m_pEntity;
 }
 
 class CPointEntity: public CBaseEntity
