@@ -175,7 +175,8 @@ void GetBonePosition(CBaseEntity *pEntity, int iBone, Vector *pVecOrigin, Vector
 	GET_BONE_POSITION(pEdict, iBone, vecOrigin, vecAngles);
 	pEntity->pev->angles.x = -pEntity->pev->angles.x;
 
-	if (!pEntity->IsPlayer()) {
+	// ReGameDLL already have fixes angles for non-players entities
+	if (!g_ReGameApi && !pEntity->IsPlayer()) {
 		FixupAngles(pEdict, vecOrigin);
 	}
 
@@ -208,7 +209,8 @@ void GetAttachment(CBaseEntity *pEntity, int iAttachment, Vector *pVecOrigin, Ve
 
 	GET_ATTACHMENT(pEdict, iAttachment, vecOrigin, vecAngles);
 
-	if (!pEntity->IsPlayer()) {
+	// ReGameDLL already have fixes angles for non-players entities
+	if (!g_ReGameApi && !pEntity->IsPlayer()) {
 		FixupAngles(pEdict, vecOrigin);
 	}
 
