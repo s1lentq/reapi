@@ -906,14 +906,15 @@ cell AMX_NATIVE_CALL rg_set_weapon_info(AMX *amx, cell *params)
 *
 * @param index  Client index
 * @param slot   The slot that will be emptied
+* @param removeAmmo Remove ammunition
 *
 * @return       1 on success, 0 otherwise
 *
-* native rg_remove_items_by_slot(const index, const InventorySlotType:slot);
+* native rg_remove_items_by_slot(const index, const InventorySlotType:slot, const bool:removeAmmo = true);
 */
 cell AMX_NATIVE_CALL rg_remove_items_by_slot(AMX *amx, cell *params)
 {
-	enum args_e { arg_count, arg_index, arg_slot };
+	enum args_e { arg_count, arg_index, arg_slot, arg_remammo };
 
 	CHECK_ISPLAYER(arg_index);
 
@@ -926,14 +927,16 @@ cell AMX_NATIVE_CALL rg_remove_items_by_slot(AMX *amx, cell *params)
 	}
 	else
 	{
-		pPlayer->ForEachItem(params[arg_slot], [pPlayer](CBasePlayerItem *pItem)
+		pPlayer->ForEachItem(params[arg_slot], [pPlayer, params](CBasePlayerItem *pItem)
 		{
 			if (pItem->IsWeapon()) {
 				if (pItem == pPlayer->m_pActiveItem) {
 					((CBasePlayerWeapon *)pItem)->RetireWeapon();
 				}
 
-				pPlayer->m_rgAmmo[ pItem->PrimaryAmmoIndex() ] = 0;
+				if (params[arg_remammo]) {
+					pPlayer->m_rgAmmo[ pItem->PrimaryAmmoIndex() ] = 0;
+				}
 			}
 
 			if (pPlayer->RemovePlayerItem(pItem)) {
