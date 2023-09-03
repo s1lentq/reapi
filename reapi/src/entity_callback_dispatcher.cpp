@@ -155,7 +155,6 @@ bool CEntityCallbackDispatcher::SetMoveDone(AMX *amx, CBaseEntity *pEntity, cons
 		return false;
 	}
 
-	// TODO: Make sure that the entity actually inherited from CBaseToggle
 	pEntityToggle->SetMoveDone(&CBaseToggle::SUB_MoveDone);
 	return true;
 }
