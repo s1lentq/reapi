@@ -145,8 +145,6 @@ bool CEntityCallbackDispatcher::SetMoveDone(AMX *amx, CBaseEntity *pEntity, cons
 		return false;
 	}
 
-	m_callbacks.push_back(new EntityCallback(amx, pszCallback, fwdid, pEntity, pParams, iParamsLen, MoveDone));
-
 	// Make sure that the entity actually inherited from CBaseToggle
 	CBaseToggle *pEntityToggle = dynamic_cast<CBaseToggle *>(pEntity);
 	if (!pEntityToggle)
@@ -155,6 +153,7 @@ bool CEntityCallbackDispatcher::SetMoveDone(AMX *amx, CBaseEntity *pEntity, cons
 		return false;
 	}
 
+	m_callbacks.push_back(new EntityCallback(amx, pszCallback, fwdid, pEntity, pParams, iParamsLen, MoveDone));
 	pEntityToggle->SetMoveDone(&CBaseToggle::SUB_MoveDone);
 	return true;
 }
