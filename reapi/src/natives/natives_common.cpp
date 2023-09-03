@@ -287,7 +287,7 @@ cell AMX_NATIVE_CALL amx_SetThink(AMX *amx, cell *params)
 	char namebuf[256];
 	const char *funcname = getAmxString(amx, params[arg_handler], namebuf);
 	if (unlikely(funcname == nullptr || funcname[0] == '\0')) {
-		pEntity->SetThink(nullptr);
+		EntityCallbackDispatcher().UnsetThink(amx, pEntity);
 		return TRUE;
 	}
 
@@ -298,7 +298,7 @@ cell AMX_NATIVE_CALL amx_SetThink(AMX *amx, cell *params)
 	}
 
 	cell *pParams = (PARAMS_COUNT >= 3) ? getAmxAddr(amx, params[arg_params]) : nullptr;
-	return (cell)g_entCallback.SetThink(amx, pEntity, funcname, pParams, params[arg_len]);
+	return (cell)EntityCallbackDispatcher().SetThink(amx, pEntity, funcname, pParams, params[arg_len]);
 }
 
 /*
@@ -331,7 +331,7 @@ cell AMX_NATIVE_CALL amx_SetTouch(AMX *amx, cell *params)
 	char namebuf[256];
 	const char *funcname = getAmxString(amx, params[arg_handler], namebuf);
 	if (unlikely(funcname == nullptr || funcname[0] == '\0')) {
-		pEntity->SetTouch(nullptr);
+		EntityCallbackDispatcher().UnsetTouch(amx, pEntity);
 		return TRUE;
 	}
 
@@ -342,7 +342,7 @@ cell AMX_NATIVE_CALL amx_SetTouch(AMX *amx, cell *params)
 	}
 
 	cell *pParams = (PARAMS_COUNT >= 3) ? getAmxAddr(amx, params[arg_params]) : nullptr;
-	return (cell)g_entCallback.SetTouch(amx, pEntity, funcname, pParams, params[arg_len]);
+	return (cell)EntityCallbackDispatcher().SetTouch(amx, pEntity, funcname, pParams, params[arg_len]);
 }
 
 /*
@@ -375,7 +375,7 @@ cell AMX_NATIVE_CALL amx_SetUse(AMX *amx, cell *params)
 	char namebuf[256];
 	const char *funcname = getAmxString(amx, params[arg_handler], namebuf);
 	if (unlikely(funcname == nullptr || funcname[0] == '\0')) {
-		pEntity->SetUse(nullptr);
+		EntityCallbackDispatcher().UnsetUse(amx, pEntity);
 		return TRUE;
 	}
 
@@ -386,7 +386,7 @@ cell AMX_NATIVE_CALL amx_SetUse(AMX *amx, cell *params)
 	}
 
 	cell *pParams = (PARAMS_COUNT >= 3) ? getAmxAddr(amx, params[arg_params]) : nullptr;
-	return (cell)g_entCallback.SetUse(amx, pEntity, funcname, pParams, params[arg_len]);
+	return (cell)EntityCallbackDispatcher().SetUse(amx, pEntity, funcname, pParams, params[arg_len]);
 }
 
 /*
@@ -419,7 +419,7 @@ cell AMX_NATIVE_CALL amx_SetBlocked(AMX *amx, cell *params)
 	char namebuf[256];
 	const char *funcname = getAmxString(amx, params[arg_handler], namebuf);
 	if (unlikely(funcname == nullptr || funcname[0] == '\0')) {
-		pEntity->SetBlocked(nullptr);
+		EntityCallbackDispatcher().UnsetBlocked(amx, pEntity);
 		return TRUE;
 	}
 
@@ -430,7 +430,7 @@ cell AMX_NATIVE_CALL amx_SetBlocked(AMX *amx, cell *params)
 	}
 
 	cell *pParams = (PARAMS_COUNT >= 3) ? getAmxAddr(amx, params[arg_params]) : nullptr;
-	return (cell)g_entCallback.SetBlocked(amx, pEntity, funcname, pParams, params[arg_len]);
+	return (cell)EntityCallbackDispatcher().SetBlocked(amx, pEntity, funcname, pParams, params[arg_len]);
 }
 
 /*
@@ -464,7 +464,7 @@ cell AMX_NATIVE_CALL amx_SetMoveDone(AMX *amx, cell *params)
 	char namebuf[256];
 	const char *funcname = getAmxString(amx, params[arg_handler], namebuf);
 	if (unlikely(funcname == nullptr || funcname[0] == '\0')) {
-		((CBaseToggle *)pEntity)->SetMoveDone(nullptr);
+		EntityCallbackDispatcher().UnsetMoveDone(amx, pEntity);
 		return TRUE;
 	}
 
@@ -475,7 +475,7 @@ cell AMX_NATIVE_CALL amx_SetMoveDone(AMX *amx, cell *params)
 	}
 
 	cell *pParams = (PARAMS_COUNT >= 3) ? getAmxAddr(amx, params[arg_params]) : nullptr;
-	return (cell)g_entCallback.SetMoveDone(amx, pEntity, funcname, pParams, params[arg_len]);
+	return (cell)EntityCallbackDispatcher().SetMoveDone(amx, pEntity, funcname, pParams, params[arg_len]);
 }
 
 AMX_NATIVE_INFO Natives_Common[] =

@@ -9,6 +9,7 @@
 
 // C++
 #include <vector>				// std::vector
+#include <list>					// std::list
 
 // platform defs
 #include "platform.h"
@@ -60,7 +61,7 @@
 #include "api_config.h"
 #include "hook_manager.h"
 #include "hook_callback.h"
-#include "entity_callback.h"
+#include "entity_callback_dispatcher.h"
 #include "member_list.h"
 
 // natives

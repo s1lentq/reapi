@@ -29,29 +29,3 @@ private:
 	fwdstate m_state;
 	AMX *m_amx;
 };
-
-template <typename T>
-class CAmxxHookUnique: public CAmxxHookBase
-{
-public:
-	~CAmxxHookUnique()
-	{
-		if (m_uniqueData)
-		{
-			delete m_uniqueData;
-			m_uniqueData = nullptr;
-		}
-	}
-
-	CAmxxHookUnique(AMX *amx, const char *funcname, int index, T *data = nullptr) :
-		CAmxxHookBase(amx, funcname, index, -1),
-		m_uniqueData(data)
-	{
-
-	}
-
-	T *GetUnique() const { return m_uniqueData; }
-
-private:
-	T *m_uniqueData;
-};
