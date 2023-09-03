@@ -419,8 +419,9 @@ native rg_update_teamscores(const iCtsWins = 0, const iTsWins = 0, const bool:bA
 *
 * @param classname      Entity classname
 * @param useHashTable   Use this only for known game entities
-*
-* @note: Do not use this if you use a custom classname
+* @note: Do not use this if you plan to change custom classname an entity after creation,
+*        otherwise it will never be release from hash table even if an entity was destroyed,
+*        and that to lead table to inflate/memory leaks
 *
 * @return               Index of the created entity or 0 otherwise
 */

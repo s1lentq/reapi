@@ -542,8 +542,9 @@ cell AMX_NATIVE_CALL rg_update_teamscores(AMX *amx, cell *params)
 *
 * @param classname      Entity classname
 * @param useHashTable   Use this only for known game entities
-*
-* @note: Do not use this if you use a custom classname
+* @note: Do not use this if you plan to change custom classname an entity after creation,
+*        otherwise it will never be release from hash table even if an entity was destroyed,
+*        and that to lead table to inflate/memory leaks
 *
 * @return               Index of the created entity or 0 otherwise
 *
@@ -1259,7 +1260,7 @@ cell AMX_NATIVE_CALL rg_give_defusekit(AMX *amx, cell *params)
 	if (CSGameRules() != nullptr && !CSGameRules()->m_bMapHasBombTarget && !CSGameRules()->m_bMapHasBombZone) {
 		return FALSE;
 	}
-	
+
 	if (pPlayer->m_iTeam != CT) {
 		return FALSE;
 	}
@@ -2734,7 +2735,7 @@ cell AMX_NATIVE_CALL rh_drop_client(AMX *amx, cell *params)
 *
 * @param output     Buffer to copy the ip address
 * @param len        Maximum buffer size
-* 
+*
 * @noreturn
 *
 * native rh_get_net_from(output[], len);
@@ -2747,7 +2748,7 @@ cell AMX_NATIVE_CALL rh_get_net_from(AMX* amx, cell* params)
 	char *addr = NET_AdrToString(*g_RehldsData->GetNetFrom());
 
 	setAmxString(dest, addr, params[arg_maxlen]);
-	
+
 	return TRUE;
 }
 
@@ -2772,7 +2773,7 @@ cell AMX_NATIVE_CALL rh_get_client_connect_time(AMX *amx, cell *params)
 		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
 		return FALSE;
 	}
-	
+
 	return (cell)(g_RehldsFuncs->GetRealTime() - pClient->netchan.connect_time);
 }
 
