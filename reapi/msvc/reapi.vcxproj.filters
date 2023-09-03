@@ -699,7 +699,7 @@
     <ClInclude Include="..\common\info.h">
       <Filter>common</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\entity_callback.h">
+    <ClInclude Include="..\src\entity_callback_dispatcher.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\src\amx_hook.h">
@@ -821,7 +821,7 @@
     <ClCompile Include="..\common\info.cpp">
       <Filter>common</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\entity_callback.cpp">
+    <ClCompile Include="..\src\entity_callback_dispatcher.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\amx_hook.cpp">

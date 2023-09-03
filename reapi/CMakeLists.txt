@@ -111,7 +111,7 @@ set(REAPI_SRCS
 	"src/amxxmodule.cpp"
 	"src/h_export.cpp"
 	"src/dllapi.cpp"
-	"src/entity_callback.cpp"
+	"src/entity_callback_dispatcher.cpp"
 	"src/hook_callback.cpp"
 	"src/hook_list.cpp"
 	"src/hook_manager.cpp"
