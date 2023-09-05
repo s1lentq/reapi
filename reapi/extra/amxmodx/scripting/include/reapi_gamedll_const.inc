@@ -138,7 +138,7 @@ enum WpnInfo
 };
 
 /**
-* Item's info types for use with rg_set_iteminfo/rg_get_iteminfo()
+* Item's info types for use with rg_set_[global_]iteminfo/rg_get_[global_]iteminfo()
 */
 enum ItemInfo
 {

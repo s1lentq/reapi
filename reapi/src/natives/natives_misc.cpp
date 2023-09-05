@@ -2244,6 +2244,136 @@ cell AMX_NATIVE_CALL rg_get_iteminfo(AMX *amx, cell *params)
 	return TRUE;
 }
 
+/**
+* Sets a parameter of the global CBasePlayerItem::m_ItemInfoArray array
+* @note To have effect on client side (i.g. ammo size on HUD) you should 
+*       alter this value BEFORE WeaponList message is sent to client, or
+*		force it's alteration by sending again to the specific client.
+*		Hooking WeaponList message with AMXX's register_message is a choice.
+*
+* @param weapon_id Weapon id, see WEAPON_* constants
+* @param type      Item info type. See ItemInfo constants.
+*
+* native rg_set_global_iteminfo(const {WeaponIdType,_}:weapon_id, ItemInfo:type, any:...);
+*/
+cell AMX_NATIVE_CALL rg_set_global_iteminfo(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_weapon_id, arg_type, arg_value };
+
+	WeaponIdType weaponId = static_cast<WeaponIdType>(params[arg_weapon_id]);
+	if (!GetWeaponInfoRange(weaponId, false))
+	{
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid weapon id %i", __FUNCTION__, weaponId);
+		return FALSE;
+	}
+
+	ItemInfo* II = g_ReGameApi->GetItemInfo(weaponId);
+
+	char itembuf[256];
+	cell *ptr = getAmxAddr(amx, params[arg_value]);
+
+	ItemInfo_e type = static_cast<ItemInfo_e>(params[arg_type]);
+	switch (type)
+	{
+	case ItemInfo_iSlot:     II->iSlot     = *ptr; break;
+	case ItemInfo_iPosition: II->iPosition = *ptr; break;
+	case ItemInfo_iMaxAmmo1: II->iMaxAmmo1 = *ptr; break;
+	case ItemInfo_iMaxAmmo2: II->iMaxAmmo2 = *ptr; break;
+	case ItemInfo_iMaxClip:  II->iMaxClip  = *ptr; break;
+	case ItemInfo_iId:       II->iId       = *ptr; break;
+	case ItemInfo_iFlags:    II->iFlags    = *ptr; break;
+	case ItemInfo_iWeight:   II->iWeight   = *ptr; break;
+	case ItemInfo_pszAmmo1:  II->pszAmmo1  = STRING(getAmxStringAlloc(amx, params[arg_value], itembuf)); break;
+	case ItemInfo_pszAmmo2:  II->pszAmmo2  = STRING(getAmxStringAlloc(amx, params[arg_value], itembuf)); break;
+	case ItemInfo_pszName:   II->pszName   = STRING(getAmxStringAlloc(amx, params[arg_value], itembuf)); break;
+
+	default:
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "Unknown ItemInfo type %d", type);
+		return FALSE;
+	}
+
+	return TRUE;
+}
+
+/**
+* Gets a parameter of the global CBasePlayerItem::m_ItemInfoArray array
+*
+* @param weapon_id Weapon id, see WEAPON_* constants
+* @param type      Item info type. See ItemInfo constants.
+*
+* native rg_get_global_iteminfo(const {WeaponIdType,_}:weapon_id, ItemInfo:type, any:...);
+*/
+cell AMX_NATIVE_CALL rg_get_global_iteminfo(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_weapon_id, arg_type, arg_output, arg_length };
+
+	WeaponIdType weaponId = static_cast<WeaponIdType>(params[arg_weapon_id]);
+	if (!GetWeaponInfoRange(weaponId, false))
+	{
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid weapon id %i", __FUNCTION__, weaponId);
+		return FALSE;
+	}
+
+	ItemInfo_e type = static_cast<ItemInfo_e>(params[arg_type]);
+	if ((type == ItemInfo_pszAmmo1 || type == ItemInfo_pszAmmo2 || type == ItemInfo_pszName) && PARAMS_COUNT != 4) 
+	{
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "Bad arg count. Expected %d, got %d.", 4, PARAMS_COUNT);
+		return FALSE;
+	}
+
+	ItemInfo* II = g_ReGameApi->GetItemInfo(weaponId);
+
+	cell *dest = getAmxAddr(amx, params[arg_output]);
+	size_t length = (PARAMS_COUNT == 4) ? *getAmxAddr(amx, params[arg_length]) : 0;
+
+	switch (type)
+	{
+	case ItemInfo_iSlot:     return II->iSlot;
+	case ItemInfo_iPosition: return II->iPosition;
+	case ItemInfo_iMaxAmmo1: return II->iMaxAmmo1;
+	case ItemInfo_iMaxAmmo2: return II->iMaxAmmo2;
+	case ItemInfo_iMaxClip:  return II->iMaxClip;
+	case ItemInfo_iId:       return II->iId;
+	case ItemInfo_iFlags:    return II->iFlags;
+	case ItemInfo_iWeight:   return II->iWeight;
+	case ItemInfo_pszAmmo1:
+	{
+		if (II->pszAmmo1 == nullptr) {
+			setAmxString(dest, "", 1);
+			break;
+		}
+
+		setAmxString(dest, II->pszAmmo1, length);
+		break;
+	}
+	case ItemInfo_pszAmmo2:
+	{
+		if (II->pszAmmo2 == nullptr) {
+			setAmxString(dest, "", 1);
+			break;
+		}
+
+		setAmxString(dest, II->pszAmmo2, length);
+		break;
+	}
+	case ItemInfo_pszName:
+	{
+		if (II->pszName == nullptr) {
+			setAmxString(dest, "", 1);
+			break;
+		}
+
+		setAmxString(dest, II->pszName, length);
+		break;
+	}
+	default:
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "Unknown ItemInfo type %d", type);
+		return FALSE;
+	}
+
+	return TRUE;
+}
+
 /*
 * Adds hint message to the queue.
 *
@@ -2555,6 +2685,8 @@ AMX_NATIVE_INFO Misc_Natives_RG[] =
 
 	{ "rg_set_iteminfo",              rg_set_iteminfo              },
 	{ "rg_get_iteminfo",              rg_get_iteminfo              },
+	{ "rg_set_global_iteminfo",       rg_set_global_iteminfo       },
+	{ "rg_get_global_iteminfo",       rg_get_global_iteminfo       },
 
 	{ "rg_hint_message",              rg_hint_message              },
 
