@@ -908,7 +908,7 @@ cell AMX_NATIVE_CALL rg_set_weapon_info(AMX *amx, cell *params)
 * @param slot           The slot that will be emptied
 * @param removeAmmo     Remove ammunition
 *
-* @return       1 on success, 0 otherwise
+* @return               1 on success, 0 otherwise
 *
 * native rg_remove_items_by_slot(const index, const InventorySlotType:slot, const bool:removeAmmo = true);
 */
