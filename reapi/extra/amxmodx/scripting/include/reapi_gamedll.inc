@@ -495,9 +495,9 @@ native rg_set_weapon_info(const {WeaponIdType,_}:weapon_id, WpnInfo:type, any:..
 /*
 * Remove all the player's stuff in a specific slot.
 *
-* @param index  Client index
-* @param slot   The slot that will be emptied
-* @param removeAmmo Remove ammunition
+* @param index          Client index
+* @param slot           The slot that will be emptied
+* @param removeAmmo     Remove ammunition
 *
 * @return       1 on success, 0 otherwise
 */

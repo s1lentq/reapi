@@ -904,9 +904,9 @@ cell AMX_NATIVE_CALL rg_set_weapon_info(AMX *amx, cell *params)
 /*
 * Remove all the player's stuff in a specific slot.
 *
-* @param index  Client index
-* @param slot   The slot that will be emptied
-* @param removeAmmo Remove ammunition
+* @param index          Client index
+* @param slot           The slot that will be emptied
+* @param removeAmmo     Remove ammunition
 *
 * @return       1 on success, 0 otherwise
 *
@@ -934,7 +934,9 @@ cell AMX_NATIVE_CALL rg_remove_items_by_slot(AMX *amx, cell *params)
 					((CBasePlayerWeapon *)pItem)->RetireWeapon();
 				}
 
-				if (params[arg_remammo]) {
+				// Compatible with older versions of the plugin,
+				// which still only pass two parameters
+				if (PARAMS_COUNT < 3 || params[arg_remammo]) {
 					pPlayer->m_rgAmmo[ pItem->PrimaryAmmoIndex() ] = 0;
 				}
 			}
@@ -1262,7 +1264,7 @@ cell AMX_NATIVE_CALL rg_give_defusekit(AMX *amx, cell *params)
 	if (CSGameRules() != nullptr && !CSGameRules()->m_bMapHasBombTarget && !CSGameRules()->m_bMapHasBombZone) {
 		return FALSE;
 	}
-	
+
 	if (pPlayer->m_iTeam != CT) {
 		return FALSE;
 	}
@@ -2737,7 +2739,7 @@ cell AMX_NATIVE_CALL rh_drop_client(AMX *amx, cell *params)
 *
 * @param output     Buffer to copy the ip address
 * @param len        Maximum buffer size
-* 
+*
 * @noreturn
 *
 * native rh_get_net_from(output[], len);
@@ -2750,7 +2752,7 @@ cell AMX_NATIVE_CALL rh_get_net_from(AMX* amx, cell* params)
 	char *addr = NET_AdrToString(*g_RehldsData->GetNetFrom());
 
 	setAmxString(dest, addr, params[arg_maxlen]);
-	
+
 	return TRUE;
 }
 
@@ -2775,7 +2777,7 @@ cell AMX_NATIVE_CALL rh_get_client_connect_time(AMX *amx, cell *params)
 		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
 		return FALSE;
 	}
-	
+
 	return (cell)(g_RehldsFuncs->GetRealTime() - pClient->netchan.connect_time);
 }
 
