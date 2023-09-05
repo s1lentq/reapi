@@ -529,6 +529,34 @@ void CBasePlayer_JoiningThink(IReGameHook_CBasePlayer_JoiningThink *chain, CBase
 // TODO: pending FreeGameRules
 void PM_LadderMove_AMXX(IReGameHook_PM_LadderMove *chain, physent_t *pLadder, int playerIndex);
 void PM_LadderMove(IReGameHook_PM_LadderMove *chain, physent_t *pLadder);
+void PM_WaterJump_AMXX(IReGameHook_PM_WaterJump *chain, int playerIndex);
+void PM_WaterJump(IReGameHook_PM_WaterJump *chain);
+void PM_CheckWaterJump_AMXX(IReGameHook_PM_CheckWaterJump *chain, int playerIndex);
+void PM_CheckWaterJump(IReGameHook_PM_CheckWaterJump *chain);
+void PM_Jump_AMXX(IReGameHook_PM_Jump *chain, int playerIndex);
+void PM_Jump(IReGameHook_PM_Jump *chain);
+void PM_Duck_AMXX(IReGameHook_PM_Duck *chain, int playerIndex);
+void PM_Duck(IReGameHook_PM_Duck *chain);
+void PM_UnDuck_AMXX(IReGameHook_PM_UnDuck *chain, int playerIndex);
+void PM_UnDuck(IReGameHook_PM_UnDuck *chain);
+void PM_PlayStepSound_AMXX(IReGameHook_PM_PlayStepSound *chain, int step, float fvol, int playerIndex);
+void PM_PlayStepSound(IReGameHook_PM_PlayStepSound *chain, int step, float fvol);
+void PM_AirAccelerate_AMXX(IReGameHook_PM_AirAccelerate *chain, vec_t *wishdir, float wishspeed, float accel, int playerIndex);
+void PM_AirAccelerate(IReGameHook_PM_AirAccelerate *chain, vec_t *wishdir, float wishspeed, float accel);
+void ClearMultiDamage(IReGameHook_ClearMultiDamage *chain);
+void AddMultiDamage(IReGameHook_AddMultiDamage *chain, entvars_t *pevInflictor, CBaseEntity *pEntity, float flDamage, int bitsDamageType);
+void ApplyMultiDamage(IReGameHook_ApplyMultiDamage *chain, entvars_t *pevInflictor, entvars_t *pevAttacker);
+void BuyItem(IReGameHook_BuyItem *chain, CBasePlayer *pPlayer, int iSlot);
+void CSGameRules_Think(IReGameHook_CSGameRules_Think *chain);	
+BOOL CSGameRules_TeamFull(IReGameHook_CSGameRules_TeamFull *chain, int team_id);
+BOOL CSGameRules_TeamStacked(IReGameHook_CSGameRules_TeamStacked *chain, int newTeam_id, int curTeam_id);
+void CSGameRules_PlayerGotWeapon(IReGameHook_CSGameRules_PlayerGotWeapon *chain, CBasePlayer *pPlayer, CBasePlayerItem *pWeapon);
+void CBotManager_OnEvent(IReGameHook_CBotManager_OnEvent *chain, GameEventType event, CBaseEntity* pEntity, CBaseEntity* pOther);
+void CBasePlayer_CheckTimeBasedDamage(IReGameHook_CBasePlayer_CheckTimeBasedDamage *chain, CBasePlayer *pthis);
+edict_t *CBasePlayer_EntSelectSpawnPoint(IReGameHook_CBasePlayer_EntSelectSpawnPoint *chain, CBasePlayer *pthis);
+void CBasePlayerWeapon_ItemPostFrame(IReGameHook_CBasePlayerWeapon_ItemPostFrame *chain, CBasePlayerWeapon *pthis); 
+void CBasePlayerWeapon_KickBack(IReGameHook_CBasePlayerWeapon_KickBack *chain, CBasePlayerWeapon *pthis, float up_base, float lateral_base, float up_modifier, float lateral_modifier, float up_max, float lateral_max, int direction_change);
+void CBasePlayerWeapon_SendWeaponAnim(IReGameHook_CBasePlayerWeapon_SendWeaponAnim *chain, CBasePlayerWeapon *pthis, int iAnim, int skiplocal);
 
 /*
 * VTC functions
@@ -552,3 +580,4 @@ void FileConsistencyProcess_AMXX(FileConsistencyProcess_t *data, IGameClient *cl
 void FileConsistencyProcess(IRecheckerHook_FileConsistencyProcess *chain, IGameClient *cl, IResourceBuffer *res, ResourceType_e typeFind, uint32 responseHash);
 
 void FileConsistencyFinal(IRecheckerHook_FileConsistencyFinal *chain, IGameClient *cl);
+

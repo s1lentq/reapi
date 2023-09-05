@@ -413,6 +413,72 @@ enum GamedllFunc
 	* Params:           (const pLadder, const playerIndex)
 	*/
 	RG_PM_LadderMove,
+
+	/*
+	* Description:      Called on every frame after a player jumps on water for a short period of time
+	* Params:           (const playerIndex)
+	*/
+	RG_PM_WaterJump,
+
+	/*
+	* Description:      Called when a player jumps on water for the first time
+	* Params:           (const playerIndex)
+	*/
+	RG_PM_CheckWaterJump,
+
+	/*
+	* Description:      Called on every frame while player presses jump button
+	* Params:           (const playerIndex)
+	*/
+	RG_PM_Jump,
+
+	/*
+	* Description:      Called on every frame to check player ducking
+	* Params:           (const playerIndex)
+	*/
+	RG_PM_Duck,
+
+	/*
+	* Description:      Called whenever player tries to unduck
+	* Params:           (const playerIndex)
+	*/
+	RG_PM_UnDuck,
+
+	/*
+	* Description:      Called whenever player emits an step sound
+	* Params:           (step, Float:fvol, const playerIndex)
+	*/
+	RG_PM_PlayStepSound,
+
+	/*
+	* Description:      Called whenever player is on air (not touching floor)
+	* Params:           (Float:wishdir[3], Float:wishspeed, Float:accel, const playerIndex)
+	*/
+	RG_PM_AirAccelerate,
+
+	/*
+	* Description:      Called when game clears multidamage data (before TraceAttack)
+	* Params:           ()
+	*/
+	RG_ClearMultiDamage,
+
+	/*
+	* Description:      Called inside TraceAttack to store entity damage to multidamage data
+	* Params:           (const pevInflictor, const pEntity, Float:flDamage, bitsDamageType)
+	*/
+	RG_AddMultiDamage,
+
+	/*
+	* Description:      Called after game finished a bullet tracing for applying damage cached on multidamage data
+	* Params:           (const pevInflictor, const pevAttacker)
+	*/
+	RG_ApplyMultiDamage,
+
+	/*
+	* Description:      Called when player buys an item from buy menu (Nightvision, Kevlar, etc.) 
+	* Params:           (const pPlayer, iSlot)
+	*/
+	RG_BuyItem,
 };
 
 /**
@@ -834,6 +900,20 @@ enum GamedllFunc_CBasePlayer
 	* Params:           (const this)
 	*/
 	RG_CBasePlayer_JoiningThink,
+
+	/*
+	* Description:      Called every client frame to check time based damage
+	* Return type:      void
+	* Params:           (const this)
+	*/
+	RG_CBasePlayer_CheckTimeBasedDamage,
+
+	/*
+	* Description:      Called when game selects a spawn point (info_player_start/deathmatch) to position the player
+	* Return type:      edict_t * (Entity index of selected spawn point)
+	* Params:           (const this)
+	*/
+	RG_CBasePlayer_EntSelectSpawnPoint,
 };
 
 /**
@@ -868,6 +948,29 @@ enum GamedllFunc_CBasePlayerWeapon
 	* Params:           (const this, iAnim, iStartAnim, Float:fDelay, Float:fStartDelay, const pszReloadSound1[], const pszReloadSound2[])
 	*/
 	RG_CBasePlayerWeapon_DefaultShotgunReload,
+
+	/*
+	* Description:      Called every client frame (PlayerPostThink) for the player's active weapon
+	* Return type:      void
+	* Params:           (const this)
+	*/
+	RG_CBasePlayerWeapon_ItemPostFrame,
+
+	/*
+	* Description:      Called whenever player fires a weapon and shakes player screen (punchangles altering)
+	* @note             Weapons that use KickBack: AK47, AUG, FAMAS, GALIL, M249, M4A1, MAC10, MP5NAVY, P90, SG552, TMP, UMP45
+	* Return type:      void
+	* Params:           (const this, Float:up_base, Float:lateral_base, Float:up_modifier, Float:lateral_modifier, Float:p_max, Float:lateral_max, direction_change)
+	*/
+	RG_CBasePlayerWeapon_KickBack,
+
+	/*
+	* Description:      Called whenever game sends an animation to his current holder (player)
+	* @note             This is often called for all animations in exception of "fire" and "idle" sequences (both called via client prediction)
+	* Return type:      void
+	* Params:           (const this, iAnim, skiplocal)
+	*/
+	RG_CBasePlayerWeapon_SendWeaponAnim,
 };
 
 /**
@@ -921,6 +1024,21 @@ enum GamedllFunc_CBaseEntity
 	*/
 	RG_CBaseEntity_FireBullets3,
 };
+
+/**
+* GamedllFunc CBotManager
+*/
+enum GamedllFunc_CBotManager
+{
+	/*
+	* Description:      Called on each improved bot event
+	* Return type:      void
+	* Params:           (GameEventType:event, const pEntity, const pOther)
+
+	*/
+	RG_CBotManager_OnEvent = BEGIN_FUNC_REGION(botmanager),
+}
+
 
 /**
 * GamedllFunc CSGameRules
@@ -1081,6 +1199,32 @@ enum GamedllFunc_CSGameRules
 	* Params:           (const listener, const sender)
 	*/
 	RG_CSGameRules_CanPlayerHearPlayer,
+
+	/*
+	* Description:      Called every server frame to process game rules
+	* Params:           ()
+	*/
+	RG_CSGameRules_Think,
+
+	/*
+	* Description:      Called each time player tries to join a team to ensure availability
+	* Return type:      bool
+	* Params:           (team_id)
+	*/
+	RG_CSGameRules_TeamFull,
+
+	/*
+	* Description:      Called each time player tries to join a team to ensure a fair distribution of players (based on mp_limitteams cvar)
+	* Return type:      bool
+	* Params:           (newTeam_id, curTeam_id)
+	*/
+	RG_CSGameRules_TeamStacked,
+
+	/*
+	* Description:      Called each time player gets a weapon linked to his inventory
+	* Params:           (const pPlayer, const pWeapon)
+	*/
+	RG_CSGameRules_PlayerGotWeapon,
 };
 
 /**

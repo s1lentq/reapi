@@ -1458,6 +1458,254 @@ void PM_LadderMove(IReGameHook_PM_LadderMove *chain, physent_t *pLadder)
 	PM_LadderMove_AMXX(chain, pLadder, pLadder->player + 1);
 }
 
+void PM_WaterJump_AMXX(IReGameHook_PM_WaterJump *chain, int playerIndex)
+{
+	auto original = [chain](int _playerIndex)
+	{
+		chain->callNext();
+	};
+
+	callVoidForward(RG_PM_WaterJump, original, playerIndex);
+}
+
+void PM_WaterJump(IReGameHook_PM_WaterJump *chain)
+{
+	PM_WaterJump_AMXX(chain, g_pMove->player_index + 1);
+}
+
+void PM_CheckWaterJump_AMXX(IReGameHook_PM_CheckWaterJump *chain, int playerIndex)
+{
+	auto original = [chain](int _playerIndex)
+	{
+		chain->callNext();
+	};
+
+	callVoidForward(RG_PM_CheckWaterJump, original, playerIndex);
+}
+
+void PM_CheckWaterJump(IReGameHook_PM_CheckWaterJump *chain)
+{
+	PM_CheckWaterJump_AMXX(chain, g_pMove->player_index + 1);
+}
+
+void PM_Jump_AMXX(IReGameHook_PM_Jump *chain, int playerIndex)
+{
+	auto original = [chain](int _playerIndex)
+	{
+		chain->callNext();
+	};
+
+	callVoidForward(RG_PM_Jump, original, playerIndex);
+}
+
+void PM_Jump(IReGameHook_PM_Jump *chain)
+{
+	PM_Jump_AMXX(chain, g_pMove->player_index + 1);
+}
+
+void PM_Duck_AMXX(IReGameHook_PM_Duck *chain, int playerIndex)
+{
+	auto original = [chain](int _playerIndex)
+	{
+		chain->callNext();
+	};
+
+	callVoidForward(RG_PM_Duck, original, playerIndex);
+}
+
+void PM_Duck(IReGameHook_PM_Duck *chain)
+{
+	PM_Duck_AMXX(chain, g_pMove->player_index + 1);
+}
+
+void PM_UnDuck_AMXX(IReGameHook_PM_UnDuck *chain, int playerIndex)
+{
+	auto original = [chain](int _playerIndex)
+	{
+		chain->callNext();
+	};
+
+	callVoidForward(RG_PM_UnDuck, original, playerIndex);
+}
+
+void PM_UnDuck(IReGameHook_PM_UnDuck *chain)
+{
+	PM_UnDuck_AMXX(chain, g_pMove->player_index + 1);
+}
+
+void PM_PlayStepSound_AMXX(IReGameHook_PM_PlayStepSound *chain, int step, float fvol, int playerIndex)
+{
+	auto original = [chain](int _step, float _fvol, int _playerIndex)
+	{
+		chain->callNext(_step, _fvol);
+	};
+
+	callVoidForward(RG_PM_PlayStepSound, original, step, fvol, playerIndex);
+}
+
+void PM_PlayStepSound(IReGameHook_PM_PlayStepSound *chain, int step, float fvol)
+{
+	PM_PlayStepSound_AMXX(chain, step, fvol, g_pMove->player_index + 1);
+}
+
+void PM_AirAccelerate_AMXX(IReGameHook_PM_AirAccelerate *chain, vec_t *wishdir, float wishspeed, float accel, int playerIndex)
+{
+	Vector wishdirCopy(wishdir);
+
+	auto original = [chain, &wishdirCopy](cell _wishdir, float _wishspeed, float _accel, int _playerIndex)
+	{
+		chain->callNext(wishdirCopy, _wishspeed, _accel);
+	};
+
+	callVoidForward(RG_PM_AirAccelerate, original, getAmxVector(wishdirCopy), wishspeed, accel, playerIndex);
+}
+
+void PM_AirAccelerate(IReGameHook_PM_AirAccelerate *chain, vec_t *wishdir, float wishspeed, float accel)
+{
+	PM_AirAccelerate_AMXX(chain, wishdir, wishspeed, accel, g_pMove->player_index + 1);
+}
+
+void ClearMultiDamage(IReGameHook_ClearMultiDamage *chain)
+{
+	auto original = [chain]()
+	{
+		chain->callNext();
+	};
+
+	callVoidForward(RG_ClearMultiDamage, original);
+}
+
+void AddMultiDamage(IReGameHook_AddMultiDamage *chain, entvars_t *pevInflictor, CBaseEntity *pEntity, float flDamage, int bitsDamageType)
+{
+	auto original = [chain](int _pevInflictor, int _pEntity, float _flDamage, int _bitsDamageType)
+	{
+		chain->callNext(PEV(_pevInflictor), getPrivate<CBaseEntity>(_pEntity), _flDamage, _bitsDamageType);
+	};
+
+	callVoidForward(RG_AddMultiDamage, original, indexOfEdict(pevInflictor), indexOfEdict(pEntity->pev), flDamage, bitsDamageType);
+}
+
+void ApplyMultiDamage(IReGameHook_ApplyMultiDamage *chain, entvars_t *pevInflictor, entvars_t *pevAttacker)
+{
+	auto original = [chain](int _pevInflictor, int _pevAttacker)
+	{
+		chain->callNext(PEV(_pevInflictor), PEV(_pevAttacker));
+	};
+
+	callVoidForward(RG_ApplyMultiDamage, original, indexOfEdict(pevInflictor), indexOfEdict(pevAttacker));
+}
+
+void BuyItem(IReGameHook_BuyItem *chain, CBasePlayer *pPlayer, int iSlot)
+{
+	auto original = [chain](int _pPlayer, int _iSlot)
+	{
+		chain->callNext(getPrivate<CBasePlayer>(_pPlayer), _iSlot);
+	};
+
+	callVoidForward(RG_AddMultiDamage, original, indexOfEdict(pPlayer->pev), iSlot);
+}
+
+void CSGameRules_Think(IReGameHook_CSGameRules_Think *chain)
+{
+	auto original = [chain]()
+	{
+		chain->callNext();
+	};
+
+	callVoidForward(RG_CSGameRules_Think, original);
+}
+	
+BOOL CSGameRules_TeamFull(IReGameHook_CSGameRules_TeamFull *chain, int team_id)
+{
+	auto original = [chain](int _team_id)
+	{
+		return chain->callNext(_team_id);
+	};
+
+	return callForward<BOOL>(RG_CSGameRules_TeamFull, original, team_id);
+}
+
+BOOL CSGameRules_TeamStacked(IReGameHook_CSGameRules_TeamStacked *chain, int newTeam_id, int curTeam_id)
+{
+	auto original = [chain](int _newTeam_id, int _curTeam_id)
+	{
+		return chain->callNext(_newTeam_id, _curTeam_id);
+	};
+
+	return callForward<BOOL>(RG_CSGameRules_TeamStacked, original, newTeam_id, curTeam_id);
+}
+
+void CSGameRules_PlayerGotWeapon(IReGameHook_CSGameRules_PlayerGotWeapon *chain, CBasePlayer *pPlayer, CBasePlayerItem *pWeapon)
+{
+	auto original = [chain](int _pPlayer, int _pWeapon)
+	{
+		chain->callNext(getPrivate<CBasePlayer>(_pPlayer), getPrivate<CBasePlayerItem>(_pWeapon));
+	};
+
+	callVoidForward(RG_CSGameRules_PlayerGotWeapon, original, indexOfEdict(pPlayer->pev), indexOfEdict(pWeapon->pev));
+}
+
+void CBotManager_OnEvent(IReGameHook_CBotManager_OnEvent *chain, GameEventType event, CBaseEntity* pEntity, CBaseEntity* pOther)
+{
+	auto original = [chain](GameEventType _event, int _pEntity, int _pOther)
+	{
+		chain->callNext(_event, getPrivate<CBaseEntity>(_pEntity), getPrivate<CBaseEntity>(_pOther));
+	};
+
+	callVoidForward(RG_CBotManager_OnEvent, original, event, indexOfEdict(pEntity->pev), indexOfEdict(pOther->pev));
+}
+
+void CBasePlayer_CheckTimeBasedDamage(IReGameHook_CBasePlayer_CheckTimeBasedDamage *chain, CBasePlayer *pthis)
+{
+	auto original = [chain](int _pthis)
+	{
+		chain->callNext(getPrivate<CBasePlayer>(_pthis));
+	};
+
+	callVoidForward(RG_CBasePlayer_CheckTimeBasedDamage, original, indexOfEdict(pthis->pev));
+}
+
+edict_t *CBasePlayer_EntSelectSpawnPoint(IReGameHook_CBasePlayer_EntSelectSpawnPoint *chain, CBasePlayer *pthis)
+{
+	auto original = [chain](int _pthis)
+	{
+		return indexOfEdict(chain->callNext(getPrivate<CBasePlayer>(_pthis)));
+	};
+
+	return edictByIndexAmx(callForward<size_t>(RG_CBasePlayer_EntSelectSpawnPoint, original, indexOfEdict(pthis->pev)));
+}
+
+void CBasePlayerWeapon_ItemPostFrame(IReGameHook_CBasePlayerWeapon_ItemPostFrame *chain, CBasePlayerWeapon *pthis)
+{
+	auto original = [chain](int _pthis)
+	{
+		chain->callNext(getPrivate<CBasePlayerWeapon>(_pthis));
+	};
+
+	callVoidForward(RG_CBasePlayerWeapon_ItemPostFrame, original, indexOfEdict(pthis->pev));
+}
+
+void CBasePlayerWeapon_KickBack(IReGameHook_CBasePlayerWeapon_KickBack *chain, CBasePlayerWeapon *pthis, float up_base, float lateral_base, float up_modifier, float lateral_modifier, float up_max, float lateral_max, int direction_change)
+{
+	auto original = [chain](int _pthis, float _up_base, float _lateral_base, float _up_modifier, float _lateral_modifier, float _up_max, float _lateral_max, int _direction_change)
+	{
+		chain->callNext(getPrivate<CBasePlayerWeapon>(_pthis), _up_base, _lateral_base, _up_modifier, _lateral_modifier, _up_max, _lateral_max, _direction_change);
+	};
+
+	callVoidForward(RG_CBasePlayerWeapon_KickBack, original, indexOfEdict(pthis->pev), up_base, lateral_base, up_modifier, lateral_modifier, up_max, lateral_max, direction_change);
+}
+
+void CBasePlayerWeapon_SendWeaponAnim(IReGameHook_CBasePlayerWeapon_SendWeaponAnim *chain, CBasePlayerWeapon *pthis, int iAnim, int skiplocal)
+{
+	auto original = [chain](int _pthis, int _iAnim, int _skiplocal)
+	{
+		chain->callNext(getPrivate<CBasePlayerWeapon>(_pthis), _iAnim, _skiplocal);
+	};
+
+	callVoidForward(RG_CBasePlayerWeapon_SendWeaponAnim, original, indexOfEdict(pthis->pev), iAnim, skiplocal);
+}
+
+
 /*
 * VTC functions
 */
@@ -1527,3 +1775,4 @@ void CmdExec(IRecheckerHook_CmdExec *chain, IGameClient *cl, IResourceBuffer *re
 	CmdExec_t data(chain, res);
 	CmdExec_AMXX(&data, cl, res->GetFileName(), cmdExec, responseHash);
 }
+

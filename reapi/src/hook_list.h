@@ -38,6 +38,7 @@ extern hook_t hooklist_weaponbox[];
 extern hook_t hooklist_weapon[];
 extern hook_t hooklist_gib[];
 extern hook_t hooklist_cbaseentity[];
+extern hook_t hooklist_botmanager[];
 
 enum
 {
@@ -65,6 +66,7 @@ struct hooklist_t
 			CASE(weapon)
 			CASE(gib)
 			CASE(cbaseentity)
+			CASE(botmanager)
 		}
 
 		#undef CASE
@@ -88,6 +90,7 @@ struct hooklist_t
 		ht_weapon,
 		ht_gib,
 		ht_cbaseentity,
+		ht_botmanager,
 	};
 };
 
@@ -146,6 +149,17 @@ enum GamedllFunc
 
 	RG_CreateWeaponBox,
 	RG_PM_LadderMove,
+	RG_PM_WaterJump,
+	RG_PM_CheckWaterJump,
+	RG_PM_Jump,
+	RG_PM_Duck,
+	RG_PM_UnDuck,
+	RG_PM_PlayStepSound,
+	RG_PM_AirAccelerate,
+	RG_ClearMultiDamage,
+	RG_AddMultiDamage,
+	RG_ApplyMultiDamage,
+	RG_BuyItem,
 
 	// [...]
 };
@@ -219,6 +233,9 @@ enum GamedllFunc_CBasePlayer
 	RG_CBasePlayer_DeathSound,
 	RG_CBasePlayer_JoiningThink,
 
+	RG_CBasePlayer_CheckTimeBasedDamage,
+	RG_CBasePlayer_EntSelectSpawnPoint,
+
 	// [...]
 };
 
@@ -247,6 +264,9 @@ enum GamedllFunc_CBasePlayerWeapon
 	RG_CBasePlayerWeapon_DefaultDeploy,
 	RG_CBasePlayerWeapon_DefaultReload,
 	RG_CBasePlayerWeapon_DefaultShotgunReload,
+	RG_CBasePlayerWeapon_ItemPostFrame,
+	RG_CBasePlayerWeapon_KickBack,
+	RG_CBasePlayerWeapon_SendWeaponAnim,
 
 	// [...]
 };
@@ -278,6 +298,10 @@ enum GamedllFunc_CSGameRules
 	RG_CSGameRules_BalanceTeams,
 	RG_CSGameRules_OnRoundFreezeEnd,
 	RG_CSGameRules_CanPlayerHearPlayer,
+	RG_CSGameRules_Think,
+	RG_CSGameRules_TeamFull,
+	RG_CSGameRules_TeamStacked,
+	RG_CSGameRules_PlayerGotWeapon,
 
 	// [...]
 };
@@ -296,6 +320,13 @@ enum GamedllFunc_CBaseEntity
 	RG_CBaseEntity_FireBullets = BEGIN_FUNC_REGION(cbaseentity),
 	RG_CBaseEntity_FireBuckshots,
 	RG_CBaseEntity_FireBullets3,
+
+	// [...]
+};
+
+enum GamedllFunc_CBotManager
+{
+	RG_CBotManager_OnEvent = BEGIN_FUNC_REGION(botmanager),
 
 	// [...]
 };
