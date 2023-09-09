@@ -909,7 +909,7 @@ cell AMX_NATIVE_CALL rg_set_weapon_info(AMX *amx, cell *params)
 * @param slot           The slot that will be emptied
 * @param removeAmmo     Remove ammunition
 *
-* @return               1 on success, 0 otherwise
+* @return               1 if all items were found and removed, 0 otherwise
 *
 * native rg_remove_items_by_slot(const index, const InventorySlotType:slot, const bool:removeAmmo = true);
 */
@@ -922,13 +922,17 @@ cell AMX_NATIVE_CALL rg_remove_items_by_slot(AMX *amx, cell *params)
 	CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_index]);
 	CHECK_CONNECTED(pPlayer, arg_index);
 
+	bool removed = true;
+
 	if (params[arg_slot] == C4_SLOT)
 	{
-		pPlayer->CSPlayer()->RemovePlayerItemEx("weapon_c4", true);
+		// Compatible with older versions of the plugin,
+		// which still only pass two parameters
+		removed = pPlayer->CSPlayer()->RemovePlayerItemEx("weapon_c4", (PARAMS_COUNT < 3 || params[arg_remammo] != 0));
 	}
 	else
 	{
-		pPlayer->ForEachItem(params[arg_slot], [pPlayer, params](CBasePlayerItem *pItem)
+		pPlayer->ForEachItem(params[arg_slot], [&](CBasePlayerItem *pItem)
 		{
 			if (pItem->IsWeapon()) {
 				if (pItem == pPlayer->m_pActiveItem) {
@@ -937,7 +941,7 @@ cell AMX_NATIVE_CALL rg_remove_items_by_slot(AMX *amx, cell *params)
 
 				// Compatible with older versions of the plugin,
 				// which still only pass two parameters
-				if (PARAMS_COUNT < 3 || params[arg_remammo]) {
+				if (PARAMS_COUNT < 3 || params[arg_remammo] != 0) {
 					pPlayer->m_rgAmmo[ pItem->PrimaryAmmoIndex() ] = 0;
 				}
 			}
@@ -951,6 +955,8 @@ cell AMX_NATIVE_CALL rg_remove_items_by_slot(AMX *amx, cell *params)
 				}
 
 				pItem->Kill();
+			} else {
+				removed = false;
 			}
 
 			return false;
@@ -961,7 +967,7 @@ cell AMX_NATIVE_CALL rg_remove_items_by_slot(AMX *amx, cell *params)
 		}
 	}
 
-	return TRUE;
+	return removed ? TRUE : FALSE;
 }
 
 /*
