@@ -9,7 +9,7 @@
 *
 * @note Use this for hookchain RG_RoundEnd with the parameter ScenarioEventEndRound:event
 */
-#define IsRoundExpireEvent(%0) (((1<<_:(%0) + ScenarioEventEndRound:0)) & ((1<<_:ROUND_TARGET_SAVED) | (1<<_:ROUND_HOSTAGE_NOT_RESCUED) | (1<<_:ROUND_TERRORISTS_NOT_ESCAPED) | (1<<_:ROUND_VIP_NOT_ESCAPED) | (1<<_:ROUND_GAME_OVER))) != 0)
+#define IsRoundExpireEvent(%0) (((1 << _:(%0) + _:ScenarioEventEndRound:0) & ((1 << _:ROUND_TARGET_SAVED) | (1 << _:ROUND_HOSTAGE_NOT_RESCUED) | (1 << _:ROUND_TERRORISTS_NOT_ESCAPED) | (1 << _:ROUND_VIP_NOT_ESCAPED) | (1 << _:ROUND_GAME_OVER))) != 0)
 
 /**
 * suppress warning: 200 on amxmodx 1.8.2
