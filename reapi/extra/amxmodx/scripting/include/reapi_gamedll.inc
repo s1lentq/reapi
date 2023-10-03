@@ -528,9 +528,9 @@ native rg_remove_all_items(const index, const bool:removeSuit = false);
 * Forces the player to drop the specified item classname.
 *
 * @param index      Client index
-* @param item_name  Item classname
+* @param item_name  Item classname, if no name, the active item classname
 *
-* @return           1 on success, 0 otherwise
+* @return           Entity index of weaponbox, AMX_NULLENT (-1) otherwise
 *
 */
 native rg_drop_item(const index, const item_name[]);

@@ -1018,9 +1018,9 @@ cell AMX_NATIVE_CALL rg_remove_all_items(AMX *amx, cell *params)
 * Forces the player to drop the specified item classname.
 *
 * @param index      Client index
-* @param item_name  Item classname
+* @param item_name  Item classname, if no name, the active item classname
 *
-* @return           1 on success, 0 otherwise
+* @return           Entity index of weaponbox, AMX_NULLENT (-1) otherwise
 *
 * native rg_drop_item(const index, const item_name[]);
 */
@@ -1034,8 +1034,12 @@ cell AMX_NATIVE_CALL rg_drop_item(AMX *amx, cell *params)
 	CHECK_CONNECTED(pPlayer, arg_index);
 
 	char item[256];
-	pPlayer->CSPlayer()->DropPlayerItem(getAmxString(amx, params[arg_item_name], item));
-	return TRUE;
+	auto pEntity = pPlayer->CSPlayer()->DropPlayerItem(getAmxString(amx, params[arg_item_name], item));
+	
+	if (pEntity)
+		return indexOfPDataAmx(pEntity);
+
+	return AMX_NULLENT;
 }
 
 /*
