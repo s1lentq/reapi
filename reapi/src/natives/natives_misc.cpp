@@ -909,7 +909,10 @@ cell AMX_NATIVE_CALL rg_set_weapon_info(AMX *amx, cell *params)
 * @param slot           The slot that will be emptied
 * @param removeAmmo     Remove ammunition
 *
-* @return               1 on success, 0 otherwise
+* @return               0   - if there were no items in the slot
+*                       < 0 - count of unsuccessfully removed items
+*                       > 0 - count of successfully removed items from the entire inventory
+*                             (only if there were no unsuccessful removals)
 *
 * native rg_remove_items_by_slot(const index, const InventorySlotType:slot, const bool:removeAmmo = true);
 */
@@ -922,46 +925,30 @@ cell AMX_NATIVE_CALL rg_remove_items_by_slot(AMX *amx, cell *params)
 	CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_index]);
 	CHECK_CONNECTED(pPlayer, arg_index);
 
-	if (params[arg_slot] == C4_SLOT)
+	int successfulRemovals = 0;
+	int unsuccessfulRemovals = 0;
+
+	pPlayer->ForEachItem(params[arg_slot], [&](CBasePlayerItem *pItem)
 	{
-		pPlayer->CSPlayer()->RemovePlayerItemEx("weapon_c4", true);
-	}
-	else
-	{
-		pPlayer->ForEachItem(params[arg_slot], [pPlayer, params](CBasePlayerItem *pItem)
-		{
-			if (pItem->IsWeapon()) {
-				if (pItem == pPlayer->m_pActiveItem) {
-					((CBasePlayerWeapon *)pItem)->RetireWeapon();
-				}
-
-				// Compatible with older versions of the plugin,
-				// which still only pass two parameters
-				if (PARAMS_COUNT < 3 || params[arg_remammo]) {
-					pPlayer->m_rgAmmo[ pItem->PrimaryAmmoIndex() ] = 0;
-				}
-			}
-
-			if (pPlayer->RemovePlayerItem(pItem)) {
-				pPlayer->pev->weapons &= ~(1 << pItem->m_iId);
-
-				// No more weapon
-				if ((pPlayer->pev->weapons & ~(1 << WEAPON_SUIT)) == 0) {
-					pPlayer->m_iHideHUD |= HIDEHUD_WEAPONS;
-				}
-
-				pItem->Kill();
-			}
-
-			return false;
-		});
-
-		if (!pPlayer->m_rgpPlayerItems[PRIMARY_WEAPON_SLOT]) {
-			pPlayer->m_bHasPrimary = false;
+		// Compatible with older versions of the plugin,
+		// which still only pass two parameters
+		if (pPlayer->CSPlayer()->RemovePlayerItemEx(STRING(pItem->pev->classname), (PARAMS_COUNT < 3 || params[arg_remammo] != 0))) {
+			successfulRemovals++;
 		}
-	}
+		else {
+			unsuccessfulRemovals++;
+		}
 
-	return TRUE;
+		return false;
+	});
+
+	if (successfulRemovals == 0 && unsuccessfulRemovals == 0)
+		return 0; // all slots are empty
+
+	if (unsuccessfulRemovals > 0)
+		return -unsuccessfulRemovals; // unsuccessful count of removed items
+
+	return successfulRemovals;
 }
 
 /*
