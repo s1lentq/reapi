@@ -64,8 +64,8 @@ public:
 	virtual CBaseEntity *GiveNamedItemEx(const char *pszName) = 0;
 	virtual void GiveDefaultItems() = 0;
 	virtual void GiveShield(bool bDeploy = true) = 0;
-	virtual void DropShield(bool bDeploy = true) = 0;
-	virtual void DropPlayerItem(const char *pszItemName) = 0;
+	virtual CBaseEntity *DropShield(bool bDeploy = true) = 0;
+	virtual CBaseEntity *DropPlayerItem(const char *pszItemName) = 0;
 	virtual bool RemoveShield() = 0;
 	virtual void RemoveAllItems(bool bRemoveSuit) = 0;
 	virtual bool RemovePlayerItem(const char* pszItemName) = 0;
