@@ -909,10 +909,8 @@ cell AMX_NATIVE_CALL rg_set_weapon_info(AMX *amx, cell *params)
 * @param slot           The slot that will be emptied
 * @param removeAmmo     Remove ammunition
 *
-* @return               0   - if there were no items in the slot
-*                       < 0 - count of unsuccessfully removed items
-*                       > 0 - count of successfully removed items from the entire inventory
-*                             (only if there were no unsuccessful removals)
+* @return               1 - successful removal of all items in the slot or the slot is empty
+*                       0 - if at least one item failed to remove
 *
 * native rg_remove_items_by_slot(const index, const InventorySlotType:slot, const bool:removeAmmo = true);
 */
@@ -925,30 +923,17 @@ cell AMX_NATIVE_CALL rg_remove_items_by_slot(AMX *amx, cell *params)
 	CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_index]);
 	CHECK_CONNECTED(pPlayer, arg_index);
 
-	int successfulRemovals = 0;
-	int unsuccessfulRemovals = 0;
+	bool success = true;
 
 	pPlayer->ForEachItem(params[arg_slot], [&](CBasePlayerItem *pItem)
 	{
 		// Compatible with older versions of the plugin,
 		// which still only pass two parameters
-		if (pPlayer->CSPlayer()->RemovePlayerItemEx(STRING(pItem->pev->classname), (PARAMS_COUNT < 3 || params[arg_remammo] != 0))) {
-			successfulRemovals++;
-		}
-		else {
-			unsuccessfulRemovals++;
-		}
-
+		success &= pPlayer->CSPlayer()->RemovePlayerItemEx(STRING(pItem->pev->classname), (PARAMS_COUNT < 3 || params[arg_remammo] != 0)) ? true : false;
 		return false;
 	});
 
-	if (successfulRemovals == 0 && unsuccessfulRemovals == 0)
-		return 0; // all slots are empty
-
-	if (unsuccessfulRemovals > 0)
-		return -unsuccessfulRemovals; // unsuccessful count of removed items
-
-	return successfulRemovals;
+	return success ? TRUE : FALSE;
 }
 
 /*
