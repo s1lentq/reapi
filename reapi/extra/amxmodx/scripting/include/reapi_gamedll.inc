@@ -510,7 +510,8 @@ native rg_remove_items_by_slot(const index, const InventorySlotType:slot, const 
 * @param index      Client index
 * @param slot       Specific slot for remove of each item.
 *
-* @return           1 on success, 0 otherwise
+* @return           1 - successful drop of all items in the slot or the slot is empty
+*                   0 - if at least one item failed to drop
 */
 native rg_drop_items_by_slot(const index, const InventorySlotType:slot);
 
