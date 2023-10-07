@@ -942,7 +942,8 @@ cell AMX_NATIVE_CALL rg_remove_items_by_slot(AMX *amx, cell *params)
 * @param index      Client index
 * @param slot       Specific slot for remove of each item.
 *
-* @return           1 on success, 0 otherwise
+* @return           1 - successful drop of all items in the slot or the slot is empty
+*                   0 - if at least one item failed to drop
 *
 * native rg_drop_items_by_slot(const index, const InventorySlotType:slot);
 */
@@ -955,12 +956,14 @@ cell AMX_NATIVE_CALL rg_drop_items_by_slot(AMX *amx, cell *params)
 	CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_index]);
 	CHECK_CONNECTED(pPlayer, arg_index);
 
-	pPlayer->ForEachItem(params[arg_slot], [pPlayer](CBasePlayerItem *pItem) {
-		pPlayer->CSPlayer()->DropPlayerItem(STRING(pItem->pev->classname));
+	bool success = true;
+
+	pPlayer->ForEachItem(params[arg_slot], [&](CBasePlayerItem *pItem) {
+		success &= pPlayer->CSPlayer()->DropPlayerItem(STRING(pItem->pev->classname)) ? true : false;
 		return false;
 	});
 
-	return TRUE;
+	return success ? TRUE : FALSE;
 }
 
 /*
@@ -990,9 +993,9 @@ cell AMX_NATIVE_CALL rg_remove_all_items(AMX *amx, cell *params)
 * Forces the player to drop the specified item classname.
 *
 * @param index      Client index
-* @param item_name  Item classname
+* @param item_name  Item classname, if no name, the active item classname
 *
-* @return           1 on success, 0 otherwise
+* @return           Entity index of weaponbox, AMX_NULLENT (-1) otherwise
 *
 * native rg_drop_item(const index, const item_name[]);
 */
@@ -1006,8 +1009,12 @@ cell AMX_NATIVE_CALL rg_drop_item(AMX *amx, cell *params)
 	CHECK_CONNECTED(pPlayer, arg_index);
 
 	char item[256];
-	pPlayer->CSPlayer()->DropPlayerItem(getAmxString(amx, params[arg_item_name], item));
-	return TRUE;
+	auto pEntity = pPlayer->CSPlayer()->DropPlayerItem(getAmxString(amx, params[arg_item_name], item));
+	
+	if (pEntity)
+		return indexOfPDataAmx(pEntity);
+
+	return AMX_NULLENT;
 }
 
 /*

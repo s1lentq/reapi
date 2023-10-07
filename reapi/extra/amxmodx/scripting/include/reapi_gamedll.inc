@@ -511,7 +511,8 @@ native rg_remove_items_by_slot(const index, const InventorySlotType:slot, const 
 * @param index      Client index
 * @param slot       Specific slot for remove of each item.
 *
-* @return           1 on success, 0 otherwise
+* @return           1 - successful drop of all items in the slot or the slot is empty
+*                   0 - if at least one item failed to drop
 */
 native rg_drop_items_by_slot(const index, const InventorySlotType:slot);
 
@@ -529,9 +530,9 @@ native rg_remove_all_items(const index, const bool:removeSuit = false);
 * Forces the player to drop the specified item classname.
 *
 * @param index      Client index
-* @param item_name  Item classname
+* @param item_name  Item classname, if no name, the active item classname
 *
-* @return           1 on success, 0 otherwise
+* @return           Entity index of weaponbox, AMX_NULLENT (-1) otherwise
 *
 */
 native rg_drop_item(const index, const item_name[]);
