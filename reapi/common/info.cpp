@@ -282,7 +282,7 @@ void Info_SetValueForStarKey(char *s, const char *key, const char *value, int ma
 		return;
 	}
 
-	if (Q_strstr(key, "..") || Q_strstr(value, ".."))
+	if (Q_strstr(key, "..") || (Q_strcmp(key, "name") != 0 && Q_strstr(value, "..")))
 	{
 		// TODO: Why silently return?
 		//UTIL_ServerPrint("Can't use keys or values with a ..\n");
