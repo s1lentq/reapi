@@ -500,7 +500,8 @@ native rg_set_weapon_info(const {WeaponIdType,_}:weapon_id, WpnInfo:type, any:..
 * @param slot           The slot that will be emptied
 * @param removeAmmo     Remove ammunition
 *
-* @return               1 on success, 0 otherwise
+* @return               1 - successful removal of all items in the slot or the slot is empty
+*                       0 - if at least one item failed to remove
 */
 native rg_remove_items_by_slot(const index, const InventorySlotType:slot, const bool:removeAmmo = true);
 
