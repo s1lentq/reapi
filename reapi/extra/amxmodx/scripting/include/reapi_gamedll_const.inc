@@ -475,7 +475,7 @@ enum GamedllFunc
 	RG_ApplyMultiDamage,
 
 	/*
-	* Description:      Called when player buys an item from buy menu (Nightvision, Kevlar, etc.) 
+	* Description:      Called when player buys an item from buy menu (Nightvision, Kevlar, etc.)
 	* Params:           (const pPlayer, iSlot)
 	*/
 	RG_BuyItem,

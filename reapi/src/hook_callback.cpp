@@ -150,14 +150,19 @@ bool SV_AllowPhysent(IRehldsHook_SV_AllowPhysent* chain, edict_t* check, edict_t
 	return callForward<bool>(RH_SV_AllowPhysent, original, indexOfEdict(check), indexOfEdict(sv_player));
 }
 
-int SV_CheckUserInfo(IRehldsHook_SV_CheckUserInfo *chain, netadr_t *adr, char *userinfo, qboolean bIsReconnecting, int iReconnectSlot, char *name)
+BOOL SV_CheckUserInfo_AMXX(IRehldsHook_SV_CheckUserInfo *chain, netadr_t *adr, size_t userinfo, qboolean bIsReconnecting, int iReconnectSlot, char *name)
 {
-	auto original = [chain](netadr_t *_adr, char *_userinfo, qboolean _bIsReconnecting, int _iReconnectSlot, char *_name)
+	auto original = [chain](netadr_t *_adr, cell _userinfo, qboolean _bIsReconnecting, int _iReconnectSlot, char *_name)
 	{
-		return chain->callNext(_adr, _userinfo, _bIsReconnecting, _iReconnectSlot, _name);
+		return chain->callNext(_adr, (char *)_userinfo, _bIsReconnecting, _iReconnectSlot, _name);
 	};
 
-	return callForward<int>(RH_SV_CheckUserInfo, original, adr, userinfo, bIsReconnecting, iReconnectSlot, name);
+	return callForward<BOOL>(RH_SV_CheckUserInfo, original, adr, userinfo, bIsReconnecting, iReconnectSlot, name);
+}
+
+BOOL SV_CheckUserInfo(IRehldsHook_SV_CheckUserInfo *chain, netadr_t *adr, char *userinfo, qboolean bIsReconnecting, int iReconnectSlot, char *name)
+{
+	return SV_CheckUserInfo_AMXX(chain, adr, (size_t)userinfo, bIsReconnecting, iReconnectSlot, name);
 }
 
 int PF_precache_generic_I(IRehldsHook_PF_precache_generic_I *chain, const char *s)
@@ -1614,7 +1619,7 @@ void CSGameRules_Think(IReGameHook_CSGameRules_Think *chain)
 
 	callVoidForward(RG_CSGameRules_Think, original);
 }
-	
+
 BOOL CSGameRules_TeamFull(IReGameHook_CSGameRules_TeamFull *chain, int team_id)
 {
 	auto original = [chain](int _team_id)

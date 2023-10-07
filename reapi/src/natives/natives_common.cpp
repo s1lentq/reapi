@@ -114,6 +114,61 @@ cell AMX_NATIVE_CALL amx_get_viewent(AMX *amx, cell *params)
 }
 
 /*
+* Sets value string to entire buffer
+*
+* @param buffer     Pointer to buffer
+* @param value      Value to set
+* @param maxlen     Maximum size of the value buffer to set, -1 means copy all characters
+*
+* @return           1 on success, 0 otherwise
+*
+* native set_key_value_buffer(const pbuffer, const value[], const maxlen = -1);
+*/
+cell AMX_NATIVE_CALL amx_set_key_value_buffer(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_buffer, arg_value, arg_maxlen };
+
+	char *buffer = reinterpret_cast<char *>(params[arg_buffer]);
+	if (!buffer)
+	{
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: Invalid buffer", __FUNCTION__);
+		return FALSE;
+	}
+
+	size_t maxlen = (params[arg_maxlen] > 0) ? min(params[arg_maxlen], MAX_INFO_STRING) : MAX_INFO_STRING;
+	char infobuf[MAX_INFO_STRING];
+	const char *value = getAmxString(amx, params[arg_value], infobuf);
+	size_t len = min<size_t>(Q_strlen(value) + 1, maxlen);
+	Q_strnlcpy(buffer, value, len);
+	return TRUE;
+}
+
+/*
+* Gets an AMXX string buffer from a infobuffer pointer
+*
+* @param buffer     Info string pointer
+* @param value      String to copy value to
+* @param maxlen     Maximum size of the output buffer
+*
+* @return           Returns a string buffer on infobuffer pointer
+*
+* native get_key_value_buffer(const pbuffer, const output[], const maxlen);
+*/
+cell AMX_NATIVE_CALL amx_get_key_value_buffer(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_buffer, arg_output, arg_maxlen };
+
+	char *buffer = reinterpret_cast<char *>(params[arg_buffer]);
+	if (!buffer)
+	{
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: Invalid buffer", __FUNCTION__);
+		return FALSE;
+	}
+
+	return g_amxxapi.SetAmxString(amx, params[arg_output], buffer, params[arg_maxlen]);
+}
+
+/*
 * Gets value for key in buffer
 *
 * @param pbuffer    Pointer to buffer
@@ -480,19 +535,21 @@ cell AMX_NATIVE_CALL amx_SetMoveDone(AMX *amx, cell *params)
 
 AMX_NATIVE_INFO Natives_Common[] =
 {
-	{ "FClassnameIs",    amx_FClassnameIs    },
-	{ "GetGrenadeType",  amx_GetGrenadeType  },
-	{ "engset_view",     amx_engset_view     },
-	{ "get_viewent",     amx_get_viewent     },
-	{ "get_key_value",   amx_get_key_value   },
-	{ "set_key_value",   amx_set_key_value   },
-	{ "GetBonePosition", amx_GetBonePosition },
-	{ "GetAttachment",   amx_GetAttachment   },
-	{ "SetThink",        amx_SetThink        },
-	{ "SetTouch",        amx_SetTouch        },
-	{ "SetUse",          amx_SetUse          },
-	{ "SetBlocked",      amx_SetBlocked      },
-	{ "SetMoveDone",     amx_SetMoveDone     },
+	{ "FClassnameIs",         amx_FClassnameIs         },
+	{ "GetGrenadeType",       amx_GetGrenadeType       },
+	{ "engset_view",          amx_engset_view          },
+	{ "get_viewent",          amx_get_viewent          },
+	{ "get_key_value",        amx_get_key_value        },
+	{ "set_key_value",        amx_set_key_value        },
+	{ "get_key_value_buffer", amx_get_key_value_buffer },
+	{ "set_key_value_buffer", amx_set_key_value_buffer },
+	{ "GetBonePosition",      amx_GetBonePosition      },
+	{ "GetAttachment",        amx_GetAttachment        },
+	{ "SetThink",             amx_SetThink             },
+	{ "SetTouch",             amx_SetTouch             },
+	{ "SetUse",               amx_SetUse               },
+	{ "SetBlocked",           amx_SetBlocked           },
+	{ "SetMoveDone",          amx_SetMoveDone          },
 
 	{ nullptr, nullptr }
 };

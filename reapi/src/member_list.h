@@ -83,6 +83,7 @@ struct memberlist_t
 		mt_mapinfo,
 		mt_csplayerweapon,
 		mt_gib,
+		mt_netadr
 	};
 };
 
@@ -733,6 +734,13 @@ enum PMTrace
 	pmt_ent,
 	pmt_deltavelocity,
 	pmt_hitgroup
+};
+
+enum NetAdr
+{
+	netadr_type = BEGIN_MEMBER_REGION(netadr),
+	netadr_ip,
+	netadr_port
 };
 
 // CCSPlayer

@@ -338,7 +338,8 @@ void SV_ActivateServer(IRehldsHook_SV_ActivateServer *chain, int runPhysics);
 void Cvar_DirectSet(IRehldsHook_Cvar_DirectSet *chain, cvar_t *var, const char *value);
 void ClientConnected(IRehldsHook_ClientConnected* chain, IGameClient* cl);
 void SV_ConnectClient(IRehldsHook_SV_ConnectClient* chain);
-int SV_CheckUserInfo(IRehldsHook_SV_CheckUserInfo* chain, netadr_t *adr, char *userinfo, qboolean bIsReconnecting, int iReconnectSlot, char *name);
+BOOL SV_CheckUserInfo(IRehldsHook_SV_CheckUserInfo *chain, netadr_t *adr, char *userinfo, qboolean bIsReconnecting, int iReconnectSlot, char *name);
+BOOL SV_CheckUserInfo_AMXX(IRehldsHook_SV_CheckUserInfo *chain, netadr_t *adr, size_t userinfo, qboolean bIsReconnecting, int iReconnectSlot, char *name);
 
 struct SV_WriteFullClientUpdate_args_t
 {
@@ -547,14 +548,14 @@ void ClearMultiDamage(IReGameHook_ClearMultiDamage *chain);
 void AddMultiDamage(IReGameHook_AddMultiDamage *chain, entvars_t *pevInflictor, CBaseEntity *pEntity, float flDamage, int bitsDamageType);
 void ApplyMultiDamage(IReGameHook_ApplyMultiDamage *chain, entvars_t *pevInflictor, entvars_t *pevAttacker);
 void BuyItem(IReGameHook_BuyItem *chain, CBasePlayer *pPlayer, int iSlot);
-void CSGameRules_Think(IReGameHook_CSGameRules_Think *chain);	
+void CSGameRules_Think(IReGameHook_CSGameRules_Think *chain);
 BOOL CSGameRules_TeamFull(IReGameHook_CSGameRules_TeamFull *chain, int team_id);
 BOOL CSGameRules_TeamStacked(IReGameHook_CSGameRules_TeamStacked *chain, int newTeam_id, int curTeam_id);
 void CSGameRules_PlayerGotWeapon(IReGameHook_CSGameRules_PlayerGotWeapon *chain, CBasePlayer *pPlayer, CBasePlayerItem *pWeapon);
 void CBotManager_OnEvent(IReGameHook_CBotManager_OnEvent *chain, GameEventType event, CBaseEntity* pEntity, CBaseEntity* pOther);
 void CBasePlayer_CheckTimeBasedDamage(IReGameHook_CBasePlayer_CheckTimeBasedDamage *chain, CBasePlayer *pthis);
 edict_t *CBasePlayer_EntSelectSpawnPoint(IReGameHook_CBasePlayer_EntSelectSpawnPoint *chain, CBasePlayer *pthis);
-void CBasePlayerWeapon_ItemPostFrame(IReGameHook_CBasePlayerWeapon_ItemPostFrame *chain, CBasePlayerWeapon *pthis); 
+void CBasePlayerWeapon_ItemPostFrame(IReGameHook_CBasePlayerWeapon_ItemPostFrame *chain, CBasePlayerWeapon *pthis);
 void CBasePlayerWeapon_KickBack(IReGameHook_CBasePlayerWeapon_KickBack *chain, CBasePlayerWeapon *pthis, float up_base, float lateral_base, float up_modifier, float lateral_modifier, float up_max, float lateral_max, int direction_change);
 void CBasePlayerWeapon_SendWeaponAnim(IReGameHook_CBasePlayerWeapon_SendWeaponAnim *chain, CBasePlayerWeapon *pthis, int iAnim, int skiplocal);
 

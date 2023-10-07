@@ -668,6 +668,96 @@ cell AMX_NATIVE_CALL get_pmtrace(AMX *amx, cell *params)
 }
 
 /*
+* Sets a NetAdr var.
+*
+* @param var        The specified mvar, look at the enum NetAdrVars
+*
+* @return           1 on success.
+*
+* native set_netadr(const adr, const NetAdrVars:var, any:...);
+*/
+cell AMX_NATIVE_CALL set_netadr(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_adr, arg_var, arg_value };
+	member_t *member = memberlist[params[arg_var]];
+
+	if (unlikely(member == nullptr)) {
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_var]);
+		return FALSE;
+	}
+
+	netadr_t *adr = (netadr_t *)params[arg_adr];
+	if (unlikely(adr == nullptr)) {
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: Invalid network address", __FUNCTION__);
+		return FALSE;
+	}
+
+	switch (params[arg_var])
+	{
+	case netadr_type:
+		adr->type = (netadrtype_t)params[arg_value];
+		break;
+	case netadr_port:
+		adr->port = ntohs(params[arg_value] & 0xFFFF); // cap short
+		break;
+	case netadr_ip:
+		*(size_t *)adr->ip = htonl(params[arg_value] & 0xFFFFFFFF); // cap int
+		break;
+	default:
+		return FALSE;
+	}
+
+	return TRUE;
+}
+
+/*
+* Returns a NetAdr var
+*
+* @param var        The specified mvar, look at the enum NetAdrVars
+*
+* @return           If an integer or boolean or one byte, array or everything else is passed via the 3rd argument and more, look at the argument list for the specified mvar
+*
+* native any:get_netadr(const adr, const NetAdrVars:var, any:...);
+*/
+cell AMX_NATIVE_CALL get_netadr(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_adr, arg_var, arg_3, arg_4 };
+	member_t *member = memberlist[params[arg_var]];
+
+	if (unlikely(member == nullptr)) {
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_var]);
+		return FALSE;
+	}
+
+	netadr_t *adr = (netadr_t *)params[arg_adr];
+	if (unlikely(adr == nullptr)) {
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: Invalid network address", __FUNCTION__);
+		return FALSE;
+	}
+
+	switch (params[arg_var])
+	{
+	case netadr_type: return adr->type;
+	case netadr_port: return ntohs(adr->port);
+	case netadr_ip:
+	{
+		if (PARAMS_COUNT == 4)
+		{
+			cell *dest = getAmxAddr(amx, params[arg_3]);
+			size_t length = *getAmxAddr(amx, params[arg_4]);
+			setAmxString(dest, NET_AdrToString(*adr, true /*no port*/), length);
+		}
+
+		return htonl(*(size_t *)adr->ip);
+	}
+	default:
+		break;
+	}
+
+	return FALSE;
+}
+
+/*
 * Sets a RebuyStruct member.
 *
 * @param var        The specified RebuyStruct, look at the enum RebuyStruct
@@ -756,6 +846,9 @@ AMX_NATIVE_INFO ReGameVars_Natives[] =
 
 	{ "set_pmtrace", set_pmtrace },
 	{ "get_pmtrace", get_pmtrace },
+
+	{ "set_netadr", set_netadr },
+	{ "get_netadr", get_netadr },
 
 	{ nullptr, nullptr }
 };

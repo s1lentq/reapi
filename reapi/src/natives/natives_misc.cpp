@@ -1010,7 +1010,7 @@ cell AMX_NATIVE_CALL rg_drop_item(AMX *amx, cell *params)
 
 	char item[256];
 	auto pEntity = pPlayer->CSPlayer()->DropPlayerItem(getAmxString(amx, params[arg_item_name], item));
-	
+
 	if (pEntity)
 		return indexOfPDataAmx(pEntity);
 
@@ -2230,7 +2230,7 @@ cell AMX_NATIVE_CALL rg_get_iteminfo(AMX *amx, cell *params)
 
 /**
 * Sets a parameter of the global CBasePlayerItem::m_ItemInfoArray array
-* @note To have effect on client side (i.g. ammo size on HUD) you should 
+* @note To have effect on client side (i.g. ammo size on HUD) you should
 *       alter this value BEFORE WeaponList message is sent to client, or
 *		force it's alteration by sending again to the specific client.
 *		Hooking WeaponList message with AMXX's register_message is a choice.
@@ -2299,7 +2299,7 @@ cell AMX_NATIVE_CALL rg_get_global_iteminfo(AMX *amx, cell *params)
 	}
 
 	ItemInfo_e type = static_cast<ItemInfo_e>(params[arg_type]);
-	if ((type == ItemInfo_pszAmmo1 || type == ItemInfo_pszAmmo2 || type == ItemInfo_pszName) && PARAMS_COUNT != 4) 
+	if ((type == ItemInfo_pszAmmo1 || type == ItemInfo_pszAmmo2 || type == ItemInfo_pszName) && PARAMS_COUNT != 4)
 	{
 		AMXX_LogError(amx, AMX_ERR_NATIVE, "Bad arg count. Expected %d, got %d.", 4, PARAMS_COUNT);
 		return FALSE;
@@ -2861,7 +2861,7 @@ cell AMX_NATIVE_CALL rh_get_net_from(AMX* amx, cell* params)
 	enum args_e { arg_count, arg_output, arg_maxlen };
 
 	cell *dest = getAmxAddr(amx, params[arg_output]);
-	char *addr = NET_AdrToString(*g_RehldsData->GetNetFrom());
+	const char *addr = NET_AdrToString(*g_RehldsData->GetNetFrom());
 
 	setAmxString(dest, addr, params[arg_maxlen]);
 

@@ -31,6 +31,24 @@ native set_ucmd(const ucmd, const UCmd:var, any:...);
 native any:get_ucmd(const ucmd, const UCmd:var, any:...);
 
 /*
+* Sets a NetAdr var.
+*
+* @param var        The specified mvar, look at the enum NetAdrVars
+*
+* @return           1 on success.
+*/
+native set_netadr(const adr, const NetAdrVars:var, any:...);
+
+/*
+* Returns a NetAdr var
+*
+* @param var        The specified mvar, look at the enum NetAdrVars
+*
+* @return           If an integer or boolean or one byte, array or everything else is passed via the 3rd argument and more, look at the argument list for the specified mvar
+*/
+native any:get_netadr(const adr, const NetAdrVars:var, any:...);
+
+/*
 * Gets value for key in buffer
 *
 * @param pbuffer    Pointer to buffer
@@ -54,6 +72,28 @@ native get_key_value(const pbuffer, const key[], const value[], const maxlen);
 * @error            If invalid buffer handler provided, an error will be thrown.
 */
 native set_key_value(const pbuffer, const key[], const value[]);
+
+/*
+* Gets an AMXX string buffer from a infobuffer pointer
+*
+* @param buffer     Info string pointer
+* @param value      String to copy value to
+* @param maxlen     Maximum size of the output buffer
+*
+* @return           Returns a string buffer on infobuffer pointer
+*/
+native get_key_value_buffer(const pbuffer, const output[], const maxlen);
+
+/*
+* Sets value string to entire buffer
+*
+* @param buffer     Pointer to buffer
+* @param value      Value to set
+* @param maxlen     Maximum size of the value buffer to set, -1 means copy all characters
+*
+* @return           1 on success, 0 otherwise
+*/
+native set_key_value_buffer(const pbuffer, const value[], const maxlen = -1);
 
 /*
 * Gets the position of the bone
@@ -156,7 +196,7 @@ native rh_drop_client(const index, const message[] = "");
 * @param len        Maximum buffer size
 *
 * @noreturn
-* 
+*
 */
 native rh_get_net_from(output[], len);
 
