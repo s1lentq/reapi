@@ -8,15 +8,24 @@ IRehldsServerStatic* g_RehldsSvs;
 
 bool RehldsApi_Init()
 {
-	if (!IS_DEDICATED_SERVER())
+#ifdef WIN32
+	// Find the most appropriate module handle from a list of DLL candidates
+	// Notes:
+	// - "swds.dll" is the library Dedicated Server
+	//
+	//    Let's also attempt to locate the ReHLDS API in the client's library
+	// - "sw.dll" is the client library for Software render, with a built-in listenserver
+	// - "hw.dll" is the client library for Hardware render, with a built-in listenserver
+	const char *dllNames[] = { "swds.dll", "sw.dll", "hw.dll" }; // List of DLL candidates to lookup for the ReHLDS API
+	CSysModule *engineModule = NULL; // The module handle of the selected DLL
+	for (const char *dllName : dllNames)
 	{
-		return false;
+		if (engineModule = Sys_GetModuleHandle(dllName))
+			break; // gotcha
 	}
 
-#ifdef WIN32
-	CSysModule* engineModule = Sys_LoadModule("swds.dll");
 #else
-	CSysModule* engineModule = Sys_LoadModule("engine_i486.so");
+	CSysModule *engineModule = Sys_GetModuleHandle("engine_i486.so");
 #endif
 
 	if (!engineModule)

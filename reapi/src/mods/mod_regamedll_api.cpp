@@ -11,7 +11,7 @@ bool RegamedllApi_Init()
 	if (!szGameDLLModule)
 		return false;
 
-	CSysModule *gameModule = Sys_LoadModule(szGameDLLModule);
+	CSysModule *gameModule = Sys_GetModuleHandle(szGameDLLModule);
 	if (!gameModule)
 		return false;
 
