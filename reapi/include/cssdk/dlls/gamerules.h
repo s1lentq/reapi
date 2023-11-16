@@ -531,7 +531,7 @@ public:
 	// check if the scenario has been won/lost
 	virtual void CheckWinConditions() = 0;
 	virtual void RemoveGuns() = 0;
-	virtual void GiveC4() = 0;
+	virtual CBasePlayer *GiveC4() = 0;
 	virtual void ChangeLevel() = 0;
 	virtual void GoToIntermission() = 0;
 
