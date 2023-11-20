@@ -142,7 +142,7 @@ enum WpnInfo
 	* Get params:       rg_get_weapon_info(const weapon_id, WI_SLOT);
 	* Set params:       rg_set_weapon_info(const weapon_id, WI_SLOT, const value);
 	*/
-	WI_SLOT
+	WI_SLOT,
 };
 
 /**
