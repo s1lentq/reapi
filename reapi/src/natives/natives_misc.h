@@ -18,6 +18,7 @@ enum WpnInfo
 	WI_AMMO_TYPE,
 	WI_AMMO_NAME,
 	WI_NAME,
+	WI_SLOT,
 };
 
 void RegisterNatives_Misc();
