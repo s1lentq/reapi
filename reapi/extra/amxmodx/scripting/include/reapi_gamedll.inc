@@ -868,7 +868,7 @@ native rg_send_bartime(const index, const duration, const bool:observer = true);
 *
 * @noreturn
 */
-native rg_send_bartime2(const index, const duration, const startPercent, const bool:observer = true);
+native rg_send_bartime2(const index, const duration, const Float:startPercent, const bool:observer = true);
 
 /*
 * Sends the SendAudio message - plays the specified audio.
@@ -901,7 +901,7 @@ native rg_get_iteminfo(const ent, ItemInfo:type, any:...);
 
 /**
 * Sets a parameter of the global CBasePlayerItem::m_ItemInfoArray array
-* @note To have effect on client side (i.g. ammo size on HUD) you should 
+* @note To have effect on client side (i.g. ammo size on HUD) you should
 *       alter this value BEFORE WeaponList message is sent to client, or
 *		force it's alteration by sending again to the specific client.
 *		Hooking WeaponList message with AMXX's register_message is a choice.

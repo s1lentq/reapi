@@ -2014,7 +2014,7 @@ cell AMX_NATIVE_CALL rg_send_bartime(AMX *amx, cell *params)
 *
 * @noreturn
 *
-* native rg_send_bartime2(const index, const duration, const startPercent, const bool:observer = true);
+* native rg_send_bartime2(const index, const duration, const Float:startPercent, const bool:observer = true);
 */
 cell AMX_NATIVE_CALL rg_send_bartime2(AMX *amx, cell *params)
 {
@@ -2024,15 +2024,16 @@ cell AMX_NATIVE_CALL rg_send_bartime2(AMX *amx, cell *params)
 	CHECK_CONNECTED(pPlayer, arg_index);
 
 	CAmxArgs args(amx, params);
+	float startPercent = args[arg_start_percent];
 	if (!args[arg_observer]) {
 		EMESSAGE_BEGIN(MSG_ONE_UNRELIABLE, gmsgBarTime2, nullptr, pPlayer->edict());
 			EWRITE_SHORT(args[arg_time]);
-			EWRITE_SHORT(args[arg_start_percent]);
+			EWRITE_SHORT(startPercent);
 		EMESSAGE_END();
 		return TRUE;
 	}
 
-	pPlayer->CSPlayer()->SetProgressBarTime2(args[arg_time], args[arg_start_percent]);
+	pPlayer->CSPlayer()->SetProgressBarTime2(args[arg_time], startPercent);
 	return TRUE;
 }
 
