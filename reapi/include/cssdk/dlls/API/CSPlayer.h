@@ -119,11 +119,6 @@ public:
 	virtual void OnSpawnEquip(bool addDefault = true, bool equipGame = true) = 0;
 	virtual void SetScoreboardAttributes(CBasePlayer *destination = nullptr) = 0;
 
-	void ResetVars();
-
-	void OnSpawn();
-	void OnKilled();
-
 	CBasePlayer *BasePlayer() const;
 
 public:

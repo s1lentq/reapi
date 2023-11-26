@@ -4816,6 +4816,54 @@ enum CCSPlayer_Members
 	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_bSpawnProtectionEffects,
+
+	/*
+	* Description:      Player vertical jump height
+	* Member type:      float
+	* Get params:       Float:get_member(index, member);
+	* Set params:       set_member(index, member, Float:value);
+	*/
+	m_flJumpHeight,
+
+	/*
+	* Description:      Player vertical jump height with longjump
+	* Member type:      float
+	* Get params:       Float:get_member(index, member);
+	* Set params:       set_member(index, member, Float:value);
+	*/
+	m_flLongJumpHeight,
+
+	/*
+	* Description:      Player horizontal jump height with longjump
+	* Member type:      float
+	* Get params:       Float:get_member(index, member);
+	* Set params:       set_member(index, member, Float:value);
+	*/
+	m_flLongJumpForce,
+
+	/*
+	* Description:      Player crouch maxspeed multiplier
+	* Member type:      float
+	* Get params:       Float:get_member(index, member);
+	* Set params:       set_member(index, member, Float:value);
+	*/
+	m_flDuckSpeedMultiplier,
+
+	/*
+	* Description:      How many unanswered kills this player has been dealt by each other player (0-31)
+	* Member type:      int [32]
+	* Get params:       get_member(index, member, element);
+	* Set params:       set_member(index, member, value, element);
+	*/
+	m_iNumKilledByUnanswered,
+
+	/*
+	* Description:      Array of state per other player whether player is dominating other players (0-31)
+	* Member type:      int [32]
+	* Get params:       get_member(index, member, element);
+	* Set params:       set_member(index, member, value, element);
+	*/
+	m_bPlayerDominated,
 };
 
 /**
