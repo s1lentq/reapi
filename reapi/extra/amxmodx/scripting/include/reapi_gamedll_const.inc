@@ -4859,7 +4859,7 @@ enum CCSPlayer_Members
 
 	/*
 	* Description:      Array of state per other player whether player is dominating other players (0-31)
-	* Member type:      int [32]
+	* Member type:      bool [32]
 	* Get params:       get_member(index, member, element);
 	* Set params:       set_member(index, member, value, element);
 	*/
