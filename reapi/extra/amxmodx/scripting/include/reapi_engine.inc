@@ -124,6 +124,48 @@ native GetBonePosition(const entity, const bone, Float:vecOrigin[3], Float:vecAn
 native GetAttachment(const entity, const attachment, Float:vecOrigin[3], Float:vecAngles[3] = {0.0, 0.0, 0.0});
 
 /*
+* Sets body group value based on entity's model group
+*
+* @param entity     Entity index
+* @param group      Number of entity's model group index
+* @param value      Value to assign
+*
+* @return           1 on success, 0 otherwise
+* @error            If the index is not within the range of 1 to maxEntities or
+*                   the entity is not valid, an error will be thrown.
+*      
+*/      
+native SetBodygroup(const entity, const group, const value);
+
+/*
+* Gets body group value based on entity's model group
+*
+* @param entity     Entity index
+* @param group      Number of entity's model group index
+*
+* @return           Body group value
+* @error            If the index is not within the range of 1 to maxEntities or
+*                   the entity is not valid, an error will be thrown.
+*      
+*/ 
+native GetBodygroup(const entity, const group);
+
+/*
+* Gets sequence information based on entity's model current sequence index
+*
+* @param entity             Entity index
+* @param piFlags            Sequence flags (1 = sequence loops)
+* @param pflFrameRate       Sequence framerate
+* @param pflGroundSpeed     Sequence ground speed
+*
+* @return                   True on success, false otherwise
+* @error                    If the index is not within the range of 1 to maxEntities or
+*                           the entity is not valid, an error will be thrown.
+*      
+*/ 
+native bool:GetSequenceInfo(const entity, &piFlags, &Float:pflFrameRate, &Float:pflGroundSpeed);
+
+/*
 * Sets the name of the map.
 *
 * @param mapname     New map name.
