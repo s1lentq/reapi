@@ -972,14 +972,14 @@ void CSGameRules_RemoveGuns(IReGameHook_CSGameRules_RemoveGuns *chain)
 	callVoidForward(RG_CSGameRules_RemoveGuns, original);
 }
 
-void CSGameRules_GiveC4(IReGameHook_CSGameRules_GiveC4 *chain)
+CBasePlayer *CSGameRules_GiveC4(IReGameHook_CSGameRules_GiveC4 *chain)
 {
 	auto original = [chain]()
 	{
-		chain->callNext();
+		return indexOfPDataAmx(chain->callNext());
 	};
 
-	callVoidForward(RG_CSGameRules_GiveC4, original);
+	return getPrivate<CBasePlayer>(callForward<size_t>(RG_CSGameRules_GiveC4, original));
 }
 
 void CSGameRules_ChangeLevel(IReGameHook_CSGameRules_ChangeLevel *chain)

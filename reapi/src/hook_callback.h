@@ -476,7 +476,7 @@ void CSGameRules_CleanUpMap(IReGameHook_CSGameRules_CleanUpMap *chain);
 void CSGameRules_RestartRound(IReGameHook_CSGameRules_RestartRound *chain);
 void CSGameRules_CheckWinConditions(IReGameHook_CSGameRules_CheckWinConditions *chain);
 void CSGameRules_RemoveGuns(IReGameHook_CSGameRules_RemoveGuns *chain);
-void CSGameRules_GiveC4(IReGameHook_CSGameRules_GiveC4 *chain);
+CBasePlayer *CSGameRules_GiveC4(IReGameHook_CSGameRules_GiveC4 *chain);
 void CSGameRules_ChangeLevel(IReGameHook_CSGameRules_ChangeLevel *chain);
 void CSGameRules_GoToIntermission(IReGameHook_CSGameRules_GoToIntermission *chain);
 void CSGameRules_BalanceTeams(IReGameHook_CSGameRules_BalanceTeams *chain);
