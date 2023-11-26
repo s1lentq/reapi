@@ -614,6 +614,10 @@ typedef IHookChainRegistryClass<void, CBasePlayerWeapon, float, float, float, fl
 typedef IHookChainClass<void, CBasePlayerWeapon, int, int> IReGameHook_CBasePlayerWeapon_SendWeaponAnim;
 typedef IHookChainRegistryClass<void, CBasePlayerWeapon, int, int> IReGameHookRegistry_CBasePlayerWeapon_SendWeaponAnim;
 
+// CHalfLifeMultiplay::SendDeathMessage hook
+typedef IHookChain<void, class CBaseEntity *, class CBasePlayer *, class CBasePlayer *, struct entvars_s *, const char *, int, int> IReGameHook_CSGameRules_SendDeathMessage;
+typedef IHookChainRegistry<void, class CBaseEntity *, class CBasePlayer *, class CBasePlayer *, struct entvars_s *, const char *, int, int> IReGameHookRegistry_CSGameRules_SendDeathMessage;
+
 // CBasePlayer::PlayerDeathThink hook
 typedef IHookChainClass<void, class CBasePlayer> IReGameHook_CBasePlayer_PlayerDeathThink;
 typedef IHookChainRegistryClass<void, class CBasePlayer> IReGameHookRegistry_CBasePlayer_PlayerDeathThink;
@@ -776,7 +780,7 @@ public:
 	virtual IReGameHookRegistry_CBasePlayerWeapon_KickBack *CBasePlayerWeapon_KickBack() = 0;
 	virtual IReGameHookRegistry_CBasePlayerWeapon_SendWeaponAnim *CBasePlayerWeapon_SendWeaponAnim() = 0;
 	virtual IReGameHookRegistry_CSGameRules_SendDeathMessage *CSGameRules_SendDeathMessage() = 0;
-	
+
 	virtual IReGameHookRegistry_CBasePlayer_PlayerDeathThink *CBasePlayer_PlayerDeathThink() = 0;
 };
 
