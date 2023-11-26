@@ -1575,10 +1575,11 @@ cell AMX_NATIVE_CALL rg_get_user_footsteps(AMX *amx, cell *params)
 * @param index      Client index
 * @param receiver   Receiver index, if 0 it will transfer to a random player
 *
-* @return           1 on success, 0 otherwise
+* @return           Index of player entity if successfull, 0 otherwise
 *
 * native rg_transfer_c4(const index, const receiver = 0);
 */
+
 cell AMX_NATIVE_CALL rg_transfer_c4(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_index, arg_receiver };
@@ -1589,29 +1590,50 @@ cell AMX_NATIVE_CALL rg_transfer_c4(AMX *amx, cell *params)
 	CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_index]);
 	CHECK_CONNECTED(pPlayer, arg_index);
 
-	if (!pPlayer->m_bHasC4 || !pPlayer->CSPlayer()->RemovePlayerItem("weapon_c4"))
+	if (!pPlayer->m_bHasC4) {
 		return FALSE;
+	}
 
-	pPlayer->pev->body = 0;
-	pPlayer->m_bHasC4 = false;
-	pPlayer->CSPlayer()->SetBombIcon();
-	pPlayer->CSPlayer()->SetProgressBarTime(0);
+	CBasePlayer *pReceiver = nullptr;
 
-	if (params[arg_receiver] != 0 && params[arg_receiver] <= gpGlobals->maxClients) {
-		CBasePlayer *pReceiver = UTIL_PlayerByIndex(params[arg_receiver]);
+	if (params[arg_receiver] > 0 && params[arg_receiver] <= gpGlobals->maxClients) {
+		pReceiver = UTIL_PlayerByIndex(params[arg_receiver]);
 		CHECK_CONNECTED(pReceiver, arg_receiver);
 
-		if (!pReceiver->CSPlayer()->MakeBomber())
+		if (!pPlayer->CSPlayer()->RemovePlayerItemEx("weapon_c4", true)) {
 			return FALSE;
+		}
 
-	} else {
+		if (!pReceiver->CSPlayer()->MakeBomber()) {
+			return FALSE;
+		}
+	}
+	else {
+		int NumDeadCT, NumDeadTerrorist, NumAliveTerrorist, NumAliveCT;
+		CSGameRules()->InitializePlayerCounts(NumAliveTerrorist, NumAliveCT, NumDeadTerrorist, NumDeadCT);
+
+		if (pPlayer->m_iTeam == CT && NumAliveTerrorist < 1) {
+			return FALSE;
+		}
+
+		if (pPlayer->m_iTeam == TERRORIST && NumAliveTerrorist < 2) {
+			return FALSE;
+		}
+
+		if (!pPlayer->CSPlayer()->RemovePlayerItemEx("weapon_c4", true)) {
+			return FALSE;
+		}
+
 		auto flags = pPlayer->pev->flags;
 		pPlayer->pev->flags |= FL_DORMANT;
-		CSGameRules()->GiveC4();
+		pReceiver = CSGameRules()->GiveC4();
 		pPlayer->pev->flags = flags;
 	}
 
-	return TRUE;
+	if (pReceiver)
+		return indexOfPDataAmx(pReceiver);
+
+	return FALSE;
 }
 
 /*

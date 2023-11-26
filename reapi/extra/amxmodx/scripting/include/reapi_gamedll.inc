@@ -697,7 +697,7 @@ native rg_get_user_footsteps(const index);
 * @param index      Client index
 * @param receiver   Receiver index, if 0 it will transfer to a random player
 *
-* @return           1 on success, 0 otherwise
+* @return           Index of player entity if successfull, 0 otherwise
 */
 native rg_transfer_c4(const index, const receiver = 0);
 
