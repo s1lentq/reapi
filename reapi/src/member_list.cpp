@@ -121,6 +121,7 @@ inline MType getMemberType(short)               { return MEMBER_SHORT; }
 inline MType getMemberType(unsigned short)      { return MEMBER_SHORT; }
 
 inline MType getMemberType(bool)                { return MEMBER_BOOL; }
+inline MType getMemberType(bool*)               { return MEMBER_BOOL; }
 inline MType getMemberType(CUnifiedSignals)     { return MEMBER_SIGNALS; }
 inline MType getMemberType(RebuyStruct)         { return MEBMER_REBUYSTRUCT; }
 
