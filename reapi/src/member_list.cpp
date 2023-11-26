@@ -112,6 +112,7 @@ inline MType getMemberType(MONSTERSTATE)        { return MEMBER_INTEGER; }
 inline MType getMemberType(ArmorType)           { return MEMBER_INTEGER; }
 inline MType getMemberType(ArmouryItemPack)     { return MEMBER_INTEGER; }
 inline MType getMemberType(InfoMapBuyParam)     { return MEMBER_INTEGER; }
+inline MType getMemberType(SecondaryAtkState)   { return MEMBER_INTEGER; }
 inline MType getMemberType(netadrtype_t)        { return MEMBER_INTEGER; }
 
 inline MType getMemberType(TraceResult)         { return MEMBER_TRACERESULT; }
@@ -120,6 +121,7 @@ inline MType getMemberType(short)               { return MEMBER_SHORT; }
 inline MType getMemberType(unsigned short)      { return MEMBER_SHORT; }
 
 inline MType getMemberType(bool)                { return MEMBER_BOOL; }
+inline MType getMemberType(bool*)               { return MEMBER_BOOL; }
 inline MType getMemberType(CUnifiedSignals)     { return MEMBER_SIGNALS; }
 inline MType getMemberType(RebuyStruct)         { return MEBMER_REBUYSTRUCT; }
 
@@ -764,6 +766,12 @@ member_t memberlist_csplayer[] = {
 	CSPL_MEMBERS(m_bMegaBunnyJumping),
 	CSPL_MEMBERS(m_bPlantC4Anywhere),
 	CSPL_MEMBERS(m_bSpawnProtectionEffects),
+	CSPL_MEMBERS(m_flJumpHeight),
+	CSPL_MEMBERS(m_flLongJumpHeight),
+	CSPL_MEMBERS(m_flLongJumpForce),
+	CSPL_MEMBERS(m_flDuckSpeedMultiplier),
+	CSPL_MEMBERS(m_iNumKilledByUnanswered),
+	CSPL_MEMBERS(m_bPlayerDominated),
 };
 
 member_t memberlist_baseitem[] = {
@@ -1039,7 +1047,7 @@ member_t memberlist_mapinfo[] = {
 };
 
 member_t memberlist_csplayerweapon[] = {
-	CSPLWPN_MEMBERS(bHasSecondaryAttack),
+	CSPLWPN_MEMBERS(iStateSecondaryAttack),
 	CSPLWPN_MEMBERS(flBaseDamage),
 };
 

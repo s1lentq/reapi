@@ -4816,6 +4816,54 @@ enum CCSPlayer_Members
 	* Set params:       set_member(index, member, bool:value);
 	*/
 	m_bSpawnProtectionEffects,
+
+	/*
+	* Description:      Player vertical jump height
+	* Member type:      float
+	* Get params:       Float:get_member(index, member);
+	* Set params:       set_member(index, member, Float:value);
+	*/
+	m_flJumpHeight,
+
+	/*
+	* Description:      Player vertical jump height with longjump
+	* Member type:      float
+	* Get params:       Float:get_member(index, member);
+	* Set params:       set_member(index, member, Float:value);
+	*/
+	m_flLongJumpHeight,
+
+	/*
+	* Description:      Player horizontal jump height with longjump
+	* Member type:      float
+	* Get params:       Float:get_member(index, member);
+	* Set params:       set_member(index, member, Float:value);
+	*/
+	m_flLongJumpForce,
+
+	/*
+	* Description:      Player crouch maxspeed multiplier
+	* Member type:      float
+	* Get params:       Float:get_member(index, member);
+	* Set params:       set_member(index, member, Float:value);
+	*/
+	m_flDuckSpeedMultiplier,
+
+	/*
+	* Description:      How many unanswered kills this player has been dealt by each other player (0-31)
+	* Member type:      int [32]
+	* Get params:       get_member(index, member, element);
+	* Set params:       set_member(index, member, value, element);
+	*/
+	m_iNumKilledByUnanswered,
+
+	/*
+	* Description:      Array of state per other player whether player is dominating other players (0-31)
+	* Member type:      bool [32]
+	* Get params:       get_member(index, member, element);
+	* Set params:       set_member(index, member, value, element);
+	*/
+	m_bPlayerDominated,
 };
 
 /**
@@ -6238,12 +6286,12 @@ enum CMapInfo_Members
 enum CCSPlayerWeapon_Members
 {
 	/*
-	* Description:      Can the weapon have secondary attack
-	* Member type:      bool
+	* Description:      Weapon secondary attack state
+	* Member type:      enum SecondaryAtkState
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, bool:value);
+	* Set params:       set_member(index, member, SecondaryAtkState:value);
 	*/
-	m_Weapon_bHasSecondaryAttack = BEGIN_MEMBER_REGION(csplayerweapon),
+	m_Weapon_iStateSecondaryAttack = BEGIN_MEMBER_REGION(csplayerweapon),
 
 	/*
 	* Description:      Basic damage that weapon deals before any multiplier, such as hitgroup, armor, distance and bullet penetration
@@ -6253,6 +6301,9 @@ enum CCSPlayerWeapon_Members
 	*/
 	m_Weapon_flBaseDamage,
 };
+
+// API compatibility
+#define m_Weapon_bHasSecondaryAttack m_Weapon_iStateSecondaryAttack
 
 /**
 * CGib Members

@@ -190,6 +190,7 @@
     <ClInclude Include="..\include\cssdk\pm_shared\pm_shared.h" />
     <ClInclude Include="..\include\cssdk\public\FileSystem.h" />
     <ClInclude Include="..\include\cssdk\public\interface.h" />
+    <ClInclude Include="..\include\cssdk\public\utlarray.h" />
     <ClInclude Include="..\include\cssdk\public\utlmemory.h" />
     <ClInclude Include="..\include\cssdk\public\utlvector.h" />
     <ClInclude Include="..\include\metamod\dllapi.h" />

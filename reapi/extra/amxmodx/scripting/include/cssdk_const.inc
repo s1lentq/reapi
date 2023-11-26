@@ -1479,3 +1479,14 @@ enum GameEventType
 	EVENT_HOSTAGE_CALLED_FOR_HELP,		// tell bots the hostage is talking (argumens: 1 = listener, 2 = NULL)
 	NUM_GAME_EVENTS,
 };
+
+/**
+* Weapon secondary attack states
+* For CCSPlayerWeapon::m_iStateSecondaryAttack
+*/
+enum SecondaryAtkState
+{
+	WEAPON_SECONDARY_ATTACK_NONE = 0,
+	WEAPON_SECONDARY_ATTACK_SET,
+	WEAPON_SECONDARY_ATTACK_BLOCK
+};
