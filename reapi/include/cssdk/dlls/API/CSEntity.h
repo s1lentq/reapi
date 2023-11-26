@@ -36,6 +36,7 @@ public:
 	CCSEntity() :
 		m_pContainingEntity(nullptr)
 	{
+		m_ucDmgPenetrationLevel = 0;
 	}
 
 	virtual ~CCSEntity() {}
@@ -45,12 +46,14 @@ public:
 
 public:
 	CBaseEntity *m_pContainingEntity;
+	unsigned char m_ucDmgPenetrationLevel; // penetration level of the damage caused by the inflictor
 
 private:
 #if defined(_MSC_VER)
 #pragma region reserve_data_Region
 #endif
-	int CCSEntity_Reserve[0x1000];
+	char CCSEntity_Reserve[0x3FFF];
+	
 	virtual void func_reserve1() {};
 	virtual void func_reserve2() {};
 	virtual void func_reserve3() {};

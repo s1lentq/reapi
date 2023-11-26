@@ -614,6 +614,10 @@ typedef IHookChainRegistryClass<void, CBasePlayerWeapon, float, float, float, fl
 typedef IHookChainClass<void, CBasePlayerWeapon, int, int> IReGameHook_CBasePlayerWeapon_SendWeaponAnim;
 typedef IHookChainRegistryClass<void, CBasePlayerWeapon, int, int> IReGameHookRegistry_CBasePlayerWeapon_SendWeaponAnim;
 
+// CBasePlayer::PlayerDeathThink hook
+typedef IHookChainClass<void, class CBasePlayer> IReGameHook_CBasePlayer_PlayerDeathThink;
+typedef IHookChainRegistryClass<void, class CBasePlayer> IReGameHookRegistry_CBasePlayer_PlayerDeathThink;
+
 class IReGameHookchains {
 public:
 	virtual ~IReGameHookchains() {}
@@ -771,6 +775,9 @@ public:
 	virtual IReGameHookRegistry_CBasePlayerWeapon_ItemPostFrame *CBasePlayerWeapon_ItemPostFrame() = 0;
 	virtual IReGameHookRegistry_CBasePlayerWeapon_KickBack *CBasePlayerWeapon_KickBack() = 0;
 	virtual IReGameHookRegistry_CBasePlayerWeapon_SendWeaponAnim *CBasePlayerWeapon_SendWeaponAnim() = 0;
+	virtual IReGameHookRegistry_CSGameRules_SendDeathMessage *CSGameRules_SendDeathMessage() = 0;
+	
+	virtual IReGameHookRegistry_CBasePlayer_PlayerDeathThink *CBasePlayer_PlayerDeathThink() = 0;
 };
 
 struct ReGameFuncs_t {

@@ -30,6 +30,7 @@
 
 #include <API/CSPlayerItem.h>
 #include <API/CSPlayerWeapon.h>
+#include <utlarray.h>
 
 enum WeaponInfiniteAmmoMode
 {
@@ -52,9 +53,21 @@ public:
 		m_bAutoBunnyHopping(false),
 		m_bMegaBunnyJumping(false),
 		m_bPlantC4Anywhere(false),
-		m_bSpawnProtectionEffects(false)
+		m_bSpawnProtectionEffects(false),
+		m_flJumpHeight(0),
+		m_flLongJumpHeight(0),
+		m_flLongJumpForce(0),
+		m_flDuckSpeedMultiplier(0),
+		m_iUserID(-1)
 	{
 		m_szModel[0] = '\0';
+
+		// Resets the kill history for this player
+		for (int i = 0; i < MAX_CLIENTS; i++)
+		{
+			m_iNumKilledByUnanswered[i] = 0;
+			m_bPlayerDominated[i]       = false;
+		}
 	}
 
 	virtual bool IsConnected() const = 0;
@@ -138,6 +151,23 @@ public:
 	bool m_bMegaBunnyJumping;
 	bool m_bPlantC4Anywhere;
 	bool m_bSpawnProtectionEffects;
+	double m_flJumpHeight;
+	double m_flLongJumpHeight;
+	double m_flLongJumpForce;
+	double m_flDuckSpeedMultiplier;
+
+	int m_iUserID;
+	struct CDamageRecord_t
+	{
+		float flDamage            = 0.0f;
+		float flFlashDurationTime = 0.0f;
+		int userId                = -1;
+	};
+	using DamageList_t = CUtlArray<CDamageRecord_t, MAX_CLIENTS>;
+	DamageList_t m_DamageList; // A unified array of recorded damage that includes giver and taker in each entry
+	DamageList_t &GetDamageList() { return m_DamageList; }
+	int m_iNumKilledByUnanswered[MAX_CLIENTS]; // [0-31] how many unanswered kills this player has been dealt by each other player
+	bool m_bPlayerDominated[MAX_CLIENTS]; // [0-31] array of state per other player whether player is dominating other players
 };
 
 // Inlines

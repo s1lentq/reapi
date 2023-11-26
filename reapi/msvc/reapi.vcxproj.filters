@@ -582,6 +582,9 @@
     <ClInclude Include="..\include\cssdk\public\interface.h">
       <Filter>include\cssdk\public</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\cssdk\public\utlarray.h">
+      <Filter>include\cssdk\public</Filter>
+    </ClInclude>
     <ClInclude Include="..\include\cssdk\public\utlmemory.h">
       <Filter>include\cssdk\public</Filter>
     </ClInclude>
