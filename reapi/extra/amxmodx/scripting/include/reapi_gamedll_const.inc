@@ -1165,6 +1165,7 @@ enum GamedllFunc_CSGameRules
 
 	/*
 	* Description:      -
+	* Return type:      CBasePlayer * (Entity index of player)
 	* Params:           ()
 	*/
 	RG_CSGameRules_GiveC4,
