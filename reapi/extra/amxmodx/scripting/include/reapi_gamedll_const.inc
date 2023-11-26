@@ -6238,12 +6238,12 @@ enum CMapInfo_Members
 enum CCSPlayerWeapon_Members
 {
 	/*
-	* Description:      Can the weapon have secondary attack
-	* Member type:      bool
+	* Description:      Weapon secondary attack state
+	* Member type:      enum SecondaryAtkState
 	* Get params:       get_member(index, member);
-	* Set params:       set_member(index, member, bool:value);
+	* Set params:       set_member(index, member, SecondaryAtkState:value);
 	*/
-	m_Weapon_bHasSecondaryAttack = BEGIN_MEMBER_REGION(csplayerweapon),
+	m_Weapon_iStateSecondaryAttack = BEGIN_MEMBER_REGION(csplayerweapon),
 
 	/*
 	* Description:      Basic damage that weapon deals before any multiplier, such as hitgroup, armor, distance and bullet penetration
@@ -6253,6 +6253,9 @@ enum CCSPlayerWeapon_Members
 	*/
 	m_Weapon_flBaseDamage,
 };
+
+// API compatibility
+#define m_Weapon_bHasSecondaryAttack m_Weapon_iStateSecondaryAttack
 
 /**
 * CGib Members

@@ -28,19 +28,33 @@
 
 #pragma once
 
+enum SecondaryAtkState : uint8_t
+{
+	WEAPON_SECONDARY_ATTACK_NONE = 0,
+	WEAPON_SECONDARY_ATTACK_SET,
+	WEAPON_SECONDARY_ATTACK_BLOCK
+};
+
 class CBasePlayerWeapon;
 class CCSPlayerWeapon: public CCSPlayerItem
 {
+	DECLARE_CLASS_TYPES(CCSPlayerWeapon, CCSPlayerItem);
 public:
 	CCSPlayerWeapon() :
-		m_bHasSecondaryAttack(false)
+		m_iStateSecondaryAttack(WEAPON_SECONDARY_ATTACK_NONE)
 	{
 	}
+
+	virtual BOOL DefaultDeploy(char *szViewModel, char *szWeaponModel, int iAnim, char *szAnimExt, int skiplocal = 0) = 0;
+	virtual int DefaultReload(int iClipSize, int iAnim, float fDelay) = 0;
+	virtual bool DefaultShotgunReload(int iAnim, int iStartAnim, float fDelay, float fStartDelay, const char *pszReloadSound1 = nullptr, const char *pszReloadSound2 = nullptr) = 0;
+	virtual void KickBack(float up_base, float lateral_base, float up_modifier, float lateral_modifier, float up_max, float lateral_max, int direction_change) = 0;
+	virtual void SendWeaponAnim(int iAnim, int skiplocal = 0) = 0;
 
 	CBasePlayerWeapon *BasePlayerWeapon() const;
 
 public:
-	bool m_bHasSecondaryAttack;
+	SecondaryAtkState m_iStateSecondaryAttack;
 	float m_flBaseDamage;
 };
 
