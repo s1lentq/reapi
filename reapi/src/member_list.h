@@ -83,7 +83,8 @@ struct memberlist_t
 		mt_mapinfo,
 		mt_csplayerweapon,
 		mt_gib,
-		mt_netadr
+		mt_netadr,
+		mt_csentity
 	};
 };
 
@@ -1087,4 +1088,10 @@ enum CGib_Members
 	m_Gib_cBloodDecals,
 	m_Gib_material,
 	m_Gib_lifeTime,
+};
+
+enum CSEntity_Members
+{
+	m_ucDmgPenetrationLevel = BEGIN_MEMBER_REGION(csentity),
+	m_pevLastInflictor,
 };

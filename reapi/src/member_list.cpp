@@ -70,6 +70,7 @@
 #define MAPINFO_MEMBERS(mx)      CLASS_MEMBERS_PREF(CMapInfo, mx, m_MapInfo_##mx, m_)
 #define CSPLWPN_MEMBERS(mx)      CLASS_MEMBERS_PREF(CCSPlayerWeapon, mx, m_Weapon_##mx, m_)
 #define GIB_MEMBERS(mx)          CLASS_MEMBERS_PREF(CGib, mx, m_Gib_##mx, m_)
+#define CSENT_MEMBERS(mx)        CLASS_MEMBERS(CCSEntity, mx, mx)
 
 inline MType getMemberType(float*)              { return MEMBER_FLOAT; }
 inline MType getMemberType(float)               { return MEMBER_FLOAT; }
@@ -1064,6 +1065,11 @@ member_t memberlist_netadr[] = {
 	NETADR_MEMBERS(port)
 };
 
+member_t memberlist_csentity[] = {
+	CSENT_MEMBERS(m_ucDmgPenetrationLevel),
+	CSENT_MEMBERS(m_pevLastInflictor),
+};
+
 #ifdef __GNUC__
 #pragma GCC diagnostic pop
 #endif // #ifdef __GNUC__
@@ -1128,6 +1134,7 @@ member_t *memberlist_t::operator[](size_t members) const
 		CASE(csplayerweapon)
 		CASE(gib)
 		CASE(netadr)
+		CASE(csentity)
 	}
 
 	#undef CASE
