@@ -223,6 +223,74 @@ void GetAttachment(CBaseEntity *pEntity, int iAttachment, Vector *pVecOrigin, Ve
 	}
 }
 
+void SetBodygroup(CBaseEntity *pEntity, int iGroup, int iValue)
+{
+	studiohdr_t *pstudiohdr = static_cast<studiohdr_t *>(GET_MODEL_PTR(pEntity->edict()));
+	if (!pstudiohdr || iGroup > pstudiohdr->numbodyparts)
+	{
+		return;
+	}
+
+	mstudiobodyparts_t *pbodypart = (mstudiobodyparts_t *)((byte *)pstudiohdr + pstudiohdr->bodypartindex) + iGroup;
+
+	if (iValue >= pbodypart->nummodels)
+	{
+		return;
+	}
+
+	int iCurrent = (pEntity->pev->body / pbodypart->base) % pbodypart->nummodels;
+	pEntity->pev->body += (iValue - iCurrent) * pbodypart->base;
+}
+
+int GetBodygroup(CBaseEntity *pEntity, int iGroup)
+{
+	studiohdr_t *pstudiohdr = static_cast<studiohdr_t *>(GET_MODEL_PTR(pEntity->edict()));
+
+	if (!pstudiohdr || iGroup > pstudiohdr->numbodyparts)
+	{
+		return 0;
+	}
+
+	mstudiobodyparts_t *pbodypart = (mstudiobodyparts_t *)((byte *)pstudiohdr + pstudiohdr->bodypartindex) + iGroup;
+
+	if (pbodypart->nummodels <= 1)
+	{
+		return 0;
+	}
+
+	int iCurrent = (pEntity->pev->body / pbodypart->base) % pbodypart->nummodels;
+	return iCurrent;
+}
+
+bool GetSequenceInfo2(CBaseEntity *pEntity, int *piFlags, float *pflFrameRate, float *pflGroundSpeed)
+{
+	studiohdr_t *pstudiohdr = static_cast<studiohdr_t *>(GET_MODEL_PTR(pEntity->edict()));
+
+	if (!pstudiohdr || pEntity->pev->sequence >= pstudiohdr->numseq)
+	{
+		*piFlags = 0;
+		*pflFrameRate = 0;
+		*pflGroundSpeed = 0;
+		return false;
+	}
+
+	mstudioseqdesc_t *pseqdesc = (mstudioseqdesc_t *)((byte *)pstudiohdr + pstudiohdr->seqindex) + int(pEntity->pev->sequence);
+	*piFlags = pseqdesc->flags;
+	if (pseqdesc->numframes <= 1)
+	{
+		*pflFrameRate = 256.0f;
+		*pflGroundSpeed = 0.0f;
+	}
+	else 
+	{
+		*pflFrameRate = pseqdesc->fps * 256.0f / (pseqdesc->numframes - 1);
+		*pflGroundSpeed = Q_sqrt(pseqdesc->linearmovement[0] * pseqdesc->linearmovement[0] + pseqdesc->linearmovement[1] * pseqdesc->linearmovement[1] + pseqdesc->linearmovement[2] * pseqdesc->linearmovement[2]);
+		*pflGroundSpeed = *pflGroundSpeed * pseqdesc->fps / (pseqdesc->numframes - 1);
+	}
+
+	return true;
+}
+
 void RemoveOrDropItem(CBasePlayer *pPlayer, CBasePlayerItem *pItem, GiveType type)
 {
 	switch (type)
