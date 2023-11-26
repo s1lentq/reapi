@@ -1122,6 +1122,7 @@ void *get_pdata_custom(CBaseEntity *pEntity, cell member)
 {
 	const auto table = memberlist_t::members_tables_e(member / MAX_REGION_RANGE);
 	switch (table) {
+	case memberlist_t::mt_csentity:
 	case memberlist_t::mt_csplayer:
 	case memberlist_t::mt_csplayerweapon: {
 		if (unlikely(pEntity->m_pEntity == nullptr)) {

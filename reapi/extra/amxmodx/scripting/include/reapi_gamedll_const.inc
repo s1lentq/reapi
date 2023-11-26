@@ -6342,3 +6342,25 @@ enum CGib_Members
 	*/
 	m_Gib_lifeTime,
 };
+
+/**
+* CCSEntity API Members
+*/
+enum CCSEntity_Members
+{
+	/*
+	* Description:      Penetration level of the damage caused by the inflictor
+	* Member type:      unsigned char
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_ucDmgPenetrationLevel = BEGIN_MEMBER_REGION(csplayerweapon),
+
+	/*
+	* Description:      Cached inflictor passed inside TakeDamage to retrieve in Killed
+	* Member type:      entvars_t *
+	* Get params:       get_member(index, member);
+	* Set params:       set_member(index, member, value);
+	*/
+	m_pevLastInflictor,
+};

@@ -47,12 +47,13 @@ public:
 public:
 	CBaseEntity *m_pContainingEntity;
 	unsigned char m_ucDmgPenetrationLevel; // penetration level of the damage caused by the inflictor
+	entvars_t *m_pevLastInflictor;
 
 private:
 #if defined(_MSC_VER)
 #pragma region reserve_data_Region
 #endif
-	char CCSEntity_Reserve[0x3FFF];
+	char CCSEntity_Reserve[0x3FF7];
 	
 	virtual void func_reserve1() {};
 	virtual void func_reserve2() {};
