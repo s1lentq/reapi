@@ -1008,3 +1008,188 @@ native rg_spawn_head_gib(const index);
 * @noreturn
 */
 native rg_spawn_random_gibs(const index, const cGibs, const bool:bHuman = true);
+
+/*
+* Spawn a grenade (HEGrenade, Flashbang, SmokeGrenade, or C4)
+*
+* @param weaponId              Weapon id, see WEAPON_* constants (only above mentioned allowed)
+* @param pevOwner              Grenade owner
+* @param vecSrc                Grenade spawn position
+* @param vecThrow              Grenade velocity vector
+* @param time                  Grenade explosion time
+* @param iTeam                 Grenade team, see TEAM_* constants
+* @param usEvent               Event index related to grenade (returned value of precache_event)
+*
+* @return                      Grenade ent index on success, AMX_NULLENT (-1) otherwise
+*/
+native rg_spawn_grenade(WeaponIdType:weaponId, pevOwner, Float:vecSrc[3], Float:vecThrow[3], Float:time, TeamName:iTeam, usEvent = 0);
+
+/*
+* Spawn a weaponbox entity with its properties
+*
+* @param pItem                 Weapon entity index to attach
+* @param pPlayerOwner          Player index to remove pItem entity (0 = no weapon owner)
+* @param modelName             Model name ("models/w_*.mdl")
+* @param origin                Weaponbox origin position
+* @param angles                Weaponbox angles
+* @param velocity              Weaponbox initial velocity vector
+* @param lifeTime              Time to stay in world (< 0.0 = use mp_item_staytime cvar value)
+* @param packAmmo              Set if ammo should be removed from weapon owner
+*
+* @return                      Weaponbox ent index on success, AMX_NULLENT (-1) otherwise
+*/
+native rg_create_weaponbox(const pItem, const pPlayerOwner, const modelName[], Float:origin[3], Float:angles[3], Float:velocity[3], Float:lifeTime, bool:packAmmo);
+
+/*
+* Removes an entity using gamedll's UTIL_Remove function, which sets a frame delay to ensure its removal.
+*
+* @param pEntity               Entity index to remove
+*
+* @return                      1 on success, 0 otherwise
+*/
+native rg_remove_entity(const pEntity);
+
+/*
+* Creates a Decal in world based on a traceresult.
+*
+* @param ptr                   Traceresult pointer, use Fakemeta's create_tr2 to instantiate one
+*
+* @noreturn
+*/
+native rg_decal_trace(const ptr, decalNumber);
+
+/*
+* Emits a sound based on a traceresult simulating a bullet hit (metal, wood, concrete, etc.), used by knifes.
+*
+* @param ptr                   Traceresult pointer, use Fakemeta's create_tr2 to instantiate one
+* @param vecSrc                Start position
+* @param vecEnd                End position, must match ptr's vecEndPos member
+* @param iBulletType           Bullet type, see BULLET_* constants in cssdk_const.inc
+*
+* @noreturn
+*/
+native rg_emit_texture_sound(const ptr, Float:vecSrc[3], Float:vecEnd[3], Bullet:iBulletType);
+
+/*
+* Generates an ammo slot in game's logic
+* @note To see a visual effect, WeaponList message should be sent using the custom ammo name,
+*       where ammo icon HUD will be the one listed in "sprites/weapon_<name>.txt" file.
+*
+* @param szAmmoname            Ammo name to create. If name already exists, will return the matched index.
+* @note Maximum ammo index is 31, after that every ammo instantiation will start from 1 overriding existing ones.
+*
+* @return                      
+*/
+native rg_add_ammo_registry(const szAmmoname[]);
+
+/*
+* Deploys a weapon attached to a player using the CBasePlayerWeapon::DefaultDeploy function.
+*
+* @param entity                Weapon to deploy. Must be attached to a player.
+* @param szViewModel           Weapon view model name ("models/v_*.mdl")
+* @param szWeaponModel         Weapon world model bame ("models/p_*.mdl")
+* @param iAnim                 Weapon view model animation to play (often "deploy", use HLMV to see anim index)
+* @param szAnimExt             Player anim extension name to assign. Examples: "carbine", "shotgun", "knife", etc. 
+*                              Use HLMV on a player model to see animext names.
+* @param skiplocal             If 0, weapon animation will be forced to play on client ignoring active client prediction.
+*
+* @return                      1 on successful weapon deploy, 0 otherwise.
+*/
+native rg_weapon_deploy(const entity, const szViewModel[], const szWeaponModel[], iAnim, const szAnimExt[], skiplocal = 0);
+
+/*
+* Reloads a weapon or a player's active weapon using the CBasePlayerWeapon::DefaultReload function.
+*
+* @param entity                Weapon to reload (> MaxClients) OR player index to reload his current active weapon (>= 1 & <= MaxClients).
+* @param iClipSize             Weapon max clip to check. 0 = weapon max clip stored in ItemInfo
+* @param iAnim                 Weapon view model animation to play (often "reload", use HLMV to see anim index)
+* @param fDelay                Player reload duration before clip refill.
+*
+* @return                      1 on successful weapon reload, 0 otherwise.
+*/
+native rg_weapon_reload(const entity, iClipSize, iAnim, Float:fDelay);
+
+/*
+* Forces shotgun reload thinking on a weapon or a player's active weapon using the CBasePlayerWeapon::DefaultShotgunReload function.
+*
+* @param entity                Weapon to reload (> MaxClients) OR player index to reload his current active weapon (>= 1 & <= MaxClients).
+* @param iAnim                 Weapon view model "insert" animation to play (use HLMV to see anim index)
+* @param iStartAnim            Weapon view model "start reload" animation to play (use HLMV to see anim index)
+* @param fDelay                Delay between each buckshot inserted
+* @param fStartDelay           Delay before buckshots insertion starts
+* @param pszReloadSound1       Sound to play on every insertion
+* @param pszReloadSound2       Another sound to play on every insertion
+*
+* @note                        This is used inside weapon's Reload function and is often called every frame player is pressing IN_RELOAD button.
+* @return                      1 while weapon not in delay and with ammo remaining to load, 0 otherwise.
+*/
+native rg_weapon_shotgun_reload(const entity, iAnim, iStartAnim, Float:fDelay, Float:fStartDelay, const pszReloadSound1[] = "", const pszReloadSound2[] = "");
+
+/*
+* Sends a weapon animation using the CBasePlayerWeapon::SendWeaponAnim function.
+*
+* @param entity                Weapon to reload (> MaxClients) OR player index to reload his current active weapon (>= 1 & <= MaxClients).
+* @param iAnim                 Weapon view model animation to play (use HLMV to see anim index)
+* @param skiplocal             If 0, weapon animation will be forced to play on client ignoring active client prediction.
+*
+* @noreturn
+*/
+native rg_weapon_send_animation(const entity, iAnim, skiplocal = 0);
+
+/*
+* Emits a "recoil" effect on weapon's player using the CBasePlayerWeapon::KickBack function.
+*
+* @param entity                Weapon to reload (> MaxClients) OR player index to reload his current active weapon (>= 1 & <= MaxClients).
+* @param up_base               Minimum vertical punchangle
+* @param lateral_base          Minimum horizontal punchangle
+* @param up_modifier           Vertical punchangle units to multiply to m_iShotsFired member
+* @param lateral_modifier      Horizontal punchangle units to multiply to m_iShotsFired member
+* @param up_max                Maximum vertical punchangle
+* @param lateral_max           Maximum horizontal punchangle
+* @param direction_change      Probability to change punchangle orientation (positive or negative). 0 = 100%, 1 = 50%, 2 = 33.3%, ...
+*
+* @noreturn
+*/
+native rg_weapon_kickback(const entity, Float:up_base, Float:lateral_base, Float:up_modifier, Float:lateral_modifier, Float:up_max, Float:lateral_max, direction_change);
+
+/*
+* Switches player current weapon into the best one on its inventory using the CHalfLifeMultiplay::GetNextBestWeapon function.
+*
+* @param player                Player index.
+* @param currentWeapon         Current player active weapon. 0 = retrieve from m_pActiveItem member
+*
+* @note Weapon selection is based on weapon's Weight attribute from ItemInfo structure.
+* @return                      1 if weapon was found, 0 otherwise
+*/
+native rg_switch_best_weapon(const player, const currentWeapon = 0);
+
+/*
+* Disappear a player from the map, like a silent kill.
+*
+* @param player                Player index.
+*
+* @noreturn
+*/
+native rg_disappear(const player);
+
+/*
+* Sets player current Observer mode. 
+* @note Player must be a valid observer (m_afPhysicsFlags & PFLAG_OBSERVER).
+*
+* @param player                Player index.
+* @param mode                  Observer mode, see OBS_* constants in cssdk_const.inc
+*
+* @noreturn
+*/
+native rg_set_observer_mode(const player, const mode);
+
+/*
+* Emits a death notice (logs, DeathMsg event, win conditions check)
+*
+* @param pVictim               Player index.
+* @param pKiller               Killer entity.
+* @param pevInflictor          Inflictor entity. 0 = world
+*
+* @noreturn
+*/
+native rg_death_notice(const pVictim, const pKiller, const pevInflictor);
