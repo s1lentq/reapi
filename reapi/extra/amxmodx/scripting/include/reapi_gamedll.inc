@@ -1121,7 +1121,7 @@ native rg_weapon_reload(const entity, iClipSize, iAnim, Float:fDelay);
 * @param pszReloadSound1       Sound to play on every insertion
 * @param pszReloadSound2       Another sound to play on every insertion
 *
-* @note                        This is used inside weapon's Reload function and is often called every frame player is pressing IN_RELOAD button.
+* @note This is used inside weapon's Reload function and is often called every frame player is pressing IN_RELOAD button.
 * @return                      1 while weapon not in delay and with ammo remaining to load, 0 otherwise.
 */
 native rg_weapon_shotgun_reload(const entity, iAnim, iStartAnim, Float:fDelay, Float:fStartDelay, const pszReloadSound1[] = "", const pszReloadSound2[] = "");

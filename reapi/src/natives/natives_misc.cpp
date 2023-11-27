@@ -2899,7 +2899,7 @@ cell AMX_NATIVE_CALL rg_weapon_reload(AMX* amx, cell* params)
 * @param pszReloadSound1       Sound to play on every insertion
 * @param pszReloadSound2       Another sound to play on every insertion
 *
-* @note                        This is used inside weapon's Reload function and is often called every frame player is pressing IN_RELOAD button.
+* @note This is used inside weapon's Reload function and is often called every frame player is pressing IN_RELOAD button.
 * @return                      1 while weapon not in delay and with ammo remaining to load, 0 otherwise.
 */
 cell AMX_NATIVE_CALL rg_weapon_shotgun_reload(AMX* amx, cell* params)
