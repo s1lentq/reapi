@@ -1053,17 +1053,18 @@ native rg_remove_entity(const pEntity);
 * Creates a Decal in world based on a traceresult.
 *
 * @param ptr                   Traceresult pointer, use Fakemeta's create_tr2 to instantiate one
+* @param decalNumber           Number of decal to spray, see DECAL_ constants on cssdk_const.inc
 *
 * @noreturn
 */
-native rg_decal_trace(const ptr, decalNumber);
+native rg_decal_trace(const ptr, Decal:decalNumber);
 
 /*
 * Emits a sound based on a traceresult simulating a bullet hit (metal, wood, concrete, etc.), used by knifes.
 *
 * @param ptr                   Traceresult pointer, use Fakemeta's create_tr2 to instantiate one
 * @param vecSrc                Start position
-* @param vecEnd                End position, must match ptr's vecEndPos member
+* @param vecEnd                End position. NOTE: must match ptr's vecEndPos member
 * @param iBulletType           Bullet type, see BULLET_* constants in cssdk_const.inc
 *
 * @noreturn

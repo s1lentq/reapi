@@ -2725,6 +2725,7 @@ cell AMX_NATIVE_CALL rg_remove_entity(AMX* amx, cell* params)
 * Creates a Decal in world based on a traceresult.
 *
 * @param ptr                   Traceresult pointer, use Fakemeta's create_tr2 to instantiate one
+* @param decalNumber           Number of decal to spray, see DECAL_ constants on cssdk_const.inc
 *
 * @noreturn
 */

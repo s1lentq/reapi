@@ -1375,54 +1375,54 @@ enum InfoMapBuyParam
 enum GameEventType
 {
 	EVENT_INVALID = 0,
-	EVENT_WEAPON_FIRED,					// tell bots the player is attack (argumens: 1 = attacker, 2 = NULL)
-	EVENT_WEAPON_FIRED_ON_EMPTY,		// tell bots the player is attack without clip ammo (argumens: 1 = attacker, 2 = NULL)
-	EVENT_WEAPON_RELOADED,				// tell bots the player is reloading his weapon (argumens: 1 = reloader, 2 = NULL)
+	EVENT_WEAPON_FIRED,                 // tell bots the player is attack (argumens: 1 = attacker, 2 = NULL)
+	EVENT_WEAPON_FIRED_ON_EMPTY,        // tell bots the player is attack without clip ammo (argumens: 1 = attacker, 2 = NULL)
+	EVENT_WEAPON_RELOADED,              // tell bots the player is reloading his weapon (argumens: 1 = reloader, 2 = NULL)
 
-	EVENT_HE_GRENADE_EXPLODED,			// tell bots the HE grenade is exploded (argumens: 1 = grenade thrower, 2 = NULL)
-	EVENT_FLASHBANG_GRENADE_EXPLODED,	// tell bots the flashbang grenade is exploded (argumens: 1 = grenade thrower, 2 = explosion origin)
-	EVENT_SMOKE_GRENADE_EXPLODED,		// tell bots the smoke grenade is exploded (argumens: 1 = grenade thrower, 2 = NULL)
+	EVENT_HE_GRENADE_EXPLODED,          // tell bots the HE grenade is exploded (argumens: 1 = grenade thrower, 2 = NULL)
+	EVENT_FLASHBANG_GRENADE_EXPLODED,   // tell bots the flashbang grenade is exploded (argumens: 1 = grenade thrower, 2 = explosion origin)
+	EVENT_SMOKE_GRENADE_EXPLODED,       // tell bots the smoke grenade is exploded (argumens: 1 = grenade thrower, 2 = NULL)
 	EVENT_GRENADE_BOUNCED,
 
 	EVENT_BEING_SHOT_AT,
-	EVENT_PLAYER_BLINDED_BY_FLASHBANG,	// tell bots the player is flashed (argumens: 1 = flashed player, 2 = NULL)
-	EVENT_PLAYER_FOOTSTEP,				// tell bots the player is running (argumens: 1 = runner, 2 = NULL)
-	EVENT_PLAYER_JUMPED,				// tell bots the player is jumped (argumens: 1 = jumper, 2 = NULL)
-	EVENT_PLAYER_DIED,					// tell bots the player is killed (argumens: 1 = victim, 2 = killer)
-	EVENT_PLAYER_LANDED_FROM_HEIGHT,	// tell bots the player is fell with some damage (argumens: 1 = felled player, 2 = NULL)
-	EVENT_PLAYER_TOOK_DAMAGE,			// tell bots the player is take damage (argumens: 1 = victim, 2 = attacker)
-	EVENT_HOSTAGE_DAMAGED,				// tell bots the player has injured a hostage (argumens: 1 = hostage, 2 = injurer)
-	EVENT_HOSTAGE_KILLED,				// tell bots the player has killed a hostage (argumens: 1 = hostage, 2 = killer)
+	EVENT_PLAYER_BLINDED_BY_FLASHBANG,  // tell bots the player is flashed (argumens: 1 = flashed player, 2 = NULL)
+	EVENT_PLAYER_FOOTSTEP,              // tell bots the player is running (argumens: 1 = runner, 2 = NULL)
+	EVENT_PLAYER_JUMPED,                // tell bots the player is jumped (argumens: 1 = jumper, 2 = NULL)
+	EVENT_PLAYER_DIED,                  // tell bots the player is killed (argumens: 1 = victim, 2 = killer)
+	EVENT_PLAYER_LANDED_FROM_HEIGHT,    // tell bots the player is fell with some damage (argumens: 1 = felled player, 2 = NULL)
+	EVENT_PLAYER_TOOK_DAMAGE,           // tell bots the player is take damage (argumens: 1 = victim, 2 = attacker)
+	EVENT_HOSTAGE_DAMAGED,              // tell bots the player has injured a hostage (argumens: 1 = hostage, 2 = injurer)
+	EVENT_HOSTAGE_KILLED,               // tell bots the player has killed a hostage (argumens: 1 = hostage, 2 = killer)
 
-	EVENT_DOOR,							// tell bots the door is moving (argumens: 1 = door, 2 = NULL)
-	EVENT_BREAK_GLASS,					// tell bots the glass has break (argumens: 1 = glass, 2 = NULL)
-	EVENT_BREAK_WOOD,					// tell bots the wood has break (argumens: 1 = wood, 2 = NULL)
-	EVENT_BREAK_METAL,					// tell bots the metal/computer has break (argumens: 1 = metal/computer, 2 = NULL)
-	EVENT_BREAK_FLESH,					// tell bots the flesh has break (argumens: 1 = flesh, 2 = NULL)
-	EVENT_BREAK_CONCRETE,				// tell bots the concrete has break (argumens: 1 = concrete, 2 = NULL)
+	EVENT_DOOR,                         // tell bots the door is moving (argumens: 1 = door, 2 = NULL)
+	EVENT_BREAK_GLASS,                  // tell bots the glass has break (argumens: 1 = glass, 2 = NULL)
+	EVENT_BREAK_WOOD,                   // tell bots the wood has break (argumens: 1 = wood, 2 = NULL)
+	EVENT_BREAK_METAL,                  // tell bots the metal/computer has break (argumens: 1 = metal/computer, 2 = NULL)
+	EVENT_BREAK_FLESH,                  // tell bots the flesh has break (argumens: 1 = flesh, 2 = NULL)
+	EVENT_BREAK_CONCRETE,               // tell bots the concrete has break (argumens: 1 = concrete, 2 = NULL)
 
-	EVENT_BOMB_PLANTED,					// tell bots the bomb has been planted (argumens: 1 = planter, 2 = NULL)
-	EVENT_BOMB_DROPPED,					// tell bots the bomb has been dropped (argumens: 1 = NULL, 2 = NULL)
-	EVENT_BOMB_PICKED_UP,				// let the bots hear the bomb pickup (argumens: 1 = player that pickup c4, 2 = NULL)
-	EVENT_BOMB_BEEP,					// let the bots hear the bomb beeping (argumens: 1 = c4, 2 = NULL)
-	EVENT_BOMB_DEFUSING,				// tell the bots someone has started defusing (argumens: 1 = defuser, 2 = NULL)
-	EVENT_BOMB_DEFUSE_ABORTED,			// tell the bots someone has aborted defusing (argumens: 1 = NULL, 2 = NULL)
-	EVENT_BOMB_DEFUSED,					// tell the bots the bomb is defused (argumens: 1 = defuser, 2 = NULL)
-	EVENT_BOMB_EXPLODED,				// let the bots hear the bomb exploding (argumens: 1 = NULL, 2 = NULL)
+	EVENT_BOMB_PLANTED,                 // tell bots the bomb has been planted (argumens: 1 = planter, 2 = NULL)
+	EVENT_BOMB_DROPPED,                 // tell bots the bomb has been dropped (argumens: 1 = NULL, 2 = NULL)
+	EVENT_BOMB_PICKED_UP,               // let the bots hear the bomb pickup (argumens: 1 = player that pickup c4, 2 = NULL)
+	EVENT_BOMB_BEEP,                    // let the bots hear the bomb beeping (argumens: 1 = c4, 2 = NULL)
+	EVENT_BOMB_DEFUSING,                // tell the bots someone has started defusing (argumens: 1 = defuser, 2 = NULL)
+	EVENT_BOMB_DEFUSE_ABORTED,          // tell the bots someone has aborted defusing (argumens: 1 = NULL, 2 = NULL)
+	EVENT_BOMB_DEFUSED,                 // tell the bots the bomb is defused (argumens: 1 = defuser, 2 = NULL)
+	EVENT_BOMB_EXPLODED,                // let the bots hear the bomb exploding (argumens: 1 = NULL, 2 = NULL)
 
-	EVENT_HOSTAGE_USED,					// tell bots the hostage is used (argumens: 1 = user, 2 = NULL)
-	EVENT_HOSTAGE_RESCUED,				// tell bots the hostage is rescued (argumens: 1 = rescuer (CBasePlayer *), 2 = hostage (CHostage *))
-	EVENT_ALL_HOSTAGES_RESCUED,			// tell bots the all hostages are rescued (argumens: 1 = NULL, 2 = NULL)
+	EVENT_HOSTAGE_USED,                 // tell bots the hostage is used (argumens: 1 = user, 2 = NULL)
+	EVENT_HOSTAGE_RESCUED,              // tell bots the hostage is rescued (argumens: 1 = rescuer (CBasePlayer *), 2 = hostage (CHostage *))
+	EVENT_ALL_HOSTAGES_RESCUED,         // tell bots the all hostages are rescued (argumens: 1 = NULL, 2 = NULL)
 
-	EVENT_VIP_ESCAPED,					// tell bots the VIP is escaped (argumens: 1 = NULL, 2 = NULL)
-	EVENT_VIP_ASSASSINATED,				// tell bots the VIP is assassinated (argumens: 1 = NULL, 2 = NULL)
-	EVENT_TERRORISTS_WIN,				// tell bots the terrorists won the round (argumens: 1 = NULL, 2 = NULL)
-	EVENT_CTS_WIN,						// tell bots the CTs won the round (argumens: 1 = NULL, 2 = NULL)
-	EVENT_ROUND_DRAW,					// tell bots the round was a draw (argumens: 1 = NULL, 2 = NULL)
-	EVENT_ROUND_WIN,					// tell carreer the round was a win (argumens: 1 = NULL, 2 = NULL)
-	EVENT_ROUND_LOSS,					// tell carreer the round was a loss (argumens: 1 = NULL, 2 = NULL)
-	EVENT_ROUND_START,					// tell bots the round was started (when freeze period is expired) (argumens: 1 = NULL, 2 = NULL)
-	EVENT_PLAYER_SPAWNED,				// tell bots the player is spawned (argumens: 1 = spawned player, 2 = NULL)
+	EVENT_VIP_ESCAPED,                  // tell bots the VIP is escaped (argumens: 1 = NULL, 2 = NULL)
+	EVENT_VIP_ASSASSINATED,             // tell bots the VIP is assassinated (argumens: 1 = NULL, 2 = NULL)
+	EVENT_TERRORISTS_WIN,               // tell bots the terrorists won the round (argumens: 1 = NULL, 2 = NULL)
+	EVENT_CTS_WIN,                      // tell bots the CTs won the round (argumens: 1 = NULL, 2 = NULL)
+	EVENT_ROUND_DRAW,                   // tell bots the round was a draw (argumens: 1 = NULL, 2 = NULL)
+	EVENT_ROUND_WIN,                    // tell carreer the round was a win (argumens: 1 = NULL, 2 = NULL)
+	EVENT_ROUND_LOSS,                   // tell carreer the round was a loss (argumens: 1 = NULL, 2 = NULL)
+	EVENT_ROUND_START,                  // tell bots the round was started (when freeze period is expired) (argumens: 1 = NULL, 2 = NULL)
+	EVENT_PLAYER_SPAWNED,               // tell bots the player is spawned (argumens: 1 = spawned player, 2 = NULL)
 	EVENT_CLIENT_CORPSE_SPAWNED,
 	EVENT_BUY_TIME_START,
 	EVENT_PLAYER_LEFT_BUY_ZONE,
@@ -1471,12 +1471,12 @@ enum GameEventType
 	EVENT_RADIO_ENEMY_DOWN,
 	EVENT_END_RADIO,
 
-	EVENT_NEW_MATCH,					// tell bots the game is new (argumens: 1 = NULL, 2 = NULL)
-	EVENT_PLAYER_CHANGED_TEAM,			// tell bots the player is switch his team (also called from ClientPutInServer()) (argumens: 1 = switcher, 2 = NULL)
-	EVENT_BULLET_IMPACT,				// tell bots the player is shoot at wall (argumens: 1 = shooter, 2 = shoot trace end position)
-	EVENT_GAME_COMMENCE,				// tell bots the game is commencing (argumens: 1 = NULL, 2 = NULL)
-	EVENT_WEAPON_ZOOMED,				// tell bots the player is switch weapon zoom (argumens: 1 = zoom switcher, 2 = NULL)
-	EVENT_HOSTAGE_CALLED_FOR_HELP,		// tell bots the hostage is talking (argumens: 1 = listener, 2 = NULL)
+	EVENT_NEW_MATCH,                    // tell bots the game is new (argumens: 1 = NULL, 2 = NULL)
+	EVENT_PLAYER_CHANGED_TEAM,          // tell bots the player is switch his team (also called from ClientPutInServer()) (argumens: 1 = switcher, 2 = NULL)
+	EVENT_BULLET_IMPACT,                // tell bots the player is shoot at wall (argumens: 1 = shooter, 2 = shoot trace end position)
+	EVENT_GAME_COMMENCE,                // tell bots the game is commencing (argumens: 1 = NULL, 2 = NULL)
+	EVENT_WEAPON_ZOOMED,                // tell bots the player is switch weapon zoom (argumens: 1 = zoom switcher, 2 = NULL)
+	EVENT_HOSTAGE_CALLED_FOR_HELP,      // tell bots the hostage is talking (argumens: 1 = listener, 2 = NULL)
 	NUM_GAME_EVENTS,
 };
 
@@ -1489,4 +1489,53 @@ enum SecondaryAtkState
 	WEAPON_SECONDARY_ATTACK_NONE = 0,
 	WEAPON_SECONDARY_ATTACK_SET,
 	WEAPON_SECONDARY_ATTACK_BLOCK
+};
+
+/**
+* Decal list for rg_decal_trace
+*/
+enum Decal
+{
+	DECAL_GUNSHOT1 = 0,
+	DECAL_GUNSHOT2,
+	DECAL_GUNSHOT3,
+	DECAL_GUNSHOT4,
+	DECAL_GUNSHOT5,
+	DECAL_LAMBDA1,
+	DECAL_LAMBDA2,
+	DECAL_LAMBDA3,
+	DECAL_LAMBDA4,
+	DECAL_LAMBDA5,
+	DECAL_LAMBDA6,
+	DECAL_SCORCH1,
+	DECAL_SCORCH2,
+	DECAL_BLOOD1,
+	DECAL_BLOOD2,
+	DECAL_BLOOD3,
+	DECAL_BLOOD4,
+	DECAL_BLOOD5,
+	DECAL_BLOOD6,
+	DECAL_YBLOOD1,
+	DECAL_YBLOOD2,
+	DECAL_YBLOOD3,
+	DECAL_YBLOOD4,
+	DECAL_YBLOOD5,
+	DECAL_YBLOOD6,
+	DECAL_GLASSBREAK1,
+	DECAL_GLASSBREAK2,
+	DECAL_GLASSBREAK3,
+	DECAL_BIGSHOT1,
+	DECAL_BIGSHOT2,
+	DECAL_BIGSHOT3,
+	DECAL_BIGSHOT4,
+	DECAL_BIGSHOT5,
+	DECAL_SPIT1,
+	DECAL_SPIT2,
+	DECAL_BPROOF1,           // Bulletproof glass decal
+	DECAL_GARGSTOMP1,        // Gargantua stomp crack
+	DECAL_SMALLSCORCH1,      // Small scorch mark
+	DECAL_SMALLSCORCH2,      // Small scorch mark
+	DECAL_SMALLSCORCH3,      // Small scorch mark
+	DECAL_MOMMABIRTH,        // Big momma birth splatter
+	DECAL_MOMMASPLAT,
 };
