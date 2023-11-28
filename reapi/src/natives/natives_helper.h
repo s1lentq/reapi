@@ -40,6 +40,10 @@ public:
 	{
 		return m_value != 0;
 	}
+	operator unsigned short() const
+	{
+		return (unsigned short)m_value;
+	}
 	operator CBaseEntity*() const
 	{
 		if (m_value < 0)
@@ -77,6 +81,14 @@ public:
 	operator PLAYER_ANIM() const
 	{
 		return static_cast<PLAYER_ANIM>(m_value);
+	}
+	operator WeaponIdType() const
+	{
+		return static_cast<WeaponIdType>(m_value);
+	}
+	operator TraceResult *() const
+	{
+		return reinterpret_cast<TraceResult *>(m_value);
 	}
 	Vector& vector() const
 	{
