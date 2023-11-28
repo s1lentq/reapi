@@ -2615,7 +2615,7 @@ cell AMX_NATIVE_CALL rg_spawn_random_gibs(AMX* amx, cell* params)
 /*
 * Spawn a grenade (HEGrenade, Flashbang, SmokeGrenade, or C4)
 *
-* @param weaponId              Weapon id, see WEAPON_* constants (only above mentioned allowed)
+* @param weaponId              WEAPON_HEGRENADE, WEAPON_SMOKEGRENADE, WEAPON_FLASHBANG or WEAPON_C4
 * @param pevOwner              Grenade owner
 * @param vecSrc                Grenade spawn position
 * @param vecThrow              Grenade velocity vector
@@ -2623,7 +2623,7 @@ cell AMX_NATIVE_CALL rg_spawn_random_gibs(AMX* amx, cell* params)
 * @param iTeam                 Grenade team, see TEAM_* constants
 * @param usEvent               Event index related to grenade (returned value of precache_event)
 *
-* @return                      Grenade ent index on success, AMX_NULLENT (-1) otherwise
+* @return                      Entity index on success, AMX_NULLENT (-1) otherwise
 */
 cell AMX_NATIVE_CALL rg_spawn_grenade(AMX* amx, cell* params)
 {
@@ -2739,7 +2739,8 @@ cell AMX_NATIVE_CALL rg_decal_trace(AMX* amx, cell* params)
 }
 
 /*
-* Emits a sound based on a traceresult simulating a bullet hit (metal, wood, concrete, etc.), used by knifes.
+* Emits a sound based on a traceresult simulating a bullet hit (metal, wood, concrete, etc.).
+* @note Used mostly on trace attacks (bullets, knife).
 *
 * @param ptr                   Traceresult pointer, use Fakemeta's create_tr2 to instantiate one
 * @param vecSrc                Start position
@@ -2762,10 +2763,10 @@ cell AMX_NATIVE_CALL rg_emit_texture_sound(AMX* amx, cell* params)
 * @note To see a visual effect, WeaponList message should be sent using the custom ammo name,
 *       where ammo icon HUD will be the one listed in "sprites/weapon_<name>.txt" file.
 *
-* @param szAmmoname            Ammo name to create. If name already exists, will return the matched index.
-* @note Maximum ammo index is 31, after that every ammo instantiation will start from 1 overriding existing ones.
+* @param szAmmoname            Ammo name to create. 
 *
-* @return                      
+* @note Maximum ammo index is 31, after that every ammo instantiation will start from 1 overriding existing ones.
+* @return                      New ammo index. If name already exists, will return the matched index from memory.
 */
 cell AMX_NATIVE_CALL rg_add_ammo_registry(AMX* amx, cell* params)
 {
@@ -2956,7 +2957,7 @@ cell AMX_NATIVE_CALL rg_weapon_shotgun_reload(AMX* amx, cell* params)
 /*
 * Sends a weapon animation using the CBasePlayerWeapon::SendWeaponAnim function.
 *
-* @param entity                Weapon to reload (> MaxClients) OR player index to reload his current active weapon (>= 1 & <= MaxClients).
+* @param entity                Weapon to send animation on owner (> MaxClients) OR player index to send animation (>= 1 & <= MaxClients).
 * @param iAnim                 Weapon view model animation to play (use HLMV to see anim index)
 * @param skiplocal             If 0, weapon animation will be forced to play on client ignoring active client prediction.
 *
@@ -3020,7 +3021,7 @@ cell AMX_NATIVE_CALL rg_weapon_send_animation(AMX* amx, cell* params)
 * @param lateral_modifier      Horizontal punchangle units to multiply to m_iShotsFired member
 * @param up_max                Maximum vertical punchangle
 * @param lateral_max           Maximum horizontal punchangle
-* @param direction_change      Probability to change punchangle orientation (positive or negative). 0 = 100%, 1 = 50%, 2 = 33.3%, ...
+* @param direction_change      Probability to change punchangle orientation (positive or negative). 0 = 100% (1/1), 1 = 50% (1/2), 2 = 33.3% (1/3), ...
 *
 * @noreturn
 */
@@ -3079,7 +3080,7 @@ cell AMX_NATIVE_CALL rg_weapon_kickback(AMX* amx, cell* params)
 * @param currentWeapon         Current player active weapon. 0 = retrieve from m_pActiveItem member
 *
 * @note Weapon selection is based on weapon's Weight attribute from ItemInfo structure.
-* @return                      1 if weapon was found, 0 otherwise
+* @return                      1 if weapon was found and switched to, 0 otherwise
 */
 cell AMX_NATIVE_CALL rg_switch_best_weapon(AMX* amx, cell* params)
 {
@@ -3127,7 +3128,7 @@ cell AMX_NATIVE_CALL rg_switch_best_weapon(AMX* amx, cell* params)
 }
 
 /*
-* Disappear a player from the map, like a silent kill.
+* Disappear a player from the world. Used when VIP reaches escape zone. Basically a silent kill.
 *
 * @param player                Player index.
 *
