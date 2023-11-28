@@ -2672,15 +2672,21 @@ cell AMX_NATIVE_CALL rg_create_weaponbox(AMX* amx, cell* params)
 	CHECK_ISENTITY(arg_item);
 
 	CBasePlayerItem *pItem = getPrivate<CBasePlayerItem>(params[arg_item]);
-	if (unlikely(pItem == nullptr)) {
+	if (unlikely(pItem == nullptr))
+	{
 		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
 		return FALSE;
 	}
+	
+	CBasePlayer *pPlayer = nullptr;
 
-	CHECK_ISPLAYER(arg_player);
+	if (params[arg_player] != 0)
+	{
+		CHECK_ISPLAYER(arg_player);
 
-	CBasePlayer *pPlayer = getPrivate<CBasePlayer>(params[arg_player]);
-	CHECK_CONNECTED(pPlayer, arg_player);
+		pPlayer = getPrivate<CBasePlayer>(params[arg_player]);
+		CHECK_CONNECTED(pPlayer, arg_player);
+	}
 
 	CAmxArgs args(amx, params);
 
@@ -2708,13 +2714,15 @@ cell AMX_NATIVE_CALL rg_remove_entity(AMX* amx, cell* params)
 	CHECK_ISENTITY(arg_entity);
 
 	auto pEntity = getPrivate<CBaseEntity>(params[arg_entity]);
-	if (!pEntity || (pEntity->pev->flags & FL_KILLME) != 0) {
+	if (!pEntity || (pEntity->pev->flags & FL_KILLME) != 0)
+	{
 		return FALSE;
 	}
 
 	g_ReGameFuncs->UTIL_Remove(pEntity);
 
-	if ((pEntity->pev->flags & FL_KILLME) != 0) {
+	if ((pEntity->pev->flags & FL_KILLME) != 0)
+	{
 		return TRUE;
 	}
 
@@ -2775,7 +2783,8 @@ cell AMX_NATIVE_CALL rg_add_ammo_registry(AMX* amx, cell* params)
 	char ammonamebuf[190];
 	string_t ammoname = getAmxStringAlloc(amx, params[arg_ammoname], ammonamebuf);
 
-	if (!ammonamebuf || ammonamebuf[0] == '\0') {
+	if (!ammonamebuf || ammonamebuf[0] == '\0')
+	{
 		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: empty ammo name", __FUNCTION__);
 		return FALSE;
 	}
@@ -2800,21 +2809,24 @@ cell AMX_NATIVE_CALL rg_weapon_deploy(AMX* amx, cell* params)
 {
 	enum args_e { arg_count, arg_weapon, arg_viewmodel, arg_weaponmodel, arg_anim, arg_animextension, arg_skiplocal };
 
-	CHECK_ISENTITY(arg_weapon);	
+	CHECK_ISENTITY(arg_weapon);
 	CBasePlayerWeapon *pWeapon = getPrivate<CBasePlayerWeapon>(params[arg_weapon]);
 
-	if (unlikely(pWeapon == nullptr)) {
+	if (unlikely(pWeapon == nullptr))
+	{
 		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
 		return FALSE;
 	}
 
-	if (!pWeapon->IsWeapon()) {
+	if (!pWeapon->IsWeapon())
+	{
 		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: #%d entity is not a weapon.", __FUNCTION__, indexOfEdict(pWeapon->pev));
 		return FALSE;
 	}
 
 	CCSPlayerWeapon *pCSWeapon = pWeapon->CSPlayerWeapon();
-	if (unlikely(pCSWeapon == nullptr)) {
+	if (unlikely(pCSWeapon == nullptr))
+	{
 		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized m_pEntity.", __FUNCTION__);
 		return FALSE;
 	}
@@ -2849,7 +2861,8 @@ cell AMX_NATIVE_CALL rg_weapon_reload(AMX* amx, cell* params)
 		CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_weapon]);
 		CHECK_CONNECTED(pPlayer, arg_weapon);
 
-		if(!pPlayer->IsAlive()) {
+		if (!pPlayer->IsAlive())
+		{
 			AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: player %d not alive", __FUNCTION__, params[arg_weapon]);
 			return FALSE;
 		}
@@ -2863,18 +2876,21 @@ cell AMX_NATIVE_CALL rg_weapon_reload(AMX* amx, cell* params)
 		pWeapon = getPrivate<CBasePlayerWeapon>(params[arg_weapon]);
 	}
 
-	if (unlikely(pWeapon == nullptr)) {
+	if (unlikely(pWeapon == nullptr))
+	{
 		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
 		return FALSE;
 	}
 
-	if (!pWeapon->IsWeapon()) {
+	if (!pWeapon->IsWeapon())
+	{
 		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: #%d entity is not a weapon.", __FUNCTION__, indexOfEdict(pWeapon->pev));
 		return FALSE;
 	}
 
 	CCSPlayerWeapon *pCSWeapon = pWeapon->CSPlayerWeapon();
-	if (unlikely(pCSWeapon == nullptr)) {
+	if (unlikely(pCSWeapon == nullptr))
+	{
 		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized m_pEntity.", __FUNCTION__);
 		return FALSE;
 	}
@@ -2915,7 +2931,8 @@ cell AMX_NATIVE_CALL rg_weapon_shotgun_reload(AMX* amx, cell* params)
 		CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_weapon]);
 		CHECK_CONNECTED(pPlayer, arg_weapon);
 
-		if(!pPlayer->IsAlive()) {
+		if (!pPlayer->IsAlive())
+		{
 			AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: player %d not alive", __FUNCTION__, params[arg_weapon]);
 			return FALSE;
 		}
@@ -2929,18 +2946,21 @@ cell AMX_NATIVE_CALL rg_weapon_shotgun_reload(AMX* amx, cell* params)
 		pWeapon = getPrivate<CBasePlayerWeapon>(params[arg_weapon]);
 	}
 
-	if (unlikely(pWeapon == nullptr)) {
+	if (unlikely(pWeapon == nullptr))
+	{
 		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
 		return FALSE;
 	}
 
-	if (!pWeapon->IsWeapon()) {
+	if (!pWeapon->IsWeapon())
+	{
 		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: #%d entity is not a weapon.", __FUNCTION__, indexOfEdict(pWeapon->pev));
 		return FALSE;
 	}
 
 	CCSPlayerWeapon *pCSWeapon = pWeapon->CSPlayerWeapon();
-	if (unlikely(pCSWeapon == nullptr)) {
+	if (unlikely(pCSWeapon == nullptr))
+	{
 		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized m_pEntity.", __FUNCTION__);
 		return FALSE;
 	}
@@ -2975,7 +2995,8 @@ cell AMX_NATIVE_CALL rg_weapon_send_animation(AMX* amx, cell* params)
 		CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_weapon]);
 		CHECK_CONNECTED(pPlayer, arg_weapon);
 
-		if(!pPlayer->IsAlive()) {
+		if (!pPlayer->IsAlive())
+		{
 			AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: player %d not alive", __FUNCTION__, params[arg_weapon]);
 			return FALSE;
 		}
@@ -2989,18 +3010,21 @@ cell AMX_NATIVE_CALL rg_weapon_send_animation(AMX* amx, cell* params)
 		pWeapon = getPrivate<CBasePlayerWeapon>(params[arg_weapon]);
 	}
 
-	if (unlikely(pWeapon == nullptr)) {
+	if (unlikely(pWeapon == nullptr))
+	{
 		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
 		return FALSE;
 	}
 
-	if (!pWeapon->IsWeapon()) {
+	if (!pWeapon->IsWeapon())
+	{
 		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: #%d entity is not a weapon.", __FUNCTION__, indexOfEdict(pWeapon->pev));
 		return FALSE;
 	}
 
 	CCSPlayerWeapon *pCSWeapon = pWeapon->CSPlayerWeapon();
-	if (unlikely(pCSWeapon == nullptr)) {
+	if (unlikely(pCSWeapon == nullptr))
+	{
 		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized m_pEntity.", __FUNCTION__);
 		return FALSE;
 	}
@@ -3037,7 +3061,8 @@ cell AMX_NATIVE_CALL rg_weapon_kickback(AMX* amx, cell* params)
 		CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_weapon]);
 		CHECK_CONNECTED(pPlayer, arg_weapon);
 
-		if(!pPlayer->IsAlive()) {
+		if (!pPlayer->IsAlive())
+		{
 			AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: player %d not alive", __FUNCTION__, params[arg_weapon]);
 			return FALSE;
 		}
@@ -3056,13 +3081,15 @@ cell AMX_NATIVE_CALL rg_weapon_kickback(AMX* amx, cell* params)
 		return FALSE;
 	}
 
-	if (!pWeapon->IsWeapon()) {
+	if (!pWeapon->IsWeapon())
+	{
 		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: #%d entity is not a weapon.", __FUNCTION__, indexOfEdict(pWeapon->pev));
 		return FALSE;
 	}
 
 	CCSPlayerWeapon *pCSWeapon = pWeapon->CSPlayerWeapon();
-	if (unlikely(pCSWeapon == nullptr)) {
+	if (unlikely(pCSWeapon == nullptr))
+	{
 		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized m_pEntity.", __FUNCTION__);
 		return FALSE;
 	}
@@ -3093,12 +3120,12 @@ cell AMX_NATIVE_CALL rg_switch_best_weapon(AMX* amx, cell* params)
 	CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_index]);
 	CHECK_CONNECTED(pPlayer, arg_index);
 
-	if(!pPlayer->IsAlive())
+	if (!pPlayer->IsAlive())
 		return FALSE;
 
 	CBasePlayerWeapon *pWeapon;
 
-	if(params[arg_weapon] != 0)
+	if (params[arg_weapon] != 0)
 	{
 		CHECK_ISENTITY(arg_weapon);
 
