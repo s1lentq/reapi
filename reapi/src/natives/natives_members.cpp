@@ -895,6 +895,13 @@ cell set_member(AMX *amx, void* pdata, const member_t *member, cell* value, size
 			set_member<edict_t *>(pdata, member->offset, pEdictValue, element);
 			return TRUE;
 		}
+	case MEMBER_EVARS:
+		{
+			// native set_member(_index, any:_member, _value, _elem);
+			entvars_t *pev = PEV(*value);
+			set_member<entvars_t *>(pdata, member->offset, pev, element);
+			return TRUE;
+		}
 	case MEMBER_VECTOR:
 		{
 			// native set_member(_index, any:_member, Float:_value[3], _elem);
@@ -978,15 +985,12 @@ cell set_member(AMX *amx, void* pdata, const member_t *member, cell* value, size
 			set_member<TraceResult>(pdata, member->offset, *(TraceResult *)value, element);
 			return TRUE;
 		}
-
 	case MEMBER_ENTITY:
-	case MEMBER_EVARS:
 	case MEBMER_REBUYSTRUCT:
 	case MEMBER_PMTRACE:
 	case MEBMER_USERCMD:
 		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: member type %s (%s) is not supported", __FUNCTION__, member_t::getTypeString(member->type), member->name);
 		return FALSE;
-
 	default: break;
 	}
 
@@ -1019,6 +1023,12 @@ cell get_member(AMX *amx, void* pdata, const member_t *member, cell* dest, size_
 			// native any:get_member(_index, any:_member, element);
 			edict_t *pEntity = get_member<edict_t *>(pdata, member->offset, element);
 			return pEntity ? indexOfEdict(pEntity) : AMX_NULLENT;
+		}
+	case MEMBER_EVARS:
+		{
+			// native any:get_member(_index, any:_member, element);
+			entvars_t *pev = get_member<entvars_t *>(pdata, member->offset, element);
+			return pev ? indexOfEdict(pev) : AMX_NULLENT;
 		}
 	case MEMBER_VECTOR:
 		{
@@ -1104,9 +1114,7 @@ cell get_member(AMX *amx, void* pdata, const member_t *member, cell* dest, size_
 			pSignals[_State] = signal.GetState();
 			return 1;
 		}
-
 	case MEMBER_ENTITY:
-	case MEMBER_EVARS:
 		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: member type %s (%s) is not supported", __FUNCTION__, member_t::getTypeString(member->type), member->name);
 		return FALSE;
 	case MEMBER_TRACERESULT:
