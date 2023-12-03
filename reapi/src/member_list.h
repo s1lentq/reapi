@@ -98,6 +98,41 @@ struct member_t
 	const char *name;
 	MType type;
 	bool (*pfnIsRefsToClass)(void *pEntity);
+
+	inline static const char *getTypeString(MType memberType)
+	{
+		switch (memberType)
+		{
+		case MEMBER_FLOAT:       return "Float";
+		case MEMBER_DOUBLE:      return "Double";
+		case MEMBER_ENTITY:      return "Entity";
+		case MEMBER_CLASSPTR:    return "ClassPtr";
+		case MEMBER_EHANDLE:     return "EHANDLE";
+		case MEMBER_EVARS:       return "entvars";
+		case MEMBER_EDICT:       return "edict";
+		case MEMBER_VECTOR:      return "Vector";
+		case MEMBER_STRING:      return "String";
+		case MEMBER_QSTRING:     return "QStirng";
+		case MEMBER_INTEGER:     return "Integer";
+		case MEMBER_SHORT:       return "Short";
+		case MEMBER_BYTE:        return "Byte";
+		case MEMBER_BOOL:        return "Bool";
+		case MEMBER_SIGNALS:     return "Signals";
+		case MEBMER_REBUYSTRUCT: return "RebuyStruct";
+		case MEMBER_PMTRACE:     return "pmtrace";
+		case MEBMER_USERCMD:     return "usercmd";
+		case MEMBER_TRACERESULT: return "TraceResult";
+		default:
+		{
+			static char string[16];
+			Q_snprintf(string, sizeof(string), "%d", memberType);
+			return string;
+		}
+		}
+
+		return ""; // shut up compiler
+	}
+
 };
 
 inline bool member_t::isTypeReturnable() const

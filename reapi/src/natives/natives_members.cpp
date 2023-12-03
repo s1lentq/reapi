@@ -29,6 +29,7 @@ cell AMX_NATIVE_CALL set_member(AMX *amx, cell *params)
 	size_t element = (PARAMS_COUNT == 4) ? *getAmxAddr(amx, params[arg_elem]) : 0;
 
 	return set_member(
+		amx,
 		get_pdata_custom(getPrivate<CBaseEntity>(pEdict), params[arg_member]),
 		member,
 		value,
@@ -99,7 +100,7 @@ cell AMX_NATIVE_CALL get_member(AMX *amx, cell *params)
 		break;
 	}
 
-	return get_member(
+	return get_member(amx,
 		get_pdata_custom(getPrivate<CBaseEntity>(pEdict), params[arg_member]),
 		member,
 		dest,
@@ -145,6 +146,7 @@ cell AMX_NATIVE_CALL set_member_s(AMX *amx, cell *params)
 	}
 
 	return set_member(
+		amx,
 		pEntity,
 		member,
 		value,
@@ -225,6 +227,7 @@ cell AMX_NATIVE_CALL get_member_s(AMX *amx, cell *params)
 	}
 
 	return get_member(
+		amx,
 		pEntity,
 		member,
 		dest,
@@ -257,7 +260,7 @@ cell AMX_NATIVE_CALL set_member_game(AMX *amx, cell *params)
 	cell* value = getAmxAddr(amx, params[arg_value]);
 	size_t element = (PARAMS_COUNT == 4) ? *getAmxAddr(amx, params[arg_elem]) : 0;
 
-	return set_member(g_pGameRules, member, value, element);
+	return set_member(amx, g_pGameRules, member, value, element);
 }
 
 /*
@@ -308,7 +311,7 @@ cell AMX_NATIVE_CALL get_member_game(AMX *amx, cell *params)
 		length = 0;
 	}
 
-	return get_member(g_pGameRules, member, dest, element, length);
+	return get_member(amx, g_pGameRules, member, dest, element, length);
 }
 
 /*
@@ -337,7 +340,7 @@ cell AMX_NATIVE_CALL set_entvar(AMX *amx, cell *params)
 	cell* value = getAmxAddr(amx, params[arg_value]);
 	size_t element = (PARAMS_COUNT == 4) ? *getAmxAddr(amx, params[arg_elem]) : 0;
 
-	return set_member(&pEdict->v, member, value, element);
+	return set_member(amx, &pEdict->v, member, value, element);
 }
 
 /*
@@ -399,7 +402,7 @@ cell AMX_NATIVE_CALL get_entvar(AMX *amx, cell *params)
 		length = 0;
 	}
 
-	return get_member(&pEdict->v, member, dest, element, length);
+	return get_member(amx, &pEdict->v, member, dest, element, length);
 }
 
 /*
@@ -424,7 +427,7 @@ cell AMX_NATIVE_CALL set_pmove(AMX *amx, cell *params)
 	cell* value = getAmxAddr(amx, params[arg_value]);
 	size_t element = (PARAMS_COUNT == 3) ? *getAmxAddr(amx, params[arg_elem]) : 0;
 
-	return set_member(g_pMove, member, value, element);
+	return set_member(amx, g_pMove, member, value, element);
 }
 
 /*
@@ -492,7 +495,7 @@ cell AMX_NATIVE_CALL get_pmove(AMX *amx, cell *params)
 		length = 0;
 	}
 
-	return get_member(g_pMove, member, dest, element, length);
+	return get_member(amx, g_pMove, member, dest, element, length);
 }
 
 /*
@@ -515,7 +518,7 @@ cell AMX_NATIVE_CALL set_movevar(AMX *amx, cell *params)
 	}
 
 	cell* value = getAmxAddr(amx, params[arg_value]);
-	return set_member(g_pMove->movevars, member, value, 0);
+	return set_member(amx, g_pMove->movevars, member, value, 0);
 }
 
 /*
@@ -552,7 +555,7 @@ cell AMX_NATIVE_CALL get_movevar(AMX *amx, cell *params)
 		length = 0;
 	}
 
-	return get_member(g_pMove->movevars, member, dest, element, length);
+	return get_member(amx, g_pMove->movevars, member, dest, element, length);
 }
 
 /*
@@ -573,7 +576,7 @@ cell AMX_NATIVE_CALL set_ucmd(AMX *amx, cell *params)
 
 	cell* cmd = (cell *)params[arg_cmd];
 	cell* value = getAmxAddr(amx, params[arg_value]);
-	return set_member(cmd, member, value, 0);
+	return set_member(amx, cmd, member, value, 0);
 }
 
 /*
@@ -605,7 +608,7 @@ cell AMX_NATIVE_CALL get_ucmd(AMX *amx, cell *params)
 	}
 
 	cell* cmd = (cell *)params[arg_cmd];
-	return get_member(cmd, member, dest, element);
+	return get_member(amx, cmd, member, dest, element);
 }
 
 /*
@@ -629,7 +632,7 @@ cell AMX_NATIVE_CALL set_pmtrace(AMX *amx, cell *params)
 
 	cell* tr = (cell *)params[arg_tr];
 	cell* value = getAmxAddr(amx, params[arg_value]);
-	return set_member(tr, member, value, 0);
+	return set_member(amx, tr, member, value, 0);
 }
 
 /*
@@ -664,7 +667,7 @@ cell AMX_NATIVE_CALL get_pmtrace(AMX *amx, cell *params)
 	}
 
 	cell* tr = (cell *)params[arg_tr];
-	return get_member(tr, member, dest, element);
+	return get_member(amx, tr, member, dest, element);
 }
 
 /*
@@ -782,7 +785,7 @@ cell AMX_NATIVE_CALL set_rebuy(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	return set_member(handle, member, &params[arg_value], 0);
+	return set_member(amx, handle, member, &params[arg_value], 0);
 }
 
 /*
@@ -810,7 +813,7 @@ cell AMX_NATIVE_CALL get_rebuy(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	return get_member(handle, member, nullptr, 0);
+	return get_member(amx, handle, member, nullptr, 0);
 }
 
 AMX_NATIVE_INFO EngineVars_Natives[] =
@@ -862,7 +865,7 @@ void RegisterNatives_Members()
 	g_amxxapi.AddNatives(EngineVars_Natives);
 }
 
-cell set_member(void* pdata, const member_t *member, cell* value, size_t element)
+cell set_member(AMX *amx, void* pdata, const member_t *member, cell* value, size_t element)
 {
 	if (!pdata) {
 		return FALSE;
@@ -981,6 +984,7 @@ cell set_member(void* pdata, const member_t *member, cell* value, size_t element
 	case MEBMER_REBUYSTRUCT:
 	case MEMBER_PMTRACE:
 	case MEBMER_USERCMD:
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: member type %s (%s) is not supported", __FUNCTION__, member_t::getTypeString(member->type), member->name);
 		return FALSE;
 
 	default: break;
@@ -989,7 +993,7 @@ cell set_member(void* pdata, const member_t *member, cell* value, size_t element
 	return FALSE;
 }
 
-cell get_member(void* pdata, const member_t *member, cell* dest, size_t element, size_t length)
+cell get_member(AMX *amx, void* pdata, const member_t *member, cell* dest, size_t element, size_t length)
 {
 	if (!pdata) {
 		return 0;
@@ -1103,7 +1107,8 @@ cell get_member(void* pdata, const member_t *member, cell* dest, size_t element,
 
 	case MEMBER_ENTITY:
 	case MEMBER_EVARS:
-		return 0;
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: member type %s (%s) is not supported", __FUNCTION__, member_t::getTypeString(member->type), member->name);
+		return FALSE;
 	case MEMBER_TRACERESULT:
 		return (cell)get_member_direct<TraceResult>(pdata, member->offset, element);
 	case MEBMER_REBUYSTRUCT:
