@@ -6355,7 +6355,7 @@ enum CCSEntity_Members
 	* Get params:       get_member(index, member);
 	* Set params:       set_member(index, member, value);
 	*/
-	m_ucDmgPenetrationLevel = BEGIN_MEMBER_REGION(csplayerweapon),
+	m_ucDmgPenetrationLevel = BEGIN_MEMBER_REGION(csentity),
 
 	/*
 	* Description:      Cached inflictor passed inside TakeDamage to retrieve in Killed
