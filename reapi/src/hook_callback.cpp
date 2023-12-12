@@ -20,7 +20,7 @@ void SV_DropClient(IRehldsHook_SV_DropClient *chain, IGameClient *cl, bool crash
 {
 	auto original = [chain](int _cl, bool _crash, const char *_fmt)
 	{
-		chain->callNext(g_RehldsSvs->GetClient(_cl - 1), _crash, _fmt);
+		chain->callNext(clientByIndex(_cl), _crash, _fmt);
 	};
 
 	callVoidForward(RH_SV_DropClient, original, cl->GetId() + 1, crash, fmt);
@@ -50,7 +50,7 @@ void SV_WriteFullClientUpdate_AMXX(SV_WriteFullClientUpdate_t *data, IGameClient
 {
 	auto original = [data](int _client, size_t _buffer, int _receiver)
 	{
-		data->m_chain->callNext(g_RehldsSvs->GetClient(_client - 1), (char *)_buffer, data->m_args.maxlen, data->m_args.message, g_RehldsSvs->GetClient(_receiver - 1));
+		data->m_chain->callNext(clientByIndex(_client), (char *)_buffer, data->m_args.maxlen, data->m_args.message, clientByIndex(_receiver));
 	};
 
 	callVoidForward(RH_SV_WriteFullClientUpdate, original, client->GetId() + 1, buffer, receiver ? receiver->GetId() + 1 : AMX_NULLENT);
@@ -87,7 +87,7 @@ void ClientConnected(IRehldsHook_ClientConnected* chain, IGameClient* cl)
 {
 	auto original = [chain](int client)
 	{
-		chain->callNext(g_RehldsSvs->GetClient(client - 1));
+		chain->callNext(clientByIndex(client));
 	};
 
 	callVoidForward(RH_ClientConnected, original, cl->GetId() + 1);
@@ -107,7 +107,7 @@ void SV_EmitPings_AMXX(SV_EmitPings_t* data, IGameClient* cl)
 {
 	auto original = [data](int _cl)
 	{
-		data->m_chain->callNext(g_RehldsSvs->GetClient(_cl - 1), data->m_args.message);
+		data->m_chain->callNext(clientByIndex(_cl), data->m_args.message);
 	};
 
 	callVoidForward(RH_SV_EmitPings, original, cl->GetId() + 1);
@@ -236,10 +236,10 @@ void ExecuteServerStringCmd(IRehldsHook_ExecuteServerStringCmd* chain, const cha
 {
 	auto original = [chain](const char* _cmdName, cmd_source_t _cmdSrc, int client)
 	{
-		chain->callNext(_cmdName, _cmdSrc, _cmdSrc == src_client ? g_RehldsSvs->GetClient(client) - 1 : 0);
+		chain->callNext(_cmdName, _cmdSrc, _cmdSrc == src_client ? clientByIndex(client) : nullptr);
 	};
 
-	callVoidForward(RH_ExecuteServerStringCmd, original, cmdName, cmdSrc, cmdSrc == src_client ? cl->GetId() + 1 : 0);
+	callVoidForward(RH_ExecuteServerStringCmd, original, cmdName, cmdSrc, cmdSrc == src_client ? cl->GetId() + 1 : AMX_NULLENT);
 }
 
 /*
@@ -1734,7 +1734,7 @@ void FileConsistencyProcess_AMXX(FileConsistencyProcess_t *data, IGameClient *cl
 	int hashCopy = responseHash;
 	auto original = [data, hashCopy](int _cl, const char *_filename, const char *_cmd, ResourceType_e _type, uint32 _hash, bool _isBreak)
 	{
-		data->m_chain->callNext(g_RehldsSvs->GetClient(_cl - 1), data->m_args, _type, hashCopy);
+		data->m_chain->callNext(clientByIndex(_cl), data->m_args, _type, hashCopy);
 	};
 
 	if (g_RecheckerFuncs->GetResource()->GetPrevHash() == responseHash) {
@@ -1754,7 +1754,7 @@ void FileConsistencyFinal(IRecheckerHook_FileConsistencyFinal *chain, IGameClien
 {
 	auto original = [chain](int _cl)
 	{
-		chain->callNext(g_RehldsSvs->GetClient(_cl - 1));
+		chain->callNext(clientByIndex(_cl));
 	};
 
 	callVoidForward(RC_FileConsistencyFinal, original, cl->GetId() + 1);
@@ -1765,7 +1765,7 @@ void CmdExec_AMXX(CmdExec_t *data, IGameClient *cl, const char *filename, char *
 	int hashCopy = responseHash;
 	auto original = [data, hashCopy](int _cl, const char *_filename, char *_cmd, uint32 _responseHash)
 	{
-		data->m_chain->callNext(g_RehldsSvs->GetClient(_cl - 1), data->m_args, _cmd, hashCopy);
+		data->m_chain->callNext(clientByIndex(_cl), data->m_args, _cmd, hashCopy);
 	};
 
 	if (g_RecheckerFuncs->GetResource()->GetPrevHash() == responseHash) {

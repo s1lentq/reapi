@@ -1,12 +1,16 @@
 #pragma once
 
 #include <amxxmodule.h>
+#include <rehlds_api.h>
 
 #define INDEXENT edictByIndex
 #define ENTINDEX indexOfEdict
 #define AMX_NULLENT -1
 
+class IGameClient;
+
 extern edict_t* g_pEdicts;
+extern IRehldsServerStatic* g_RehldsSvs;
 
 inline size_t indexOfEdict(const edict_t* ed)
 {
@@ -39,6 +43,14 @@ inline size_t indexOfEdictAmx(const edict_t *pEdict)
 inline edict_t* edictByIndex(const int index)
 {
 	return g_pEdicts + index;
+}
+
+inline IGameClient* clientByIndex(const int index)
+{
+	IGameClient* cl = nullptr;
+	if (likely(index > 0))
+		cl = g_RehldsSvs->GetClient(index - 1);
+	return cl;
 }
 
 // safe to index -1
