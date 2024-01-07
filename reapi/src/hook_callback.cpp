@@ -1720,7 +1720,7 @@ void CBasePlayer_PlayerDeathThink(IReGameHook_CBasePlayer_PlayerDeathThink *chai
 	callVoidForward(RG_CBasePlayer_PlayerDeathThink, original, indexOfEdict(pthis->pev));
 }
 
-void CBasePlayer_Observer_Think(IReGameHook_CBasePlayer_PlayerDeathThink *chain, CBasePlayer *pthis)
+void CBasePlayer_Observer_Think(IReGameHook_CBasePlayer_Observer_Think *chain, CBasePlayer *pthis)
 {
 	auto original = [chain](int _pthis)
 	{
