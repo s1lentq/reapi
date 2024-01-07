@@ -1710,6 +1710,25 @@ void CBasePlayerWeapon_SendWeaponAnim(IReGameHook_CBasePlayerWeapon_SendWeaponAn
 	callVoidForward(RG_CBasePlayerWeapon_SendWeaponAnim, original, indexOfEdict(pthis->pev), iAnim, skiplocal);
 }
 
+void CBasePlayer_PlayerDeathThink(IReGameHook_CBasePlayer_PlayerDeathThink *chain, CBasePlayer *pthis)
+{
+	auto original = [chain](int _pthis)
+	{
+		chain->callNext(getPrivate<CBasePlayer>(_pthis));
+	};
+
+	callVoidForward(RG_CBasePlayer_PlayerDeathThink, original, indexOfEdict(pthis->pev));
+}
+
+void CBasePlayer_Observer_Think(IReGameHook_CBasePlayer_PlayerDeathThink *chain, CBasePlayer *pthis)
+{
+	auto original = [chain](int _pthis)
+	{
+		chain->callNext(getPrivate<CBasePlayer>(_pthis));
+	};
+
+	callVoidForward(RG_CBasePlayer_Observer_Think, original, indexOfEdict(pthis->pev));
+}
 
 /*
 * VTC functions
