@@ -443,12 +443,12 @@ native rg_find_ent_by_class(start_index, const classname[], const bool:useHashTa
 /*
 * Finds an entity in the world using Counter-Strike's custom FindEntityByString wrapper, matching by owner.
 *
-* @param start_index    Entity index to start searching from. -1 to start from the first entity
+* @param start_index    Entity index to start searching from. AMX_NULLENT (-1) to start from the first entity
 * @param classname      Classname to search for
 *
-* @return               1 if found, 0 otherwise
+* @return               true if found, false otherwise
 */
-native rg_find_ent_by_owner(&start_index, const classname[], owner);
+native bool:rg_find_ent_by_owner(&start_index, const classname[], owner);
 
 /*
 * Finds the weapon by name in the player's inventory.
@@ -1077,7 +1077,7 @@ native rg_emit_texture_sound(const ptr, Float:vecSrc[3], Float:vecEnd[3], Bullet
 * @note To see a visual effect, WeaponList message should be sent using the custom ammo name,
 *       where ammo icon HUD will be the one listed in "sprites/weapon_<name>.txt" file.
 *
-* @param szAmmoname            Ammo name to create. 
+* @param szAmmoname            Ammo name to create.
 *
 * @note Maximum ammo index is 31, after that every ammo instantiation will start from 1 overriding existing ones.
 * @return                      New ammo index. If name already exists, will return the matched index from memory.
@@ -1091,7 +1091,7 @@ native rg_add_ammo_registry(const szAmmoname[]);
 * @param szViewModel           Weapon view model name ("models/v_*.mdl")
 * @param szWeaponModel         Weapon world model bame ("models/p_*.mdl")
 * @param iAnim                 Weapon view model animation to play (often "deploy", use HLMV to see anim index)
-* @param szAnimExt             Player anim extension name to assign. Examples: "carbine", "shotgun", "knife", etc. 
+* @param szAnimExt             Player anim extension name to assign. Examples: "carbine", "shotgun", "knife", etc.
 *                              Use HLMV on a player model to see animext names.
 * @param skiplocal             If 0, weapon animation will be forced to play on client ignoring active client prediction.
 *
@@ -1175,7 +1175,7 @@ native rg_switch_best_weapon(const player, const currentWeapon = 0);
 native rg_disappear(const player);
 
 /*
-* Sets player current Observer mode. 
+* Sets player current Observer mode.
 * @note Player must be a valid observer (m_afPhysicsFlags & PFLAG_OBSERVER).
 *
 * @param player                Player index.

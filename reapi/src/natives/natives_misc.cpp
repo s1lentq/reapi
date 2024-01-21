@@ -613,12 +613,12 @@ cell AMX_NATIVE_CALL rg_find_ent_by_class(AMX *amx, cell *params)
 /*
 * Finds an entity in the world using Counter-Strike's custom FindEntityByString wrapper, matching by owner.
 *
-* @param start_index    Entity index to start searching from. -1 to start from the first entity
+* @param start_index    Entity index to start searching from. AMX_NULLENT (-1) to start from the first entity
 * @param classname      Classname to search for
 *
-* @return               1 if found, 0 otherwise
+* @return               true if found, false otherwise
 *
-* native rg_find_ent_by_owner(&start_index, const classname[], owner);
+* native bool:rg_find_ent_by_owner(&start_index, const classname[], owner);
 */
 cell AMX_NATIVE_CALL rg_find_ent_by_owner(AMX *amx, cell *params)
 {
@@ -629,12 +629,14 @@ cell AMX_NATIVE_CALL rg_find_ent_by_owner(AMX *amx, cell *params)
 	char classname[256];
 
 	cell& startIndex = *getAmxAddr(amx, params[arg_start_index]);
+	startIndex = clamp(startIndex, AMX_NULLENT, gpGlobals->maxEntities - 1);
+
 	const char* value = getAmxString(amx, params[arg_classname], classname);
 	edict_t* pOwner = edictByIndexAmx(params[arg_onwer]);
-	edict_t* pEntity = g_pEdicts + startIndex;
 
-	for (int i = startIndex; i < gpGlobals->maxEntities; i++, pEntity++)
+	for (int i = startIndex + 1; i < gpGlobals->maxEntities; i++)
 	{
+		edict_t *pEntity = edictByIndex(i);
 		if (pEntity->v.owner != pOwner)
 			continue;
 
@@ -2637,11 +2639,11 @@ cell AMX_NATIVE_CALL rg_spawn_grenade(AMX* amx, cell* params)
 	CAmxArgs args(amx, params);
 
 	CGrenade *pBomb = g_ReGameFuncs->SpawnGrenade(args[arg_weapon_id],
-						pPlayer->pev, 
-						args[arg_origin], 
-						args[arg_velocity], 
-						args[arg_time], 
-						args[arg_team], 
+						pPlayer->pev,
+						args[arg_origin],
+						args[arg_velocity],
+						args[arg_time],
+						args[arg_team],
 						args[arg_event]);
 
 	// Sanity check anyway
@@ -2677,7 +2679,7 @@ cell AMX_NATIVE_CALL rg_create_weaponbox(AMX* amx, cell* params)
 		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
 		return FALSE;
 	}
-	
+
 	CBasePlayer *pPlayer = nullptr;
 
 	if (params[arg_player] != 0)
@@ -2771,7 +2773,7 @@ cell AMX_NATIVE_CALL rg_emit_texture_sound(AMX* amx, cell* params)
 * @note To see a visual effect, WeaponList message should be sent using the custom ammo name,
 *       where ammo icon HUD will be the one listed in "sprites/weapon_<name>.txt" file.
 *
-* @param szAmmoname            Ammo name to create. 
+* @param szAmmoname            Ammo name to create.
 *
 * @note Maximum ammo index is 31, after that every ammo instantiation will start from 1 overriding existing ones.
 * @return                      New ammo index. If name already exists, will return the matched index from memory.
@@ -2799,7 +2801,7 @@ cell AMX_NATIVE_CALL rg_add_ammo_registry(AMX* amx, cell* params)
 * @param szViewModel           Weapon view model name ("models/v_*.mdl")
 * @param szWeaponModel         Weapon world model bame ("models/p_*.mdl")
 * @param iAnim                 Weapon view model animation to play (often "deploy", use HLMV to see anim index)
-* @param szAnimExt             Player anim extension name to assign. Examples: "carbine", "shotgun", "knife", etc. 
+* @param szAnimExt             Player anim extension name to assign. Examples: "carbine", "shotgun", "knife", etc.
 *                              Use HLMV on a player model to see animext names.
 * @param skiplocal             If 0, weapon animation will be forced to play on client ignoring active client prediction.
 *
@@ -2871,7 +2873,7 @@ cell AMX_NATIVE_CALL rg_weapon_reload(AMX* amx, cell* params)
 	}
 	else
 	{
-		CHECK_ISENTITY(arg_weapon);	
+		CHECK_ISENTITY(arg_weapon);
 
 		pWeapon = getPrivate<CBasePlayerWeapon>(params[arg_weapon]);
 	}
@@ -2941,7 +2943,7 @@ cell AMX_NATIVE_CALL rg_weapon_shotgun_reload(AMX* amx, cell* params)
 	}
 	else
 	{
-		CHECK_ISENTITY(arg_weapon);	
+		CHECK_ISENTITY(arg_weapon);
 
 		pWeapon = getPrivate<CBasePlayerWeapon>(params[arg_weapon]);
 	}
@@ -3005,7 +3007,7 @@ cell AMX_NATIVE_CALL rg_weapon_send_animation(AMX* amx, cell* params)
 	}
 	else
 	{
-		CHECK_ISENTITY(arg_weapon);	
+		CHECK_ISENTITY(arg_weapon);
 
 		pWeapon = getPrivate<CBasePlayerWeapon>(params[arg_weapon]);
 	}
@@ -3071,7 +3073,7 @@ cell AMX_NATIVE_CALL rg_weapon_kickback(AMX* amx, cell* params)
 	}
 	else
 	{
-		CHECK_ISENTITY(arg_weapon);	
+		CHECK_ISENTITY(arg_weapon);
 
 		pWeapon = getPrivate<CBasePlayerWeapon>(params[arg_weapon]);
 	}
@@ -3175,7 +3177,7 @@ cell AMX_NATIVE_CALL rg_disappear(AMX* amx, cell* params)
 }
 
 /*
-* Sets player current Observer mode. 
+* Sets player current Observer mode.
 * @note Player must be a valid observer (m_afPhysicsFlags & PFLAG_OBSERVER).
 *
 * @param player                Player index.
