@@ -3225,6 +3225,30 @@ cell AMX_NATIVE_CALL rg_death_notice(AMX* amx, cell* params)
 	return TRUE;
 }
 
+/*
+* Checks a player relationship with another reference
+*
+* @param player     Player index
+* @param target     Target index
+*
+* @return          	Match player relationship, see GR_* constants in cssdk_const.inc
+*/
+cell AMX_NATIVE_CALL rg_player_relationship(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_player, arg_target };
+
+	CHECK_GAMERULES();
+	CHECK_ISPLAYER(arg_player);
+	CHECK_ISENTITY(arg_target);
+
+	CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_player]);
+	CHECK_CONNECTED(pPlayer, arg_player);
+
+	CBaseEntity *pTarget = getPrivate<CBaseEntity>(params[arg_target]);
+
+	return CSGameRules()->PlayerRelationship(pPlayer, pTarget);
+}
+
 AMX_NATIVE_INFO Misc_Natives_RG[] =
 {
 	{ "rg_set_animation",             rg_set_animation             },
@@ -3336,6 +3360,7 @@ AMX_NATIVE_INFO Misc_Natives_RG[] =
 	{ "rg_disappear",                 rg_disappear                 },
 	{ "rg_set_observer_mode",         rg_set_observer_mode         },
 	{ "rg_death_notice",              rg_death_notice              },
+	{ "rg_player_relationship",       rg_player_relationship       },
 
 	{ nullptr, nullptr }
 };

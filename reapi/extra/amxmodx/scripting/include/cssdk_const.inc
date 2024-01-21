@@ -1539,3 +1539,15 @@ enum Decal
 	DECAL_MOMMABIRTH,        // Big momma birth splatter
 	DECAL_MOMMASPLAT,
 };
+
+/**
+* Player relationship return codes
+*/
+enum
+{
+	GR_NOTTEAMMATE = 0,
+	GR_TEAMMATE,
+	GR_ENEMY,
+	GR_ALLY,
+	GR_NEUTRAL,
+};
