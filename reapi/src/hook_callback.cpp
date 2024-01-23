@@ -1460,7 +1460,7 @@ void PM_LadderMove_AMXX(IReGameHook_PM_LadderMove *chain, physent_t *pLadder, in
 
 void PM_LadderMove(IReGameHook_PM_LadderMove *chain, physent_t *pLadder)
 {
-	PM_LadderMove_AMXX(chain, pLadder, pLadder->player + 1);
+	PM_LadderMove_AMXX(chain, pLadder, g_pMove->player_index + 1);
 }
 
 void PM_WaterJump_AMXX(IReGameHook_PM_WaterJump *chain, int playerIndex)
