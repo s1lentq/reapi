@@ -13,6 +13,15 @@ enum MapNameType
 	MNT_SET     // return the name of the current map
 };
 
+/**
+* For native CheckVisibilityInOrigin
+*/
+enum CheckVisibilityType
+{
+	VisibilityInPVS = 0, // Check in Potentially Visible Set (PVS)
+	VisibilityInPAS      // Check in Potentially Audible Set (PAS)
+};
+
 /*
 * For RH_SV_AddResource hook
 */

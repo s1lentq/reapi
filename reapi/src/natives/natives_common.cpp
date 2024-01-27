@@ -322,8 +322,8 @@ cell AMX_NATIVE_CALL amx_GetAttachment(AMX *amx, cell *params)
 * @return           1 on success, 0 otherwise
 * @error            If the index is not within the range of 1 to maxEntities or
 *                   the entity is not valid, an error will be thrown.
-*      
-*/ 
+*
+*/
 cell AMX_NATIVE_CALL amx_GetBodygroup(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_index, arg_group };
@@ -353,8 +353,8 @@ cell AMX_NATIVE_CALL amx_GetBodygroup(AMX *amx, cell *params)
 * @return           Body group value
 * @error            If the index is not within the range of 1 to maxEntities or
 *                   the entity is not valid, an error will be thrown.
-*      
-*/ 
+*
+*/
 cell AMX_NATIVE_CALL amx_SetBodygroup(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_index, arg_group, arg_value };
@@ -387,8 +387,8 @@ cell AMX_NATIVE_CALL amx_SetBodygroup(AMX *amx, cell *params)
 * @return                   True on success, false otherwise
 * @error                    If the index is not within the range of 1 to maxEntities or
 *                           the entity is not valid, an error will be thrown.
-*      
-*/ 
+*
+*/
 cell AMX_NATIVE_CALL amx_GetSequenceInfo(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_index, arg_flags, arg_framerate, arg_groundspeed };
@@ -634,6 +634,58 @@ cell AMX_NATIVE_CALL amx_SetMoveDone(AMX *amx, cell *params)
 	return (cell)EntityCallbackDispatcher().SetMoveDone(amx, pEntity, funcname, pParams, params[arg_len]);
 }
 
+enum class CheckVisibilityType {
+	PVS = 0, // Check in Potentially Visible Set (PVS)
+	PAS      // Check in Potentially Audible Set (PAS)
+};
+
+/*
+* Test visibility of an entity from a given origin using either PVS or PAS
+*
+* @param entity     Entity index
+* @param origin     Vector representing the origin from which visibility is checked
+* @param type       Type of visibility check: VisibilityInPVS (Potentially Visible Set) or VisibilityInPAS (Potentially Audible Set)
+*
+* @return           0 - Not visible
+*                   1 - Visible, passed by a leafnum
+*                   2 - Visible, passed by a headnode
+*
+* @remarks          This function checks the visibility of the specified entity from the given origin, using either
+*                   the Potentially Visible Set (PVS) or the Potentially Audible Set (PAS) depending on the provided type
+*
+* native CheckVisibilityInOrigin(const ent, Float:origin[3], CheckVisibilityType:type = VisibilityInPVS);
+*/
+cell AMX_NATIVE_CALL amx_CheckVisibilityInOrigin(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_origin, arg_type };
+
+	CHECK_ISENTITY(arg_index);
+
+	CBaseEntity *pEntity = getPrivate<CBaseEntity>(params[arg_index]);
+	if (unlikely(pEntity == nullptr)) {
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid or uninitialized entity", __FUNCTION__);
+		return FALSE;
+	}
+
+	CheckVisibilityType type = static_cast<CheckVisibilityType>(params[arg_type]);
+	if (type < CheckVisibilityType::PVS || type > CheckVisibilityType::PAS) {
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid visibility check type %d. Use either VisibilityInPVS or VisibilityInPAS.", __FUNCTION__, params[arg_type]);
+		return FALSE;
+	}
+
+	Vector &origin = *(Vector *)getAmxAddr(amx, params[arg_origin]);
+
+	unsigned char *pSet = NULL;
+	switch (type)
+	{
+	case CheckVisibilityType::PVS: pSet = ENGINE_SET_PVS(origin); break;
+	case CheckVisibilityType::PAS: pSet = ENGINE_SET_PAS(origin); break;
+	default: break;
+	}
+
+	return ENGINE_CHECK_VISIBILITY(pEntity->edict(), pSet);
+}
+
 AMX_NATIVE_INFO Natives_Common[] =
 {
 	{ "FClassnameIs",         amx_FClassnameIs         },
@@ -654,6 +706,8 @@ AMX_NATIVE_INFO Natives_Common[] =
 	{ "SetUse",               amx_SetUse               },
 	{ "SetBlocked",           amx_SetBlocked           },
 	{ "SetMoveDone",          amx_SetMoveDone          },
+
+	{ "CheckVisibilityInOrigin", amx_CheckVisibilityInOrigin },
 
 	{ nullptr, nullptr }
 };

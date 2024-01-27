@@ -133,8 +133,8 @@ native GetAttachment(const entity, const attachment, Float:vecOrigin[3], Float:v
 * @return           1 on success, 0 otherwise
 * @error            If the index is not within the range of 1 to maxEntities or
 *                   the entity is not valid, an error will be thrown.
-*      
-*/      
+*
+*/
 native SetBodygroup(const entity, const group, const value);
 
 /*
@@ -146,8 +146,8 @@ native SetBodygroup(const entity, const group, const value);
 * @return           Body group value
 * @error            If the index is not within the range of 1 to maxEntities or
 *                   the entity is not valid, an error will be thrown.
-*      
-*/ 
+*
+*/
 native GetBodygroup(const entity, const group);
 
 /*
@@ -161,9 +161,25 @@ native GetBodygroup(const entity, const group);
 * @return                   True on success, false otherwise
 * @error                    If the index is not within the range of 1 to maxEntities or
 *                           the entity is not valid, an error will be thrown.
-*      
-*/ 
+*
+*/
 native bool:GetSequenceInfo(const entity, &piFlags, &Float:pflFrameRate, &Float:pflGroundSpeed);
+
+/*
+* Test visibility of an entity from a given origin using either PVS or PAS
+*
+* @param entity     Entity index
+* @param origin     Vector representing the origin from which visibility is checked
+* @param type       Type of visibility check: VisibilityInPVS (Potentially Visible Set) or VisibilityInPAS (Potentially Audible Set)
+*
+* @return           0 - Not visible
+*                   1 - Visible, passed by a leafnum
+*                   2 - Visible, passed by a headnode
+*
+* @remarks          This function checks the visibility of the specified entity from the given origin, using either
+*                   the Potentially Visible Set (PVS) or the Potentially Audible Set (PAS) depending on the provided type
+*/
+native CheckVisibilityInOrigin(const ent, Float:origin[3], CheckVisibilityType:type = VisibilityInPVS);
 
 /*
 * Sets the name of the map.
