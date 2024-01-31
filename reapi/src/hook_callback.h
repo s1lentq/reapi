@@ -558,6 +558,8 @@ edict_t *CBasePlayer_EntSelectSpawnPoint(IReGameHook_CBasePlayer_EntSelectSpawnP
 void CBasePlayerWeapon_ItemPostFrame(IReGameHook_CBasePlayerWeapon_ItemPostFrame *chain, CBasePlayerWeapon *pthis);
 void CBasePlayerWeapon_KickBack(IReGameHook_CBasePlayerWeapon_KickBack *chain, CBasePlayerWeapon *pthis, float up_base, float lateral_base, float up_modifier, float lateral_modifier, float up_max, float lateral_max, int direction_change);
 void CBasePlayerWeapon_SendWeaponAnim(IReGameHook_CBasePlayerWeapon_SendWeaponAnim *chain, CBasePlayerWeapon *pthis, int iAnim, int skiplocal);
+void CBasePlayer_PlayerDeathThink(IReGameHook_CBasePlayer_PlayerDeathThink *chain, CBasePlayer *pthis);
+void CBasePlayer_Observer_Think(IReGameHook_CBasePlayer_Observer_Think *chain, CBasePlayer *pthis);
 
 /*
 * VTC functions

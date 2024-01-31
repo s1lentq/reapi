@@ -914,6 +914,18 @@ enum GamedllFunc_CBasePlayer
 	* Params:           (const this)
 	*/
 	RG_CBasePlayer_EntSelectSpawnPoint,
+
+	/*
+	* Description:      -
+	* Params:           (const this)
+	*/
+	RG_CBasePlayer_PlayerDeathThink,
+
+	/*
+	* Description:      -
+	* Params:           (const this)
+	*/
+	RG_CBasePlayer_Observer_Think,
 };
 
 /**

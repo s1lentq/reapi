@@ -212,6 +212,9 @@ hook_t hooklist_player[] = {
 
 	DLL(CBasePlayer_CheckTimeBasedDamage),
 	DLL(CBasePlayer_EntSelectSpawnPoint),
+
+	DLL(CBasePlayer_PlayerDeathThink),
+	DLL(CBasePlayer_Observer_Think),
 };
 
 hook_t hooklist_gamerules[] = {

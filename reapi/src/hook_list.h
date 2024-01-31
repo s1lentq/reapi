@@ -236,6 +236,9 @@ enum GamedllFunc_CBasePlayer
 	RG_CBasePlayer_CheckTimeBasedDamage,
 	RG_CBasePlayer_EntSelectSpawnPoint,
 
+	RG_CBasePlayer_PlayerDeathThink,
+	RG_CBasePlayer_Observer_Think,
+
 	// [...]
 };
 
