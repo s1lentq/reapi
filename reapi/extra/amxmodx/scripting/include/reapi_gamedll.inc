@@ -1195,3 +1195,13 @@ native rg_set_observer_mode(const player, const mode);
 * @noreturn
 */
 native rg_death_notice(const pVictim, const pKiller, const pevInflictor);
+
+/*
+* Checks a player relationship with another reference
+*
+* @param player     Player index
+* @param target     Target index
+*
+* @return           Match player relationship, see GR_* constants in cssdk_const.inc
+*/
+native rg_player_relationship(const player, const target);
