@@ -3231,7 +3231,7 @@ cell AMX_NATIVE_CALL rg_death_notice(AMX* amx, cell* params)
 * @param player     Player index
 * @param target     Target index
 *
-* @return          	Match player relationship, see GR_* constants in cssdk_const.inc
+* @return           Match player relationship, see GR_* constants in cssdk_const.inc
 */
 cell AMX_NATIVE_CALL rg_player_relationship(AMX *amx, cell *params)
 {

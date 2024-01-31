@@ -1202,6 +1202,6 @@ native rg_death_notice(const pVictim, const pKiller, const pevInflictor);
 * @param player     Player index
 * @param target     Target index
 *
-* @return          	Match player relationship, see GR_* constants in cssdk_const.inc
+* @return           Match player relationship, see GR_* constants in cssdk_const.inc
 */
 native rg_player_relationship(const player, const target);
