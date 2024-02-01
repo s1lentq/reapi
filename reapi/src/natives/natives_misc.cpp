@@ -841,7 +841,6 @@ cell AMX_NATIVE_CALL rg_get_weapon_info(AMX *amx, cell *params)
 	case WI_SLOT:
 		{
 			auto pInfo = g_ReGameApi->GetWeaponSlot(weaponId);
-
 			if (pInfo) {
 				return pInfo->slot;
 			}
@@ -907,7 +906,7 @@ cell AMX_NATIVE_CALL rg_set_weapon_info(AMX *amx, cell *params)
 		{
 			auto pInfo = g_ReGameApi->GetWeaponSlot(weaponId);
 			pInfo->slot = static_cast<InventorySlotType>(*value);
-			break; 
+			break;
 		}
 	default:
 		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: unknown type statement %i, params count %i", __FUNCTION__, info_type, PARAMS_COUNT);
