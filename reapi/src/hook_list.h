@@ -305,6 +305,7 @@ enum GamedllFunc_CSGameRules
 	RG_CSGameRules_TeamFull,
 	RG_CSGameRules_TeamStacked,
 	RG_CSGameRules_PlayerGotWeapon,
+	RG_CSGameRules_SendDeathMessage,
 
 	// [...]
 };

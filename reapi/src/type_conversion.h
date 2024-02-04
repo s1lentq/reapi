@@ -89,6 +89,15 @@ inline entvars_t* PEV(const int index)
 }
 
 template<typename T>
+inline size_t indexOfPData(const T* pdata)
+{
+	size_t index = 0;
+	if (likely(pdata != nullptr))
+		index = indexOfEdict(pdata->pev);
+	return index;
+}
+
+template<typename T>
 inline size_t indexOfPDataAmx(const T* pdata)
 {
 	size_t index = AMX_NULLENT;

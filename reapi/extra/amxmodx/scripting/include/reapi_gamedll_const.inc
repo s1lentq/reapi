@@ -1246,6 +1246,14 @@ enum GamedllFunc_CSGameRules
 	* Params:           (const pPlayer, const pWeapon)
 	*/
 	RG_CSGameRules_PlayerGotWeapon,
+
+	/*
+	* Description:      Called when a player is killed, sends death messages to all players, including info about the killer, victim, weapon used,
+	*                   extra death flags, death position, assistant, and kill rarity
+	* Return type:      void
+	* Params:           (const pKiller, const pVictim, const pAssister, const pevInflictor, const killerWeaponName[], const DeathMessageFlags:iDeathMessageFlags, const KillRarity:iRarityOfKill)
+	*/
+	RG_CSGameRules_SendDeathMessage,
 };
 
 /**

@@ -1730,6 +1730,16 @@ void CBasePlayer_Observer_Think(IReGameHook_CBasePlayer_Observer_Think *chain, C
 	callVoidForward(RG_CBasePlayer_Observer_Think, original, indexOfEdict(pthis->pev));
 }
 
+void CSGameRules_SendDeathMessage(IReGameHook_CSGameRules_SendDeathMessage *chain, CBaseEntity *pKiller, CBasePlayer *pVictim, CBasePlayer *pAssister, entvars_t *pevInflictor, const char *killerWeaponName, int iDeathMessageFlags, int iRarityOfKill)
+{
+	auto original = [chain](int _pKiller, int _pVictim, int _pAssister, int _pevInflictor, const char *_killerWeaponName, int _iDeathMessageFlags, int _iRarityOfKill)
+	{
+		chain->callNext(getPrivate<CBaseEntity>(_pKiller), getPrivate<CBasePlayer>(_pVictim), getPrivate<CBasePlayer>(_pAssister), PEV(_pevInflictor), _killerWeaponName, _iDeathMessageFlags, _iRarityOfKill);
+	};
+
+	callVoidForward(RG_CSGameRules_SendDeathMessage, original, indexOfPData(pKiller), indexOfEdict(pVictim->pev), indexOfPData(pAssister), indexOfEdictAmx(pevInflictor), killerWeaponName, iDeathMessageFlags, iRarityOfKill);
+}
+
 /*
 * VTC functions
 */
