@@ -3295,7 +3295,7 @@ cell AMX_NATIVE_CALL rg_player_relationship(AMX *amx, cell *params)
 
 /*
 * Sends death messages to all players, including info about the killer, victim, weapon used,
-* extra death flags, death position, assistant, and kill rarity
+* extra death flags, death position, assistant, and kill rarity using the CHalfLifeMultiplay::SendDeathMessage function.
 *
 * @param pKiller                The entity who performed the kill (Note: The killer may be a non-player)
 * @param pVictim                The player who was killed

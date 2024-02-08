@@ -1208,7 +1208,7 @@ native rg_player_relationship(const player, const target);
 
 /*
 * Sends death messages to all players, including info about the killer, victim, weapon used,
-* extra death flags, death position, assistant, and kill rarity
+* extra death flags, death position, assistant, and kill rarity using the CHalfLifeMultiplay::SendDeathMessage function.
 *
 * @param pKiller                Killer index (if any).
 * @param pVictim                Victim index.
