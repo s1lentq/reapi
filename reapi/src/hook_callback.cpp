@@ -1607,7 +1607,7 @@ void BuyItem(IReGameHook_BuyItem *chain, CBasePlayer *pPlayer, int iSlot)
 		chain->callNext(getPrivate<CBasePlayer>(_pPlayer), _iSlot);
 	};
 
-	callVoidForward(RG_AddMultiDamage, original, indexOfEdict(pPlayer->pev), iSlot);
+	callVoidForward(RG_BuyItem, original, indexOfEdict(pPlayer->pev), iSlot);
 }
 
 void CSGameRules_Think(IReGameHook_CSGameRules_Think *chain)
