@@ -553,6 +553,8 @@ public:
 	virtual bool HasRoundTimeExpired() = 0;
 	virtual bool IsBombPlanted() = 0;
 
+	virtual void SendDeathMessage(CBaseEntity *pKiller, CBasePlayer *pVictim, CBasePlayer *pAssister, entvars_t *pevInflictor, const char *killerWeaponName, int iDeathMessageFlags, int iRarityOfKill) = 0;
+
 public:
 	bool ShouldSkipShowMenu() const { return m_bSkipShowMenu; }
 	void MarkShowMenuSkipped() { m_bSkipShowMenu = false; }

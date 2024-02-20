@@ -1551,3 +1551,34 @@ enum
 	GR_ALLY,
 	GR_NEUTRAL,
 };
+
+// Flags for specifying extra info about player death
+enum DeathMessageFlags
+{
+	// float[3]
+	// Position where the victim was killed by the enemy
+	PLAYERDEATH_POSITION          = 0x001,
+
+	// byte
+	// Index of the assistant who helped the attacker kill the victim
+	PLAYERDEATH_ASSISTANT         = 0x002,
+
+	// short
+	// Bitsum classification for the rarity of the kill
+	// See enum KillRarity for details
+	PLAYERDEATH_KILLRARITY        = 0x004
+};
+
+// Classifying various player kill methods in the game
+enum KillRarity
+{
+	KILLRARITY_HEADSHOT         = 0x001, // Headshot
+	KILLRARITY_KILLER_BLIND     = 0x002, // Killer was blind
+	KILLRARITY_NOSCOPE          = 0x004, // No-scope sniper rifle kill
+	KILLRARITY_PENETRATED       = 0x008, // Penetrated kill (through walls)
+	KILLRARITY_THRUSMOKE        = 0x010, // Smoke grenade penetration kill (bullets went through smoke)
+	KILLRARITY_ASSISTEDFLASH    = 0x020, // Assister helped with a flash
+	KILLRARITY_DOMINATION_BEGAN = 0x040, // Killer player began dominating the victim (NOTE: this flag is set once)
+	KILLRARITY_DOMINATION       = 0x080, // Continues domination by the killer
+	KILLRARITY_REVENGE          = 0x100  // Revenge by the killer
+};
