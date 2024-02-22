@@ -186,7 +186,7 @@ enum EngineFunc
 	
 	/*
 	* Description:  Called when a message is being sent.
-	* Params:       (msg_dest, msg_type, const float fOrigin[3], const entity)
+	* Params:       (msg_dest, msg_type, const Float:fOrigin[3], const entity)
 	*/
 	RH_PF_MessageBegin_I,
 	
