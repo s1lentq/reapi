@@ -385,7 +385,16 @@ edict_t *ED_Alloc(IRehldsHook_ED_Alloc* chain);
 void ED_Free(IRehldsHook_ED_Free* chain, edict_t *entity);
 void SV_ClientPrintf(IRehldsHook_SV_ClientPrintf* chain, const char *string);
 bool SV_AllowPhysent(IRehldsHook_SV_AllowPhysent* chain, edict_t* check, edict_t* sv_player);
-
+void PF_MessageBegin_I(IRehldsHook_PF_MessageBegin_I* chain, int msg_dest, int msg_type, const float *pOrigin, edict_t *ed);
+void PF_MessageEnd_I(IRehldsHook_PF_MessageEnd_I* chain);
+void PF_WriteByte_I(IRehldsHook_PF_WriteByte_I* chain, int iValue);
+void PF_WriteChar_I(IRehldsHook_PF_WriteChar_I* chain, int iValue);
+void PF_WriteShort_I(IRehldsHook_PF_WriteShort_I* chain, int iValue);
+void PF_WriteLong_I(IRehldsHook_PF_WriteLong_I* chain, int iValue);
+void PF_WriteAngle_I(IRehldsHook_PF_WriteAngle_I* chain, float flValue);
+void PF_WriteCoord_I(IRehldsHook_PF_WriteCoord_I* chain, float flValue);
+void PF_WriteString_I(IRehldsHook_PF_WriteString_I* chain, const char *sz);
+void PF_WriteEntity_I(IRehldsHook_PF_WriteEntity_I* chain, int iValue);
 /*
 * ReGameDLL functions
 */

@@ -242,6 +242,106 @@ void ExecuteServerStringCmd(IRehldsHook_ExecuteServerStringCmd* chain, const cha
 	callVoidForward(RH_ExecuteServerStringCmd, original, cmdName, cmdSrc, cmdSrc == src_client ? cl->GetId() + 1 : AMX_NULLENT);
 }
 
+void PF_MessageBegin_I(IRehldsHook_PF_MessageBegin_I* chain, int msg_dest, int msg_type, const float *pOrigin, edict_t *ed)
+{
+	auto original = [chain](int _msg_dest, int _msg_type, const float *_pOrigin, int _entity)
+	{
+		chain->callNext(_msg_dest, _msg_type, _pOrigin, edictByIndexAmx(_entity));
+	};
+
+	callVoidForward(RH_PF_MessageBegin_I, original, msg_dest, msg_type, pOrigin, indexOfEdictAmx(ed));
+}
+
+void PF_MessageEnd_I(IRehldsHook_PF_MessageEnd_I *chain)
+{
+	auto original = [chain]()
+	{
+		chain->callNext();
+	};
+
+	callVoidForward(RH_PF_MessageEnd_I, original);
+}
+
+void PF_WriteByte_I(IRehldsHook_PF_WriteByte_I *chain, int iValue)
+{
+	auto original = [chain](int _value)
+	{
+		chain->callNext(_value);
+	};
+
+	callVoidForward(RH_PF_WriteByte_I, original, iValue);
+}
+
+void PF_WriteChar_I(IRehldsHook_PF_WriteChar_I *chain, int iValue)
+{
+	auto original = [chain](int _value)
+	{
+		chain->callNext(_value);
+	};
+
+	callVoidForward(RH_PF_WriteChar_I, original, iValue);
+}
+
+void PF_WriteShort_I(IRehldsHook_PF_WriteShort_I *chain, int iValue)
+{
+	auto original = [chain](int _value)
+	{
+		chain->callNext(_value);
+	};
+
+	callVoidForward(RH_PF_WriteShort_I, original, iValue);
+}
+
+void PF_WriteLong_I(IRehldsHook_PF_WriteLong_I *chain, int iValue)
+{
+	auto original = [chain](int _value)
+	{
+		chain->callNext(_value);
+	};
+
+	callVoidForward(RH_PF_WriteLong_I, original, iValue);
+}
+
+void PF_WriteAngle_I(IRehldsHook_PF_WriteAngle_I *chain, float flValue)
+{
+	auto original = [chain](float _fvalue)
+	{
+		chain->callNext(_fvalue);
+	};
+
+	callVoidForward(RH_PF_WriteAngle_I, original, flValue);
+}
+
+void PF_WriteCoord_I(IRehldsHook_PF_WriteCoord_I *chain, float flValue)
+{
+	auto original = [chain](float _fvalue)
+	{
+		chain->callNext(_fvalue);
+	};
+
+	callVoidForward(RH_PF_WriteCoord_I, original, flValue);
+}
+
+void PF_WriteString_I(IRehldsHook_PF_WriteString_I *chain, const char * sz)
+{
+	auto original = [chain](const char *_sz)
+	{
+		chain->callNext(_sz);
+	};
+
+	callVoidForward(RH_PF_WriteString_I, original, sz);
+}
+
+void PF_WriteEntity_I(IRehldsHook_PF_WriteEntity_I *chain, int iValue)
+{
+	auto original = [chain](int _value)
+	{
+		chain->callNext(_value);
+	};
+
+	callVoidForward(RH_PF_WriteEntity_I, original, iValue);
+}
+
 /*
 * ReGameDLL functions
 */

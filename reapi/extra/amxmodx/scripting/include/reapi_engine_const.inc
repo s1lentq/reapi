@@ -183,6 +183,67 @@ enum EngineFunc
 	* Params:       (const cmd[], source, id)
 	*/
 	RH_ExecuteServerStringCmd,
+	
+	/*
+	* Description:  Called when a message is being sent.
+	* Params:       (msg_dest, msg_type, const Float:fOrigin[3], const entity)
+	*/
+	RH_PF_MessageBegin_I,
+	
+	/*
+	* Description:  Called when a message is done sending.
+	* Params:       ()
+	*/
+	RH_PF_MessageEnd_I,
+
+	/*
+	* Description:  Called when a byte is being write to message buffer.
+	* Params:       (iValue)
+	*/
+	RH_PF_WriteByte_I,
+
+	/*
+	* Description:  Called when a char is being write to message buffer.
+	* Params:       (iValue)
+	*/
+	RH_PF_WriteChar_I,
+
+	/*
+	* Description:  Called when a short int is being write to message buffer.
+	* Params:       (iValue)
+	*/
+	RH_PF_WriteShort_I,
+
+	/*
+	* Description:  Called when a long int is being write to message buffer.
+	* Params:       (iValue)
+	*/
+	RH_PF_WriteLong_I,
+
+	/*
+	* Description:  Called when an angle is being write to message buffer.
+	* Params:       (Float:flValue)
+	*/
+	RH_PF_WriteAngle_I,
+
+	/*
+	* Description:  Called when a coord is being write to message buffer.
+	* Params:       (Float:flValue)
+	*/
+	RH_PF_WriteCoord_I,
+
+	/*
+	* Description:  Called when a string is being write to message buffer.
+	* Params:       (const sz[])
+	*/
+	RH_PF_WriteString_I,
+
+	/*
+	* Description:  Called when an entity is being write to message buffer.
+	* Params:       (iValue)
+	*/
+	RH_PF_WriteEntity_I
+
 
 };
 
