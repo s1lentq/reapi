@@ -370,6 +370,7 @@ void Con_Printf(IRehldsHook_Con_Printf *chain, const char *string);
 int PF_precache_generic_I(IRehldsHook_PF_precache_generic_I *chain, const char *s);
 int PF_precache_model_I(IRehldsHook_PF_precache_model_I *chain, char *s);
 int PF_precache_sound_I(IRehldsHook_PF_precache_sound_I *chain, const char *s);
+void SV_SendResources(IRehldsHook_SV_SendResources *chain, sizebuf_t *msg);
 
 struct EventPrecache_args_t
 {
