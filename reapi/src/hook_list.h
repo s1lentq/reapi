@@ -117,6 +117,7 @@ enum EngineFunc
 	RH_SV_ClientPrintf,
 	RH_SV_AllowPhysent,
 	RH_ExecuteServerStringCmd,
+	RH_SV_SendResources,
 
 	// [...]
 };

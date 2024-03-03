@@ -183,6 +183,12 @@ enum EngineFunc
 	* Params:       (const cmd[], source, id)
 	*/
 	RH_ExecuteServerStringCmd,
+	
+	/*
+	* Description:  Called when server sends resources list and location.
+	* Params:       ()
+	*/
+	RH_SV_SendResources,
 
 };
 
