@@ -25,6 +25,7 @@ inline size_t getFwdParamType(void(*)(resourcetype_t))          { return FP_CELL
 inline size_t getFwdParamType(void(*)(cmd_source_t))            { return FP_CELL;   }
 inline size_t getFwdParamType(void(*)(GameEventType))           { return FP_CELL;   }
 inline size_t getFwdParamType(void(*)(float*))                  { return FP_ARRAY;  }
+inline size_t getFwdParamType(void(*)(const float*))            { return FP_ARRAY;  }
 
 template <typename T>
 inline size_t getFwdParamType(void(*)(T *))                     { return FP_CELL;   }
