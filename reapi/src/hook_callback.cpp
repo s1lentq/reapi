@@ -1733,9 +1733,9 @@ void CBasePlayer_Observer_Think(IReGameHook_CBasePlayer_Observer_Think *chain, C
 void CBasePlayer_RemoveAllItems(IReGameHook_CBasePlayer_RemoveAllItems *chain, CBasePlayer *pthis, BOOL removeSuit)
 {
 	auto original = [chain](int _pthis, BOOL _removeSuit)
-		{
-			chain->callNext(getPrivate<CBasePlayer>(_pthis), _removeSuit);
-		};
+	{
+		chain->callNext(getPrivate<CBasePlayer>(_pthis), _removeSuit);
+	};
 
 	callVoidForward(RG_CBasePlayer_RemoveAllItems, original, indexOfEdict(pthis->pev), removeSuit);
 }
