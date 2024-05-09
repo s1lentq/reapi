@@ -1205,3 +1205,19 @@ native rg_death_notice(const pVictim, const pKiller, const pevInflictor);
 * @return           Match player relationship, see GR_* constants in cssdk_const.inc
 */
 native rg_player_relationship(const player, const target);
+
+/*
+* Sends death messages to all players, including info about the killer, victim, weapon used,
+* extra death flags, death position, assistant, and kill rarity using the CHalfLifeMultiplay::SendDeathMessage function.
+*
+* @param pKiller                Killer index (if any).
+* @param pVictim                Victim index.
+* @param pAssister              Assisting player index (if any).
+* @param pevInflictor           Inflictor entity. 0 = world
+* @param killerWeaponName       The name of the weapon used by the killer.
+* @param iDeathMessageFlags     Flags indicating extra death message info, see DeathMessageFlags enum in cssdk_const.inc
+* @param iRarityOfKill          An bitsums representing the rarity classification of the kill, see KillRarity enum in cssdk_const.inc
+*
+* @noreturn
+*/
+native rg_send_death_message(const pKiller, const pVictim, const pAssister, const pevInflictor, const killerWeaponName[], const DeathMessageFlags:iDeathMessageFlags, const KillRarity:iRarityOfKill);

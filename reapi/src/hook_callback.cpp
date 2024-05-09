@@ -1740,6 +1740,16 @@ void CBasePlayer_RemoveAllItems(IReGameHook_CBasePlayer_RemoveAllItems *chain, C
 	callVoidForward(RG_CBasePlayer_RemoveAllItems, original, indexOfEdict(pthis->pev), removeSuit);
 }
 
+void CSGameRules_SendDeathMessage(IReGameHook_CSGameRules_SendDeathMessage *chain, CBaseEntity *pKiller, CBasePlayer *pVictim, CBasePlayer *pAssister, entvars_t *pevInflictor, const char *killerWeaponName, int iDeathMessageFlags, int iRarityOfKill)
+{
+	auto original = [chain](int _pKiller, int _pVictim, int _pAssister, int _pevInflictor, const char *_killerWeaponName, int _iDeathMessageFlags, int _iRarityOfKill)
+	{
+		chain->callNext(getPrivate<CBaseEntity>(_pKiller), getPrivate<CBasePlayer>(_pVictim), getPrivate<CBasePlayer>(_pAssister), PEV(_pevInflictor), _killerWeaponName, _iDeathMessageFlags, _iRarityOfKill);
+	};
+
+	callVoidForward(RG_CSGameRules_SendDeathMessage, original, indexOfPDataAmx(pKiller), indexOfEdict(pVictim->pev), indexOfPDataAmx(pAssister), indexOfEdictAmx(pevInflictor), killerWeaponName, iDeathMessageFlags, iRarityOfKill);
+}
+
 /*
 * VTC functions
 */

@@ -3293,6 +3293,58 @@ cell AMX_NATIVE_CALL rg_player_relationship(AMX *amx, cell *params)
 	return CSGameRules()->PlayerRelationship(pPlayer, pTarget);
 }
 
+/*
+* Sends death messages to all players, including info about the killer, victim, weapon used,
+* extra death flags, death position, assistant, and kill rarity using the CHalfLifeMultiplay::SendDeathMessage function.
+*
+* @param pKiller                The entity who performed the kill (Note: The killer may be a non-player)
+* @param pVictim                The player who was killed
+* @param pAssister              The assisting player (if any)
+* @param pevInflictor           Inflictor entity. 0 = world
+* @param killerWeaponName       The name of the weapon used by the killer
+* @param iDeathMessageFlags     Flags indicating extra death message info
+* @param iRarityOfKill          An bitsums representing the rarity classification of the kill
+*
+* @noreturn
+*/
+cell AMX_NATIVE_CALL rg_send_death_message(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_killer, arg_victim, arg_assister, arg_inflictor, arg_weaponname, arg_deathmsgflags, arg_rarityofkill };
+
+	CHECK_GAMERULES();
+
+	CHECK_ISPLAYER(arg_victim);
+	CBasePlayer *pVictim = UTIL_PlayerByIndex(params[arg_victim]);
+	CHECK_CONNECTED(pVictim, arg_victim);
+
+	CBasePlayer *pKiller = nullptr;
+	CBasePlayer *pAssister = nullptr;
+
+	// Check if the killer is a player
+	if (params[arg_killer])
+	{
+		CHECK_ISPLAYER(arg_killer);
+		pKiller = UTIL_PlayerByIndex(params[arg_killer]);
+		CHECK_CONNECTED(pKiller, arg_killer);
+	}
+
+	// Check if the assister is a player
+	if (params[arg_assister])
+	{
+		CHECK_ISPLAYER(arg_assister);
+		pAssister = UTIL_PlayerByIndex(params[arg_assister]);
+		CHECK_CONNECTED(pAssister, arg_assister);
+	}
+
+	CAmxArgs args(amx, params);
+
+	char weaponStr[32];
+	const char *weaponName = getAmxString(amx, params[arg_weaponname], weaponStr);
+
+	CSGameRules()->SendDeathMessage(pKiller, pVictim, pAssister, args[arg_inflictor], weaponName, args[arg_deathmsgflags], args[arg_rarityofkill]);
+	return TRUE;
+}
+
 AMX_NATIVE_INFO Misc_Natives_RG[] =
 {
 	{ "rg_set_animation",             rg_set_animation             },
@@ -3405,6 +3457,8 @@ AMX_NATIVE_INFO Misc_Natives_RG[] =
 	{ "rg_set_observer_mode",         rg_set_observer_mode         },
 	{ "rg_death_notice",              rg_death_notice              },
 	{ "rg_player_relationship",       rg_player_relationship       },
+
+	{ "rg_send_death_message",        rg_send_death_message        },
 
 	{ nullptr, nullptr }
 };

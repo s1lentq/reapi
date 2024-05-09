@@ -247,6 +247,7 @@ hook_t hooklist_gamerules[] = {
 	DLL(CSGameRules_TeamFull),
 	DLL(CSGameRules_TeamStacked),
 	DLL(CSGameRules_PlayerGotWeapon),
+	DLL(CSGameRules_SendDeathMessage),
 };
 
 hook_t hooklist_grenade[] = {

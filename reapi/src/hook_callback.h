@@ -561,6 +561,7 @@ void CBasePlayerWeapon_SendWeaponAnim(IReGameHook_CBasePlayerWeapon_SendWeaponAn
 void CBasePlayer_PlayerDeathThink(IReGameHook_CBasePlayer_PlayerDeathThink *chain, CBasePlayer *pthis);
 void CBasePlayer_Observer_Think(IReGameHook_CBasePlayer_Observer_Think *chain, CBasePlayer *pthis);
 void CBasePlayer_RemoveAllItems(IReGameHook_CBasePlayer_RemoveAllItems *chain, CBasePlayer *pthis, BOOL removeSuit);
+void CSGameRules_SendDeathMessage(IReGameHook_CSGameRules_SendDeathMessage *chain, CBaseEntity *pKiller, CBasePlayer *pVictim, CBasePlayer *pAssister, entvars_t *pevInflictor, const char *killerWeaponName, int iDeathMessageFlags, int iRarityOfKill);
 
 /*
 * VTC functions
