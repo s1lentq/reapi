@@ -40,7 +40,7 @@
 #include <API/CSInterfaces.h>
 
 #define REGAMEDLL_API_VERSION_MAJOR 5
-#define REGAMEDLL_API_VERSION_MINOR 22
+#define REGAMEDLL_API_VERSION_MINOR 27
 
 // CBasePlayer::Spawn hook
 typedef IHookChainClass<void, class CBasePlayer> IReGameHook_CBasePlayer_Spawn;
@@ -626,6 +626,10 @@ typedef IHookChainRegistryClass<void, class CBasePlayer> IReGameHookRegistry_CBa
 typedef IHookChainClass<void, class CBasePlayer> IReGameHook_CBasePlayer_Observer_Think;
 typedef IHookChainRegistryClass<void, class CBasePlayer> IReGameHookRegistry_CBasePlayer_Observer_Think;
 
+// CBasePlayer::RemoveAllItems hook
+typedef IHookChainClass<void, class CBasePlayer, BOOL> IReGameHook_CBasePlayer_RemoveAllItems;
+typedef IHookChainRegistryClass<void, class CBasePlayer, BOOL> IReGameHookRegistry_CBasePlayer_RemoveAllItems;
+
 class IReGameHookchains {
 public:
 	virtual ~IReGameHookchains() {}
@@ -773,7 +777,7 @@ public:
 	virtual IReGameHookRegistry_AddMultiDamage *AddMultiDamage() = 0;
 	virtual IReGameHookRegistry_ApplyMultiDamage *ApplyMultiDamage() = 0;
 	virtual IReGameHookRegistry_BuyItem *BuyItem() = 0;
-	virtual IReGameHookRegistry_CSGameRules_Think *CSGameRules_Think() = 0;	
+	virtual IReGameHookRegistry_CSGameRules_Think *CSGameRules_Think() = 0;
 	virtual IReGameHookRegistry_CSGameRules_TeamFull *CSGameRules_TeamFull() = 0;
 	virtual IReGameHookRegistry_CSGameRules_TeamStacked *CSGameRules_TeamStacked() = 0;
 	virtual IReGameHookRegistry_CSGameRules_PlayerGotWeapon *CSGameRules_PlayerGotWeapon() = 0;
@@ -787,7 +791,7 @@ public:
 
 	virtual IReGameHookRegistry_CBasePlayer_PlayerDeathThink *CBasePlayer_PlayerDeathThink() = 0;
 	virtual IReGameHookRegistry_CBasePlayer_Observer_Think *CBasePlayer_Observer_Think() = 0;
-	
+	virtual IReGameHookRegistry_CBasePlayer_RemoveAllItems *CBasePlayer_RemoveAllItems() = 0;
 };
 
 struct ReGameFuncs_t {

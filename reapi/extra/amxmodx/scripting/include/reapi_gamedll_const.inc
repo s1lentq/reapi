@@ -934,6 +934,12 @@ enum GamedllFunc_CBasePlayer
 	* Params:           (const this)
 	*/
 	RG_CBasePlayer_Observer_Think,
+
+	/*
+	* Description:      -
+	* Params:           (const this, bool:removeSuit)
+	*/
+	RG_CBasePlayer_RemoveAllItems,
 };
 
 /**

@@ -1607,7 +1607,7 @@ void BuyItem(IReGameHook_BuyItem *chain, CBasePlayer *pPlayer, int iSlot)
 		chain->callNext(getPrivate<CBasePlayer>(_pPlayer), _iSlot);
 	};
 
-	callVoidForward(RG_AddMultiDamage, original, indexOfEdict(pPlayer->pev), iSlot);
+	callVoidForward(RG_BuyItem, original, indexOfEdict(pPlayer->pev), iSlot);
 }
 
 void CSGameRules_Think(IReGameHook_CSGameRules_Think *chain)
@@ -1728,6 +1728,16 @@ void CBasePlayer_Observer_Think(IReGameHook_CBasePlayer_Observer_Think *chain, C
 	};
 
 	callVoidForward(RG_CBasePlayer_Observer_Think, original, indexOfEdict(pthis->pev));
+}
+
+void CBasePlayer_RemoveAllItems(IReGameHook_CBasePlayer_RemoveAllItems *chain, CBasePlayer *pthis, BOOL removeSuit)
+{
+	auto original = [chain](int _pthis, BOOL _removeSuit)
+	{
+		chain->callNext(getPrivate<CBasePlayer>(_pthis), _removeSuit);
+	};
+
+	callVoidForward(RG_CBasePlayer_RemoveAllItems, original, indexOfEdict(pthis->pev), removeSuit);
 }
 
 void CSGameRules_SendDeathMessage(IReGameHook_CSGameRules_SendDeathMessage *chain, CBaseEntity *pKiller, CBasePlayer *pVictim, CBasePlayer *pAssister, entvars_t *pevInflictor, const char *killerWeaponName, int iDeathMessageFlags, int iRarityOfKill)
