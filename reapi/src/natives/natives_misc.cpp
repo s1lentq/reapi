@@ -3304,7 +3304,7 @@ cell AMX_NATIVE_CALL rg_player_relationship(AMX *amx, cell *params)
 * @param killerWeaponName       The name of the weapon used by the killer
 * @param iDeathMessageFlags     Flags indicating extra death message info
 * @param iRarityOfKill          An bitsums representing the rarity classification of the kill
-* 
+*
 * @noreturn
 */
 cell AMX_NATIVE_CALL rg_send_death_message(AMX *amx, cell *params)

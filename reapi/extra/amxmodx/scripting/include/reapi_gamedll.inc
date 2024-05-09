@@ -1217,7 +1217,7 @@ native rg_player_relationship(const player, const target);
 * @param killerWeaponName       The name of the weapon used by the killer.
 * @param iDeathMessageFlags     Flags indicating extra death message info, see DeathMessageFlags enum in cssdk_const.inc
 * @param iRarityOfKill          An bitsums representing the rarity classification of the kill, see KillRarity enum in cssdk_const.inc
-* 
+*
 * @noreturn
 */
 native rg_send_death_message(const pKiller, const pVictim, const pAssister, const pevInflictor, const killerWeaponName[], const DeathMessageFlags:iDeathMessageFlags, const KillRarity:iRarityOfKill);
