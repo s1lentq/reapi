@@ -100,9 +100,10 @@ enum EngineFunc
 
 	/*
 	* Description:  Called when client it's in the scoreboard
-	* Params:       (const this)
+	* Params:       (const client)
 	*/
 	RH_SV_EmitPings,
+
 	/*
 	* Description:  Called when an entity is created.
 	* Return type:  Edict * (Entity index)
@@ -183,6 +184,12 @@ enum EngineFunc
 	* Params:       (const cmd[], source, id)
 	*/
 	RH_ExecuteServerStringCmd,
+
+	/*
+	* Description:  Called when server sends resources list and location.
+	* Params:       (const client)
+	*/
+	RH_SV_SendResources,
 
 };
 
