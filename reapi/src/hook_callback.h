@@ -370,6 +370,9 @@ void Con_Printf(IRehldsHook_Con_Printf *chain, const char *string);
 int PF_precache_generic_I(IRehldsHook_PF_precache_generic_I *chain, const char *s);
 int PF_precache_model_I(IRehldsHook_PF_precache_model_I *chain, char *s);
 int PF_precache_sound_I(IRehldsHook_PF_precache_sound_I *chain, const char *s);
+
+using SV_SendResources_t = hookdata_t<IRehldsHook_SV_SendResources *, sizebuf_t *>;
+void SV_SendResources_AMXX(SV_SendResources_t *data, IGameClient *cl);
 void SV_SendResources(IRehldsHook_SV_SendResources *chain, sizebuf_t *msg);
 
 struct EventPrecache_args_t
