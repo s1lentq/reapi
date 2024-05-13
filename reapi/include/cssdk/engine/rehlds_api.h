@@ -31,12 +31,14 @@
 #include "rehlds_interfaces.h"
 #include "hookchains.h"
 #include "FlightRecorder.h"
+#include "IMessageManager.h"
 #include "interface.h"
 #include "model.h"
+#include "ObjectList.h"
 #include "pr_dlls.h"
 
 #define REHLDS_API_VERSION_MAJOR 3
-#define REHLDS_API_VERSION_MINOR 13
+#define REHLDS_API_VERSION_MINOR 14
 
 //Steam_NotifyClientConnect hook
 typedef IHookChain<qboolean, IGameClient*, const void*, unsigned int> IRehldsHook_Steam_NotifyClientConnect;
@@ -107,8 +109,8 @@ typedef IVoidHookChain<IGameClient*> IRehldsHook_ClientConnected;
 typedef IVoidHookChainRegistry<IGameClient*> IRehldsHookRegistry_ClientConnected;
 
 //HandleNetCommand
-typedef IVoidHookChain<IGameClient*, int8> IRehldsHook_HandleNetCommand;
-typedef IVoidHookChainRegistry<IGameClient*, int8> IRehldsHookRegistry_HandleNetCommand;
+typedef IVoidHookChain<IGameClient*, uint8> IRehldsHook_HandleNetCommand;
+typedef IVoidHookChainRegistry<IGameClient*, uint8> IRehldsHookRegistry_HandleNetCommand;
 
 //Mod_LoadBrushModel
 typedef IVoidHookChain<model_t*, void*> IRehldsHook_Mod_LoadBrushModel;
@@ -187,8 +189,8 @@ typedef IHookChain<int, enum sv_delta_s, IGameClient *, struct packet_entities_s
 typedef IHookChainRegistry<int, enum sv_delta_s, IGameClient *, struct packet_entities_s *, struct sizebuf_s *> IRehldsHookRegistry_SV_CreatePacketEntities;
 
 //SV_EmitSound2 hook
-typedef IHookChain<bool, edict_t *, IGameClient *, int, const char *, float, float, int, int, int, const float *> IRehldsHook_SV_EmitSound2;
-typedef IHookChainRegistry<bool, edict_t *, IGameClient *, int, const char *, float, float, int, int, int, const float *> IRehldsHookRegistry_SV_EmitSound2;
+typedef IHookChain<bool, edict_t *, IGameClient *, int, const char*, float, float, int, int, int, const float*> IRehldsHook_SV_EmitSound2;
+typedef IHookChainRegistry<bool, edict_t *, IGameClient *, int, const char*, float, float, int, int, int, const float*> IRehldsHookRegistry_SV_EmitSound2;
 
 //CreateFakeClient hook
 typedef IHookChain<edict_t *, const char *> IRehldsHook_CreateFakeClient;
@@ -227,20 +229,20 @@ typedef IHookChain<void, const char *> IRehldsHook_Con_Printf;
 typedef IHookChainRegistry<void, const char *> IRehldsHookRegistry_Con_Printf;
 
 //SV_CheckUserInfo hook
-typedef IHookChain<int, netadr_t*, char*, qboolean, int, char*> IRehldsHook_SV_CheckUserInfo;
-typedef IHookChainRegistry<int, netadr_t*, char*, qboolean, int, char*> IRehldsHookRegistry_SV_CheckUserInfo;
+typedef IHookChain<int, netadr_t *, char *, qboolean, int, char *> IRehldsHook_SV_CheckUserInfo;
+typedef IHookChainRegistry<int, netadr_t *, char *, qboolean, int, char *> IRehldsHookRegistry_SV_CheckUserInfo;
 
 //PF_precache_generic_I hook
-typedef IHookChain<int, const char*> IRehldsHook_PF_precache_generic_I;
-typedef IHookChainRegistry<int, const char*> IRehldsHookRegistry_PF_precache_generic_I;
+typedef IHookChain<int, const char *> IRehldsHook_PF_precache_generic_I;
+typedef IHookChainRegistry<int, const char *> IRehldsHookRegistry_PF_precache_generic_I;
 
 //PF_precache_model_I hook
-typedef IHookChain<int, char*> IRehldsHook_PF_precache_model_I;
-typedef IHookChainRegistry<int, char*> IRehldsHookRegistry_PF_precache_model_I;
+typedef IHookChain<int, const char *> IRehldsHook_PF_precache_model_I;
+typedef IHookChainRegistry<int, const char *> IRehldsHookRegistry_PF_precache_model_I;
 
 //PF_precache_sound_I hook
-typedef IHookChain<int, const char*> IRehldsHook_PF_precache_sound_I;
-typedef IHookChainRegistry<int, const char*> IRehldsHookRegistry_PF_precache_sound_I;
+typedef IHookChain<int, const char *> IRehldsHook_PF_precache_sound_I;
+typedef IHookChainRegistry<int, const char *> IRehldsHookRegistry_PF_precache_sound_I;
 
 //EV_Precache hook
 typedef IHookChain<unsigned short, int, const char *> IRehldsHook_EV_Precache;
@@ -358,7 +360,7 @@ struct RehldsFuncs_t {
 	cvar_t*(*GetCvarVars)();
 	int (*SV_GetChallenge)(const netadr_t& adr);
 	void (*SV_AddResource)(resourcetype_t type, const char *name, int size, unsigned char flags, int index);
-	int(*MSG_ReadShort)(void);
+	int(*MSG_ReadShort)();
 	int(*MSG_ReadBuf)(int iSize, void *pbuf);
 	void(*MSG_WriteBuf)(sizebuf_t *sb, int iSize, void *buf);
 	void(*MSG_WriteByte)(sizebuf_t *sb, int c);
@@ -373,6 +375,65 @@ struct RehldsFuncs_t {
 	bool(*SV_EmitSound2)(edict_t *entity, IGameClient *receiver, int channel, const char *sample, float volume, float attenuation, int flags, int pitch, int emitFlags, const float *pOrigin);
 	void(*SV_UpdateUserInfo)(IGameClient *pGameClient);
 	bool(*StripUnprintableAndSpace)(char *pch);
+	void(*Cmd_RemoveCmd)(const char *cmd_name);
+	void(*GetCommandMatches)(const char *string, ObjectList *pMatchList);
+	bool(*AddExtDll)(void *hModule);
+	void(*AddCvarListener)(const char *var_name, cvar_callback_t func);
+	void(*RemoveExtDll)(void *hModule);
+	void(*RemoveCvarListener)(const char *var_name, cvar_callback_t func);
+	ENTITYINIT(*GetEntityInit)(char *pszClassName);
+
+	// Read functions
+	int(*MSG_ReadChar)();
+	int(*MSG_ReadByte)();
+	int(*MSG_ReadLong)();
+	float(*MSG_ReadFloat)();
+	char*(*MSG_ReadString)();
+	char*(*MSG_ReadStringLine)();
+	float(*MSG_ReadAngle)();
+	float(*MSG_ReadHiresAngle)();
+	void(*MSG_ReadUsercmd)(struct usercmd_s *to, struct usercmd_s *from);
+	float(*MSG_ReadCoord)();
+	void(*MSG_ReadVec3Coord)(sizebuf_t *sb, vec3_t fa);
+
+	// Read bit functions
+	bool(*MSG_IsBitReading)();
+	void(*MSG_StartBitReading)(sizebuf_t *buf);
+	void(*MSG_EndBitReading)(sizebuf_t *buf);
+	uint32(*MSG_PeekBits)(int numbits);
+	int(*MSG_ReadOneBit)();
+	uint32(*MSG_ReadBits)(int numbits);
+	int(*MSG_ReadSBits)(int numbits);
+	float(*MSG_ReadBitCoord)();
+	void(*MSG_ReadBitVec3Coord)(vec_t *fa);
+	float(*MSG_ReadBitAngle)(int numbits);
+	int(*MSG_ReadBitData)(void *dest, int length);
+	char*(*MSG_ReadBitString)();
+	int(*MSG_CurrentBit)();
+
+	// Write functions
+	void(*MSG_WriteLong)(sizebuf_t *sb, int c);
+	void(*MSG_WriteFloat)(sizebuf_t *sb, float f);
+	void(*MSG_WriteAngle)(sizebuf_t *sb, float f);
+	void(*MSG_WriteHiresAngle)(sizebuf_t *sb, float f);
+	void(*MSG_WriteUsercmd)(sizebuf_t *sb, struct usercmd_s *to, struct usercmd_s *from);
+	void(*MSG_WriteCoord)(sizebuf_t *sb, float f);
+	void(*MSG_WriteVec3Coord)(sizebuf_t *sb, const vec3_t fa);
+
+	// Write bit functions
+	bool(*MSG_IsBitWriting)();
+	void(*MSG_WriteOneBit)(int nValue);
+	void(*MSG_WriteSBits)(uint32 data, int numbits);
+	void(*MSG_WriteBitCoord)(float f);
+	void(*MSG_WriteBitAngle)(float fAngle, int numbits);
+	void(*MSG_WriteBitData)(void *src, int length);
+	void(*MSG_WriteBitString)(const char *p);
+	void(*SZ_Write)(sizebuf_t *buf, const void *data, int length);
+	void(*SZ_Print)(sizebuf_t *buf, const char *data);
+	void(*SZ_Clear)(sizebuf_t *buf);
+	void(*MSG_BeginReading)();
+	double(*GetHostFrameTime)();
+	struct cmd_function_s *(*GetFirstCmdFunctionHandle)();
 };
 
 class IRehldsApi {
@@ -386,6 +447,7 @@ public:
 	virtual IRehldsServerStatic* GetServerStatic() = 0;
 	virtual IRehldsServerData* GetServerData() = 0;
 	virtual IRehldsFlightRecorder* GetFlightRecorder() = 0;
+	virtual IMessageManager *GetMessageManager() = 0;
 };
 
 #define VREHLDS_HLDS_API_VERSION "VREHLDS_HLDS_API_VERSION001"

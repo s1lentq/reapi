@@ -25,20 +25,41 @@
 *    version.
 *
 */
+
 #pragma once
 
-typedef int BOOL;
+#include "IObjectContainer.h"
 
-// The maximum user messages
-#define MAX_USERMESSAGES 256
+class ObjectList: public IObjectContainer {
+public:
+	EXT_FUNC void Init();
+	EXT_FUNC bool Add(void *newObject);
+	EXT_FUNC void *GetFirst();
+	EXT_FUNC void *GetNext();
 
-// user message
-#define MAX_USER_MSG_DATA 192
+	ObjectList();
+	virtual ~ObjectList();
 
-//moved to com_model.h
-//typedef struct cache_user_s
-//{
-//	void *data;
-//} cache_user_t;
+	EXT_FUNC void Clear(bool freeElementsMemory = false);
+	EXT_FUNC int CountElements();
+	void *RemoveTail();
+	void *RemoveHead();
 
-typedef int (*pfnUserMsgHook)(const char *, int, void *);
+	bool AddTail(void *newObject);
+	bool AddHead(void *newObject);
+	EXT_FUNC bool Remove(void *object);
+	EXT_FUNC bool Contains(void *object);
+	EXT_FUNC bool IsEmpty();
+
+	typedef struct element_s {
+		struct element_s *prev;	// pointer to the last element or NULL
+		struct element_s *next;	// pointer to the next elemnet or NULL
+		void *object;		// the element's object
+	} element_t;
+
+protected:
+	element_t *m_head;    // first element in list
+	element_t *m_tail;    // last element in list
+	element_t *m_current; // current element in list
+	int m_number;
+};

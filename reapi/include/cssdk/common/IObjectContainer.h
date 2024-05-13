@@ -25,20 +25,23 @@
 *    version.
 *
 */
+
 #pragma once
 
-typedef int BOOL;
+class IObjectContainer {
+public:
+	virtual ~IObjectContainer() {}
 
-// The maximum user messages
-#define MAX_USERMESSAGES 256
+	virtual void Init() = 0;
 
-// user message
-#define MAX_USER_MSG_DATA 192
+	virtual bool Add(void *newObject) = 0;
+	virtual bool Remove(void *object) = 0;
+ 	virtual void Clear(bool freeElementsMemory) = 0;
 
-//moved to com_model.h
-//typedef struct cache_user_s
-//{
-//	void *data;
-//} cache_user_t;
+ 	virtual void *GetFirst() = 0;
+	virtual void *GetNext() = 0;
 
-typedef int (*pfnUserMsgHook)(const char *, int, void *);
+	virtual int CountElements() = 0;
+	virtual bool Contains(void *object) = 0;
+	virtual bool IsEmpty() = 0;
+};
