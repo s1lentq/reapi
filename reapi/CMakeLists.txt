@@ -123,7 +123,7 @@ set(REAPI_SRCS
 	"src/sdk_util.cpp"
 	"src/natives/natives_common.cpp"
 	"src/natives/natives_hookchains.cpp"
-	"src/natives/natives_message.cpp"
+	"src/natives/natives_hookmessage.cpp"
 	"src/natives/natives_members.cpp"
 	"src/natives/natives_misc.cpp"
 	"src/natives/natives_rechecker.cpp"
