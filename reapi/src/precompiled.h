@@ -60,12 +60,14 @@
 #include "main.h"
 #include "api_config.h"
 #include "hook_manager.h"
+#include "hook_message_manager.h"
 #include "hook_callback.h"
 #include "entity_callback_dispatcher.h"
 #include "member_list.h"
 
 // natives
 #include "natives_hookchains.h"
+#include "natives_hookmessage.h"
 #include "natives_members.h"
 #include "natives_misc.h"
 #include "natives_common.h"

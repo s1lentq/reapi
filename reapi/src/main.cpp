@@ -42,6 +42,7 @@ void OnMetaDetach()
 {
 	// clear all hooks?
 	g_hookManager.Clear();
+	g_messageHookManager.Clear();
 	g_queryFileManager.Clear();
 
 	if (api_cfg.hasVTC()) {
@@ -68,6 +69,7 @@ void ServerDeactivate_Post()
 	g_pEdicts = nullptr;
 	api_cfg.ServerDeactivate();
 	g_hookManager.Clear();
+	g_messageHookManager.Clear();
 	g_queryFileManager.Clear();
 	EntityCallbackDispatcher().DeleteAllCallbacks();
 

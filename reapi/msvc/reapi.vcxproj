@@ -146,6 +146,7 @@
     <ClInclude Include="..\include\cssdk\engine\hookchains.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\include\cssdk\engine\IMessageManager.h" />
     <ClInclude Include="..\include\cssdk\engine\keydefs.h" />
     <ClInclude Include="..\include\cssdk\engine\maintypes.h" />
     <ClInclude Include="..\include\cssdk\engine\model.h" />
@@ -217,6 +218,7 @@
     <ClInclude Include="..\src\hook_list.h" />
     <ClInclude Include="..\src\main.h" />
     <ClInclude Include="..\src\member_list.h" />
+    <ClInclude Include="..\src\hook_message_manager.h" />
     <ClInclude Include="..\src\mods\mod_rechecker_api.h" />
     <ClInclude Include="..\src\mods\mod_regamedll_api.h" />
     <ClInclude Include="..\src\mods\mod_rehlds_api.h" />
@@ -227,6 +229,7 @@
     <ClInclude Include="..\src\natives\natives_helper.h" />
     <ClInclude Include="..\src\natives\natives_hookchains.h" />
     <ClInclude Include="..\src\natives\natives_members.h" />
+    <ClInclude Include="..\src\natives\natives_hookmessage.h" />
     <ClInclude Include="..\src\natives\natives_misc.h" />
     <ClInclude Include="..\src\natives\natives_rechecker.h" />
     <ClInclude Include="..\src\natives\natives_reunion.h" />
@@ -266,6 +269,7 @@
       </ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\hook_message_manager.cpp" />
     <ClCompile Include="..\src\meta_api.cpp" />
     <ClCompile Include="..\src\mods\mod_rechecker_api.cpp" />
     <ClCompile Include="..\src\mods\mod_regamedll_api.cpp" />
@@ -276,6 +280,7 @@
     <ClCompile Include="..\src\natives\natives_common.cpp" />
     <ClCompile Include="..\src\natives\natives_hookchains.cpp" />
     <ClCompile Include="..\src\natives\natives_members.cpp" />
+    <ClCompile Include="..\src\natives\natives_hookmessage.cpp" />
     <ClCompile Include="..\src\natives\natives_misc.cpp" />
     <ClCompile Include="..\src\natives\natives_rechecker.cpp" />
     <ClCompile Include="..\src\natives\natives_reunion.cpp" />

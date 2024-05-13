@@ -726,6 +726,15 @@
     <ClInclude Include="..\include\cssdk\dlls\gib.h">
       <Filter>include\cssdk\dlls</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\cssdk\engine\IMessageManager.h">
+      <Filter>include\cssdk\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hook_message_manager.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\natives\natives_hookmessage.h">
+      <Filter>src\natives</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\include\cssdk\common\parsemsg.cpp">
@@ -829,6 +838,12 @@
     </ClCompile>
     <ClCompile Include="..\src\amx_hook.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\hook_message_manager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\natives\natives_hookmessage.cpp">
+      <Filter>src\natives</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

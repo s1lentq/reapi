@@ -22,7 +22,7 @@ enum CheckVisibilityType
 	VisibilityInPAS      // Check in Potentially Audible Set (PAS)
 };
 
-/*
+/**
 * For RH_SV_AddResource hook
 */
 enum ResourceType_t
@@ -1320,4 +1320,30 @@ enum NetAdrVars
 	* Set params:       set_netadr(const NetAdr:adr, const NetAdrVars:var, const value);
 	*/
 	netadr_port
+};
+
+/**
+* Message param types used with GetMessageParamType()
+*/
+enum MsgParamType
+{
+	ParamByte,
+	ParamChar,
+	ParamShort,
+	ParamLong,
+	ParamAngle,
+	ParamCoord,
+	ParamString,
+	ParamEntity,
+};
+
+/**
+* Blocking behavior types for messages
+* Flags for natives SetMessageBlock()/GetMessageBlock()
+*/
+enum MsgBlockType
+{
+	MSG_BLOCK_NOT,  // Not a block
+	MSG_BLOCK_ONCE, // Block once
+	MSG_BLOCK_SET   // Set block
 };

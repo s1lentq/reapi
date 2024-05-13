@@ -5,6 +5,7 @@ const RehldsFuncs_t* g_RehldsFuncs;
 IRehldsServerData* g_RehldsData;
 IRehldsHookchains* g_RehldsHookchains;
 IRehldsServerStatic* g_RehldsSvs;
+IMessageManager* g_RehldsMessageManager;
 
 bool RehldsApi_Init()
 {
@@ -74,6 +75,14 @@ bool RehldsApi_Init()
 	g_RehldsData = g_RehldsApi->GetServerData();
 	g_RehldsHookchains = g_RehldsApi->GetHookchains();
 	g_RehldsSvs = g_RehldsApi->GetServerStatic();
+	g_RehldsMessageManager = nullptr;
+
+	IMessageManager *messageManager = g_RehldsApi->GetMessageManager();
+	if (messageManager->getMajorVersion() == MESSAGEMNGR_VERSION_MAJOR &&
+		messageManager->getMinorVersion() >= MESSAGEMNGR_VERSION_MINOR)
+	{
+		g_RehldsMessageManager = messageManager;
+	}
 
 	return true;
 }

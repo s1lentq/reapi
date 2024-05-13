@@ -266,3 +266,124 @@ native rh_get_net_from(output[], len);
 * @return          Netchan connection time in seconds or 0 if client index is invalid or client is not connected
 */
 native rh_get_client_connect_time(const index);
+
+
+enum MessageHook
+{
+	INVALID_MESSAGEHOOK = 0
+};
+
+/**
+* Registers a callback function to be called when a game message with the specified ID is received.
+*
+* @param msg_id     The ID of the message to register the callback for.
+* @param callback   The name of the callback function.
+* @param post       Whether the callback should be invoked before or after processing the message. (optional)
+*
+* @note             You can modify the message content using SetMessageParam native before the original function is invoked.
+*                   Also can reading the message content using GetMessageParam native.
+*
+*                   In the callback function, use the return values from Hookchain return types, such as HC_CONTINUE, HC_SUPERCEDE, etc.
+*                   to control the flow of message processing.
+*
+* @return           Returns a handle to the registered message hook.
+*/
+native MessageHook:RegisterMessage(const msg_id, const callback[], post = 0);
+
+/**
+* Unregisters a game message hook identified by the specified handle.
+*
+* @param handle     The handle of the message hook to unregister.
+*
+* @return           Returns true if the message hook is successfully unregistered, otherwise false.
+*/
+native bool:UnregisterMessage(const MessageHook:handle);
+
+/**
+* Enables a game message hook identified by the specified handle.
+*
+* @param handle     The handle of the message hook to enable.
+*
+* @return           Returns true if the message hook is successfully enabled, otherwise false.
+*/
+native bool:EnableHookMessage(const MessageHook:handle);
+
+/**
+* Disables a game message hook identified by the specified handle.
+*
+* @param handle     The handle of the message hook to disable.
+*
+* @return           Returns true if the message hook is successfully disabled, otherwise false.
+*/
+native bool:DisableHookMessage(const MessageHook:handle);
+
+/**
+* Sets the parameter value for the specified index in the current game message.
+*
+* @param index      The index of the parameter to set.
+* @param value      The value to set for the parameter.
+*
+* @return           Returns true if the parameter value is successfully set, otherwise false.
+*/
+native bool:SetMessageParam(const number, any:...);
+
+/**
+* Retrieves the parameter value for the specified index in the current game message.
+*
+* @param index      The index of the parameter to retrieve.
+* @param ...        Additional parameters depending on the type of the parameter being retrieved.
+*
+* @return           Returns the retrieved parameter value.
+*/
+native any:GetMessageParam(const number, any:...);
+
+/**
+* Retrieves the type of the parameter at the specified index in the current game message.
+*
+* @param index      The index of the parameter to retrieve the type for.
+*
+* @return           Returns the type of the parameter, look at the enum MsgParamType
+*/
+native MsgParamType:GetMessageParamType(const number);
+
+/**
+* Retrieves the number of parameters in the current game message.
+*
+* @return           Returns the number of parameters in the current game message.
+*/
+native GetMessageParamCount();
+
+/**
+* Retrieves the origin of the current game message.
+*
+* @param origin     An array to store the origin coordinates of the game message.
+*
+* @return           Returns true if the origin is successfully retrieved, otherwise false.
+*/
+native bool:GetMessageOrigin(Float:origin[3]);
+
+/**
+* Retrieves the destination of the current message.
+*
+* @return           Returns the destination of the current message.
+*/
+native GetMessageDest();
+
+/**
+* Sets the block type for the specified message ID.
+*
+* @param msgid      The ID of the message to set the block type for.
+* @param type       The type of block to set for the message, look at the enum MsgBlockType
+*
+* @return           Returns true if the block type is successfully set, otherwise false.
+*/
+native bool:SetMessageBlock(const msgid, MsgBlockType:type);
+
+/**
+* Retrieves the block type for the specified message ID.
+*
+* @param msgid      The ID of the message to retrieve the block type for.
+*
+* @return           Returns the block type of the specified message, look at the enum MsgBlockType
+*/
+native MsgBlockType:GetMessageBlock(const msgid);
