@@ -77,11 +77,15 @@ bool RehldsApi_Init()
 	g_RehldsSvs = g_RehldsApi->GetServerStatic();
 	g_RehldsMessageManager = nullptr;
 
-	IMessageManager *messageManager = g_RehldsApi->GetMessageManager();
-	if (messageManager->getMajorVersion() == MESSAGEMNGR_VERSION_MAJOR &&
-		messageManager->getMinorVersion() >= MESSAGEMNGR_VERSION_MINOR)
+	// message manager is available in "ReHLDS API" >= 3.14
+	if (majorVersion >= 3 && minorVersion >= 14)
 	{
-		g_RehldsMessageManager = messageManager;
+		IMessageManager *messageManager = g_RehldsApi->GetMessageManager();
+		if (messageManager->getMajorVersion() == MESSAGEMNGR_VERSION_MAJOR &&
+			messageManager->getMinorVersion() >= MESSAGEMNGR_VERSION_MINOR)
+		{
+			g_RehldsMessageManager = messageManager;
+		}
 	}
 
 	return true;
