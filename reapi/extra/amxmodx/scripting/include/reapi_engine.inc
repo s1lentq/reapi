@@ -280,8 +280,13 @@ enum MessageHook
 * @param callback   The name of the callback function.
 * @param post       Whether the callback should be invoked before or after processing the message. (optional)
 *
-* @note             You can modify the message content using SetMessageParam native before the original function is invoked.
-*                   Also can reading the message content using GetMessageParam native.
+* @note The callback arguments have:
+*   msg_id          - Message id
+*   msg_dest        - Destination type (see MSG_* constants in messages_const.inc)
+*   msg_entity      - Entity receiving the message
+*
+* @note             You can modify the message content using SetMessageData native before the original function is invoked.
+*                   Also can reading the message content using GetMessageData native.
 *
 *                   In the callback function, use the return values from Hookchain return types, such as HC_CONTINUE, HC_SUPERCEDE, etc.
 *                   to control the flow of message processing.
@@ -318,56 +323,50 @@ native bool:EnableHookMessage(const MessageHook:handle);
 native bool:DisableHookMessage(const MessageHook:handle);
 
 /**
-* Sets the parameter value for the specified index in the current game message.
+* Sets the message data in the current game message.
 *
-* @param index      The index of the parameter to set.
-* @param value      The value to set for the parameter.
+* @param type       The type of the message data that can be changed
+* @param ...        Additional args depending on the type of the message argument being retrieved (For more details, look at the enum MsgArgType)
 *
-* @return           Returns true if the parameter value is successfully set, otherwise false.
+* @return           Returns true if the message data is successfully set, otherwise false.
 */
-native bool:SetMessageParam(const number, any:...);
+native bool:SetMessageData(const MsgDataType:type, any:...);
 
 /**
-* Retrieves the parameter value for the specified index in the current game message.
+* Gets the message data value in the current game message
 *
-* @param index      The index of the parameter to retrieve.
-* @param ...        Additional parameters depending on the type of the parameter being retrieved.
+* @param type       The type of message data that can be get
+* @param ...        Additional args depending on the type of the message argument being retrieved (For more details, look at the enum MsgArgType)
 *
-* @return           Returns the retrieved parameter value.
+* @return           Returns value of argument in the current message
 */
-native any:GetMessageParam(const number, any:...);
+native any:GetMessageData(const MsgDataType:type, any:...);
 
 /**
-* Retrieves the type of the parameter at the specified index in the current game message.
+* Gets the message data original value in the current game message.
 *
-* @param index      The index of the parameter to retrieve the type for.
+* @param type       The type of message data that can be get
+* @param ...        Additional args depending on the type of the message argument being retrieved (For more details, look at the enum MsgArgType)
 *
-* @return           Returns the type of the parameter, look at the enum MsgParamType
+* @return           Returns original value of argument in the current message
 */
-native MsgParamType:GetMessageParamType(const number);
+native any:GetMessageOrigData(const MsgDataType:type, any:...);
 
 /**
-* Retrieves the number of parameters in the current game message.
+* Retrieves the type of the argument at the specified number in the current game message.
 *
-* @return           Returns the number of parameters in the current game message.
+* @param number     The number of the argument to retrieve the type for.
+*
+* @return           Returns the type of the argument, look at the enum MsgArgType
 */
-native GetMessageParamCount();
+native MsgArgType:GetMessageArgType(const number);
 
 /**
-* Retrieves the origin of the current game message.
+* Retrieves the number of argument in the current game message.
 *
-* @param origin     An array to store the origin coordinates of the game message.
-*
-* @return           Returns true if the origin is successfully retrieved, otherwise false.
+* @return           Returns the number of argument in the current game message.
 */
-native bool:GetMessageOrigin(Float:origin[3]);
-
-/**
-* Retrieves the destination of the current message.
-*
-* @return           Returns the destination of the current message.
-*/
-native GetMessageDest();
+native GetMessageArgsNum();
 
 /**
 * Sets the block type for the specified message ID.
@@ -387,3 +386,44 @@ native bool:SetMessageBlock(const msgid, MsgBlockType:type);
 * @return           Returns the block type of the specified message, look at the enum MsgBlockType
 */
 native MsgBlockType:GetMessageBlock(const msgid);
+
+/**
+* Checks if the specified type of message data has been modified
+*
+* This native allows you to check if any part of the message data, such as its
+* destination, type, origin, receiver, or any the specific argument of the message, has been modified
+*
+* @param type       The type of the data to check for modification
+* This can be one of the following:
+*                   - MsgAny:      Check if any part of the message has been modified
+*                   - MsgDest:     Check if the destination has been modified
+*                   - MsgIndex:    Check if the message ID has been modified
+*                   - MsgOrigin:   Check if the origin has been modified
+*                   - MsgTargetId: Check if the index of the recipient client has been modified
+*                   - MsgArg:      Check if a specific argument of the message has been modified
+*
+* @param number     The number of the argument to check for modification (used only when type is MsgDataType:MsgArg)
+*                   Default value is -1, which means the argument number is not applicable
+*
+* @return           Returns true if the specified data type has been modified, false otherwise
+*/
+native bool:IsMessageDataModified(MsgDataType:type = MsgAny, const number = -1);
+
+/**
+* Resets a specific type of message data to its original value
+*
+* @param type       The type of the data to check for modification
+* This can be one of the following:
+*                   - MsgAny:      Reset all modified message data to its original values
+*                   - MsgDest:     Reset the destination to its original value
+*                   - MsgIndex:    Reset the message ID to its original value
+*                   - MsgOrigin:   Reset the origin to its original value
+*                   - MsgTargetId: Reset the index of the recipient client to its original value
+*                   - MsgArg:      Reset a specific argument of the message to its original value
+*
+* @param number     The number of the argument to reset (used only when type is MsgDataType:MsgArg)
+*                   Default value is -1, which means all arguments will be reset.
+*
+* @return           Returns true if the modified data type was reset, otherwise false.
+*/
+native bool:ResetModifiedMessageData(MsgDataType:type = MsgAny, const number = -1);

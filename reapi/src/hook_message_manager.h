@@ -45,10 +45,10 @@ private:
 	};
 
 	// Dispatches the callbacks for the message hooks
-	void DispatchCallbacks(IVoidHookChain<IMessage *> *chain, IMessage *params);
+	void DispatchCallbacks(IVoidHookChain<IMessage *> *chain, IMessage *message);
 
 	// Routine function for dispatching message callbacks
-	static void RoutineMessageCallbacks(IVoidHookChain<IMessage *> *chain, IMessage *params);
+	static void RoutineMessageCallbacks(IVoidHookChain<IMessage *> *chain, IMessage *message);
 
 	// Getter the message hook by ID
 	MessageHook *getHook(size_t id);

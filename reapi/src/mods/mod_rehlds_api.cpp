@@ -7,6 +7,8 @@ IRehldsHookchains* g_RehldsHookchains;
 IRehldsServerStatic* g_RehldsSvs;
 IMessageManager* g_RehldsMessageManager;
 
+void RehldsMessageMngr_Init();
+
 bool RehldsApi_Init()
 {
 #ifdef WIN32
@@ -79,14 +81,43 @@ bool RehldsApi_Init()
 
 	// message manager is available in "ReHLDS API" >= 3.14
 	if (majorVersion >= 3 && minorVersion >= 14)
-	{
-		IMessageManager *messageManager = g_RehldsApi->GetMessageManager();
-		if (messageManager->getMajorVersion() == MESSAGEMNGR_VERSION_MAJOR &&
-			messageManager->getMinorVersion() >= MESSAGEMNGR_VERSION_MINOR)
-		{
-			g_RehldsMessageManager = messageManager;
-		}
-	}
+		RehldsMessageMngr_Init();
 
 	return true;
+}
+
+void RehldsMessageMngr_Init()
+{
+	IMessageManager *messageManager = g_RehldsApi->GetMessageManager();
+
+	int majorMessageMngrVersion = messageManager->getMajorVersion();
+	int minorMessageMngrVersion = messageManager->getMinorVersion();
+
+	if (majorMessageMngrVersion != MESSAGEMNGR_VERSION_MAJOR)
+	{
+		UTIL_ServerPrint("[%s]: ReHLDS MessageMngr API major version mismatch; expected %d.%d, real %d.%d\n", Plugin_info.logtag, MESSAGEMNGR_VERSION_MAJOR, MESSAGEMNGR_VERSION_MINOR, majorMessageMngrVersion, minorMessageMngrVersion);
+
+		// need to notify that it is necessary to update the ReHLDS
+		if (majorMessageMngrVersion < MESSAGEMNGR_VERSION_MAJOR)
+		{
+			UTIL_ServerPrint("[%s]: Please update ReHLDS to a newer version for the required MessageMngr API %d.%d\n", Plugin_info.logtag, MESSAGEMNGR_VERSION_MAJOR, MESSAGEMNGR_VERSION_MINOR);
+		}
+
+		// need to notify that it is necessary to update the module
+		else if (majorMessageMngrVersion > MESSAGEMNGR_VERSION_MAJOR)
+		{
+			UTIL_ServerPrint("[%s]: Please update the %s to a newer version for the required MessageMngr API %d.%d\n", Plugin_info.logtag, Plugin_info.logtag, MESSAGEMNGR_VERSION_MAJOR, MESSAGEMNGR_VERSION_MINOR);
+		}
+
+		return;
+	}
+
+	if (minorMessageMngrVersion < MESSAGEMNGR_VERSION_MINOR)
+	{
+		UTIL_ServerPrint("[%s]: ReHLDS MessageMngr API minor version mismatch; expected at least %d.%d, real %d.%d\n", Plugin_info.logtag, MESSAGEMNGR_VERSION_MAJOR, MESSAGEMNGR_VERSION_MINOR, majorMessageMngrVersion, minorMessageMngrVersion);
+		UTIL_ServerPrint("[%s]: Please update ReHLDS to a newer version for the required MessageMngr API %d.%d\n", Plugin_info.logtag, MESSAGEMNGR_VERSION_MAJOR, MESSAGEMNGR_VERSION_MINOR);
+		return;
+	}
+
+	g_RehldsMessageManager = messageManager;
 }

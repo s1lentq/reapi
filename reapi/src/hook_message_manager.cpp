@@ -15,24 +15,20 @@ IMessage *g_activeMessageContext = nullptr;
 * @param chain     Pointer to the hook chain for the message
 * @param message   Pointer to the message parameters
 */
-void MessageHookManager::DispatchCallbacks(IVoidHookChain<IMessage *> *chain, IMessage *params)
+void MessageHookManager::DispatchCallbacks(IVoidHookChain<IMessage *> *chain, IMessage *message)
 {
 	// Get the hook associated with the given message type
-	MessageHook *msg = getHook(params->getType());
+	MessageHook *msg = getHook(message->getId());
 
 	// If somehow no hook is found, just continue hookchain
 	if (!msg) {
-		chain->callNext(params);
+		chain->callNext(message);
 		return;
 	}
 
 	// Save the current message context and set the new one
 	IMessage *savedContext = g_activeMessageContext;
-	g_activeMessageContext = params;
-
-	// Get the entity index of the message (if applicable)
-	edict_t *entityEdict = params->getEdict();
-	int entityIndex = entityEdict ? indexOfEdict(entityEdict) : 0;
+	g_activeMessageContext = message;
 
 	int hookState = HC_CONTINUE;
 
@@ -41,7 +37,7 @@ void MessageHookManager::DispatchCallbacks(IVoidHookChain<IMessage *> *chain, IM
 	{
 		if (likely(fwd->GetState() == FSTATE_ENABLED))
 		{
-			int ret = g_amxxapi.ExecuteForward(fwd->GetFwdIndex(), entityIndex, (cell)params);
+			int ret = g_amxxapi.ExecuteForward(fwd->GetFwdIndex(), message->getId(), message->getDest(), indexOfEdictAmx(message->getEdict(), 0 /* most friendly to use 0 as invalid index for message */));
 			if (unlikely(ret == HC_BREAK)) {
 				g_activeMessageContext = savedContext;
 				return;
@@ -55,8 +51,8 @@ void MessageHookManager::DispatchCallbacks(IVoidHookChain<IMessage *> *chain, IM
 	// If the hook state is not superseded, continue hookchain
 	if (hookState != HC_SUPERCEDE) {
 		g_activeMessageContext = nullptr;
-		chain->callNext(params);
-		g_activeMessageContext = savedContext;
+		chain->callNext(message);
+		g_activeMessageContext = message;
 	}
 
 	// Execute post-hooks
@@ -64,7 +60,7 @@ void MessageHookManager::DispatchCallbacks(IVoidHookChain<IMessage *> *chain, IM
 	{
 		if (likely(fwd->GetState() == FSTATE_ENABLED))
 		{
-			int ret = g_amxxapi.ExecuteForward(fwd->GetFwdIndex(), entityIndex, (cell)params);
+			int ret = g_amxxapi.ExecuteForward(fwd->GetFwdIndex(), message->getId(), message->getDest(), indexOfEdictAmx(message->getEdict(), 0 /* most friendly to use 0 as invalid index for message */));
 			if (unlikely(ret == HC_BREAK))
 				break;
 		}
@@ -87,7 +83,7 @@ void MessageHookManager::DispatchCallbacks(IVoidHookChain<IMessage *> *chain, IM
 */
 cell MessageHookManager::addHook(AMX *amx, int msg_id, const char *funcname, bool post)
 {
-	int fwid = g_amxxapi.RegisterSPForwardByName(amx, funcname, FP_CELL, FP_DONE);
+	int fwid = g_amxxapi.RegisterSPForwardByName(amx, funcname, FP_CELL, FP_CELL, FP_CELL, FP_DONE);
 	if (unlikely(fwid == -1)) {
 		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: register forward failed.", __FUNCTION__);
 		return 0;
@@ -224,7 +220,7 @@ void MessageHookManager::Clear()
 /**
 * @brief Dispatches the message callbacks as a routine
 */
-void MessageHookManager::RoutineMessageCallbacks(IVoidHookChain<IMessage *> *chain, IMessage *params)
+void MessageHookManager::RoutineMessageCallbacks(IVoidHookChain<IMessage *> *chain, IMessage *message)
 {
-	g_messageHookManager.DispatchCallbacks(chain, params);
+	g_messageHookManager.DispatchCallbacks(chain, message);
 }

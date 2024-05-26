@@ -31,9 +31,9 @@ inline size_t indexOfEdictAmx(const entvars_t* pev)
 	return index;
 }
 
-inline size_t indexOfEdictAmx(const edict_t *pEdict)
+inline size_t indexOfEdictAmx(const edict_t *pEdict, const int INVALID_INDEX = AMX_NULLENT)
 {
-	size_t index = AMX_NULLENT;
+	size_t index = INVALID_INDEX;
 	if (likely(pEdict != nullptr))
 		index = indexOfEdict(pEdict);
 	return index;
@@ -54,10 +54,10 @@ inline IGameClient* clientByIndex(const int index)
 }
 
 // safe to index -1
-inline edict_t* edictByIndexAmx(const int index)
+inline edict_t* edictByIndexAmx(const int index, const int INVALID_INDEX = AMX_NULLENT)
 {
 	auto ed = g_pEdicts + index;
-	if (unlikely(index < 0)) // == AMX_NULLENT
+	if (unlikely(index <= INVALID_INDEX)) // == AMX_NULLENT
 		ed = nullptr;
 	return ed;
 }

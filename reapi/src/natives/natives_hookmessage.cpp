@@ -1,5 +1,7 @@
 #include "precompiled.h"
 
+#define CHECK_PARAMBOUNDS(x, y) if (unlikely(x > (size_t)y)) { AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid message argument %d/max:%d", __FUNCTION__, x, y); }
+
 enum MessageHook
 {
 	INVALID_MESSAGEHOOK = 0
@@ -12,8 +14,13 @@ enum MessageHook
 * @param callback   The name of the callback function.
 * @param post       Whether the callback should be invoked before or after processing the message. (optional)
 *
-* @note             You can modify the message content using SetMessageParam native before the original function is invoked.
-*                   Also can reading the message content using GetMessageParam native.
+* @note The callback arguments have:
+*   msg_id          - Message id
+*   msg_dest        - Destination type (see MSG_* constants in messages_const.inc)
+*   msg_entity      - Entity receiving the message
+*
+* @note             You can modify the message content using SetMessageData native before the original function is invoked.
+*                   Also can reading the message content using GetMessageData native.
 *
 *                   In the callback function, use the return values from Hookchain return types, such as HC_CONTINUE, HC_SUPERCEDE, etc.
 *                   to control the flow of message processing.
@@ -24,11 +31,11 @@ enum MessageHook
 */
 cell AMX_NATIVE_CALL RegisterMessage(AMX *amx, cell *params)
 {
-	enum args_e { arg_count, arg_id, arg_handler, arg_post };
+	enum args_e { arg_count, arg_msgid, arg_handler, arg_post };
 
 	CHECK_REQUIREMENTS(ReHLDS);
 
-	int msg_id = params[arg_id];
+	int msg_id = params[arg_msgid];
 
 	// svc_bad (0) is not allowed for hook
 	if (msg_id <= 0 || msg_id >= MAX_USERMESSAGES)
@@ -127,18 +134,18 @@ cell AMX_NATIVE_CALL DisableHookMessage(AMX *amx, cell *params)
 }
 
 /**
-* Sets the parameter value for the specified index in the current game message.
+* Sets the message data in the current game message.
 *
-* @param index      The index of the parameter to set.
-* @param value      The value to set for the parameter.
+* @param type       The type of the message data that can be changed
+* @param ...        Additional args depending on the type of the message argument being retrieved (For more details, look at the enum MsgArgType)
 *
-* @return           Returns true if the parameter value is successfully set, otherwise false.
+* @return           Returns true if the message data is successfully set, otherwise false.
 *
-* native bool:SetMessageParam(const number, any:...);
+* native bool:SetMessageData(const MsgDataType:type, any:...);
 */
-cell AMX_NATIVE_CALL SetMessageParam(AMX *amx, cell *params)
+cell AMX_NATIVE_CALL SetMessageData(AMX *amx, cell *params)
 {
-	enum args_e { arg_count, arg_number, arg_value };
+	enum args_e { arg_count, arg_type, arg_value, arg_param_value };
 
 	CHECK_REQUIREMENTS(ReHLDS);
 
@@ -148,41 +155,74 @@ cell AMX_NATIVE_CALL SetMessageParam(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	size_t number = params[arg_number] - 1;
-
+	IMessage::DataType type = static_cast<IMessage::DataType>(params[arg_type]);
 	cell *value = getAmxAddr(amx, params[arg_value]);
 
-	switch (g_activeMessageContext->getParamType(number))
+	switch (type)
 	{
-	case IMessage::ParamType::String:
-		char stringbuf[256];
-		g_activeMessageContext->setParamString(number, getAmxString(amx, params[arg_value], stringbuf));
+	case IMessage::DataType::Dest:
+		g_activeMessageContext->setDest(static_cast<IMessage::Dest>(*value));
 		break;
-	case IMessage::ParamType::Angle:
-	case IMessage::ParamType::Coord:
-		g_activeMessageContext->setParamFloat(number, *(float *)value);
+	case IMessage::DataType::Index:
+		g_activeMessageContext->setId(*value);
 		break;
+	case IMessage::DataType::Origin:
+		g_activeMessageContext->setOrigin(*(Vector *)value);
+		break;
+	case IMessage::DataType::Edict:
+		g_activeMessageContext->setEdict(edictByIndexAmx(*value, 0 /* most friendly to use 0 as invalid index for message */));
+		break;
+	case IMessage::DataType::Param:
+	{
+		// bool:SetMessageData(MsgDataType:type, const argnumber, const value[]);
+		cell *value = getAmxAddr(amx, params[arg_param_value]);
+		size_t number = *getAmxAddr(amx, params[arg_value]) - 1;
+
+		CHECK_PARAMBOUNDS(number, g_activeMessageContext->getParamCount());
+
+		switch (g_activeMessageContext->getParamType(number))
+		{
+		case IMessage::ParamType::String:
+			char stringbuf[256];
+			g_activeMessageContext->setParamString(number, getAmxString(amx, params[arg_param_value], stringbuf));
+			break;
+		case IMessage::ParamType::Angle:
+		case IMessage::ParamType::Coord:
+			g_activeMessageContext->setParamFloat(number, *(float *)value);
+			break;
+		case IMessage::ParamType::Byte:
+		case IMessage::ParamType::Char:
+		case IMessage::ParamType::Short:
+		case IMessage::ParamType::Long:
+		case IMessage::ParamType::Entity:
+			g_activeMessageContext->setParamInt(number, *value);
+			break;
+		default:
+			return FALSE;
+		}
+
+		break;
+	}
 	default:
-		g_activeMessageContext->setParamInt(number, *value);
-		break;
+		return FALSE;
 	}
 
 	return TRUE;
 }
 
 /**
-* Retrieves the parameter value for the specified index in the current game message.
+* Gets the message data value in the current game message
 *
-* @param index      The index of the parameter to retrieve.
-* @param ...        Additional parameters depending on the type of the parameter being retrieved.
+* @param type       The type of message data that can be get
+* @param ...        Additional args depending on the type of the message argument being retrieved (For more details, look at the enum MsgArgType)
 *
-* @return           Returns the retrieved parameter value.
+* @return           Returns value of argument in the current message
 *
-* native any:GetMessageParam(const number, any:...);
+* native any:GetMessageData(MsgDataType:type, any:...);
 */
-cell AMX_NATIVE_CALL GetMessageParam(AMX *amx, cell *params)
+cell AMX_NATIVE_CALL GetMessageData(AMX *amx, cell *params)
 {
-	enum args_e { arg_count, arg_number, arg_value, arg_maxlen };
+	enum args_e { arg_count, arg_type, arg_value, arg_param_value, arg_maxlen };
 
 	CHECK_REQUIREMENTS(ReHLDS);
 
@@ -192,35 +232,57 @@ cell AMX_NATIVE_CALL GetMessageParam(AMX *amx, cell *params)
 		return FALSE;
 	}
 
-	size_t number = params[arg_number] - 1;
-
-	cell *dstAddr = getAmxAddr(amx, params[arg_value]);
-
-	switch (g_activeMessageContext->getParamType(number))
+	IMessage::DataType type = static_cast<IMessage::DataType>(params[arg_type]);
+	switch (type)
 	{
-	case IMessage::ParamType::String:
-	{
-		if (PARAMS_COUNT != 3)
-			return FALSE;
-
-		const char *argString = g_activeMessageContext->getParamString(number);
-		setAmxString(dstAddr, argString ? argString : "", params[arg_maxlen]);
+	case IMessage::DataType::Dest:
+		return static_cast<cell>(g_activeMessageContext->getDest());
+	case IMessage::DataType::Index:
+		return g_activeMessageContext->getId();
+	case IMessage::DataType::Origin:
+		*(Vector *)getAmxAddr(amx, params[arg_value]) = g_activeMessageContext->getOrigin();
 		return TRUE;
-	}
-	case IMessage::ParamType::Angle:
-	case IMessage::ParamType::Coord:
+	case IMessage::DataType::Edict:
+		return indexOfEdictAmx(g_activeMessageContext->getEdict(), 0 /* most friendly to use 0 as invalid index for message */);
+	case IMessage::DataType::Param:
 	{
-		float flValue = g_activeMessageContext->getParamFloat(number);
-		if (PARAMS_COUNT > 1)
-			*dstAddr = flValue;
-		return flValue;
+		size_t number = *getAmxAddr(amx, params[arg_value]) - 1; // arg_value as number
+
+		CHECK_PARAMBOUNDS(number, g_activeMessageContext->getParamCount());
+
+		cell *dstAddr = getAmxAddr(amx, params[arg_param_value]);
+
+		switch (g_activeMessageContext->getParamType(number))
+		{
+		case IMessage::ParamType::String:
+		{
+			if (PARAMS_COUNT != 4)
+				return FALSE;
+
+			const char *argString = g_activeMessageContext->getParamString(number);
+			setAmxString(dstAddr, argString ? argString : "", params[arg_maxlen]);
+			return TRUE;
+		}
+		case IMessage::ParamType::Angle:
+		case IMessage::ParamType::Coord:
+		{
+			float flValue = g_activeMessageContext->getParamFloat(number);
+			if (PARAMS_COUNT > 2)
+				*dstAddr = flValue;
+			return flValue;
+		}
+		case IMessage::ParamType::Entity:
+		case IMessage::ParamType::Byte:
+		case IMessage::ParamType::Char:
+		case IMessage::ParamType::Short:
+		case IMessage::ParamType::Long:
+			return g_activeMessageContext->getParamInt(number);
+		default:
+			break;
+		}
+
+		break;
 	}
-	case IMessage::ParamType::Entity:
-	case IMessage::ParamType::Byte:
-	case IMessage::ParamType::Char:
-	case IMessage::ParamType::Short:
-	case IMessage::ParamType::Long:
-		return g_activeMessageContext->getParamInt(number);
 	default:
 		break;
 	}
@@ -229,15 +291,95 @@ cell AMX_NATIVE_CALL GetMessageParam(AMX *amx, cell *params)
 }
 
 /**
-* Retrieves the type of the parameter at the specified index in the current game message.
+* Gets the message data original value in the current game message.
 *
-* @param index      The index of the parameter to retrieve the type for.
+* @param type       The type of message data that can be get
+* @param ...        Additional args depending on the type of the message argument being retrieved (For more details, look at the enum MsgArgType)
 *
-* @return           Returns the type of the parameter, look at the enum MsgParamType
+* @return           Returns original value of argument in the current message
 *
-* native MsgParamType:GetMessageParamType(const number);
+* native any:GetMessageOrigData(MsgDataType:type, any:...);
 */
-cell AMX_NATIVE_CALL GetMessageParamType(AMX *amx, cell *params)
+cell AMX_NATIVE_CALL GetMessageOrigData(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_type, arg_value, arg_param_value, arg_maxlen };
+
+	CHECK_REQUIREMENTS(ReHLDS);
+
+	if (!g_activeMessageContext)
+	{
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: trying to get argument without active hook.", __FUNCTION__);
+		return FALSE;
+	}
+
+	IMessage::DataType type = static_cast<IMessage::DataType>(params[arg_type]);
+	switch (type)
+	{
+	case IMessage::DataType::Dest:
+		return static_cast<cell>(g_activeMessageContext->getOriginalDest());
+	case IMessage::DataType::Index:
+		return g_activeMessageContext->getId();
+	case IMessage::DataType::Origin:
+		*(Vector *)getAmxAddr(amx, params[arg_value]) = g_activeMessageContext->getOriginalOrigin();
+		return TRUE;
+	case IMessage::DataType::Edict:
+		return indexOfEdictAmx(g_activeMessageContext->getOriginalEdict());
+	case IMessage::DataType::Param:
+	{
+		size_t number = *getAmxAddr(amx, params[arg_value]) - 1; // arg_value as number
+
+		CHECK_PARAMBOUNDS(number, g_activeMessageContext->getParamCount());
+
+		cell *dstAddr = getAmxAddr(amx, params[arg_param_value]);
+
+		switch (g_activeMessageContext->getParamType(number))
+		{
+		case IMessage::ParamType::String:
+		{
+			if (PARAMS_COUNT != 4)
+				return FALSE;
+
+			const char *argString = g_activeMessageContext->getOriginalParamString(number);
+			setAmxString(dstAddr, argString ? argString : "", params[arg_maxlen]);
+			return TRUE;
+		}
+		case IMessage::ParamType::Angle:
+		case IMessage::ParamType::Coord:
+		{
+			float flValue = g_activeMessageContext->getOriginalParamFloat(number);
+			if (PARAMS_COUNT > 2)
+				*dstAddr = flValue;
+			return flValue;
+		}
+		case IMessage::ParamType::Entity:
+		case IMessage::ParamType::Byte:
+		case IMessage::ParamType::Char:
+		case IMessage::ParamType::Short:
+		case IMessage::ParamType::Long:
+			return g_activeMessageContext->getOriginalParamInt(number);
+		default:
+			break;
+		}
+
+		break;
+	}
+	default:
+		break;
+	}
+
+	return FALSE;
+}
+
+/**
+* Retrieves the type of the argument at the specified number in the current game message.
+*
+* @param number     The number of the argument to retrieve the type for.
+*
+* @return           Returns the type of the argument, look at the enum MsgArgType
+*
+* native MsgArgType:GetMessageArgType(const number);
+*/
+cell AMX_NATIVE_CALL GetMessageArgType(AMX *amx, cell *params)
 {
 	enum args_e { arg_count, arg_number };
 
@@ -251,26 +393,21 @@ cell AMX_NATIVE_CALL GetMessageParamType(AMX *amx, cell *params)
 
 	size_t number = params[arg_number] - 1;
 
-	size_t paramCount = g_activeMessageContext->getParamCount();
-	if (number < 0 || number >= paramCount)
-	{
-		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid message argument %d.", __FUNCTION__, number);
-		return FALSE;
-	}
+	CHECK_PARAMBOUNDS(number, g_activeMessageContext->getParamCount());
 
 	return static_cast<cell>(g_activeMessageContext->getParamType(number));
 }
 
 /**
-* Retrieves the number of parameters in the current game message.
+* Retrieves the number of argument in the current game message.
 *
-* @return           Returns the number of parameters in the current game message.
+* @return           Returns the number of argument in the current game message.
 *
-* native GetMessageParamCount();
+* native GetMessageArgsNum();
 */
-cell AMX_NATIVE_CALL GetMessageParamCount(AMX *amx, cell *params)
+cell AMX_NATIVE_CALL GetMessageArgsNum(AMX *amx, cell *params)
 {
-	enum args_e { arg_count, arg_number };
+	enum args_e { arg_count };
 
 	CHECK_REQUIREMENTS(ReHLDS);
 
@@ -281,58 +418,6 @@ cell AMX_NATIVE_CALL GetMessageParamCount(AMX *amx, cell *params)
 	}
 
 	return g_activeMessageContext->getParamCount();
-}
-
-/**
-* Retrieves the origin of the current game message.
-*
-* @param origin     An array to store the origin coordinates of the game message.
-*
-* @return           Returns true if the origin is successfully retrieved, otherwise false.
-*
-* native bool:GetMessageOrigin(Float:origin[3]);
-*/
-cell AMX_NATIVE_CALL GetMessageOrigin(AMX *amx, cell *params)
-{
-	enum args_e { arg_count, arg_number, arg_origin };
-
-	CHECK_REQUIREMENTS(ReHLDS);
-
-	if (!g_activeMessageContext)
-	{
-		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: trying to get argument without active hook.", __FUNCTION__);
-		return FALSE;
-	}
-
-	const float *messageOrigin = g_activeMessageContext->getOrigin();
-	if (!messageOrigin)
-		return FALSE;
-
-	Vector &outVec = *(Vector *)getAmxAddr(amx, params[arg_origin]);
-	outVec = messageOrigin;
-	return TRUE;
-}
-
-/**
-* Retrieves the destination of the current message.
-*
-* @return           Returns the destination of the current message.
-*
-* native GetMessageDest();
-*/
-cell AMX_NATIVE_CALL GetMessageDest(AMX *amx, cell *params)
-{
-	enum args_e { arg_count, arg_number, arg_origin };
-
-	CHECK_REQUIREMENTS(ReHLDS);
-
-	if (!g_activeMessageContext)
-	{
-		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: trying to get argument without active hook.", __FUNCTION__);
-		return -1;
-	}
-
-	return static_cast<cell>(g_activeMessageContext->getDest());
 }
 
 /**
@@ -385,25 +470,120 @@ cell AMX_NATIVE_CALL GetMessageBlock(AMX *amx, cell *params)
 	return static_cast<cell>(g_RehldsMessageManager->getMessageBlock(params[arg_id]));
 }
 
+/**
+* Checks if the specified type of message data has been modified
+*
+* This native allows you to check if any part of the message data, such as its
+* destination, type, origin, receiver, or any the specific argument of the message, has been modified
+*
+* @param type       The type of the data to check for modification
+* This can be one of the following:
+*                   - MsgAny:      Check if any part of the message has been modified
+*                   - MsgDest:     Check if the destination has been modified
+*                   - MsgIndex:    Check if the message ID has been modified
+*                   - MsgOrigin:   Check if the origin has been modified
+*                   - MsgTargetId: Check if the index of the recipient client has been modified
+*                   - MsgArg:      Check if a specific argument of the message has been modified
+*
+* @param number     The number of the argument to check for modification (used only when type is MsgDataType:MsgArg)
+*                   Default value is -1, which means the argument number is not applicable
+*
+* @return           Returns true if the specified data type has been modified, false otherwise
+*
+* native bool:IsMessageDataModified(MsgDataType:type = MsgAny, const number = -1);
+*/
+cell AMX_NATIVE_CALL IsMessageDataModified(AMX *amx, cell *params)
+{
+	CHECK_REQUIREMENTS(ReHLDS);
+
+	enum args_e { arg_count, arg_type, arg_number };
+
+	CHECK_REQUIREMENTS(ReHLDS);
+
+	if (!g_activeMessageContext)
+	{
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: trying to get argument without active hook.", __FUNCTION__);
+		return FALSE;
+	}
+
+	size_t number = -1;
+
+	IMessage::DataType type = static_cast<IMessage::DataType>(params[arg_type]);
+	if (type == IMessage::DataType::Param)
+	{
+		number = params[arg_number] - 1;
+
+		CHECK_PARAMBOUNDS(number, g_activeMessageContext->getParamCount());
+	}
+
+	return g_activeMessageContext->isDataModified(type, number) ? TRUE : FALSE;
+}
+
+/**
+* Resets a specific type of message data to its original value
+*
+* @param type       The type of the data to check for modification
+* This can be one of the following:
+*                   - MsgAny:      Reset all modified message data to its original values
+*                   - MsgDest:     Reset the destination to its original value
+*                   - MsgIndex:    Reset the message ID to its original value
+*                   - MsgOrigin:   Reset the origin to its original value
+*                   - MsgTargetId: Reset the index of the recipient client to its original value
+*                   - MsgArg:      Reset a specific argument of the message to its original value
+*
+* @param number     The number of the argument to reset (used only when type is MsgDataType:MsgArg)
+*                   Default value is -1, which means all arguments will be reset.
+*
+* @return           Returns true if the modified data type was reset, otherwise false.
+*
+* native bool:ResetModifiedMessageData(MsgDataType:type = MsgAny, const number = -1);
+*/
+cell AMX_NATIVE_CALL ResetModifiedMessageData(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_type, arg_number };
+
+	CHECK_REQUIREMENTS(ReHLDS);
+
+	if (!g_activeMessageContext)
+	{
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: trying to set argument without active hook.", __FUNCTION__);
+		return FALSE;
+	}
+
+	size_t number = -1;
+
+	IMessage::DataType type = static_cast<IMessage::DataType>(params[arg_type]);
+	if (type == IMessage::DataType::Param && params[arg_number] != -1)
+	{
+		number = params[arg_number] - 1;
+
+		CHECK_PARAMBOUNDS(number, g_activeMessageContext->getParamCount());
+	}
+
+	return g_activeMessageContext->resetModifiedData(type, number) ? TRUE : FALSE;
+}
+
 AMX_NATIVE_INFO HookMessage_Natives[] =
 {
-	{ "RegisterMessage",      RegisterMessage      },
-	{ "UnregisterMessage",    UnregisterMessage    },
+	{ "RegisterMessage",          RegisterMessage          },
+	{ "UnregisterMessage",        UnregisterMessage        },
 
-	{ "EnableHookMessage",    EnableHookMessage    },
-	{ "DisableHookMessage",   DisableHookMessage   },
+	{ "EnableHookMessage",        EnableHookMessage        },
+	{ "DisableHookMessage",       DisableHookMessage       },
 
-	{ "GetMessageParam",      GetMessageParam      },
-	{ "GetMessageParamType",  GetMessageParamType  },
-	{ "GetMessageParamCount", GetMessageParamCount },
+	{ "SetMessageData",           SetMessageData           },
+	{ "GetMessageData",           GetMessageData           },
 
-	{ "GetMessageOrigin",     GetMessageOrigin     },
-	{ "GetMessageDest",       GetMessageDest       },
+	{ "GetMessageOrigData",       GetMessageOrigData       },
 
-	{ "SetMessageParam",      SetMessageParam      },
+	{ "GetMessageArgType",        GetMessageArgType        },
+	{ "GetMessageArgsNum",        GetMessageArgsNum        },
 
-	{ "SetMessageBlock",      SetMessageBlock      },
-	{ "GetMessageBlock",      GetMessageBlock      },
+	{ "SetMessageBlock",          SetMessageBlock          },
+	{ "GetMessageBlock",          GetMessageBlock          },
+
+	{ "IsMessageDataModified",    IsMessageDataModified    },
+	{ "ResetModifiedMessageData", ResetModifiedMessageData },
 
 	{ nullptr, nullptr }
 };
