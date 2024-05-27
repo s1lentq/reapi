@@ -1350,7 +1350,7 @@ enum MsgDataType
 
 	/*
 	* Description:      The destination of the message
-	* Return type:      integer
+	* Arg type:         integer
 	* Get params:       new dest = GetMessageData(MsgDest);
 	* Set params:       SetMessageData(MsgDest, MSG_ALL);
 	*/
@@ -1358,7 +1358,7 @@ enum MsgDataType
 
 	/*
 	* Description:      The index of the message
-	* Return type:      integer
+	* Arg type:         integer
 	* Get params:       new msg_id = GetMessageData(MsgMsgId);
 	* Set params:       SetMessageData(MsgMsgId, const msg_id);
 	*/
@@ -1366,7 +1366,7 @@ enum MsgDataType
 
 	/*
 	* Description:      The origin of the message
-	* Return type:      float [3]
+	* Arg type:         float [3]
 	* Get params:       GetMessageData(MsgOrigin, Float:dstVector[3]);
 	* Set params:       SetMessageData(MsgOrigin, Float:srcVector[3]);
 	*/
@@ -1374,7 +1374,7 @@ enum MsgDataType
 
 	/*
 	* Description:      The index of the recipient client
-	* Return type:      integer
+	* Arg type:         integer
 	* Get params:       new targetId = GetMessageData(MsgTargetId);
 	* Set params:       SetMessageData(MsgTargetId, const targetId); (acceptable indexes 0-32, 0 index also as -1 means NULLENT)
 	*/
@@ -1383,15 +1383,15 @@ enum MsgDataType
 	/*
 	* Description:      The arguments of the message
 	*
-	* Arg type:         string (MSG_ARG_String)
+	* Arg type:         string (ArgString)
 	* Get params:       bool:GetMessageData(MsgArg, const argnumber, value[], const maxlen);
 	* Set params:       bool:SetMessageData(MsgArg, const argnumber, const value[]);
 	*
-	* Arg type:         float (MSG_ARG_Angle, MSG_ARG_Coord)
+	* Arg type:         float (ArgAngle, ArgCoord)
 	* Get params:       Float:GetMessageData(MsgArg, const argnumber, &Float:value = 0.0);
 	* Set params:       bool:SetMessageData(MsgArg, const argnumber, const Float:value);
 	*
-	* Arg type:         integer (MSG_ARG_Byte, MSG_ARG_Char, MSG_ARG_Short, MSG_ARG_Long, MSG_ARG_Entity)
+	* Arg type:         integer (ArgByte, ArgChar, ArgShort, ArgLong, ArgEntity)
 	* Get params:       GetMessageData(MsgArg, const argnumber);
 	* Set params:       bool:SetMessageData(MsgArg, const argnumber, const value);
 	*/
