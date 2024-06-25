@@ -46,7 +46,7 @@
 #include <reunion_api.h>
 #include "mod_reunion_api.h"
 
-// regamedll API
+// rechecker API
 #include <rechecker_api.h>
 #include "mod_rechecker_api.h"
 
