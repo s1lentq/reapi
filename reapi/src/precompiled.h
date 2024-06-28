@@ -1,11 +1,10 @@
 #pragma once
 
 // C
-#include <string.h>
+#include <string.h>			// for strncpy(), etc
 #include <stdarg.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <string.h>			// for strncpy(), etc
 
 // C++
 #include <vector>				// std::vector
