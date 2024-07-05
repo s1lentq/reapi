@@ -57,6 +57,9 @@ jobs:
     outputs:
       app-version: ${{ steps.app-version.outputs.version }}
 
+    env:
+      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
