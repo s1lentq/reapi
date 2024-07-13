@@ -26,6 +26,7 @@ enum MType
 	MEMBER_PMTRACE,			// struct pmtrace_t
 	MEBMER_USERCMD,			// struct usercmd_s
 	MEMBER_TRACERESULT,		// struct TraceResult
+	MEMBER_NETADR			// struct netadr_t
 };
 
 struct memberlist_t
@@ -84,7 +85,8 @@ struct memberlist_t
 		mt_csplayerweapon,
 		mt_gib,
 		mt_netadr,
-		mt_csentity
+		mt_csentity,
+		mt_netchan
 	};
 };
 
@@ -770,6 +772,24 @@ enum PMTrace
 	pmt_ent,
 	pmt_deltavelocity,
 	pmt_hitgroup
+};
+
+enum NetChan
+{
+	net_sock = BEGIN_MEMBER_REGION(netchan),
+	net_remote_address,
+	net_player_slot,
+	net_last_received,
+	net_connect_time,
+	net_rate,
+	net_cleartime,
+	net_incoming_sequence,
+	net_incoming_acknowledged,
+	net_incoming_reliable_acknowledged,
+	net_incoming_reliable_sequence,
+	net_outgoing_sequence,
+	net_reliable_sequence,
+	net_last_reliable_sequence
 };
 
 enum NetAdr

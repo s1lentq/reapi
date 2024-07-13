@@ -81,7 +81,8 @@ enum members_tables_e
 	mt_csplayerweapon,
 	mt_gib,
 	mt_netadr,
-	mt_csentity
+	mt_csentity,
+	mt_netchan
 };
 
 #define ReAPIFunc 				{EngineFunc, GamedllFunc, GamedllFunc_CBaseAnimating, GamedllFunc_CBasePlayer, GamedllFunc_CSGameRules, GamedllFunc_CGrenade, GamedllFunc_CWeaponBox, ReCheckerFunc, GamedllFunc_CBasePlayerWeapon, GamedllFunc_CGib, GamedllFunc_CBaseEntity, GamedllFunc_CBotManager}

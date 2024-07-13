@@ -31,6 +31,18 @@ native set_ucmd(const ucmd, const UCmd:var, any:...);
 native any:get_ucmd(const ucmd, const UCmd:var, any:...);
 
 /*
+* Sets netchan data.
+* Use the net_* NetChan enum
+*/
+native set_netchan(const index, const NetChan:var, any:...);
+
+/*
+* Returns metchan data from an client.
+* Use the net_* NetChan enum
+*/
+native any:get_netchan(const index, const NetChan:var, any:...);
+
+/*
 * Sets a NetAdr var.
 *
 * @param var        The specified mvar, look at the enum NetAdrVars
@@ -184,7 +196,7 @@ native CheckVisibilityInOrigin(const ent, Float:origin[3], CheckVisibilityType:t
 /*
 * Sets the name of the map.
 *
-* @param mapname     New map name.
+* @param mapname    New map name.
 *
 * @noreturn
 */
@@ -228,19 +240,19 @@ native rh_reset_mapname();
 native bool:rh_emit_sound2(const entity, const recipient, const channel, const sample[], Float:vol = VOL_NORM, Float:attn = ATTN_NORM, const flags = 0, const pitch = PITCH_NORM, emitFlags = 0, const Float:origin[3] = {0.0,0.0,0.0});
 
 /*
-* Forces an userinfo update.
+* Forces an userinfo update
 *
-* @param playerEntIndex    Player entity index (starts from 1)
+* @param index      Client index
 *
 * @noreturn
 */
-native rh_update_user_info(playerEntIndex);
+native rh_update_user_info(const index);
 
 /*
 * Kicks a client from server with message
 *
-* @param index     Client index
-* @param message   Message that will be sent to client when it is deleted from server
+* @param index      Client index
+* @param message    Message that will be sent to client when it is deleted from server
 *
 * @noreturn
 *
@@ -261,12 +273,30 @@ native rh_get_net_from(output[], len);
 /*
 * Returns client's netchan playing time in seconds.
 *
-* @param index     Client index
+* @param index      Client index
 *
-* @return          Netchan connection time in seconds or 0 if client index is invalid or client is not connected
+* @return           Netchan connection time in seconds or 0 if client index is invalid or client is not connected
 */
 native rh_get_client_connect_time(const index);
 
+/*
+* Checks if a specific entity is fully packed in a given frame for a host client.
+*
+* @param index      Client index for whom we are checking the entity.
+* @param entity     Entity index to find in the table of entities for the given frame.
+* @param frame      Frame index where to look. Default is -1, which checks the previous frame.
+* @note             To check in the current frame, this native should be called at the end of the server frame.
+*
+* @return           Returns true if the entity is fully packed and ready to be sent to all clients in the given frame, otherwise false.
+*/
+native bool:rh_is_entity_fullpacked(const host, const entity, const frame = -1);
+
+/*
+* Get real game time throughout the entire server lifecycle.
+*
+* @return           Real game time
+*/
+native Float:rh_get_realtime();
 
 enum MessageHook
 {

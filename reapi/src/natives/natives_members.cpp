@@ -671,6 +671,67 @@ cell AMX_NATIVE_CALL get_pmtrace(AMX *amx, cell *params)
 }
 
 /*
+* Sets netchan data.
+* Use the net_* NetChan enum
+*
+* native set_netchan(const index, const NetChan:var, any:...);
+*/
+cell AMX_NATIVE_CALL set_netchan(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_var, arg_value };
+
+	CHECK_ISPLAYER(arg_index);
+
+	client_t *pClient = clientOfIndex(params[arg_index]);
+	CHECK_CLIENT_CONNECTED(pClient, arg_index);
+
+	member_t *member = memberlist[params[arg_var]];
+	if (unlikely(member == nullptr)) {
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_var]);
+		return FALSE;
+	}
+
+	cell* value = getAmxAddr(amx, params[arg_value]);
+	return set_member(amx, &pClient->netchan, member, value, 0);
+}
+
+/*
+* Returns metchan data from an client.
+* Use the net_* NetChan enum
+*
+* native any:get_netchan(const index, const NetChan:var, any:...);
+*/
+cell AMX_NATIVE_CALL get_netchan(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_var, arg_3 };
+
+	CHECK_ISPLAYER(arg_index);
+
+	client_t *pClient = clientOfIndex(params[arg_index]);
+	CHECK_CLIENT_CONNECTED(pClient, arg_index);
+
+	member_t *member = memberlist[params[arg_var]];
+	if (unlikely(member == nullptr)) {
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: unknown member id %i", __FUNCTION__, params[arg_var]);
+		return FALSE;
+	}
+
+	cell* dest;
+	size_t element;
+
+	if (PARAMS_COUNT == 3) {
+		dest = getAmxAddr(amx, params[arg_3]);
+		element = 0;
+	}
+	else {
+		dest = nullptr;
+		element = 0;
+	}
+
+	return get_member(amx, &pClient->netchan, member, dest, element);
+}
+
+/*
 * Sets a NetAdr var.
 *
 * @param var        The specified mvar, look at the enum NetAdrVars
@@ -824,6 +885,12 @@ AMX_NATIVE_INFO EngineVars_Natives[] =
 	{ "set_ucmd", set_ucmd },
 	{ "get_ucmd", get_ucmd },
 
+	{ "set_netchan", set_netchan },
+	{ "get_netchan", get_netchan },
+
+	{ "set_netadr", set_netadr },
+	{ "get_netadr", get_netadr },
+
 	{ "set_rebuy", set_rebuy },
 	{ "get_rebuy", get_rebuy },
 
@@ -849,9 +916,6 @@ AMX_NATIVE_INFO ReGameVars_Natives[] =
 
 	{ "set_pmtrace", set_pmtrace },
 	{ "get_pmtrace", get_pmtrace },
-
-	{ "set_netadr", set_netadr },
-	{ "get_netadr", get_netadr },
 
 	{ nullptr, nullptr }
 };
@@ -1125,6 +1189,8 @@ cell get_member(AMX *amx, void* pdata, const member_t *member, cell* dest, size_
 		return (cell)get_member_direct<pmtrace_s>(pdata, member->offset, element);
 	case MEBMER_USERCMD:
 		return (cell)get_member_direct<usercmd_s>(pdata, member->offset, element);
+	case MEMBER_NETADR:
+		return (cell)get_member_direct<netadr_t>(pdata, member->offset, element);
 	default: break;
 	}
 

@@ -29,6 +29,7 @@
 #define PMOVE_MEMBERS(mx)        STRUCT_MEMBERS(com_playermove, mx, pm_##mx)
 #define MOVEVAR_MEMBERS(mx)      STRUCT_MEMBERS(movevars_t, mx, mv_##mx)
 #define UCMD_MEMBERS(mx)         STRUCT_MEMBERS(usercmd_s, mx, ucmd_##mx)
+#define NETCHAN_MEMBERS(mx)      STRUCT_MEMBERS(netchan_t, mx, net_##mx)
 #define PMTRACE_MEMBERS(mx)      STRUCT_MEMBERS(pmtrace_s, mx, pmt_##mx)
 #define NETADR_MEMBERS(mx)       STRUCT_MEMBERS(netadr_t, mx, netadr_##mx)
 #define CSPL_MEMBERS(mx)         CLASS_MEMBERS(CCSPlayer, mx, mx)
@@ -115,6 +116,8 @@ inline MType getMemberType(ArmouryItemPack)     { return MEMBER_INTEGER; }
 inline MType getMemberType(InfoMapBuyParam)     { return MEMBER_INTEGER; }
 inline MType getMemberType(SecondaryAtkState)   { return MEMBER_INTEGER; }
 inline MType getMemberType(netadrtype_t)        { return MEMBER_INTEGER; }
+inline MType getMemberType(netsrc_t)            { return MEMBER_INTEGER; }
+inline MType getMemberType(netadr_t)            { return MEMBER_NETADR; }
 
 inline MType getMemberType(TraceResult)         { return MEMBER_TRACERESULT; }
 
@@ -753,6 +756,23 @@ member_t memberlist_pmtrace[] = {
 	PMTRACE_MEMBERS(hitgroup),
 };
 
+member_t memberlist_netchan[] = {
+	NETCHAN_MEMBERS(sock),
+	NETCHAN_MEMBERS(remote_address),
+	NETCHAN_MEMBERS(player_slot),
+	NETCHAN_MEMBERS(last_received),
+	NETCHAN_MEMBERS(connect_time),
+	NETCHAN_MEMBERS(rate),
+	NETCHAN_MEMBERS(cleartime),
+	NETCHAN_MEMBERS(incoming_sequence),
+	NETCHAN_MEMBERS(incoming_acknowledged),
+	NETCHAN_MEMBERS(incoming_reliable_acknowledged),
+	NETCHAN_MEMBERS(incoming_reliable_sequence),
+	NETCHAN_MEMBERS(outgoing_sequence),
+	NETCHAN_MEMBERS(reliable_sequence),
+	NETCHAN_MEMBERS(last_reliable_sequence)
+};
+
 member_t memberlist_csplayer[] = {
 	CSPL_MEMBERS(m_szModel),
 	CSPL_MEMBERS(m_bForceShowMenu),
@@ -1094,6 +1114,7 @@ member_t *memberlist_t::operator[](size_t members) const
 		CASE(movevars)
 		CASE(usercmd)
 		CASE(pmtrace)
+		CASE(netchan)
 		CASE(csplayer)
 		CASE(baseitem)
 		CASE(baseweapon)

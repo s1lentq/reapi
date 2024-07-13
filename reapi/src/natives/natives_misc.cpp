@@ -3466,7 +3466,7 @@ AMX_NATIVE_INFO Misc_Natives_RG[] =
 /*
 * Sets the name of the map.
 *
-* @param mapname     New map name.
+* @param mapname    New map name.
 *
 * @noreturn
 *
@@ -3579,16 +3579,23 @@ cell AMX_NATIVE_CALL rh_emit_sound2(AMX *amx, cell *params)
 	);
 }
 
-// TODO: should we duplicate documentation for native here and in include?
+/*
+* Forces an userinfo update
+*
+* @param index      Client index
+*
+* @noreturn
+*/
 cell AMX_NATIVE_CALL rh_update_user_info(AMX *amx, cell *params)
 {
-	enum args_e { arg_count, arg_playerEntIndex };
+	enum args_e { arg_count, arg_index };
 
-	CBasePlayer *pPlayer = getPrivate<CBasePlayer>(params[arg_playerEntIndex]);
-	CHECK_CONNECTED(pPlayer, arg_playerEntIndex);
+	CHECK_ISPLAYER(arg_index);
 
-	CAmxArgs args(amx, params);
-	g_RehldsFuncs->SV_UpdateUserInfo(args[arg_playerEntIndex]);
+	IGameClient *pClient = clientByIndex(params[arg_index]);
+	CHECK_APICLIENT_CONNECTED(pClient, arg_index);
+
+	g_RehldsFuncs->SV_UpdateUserInfo(pClient);
 
 	return TRUE;
 }
@@ -3596,8 +3603,8 @@ cell AMX_NATIVE_CALL rh_update_user_info(AMX *amx, cell *params)
 /*
 * Kicks a client from server with message
 *
-* @param index     Client index
-* @param message   Message that will be sent to client when it is deleted from server
+* @param index      Client index
+* @param message    Message that will be sent to client when it is deleted from server
 *
 * @noreturn
 *
@@ -3609,15 +3616,11 @@ cell AMX_NATIVE_CALL rh_drop_client(AMX *amx, cell *params)
 
 	CHECK_ISPLAYER(arg_index);
 
-	client_t *pClient = clientOfIndex(params[arg_index]);
-	if (unlikely(pClient == nullptr || !(pClient->active | pClient->spawned | pClient->connected)))
-	{
-		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
-		return FALSE;
-	}
+	IGameClient *pClient = clientByIndex(params[arg_index]);
+	CHECK_APICLIENT_CONNECTED(pClient, arg_index);
 
 	char messagebuf[256];
-	g_RehldsFuncs->DropClient(g_RehldsSvs->GetClient(params[arg_index] - 1), false, getAmxString(amx, params[arg_msg], messagebuf));
+	g_RehldsFuncs->DropClient(pClient, false, getAmxString(amx, params[arg_msg], messagebuf));
 	return TRUE;
 }
 
@@ -3644,11 +3647,26 @@ cell AMX_NATIVE_CALL rh_get_net_from(AMX* amx, cell* params)
 }
 
 /*
+* Get real game time throughout the entire server lifecycle.
+*
+* @return           Real game time
+*
+* native Float:rh_get_realtime();
+*/
+cell AMX_NATIVE_CALL rh_get_realtime(AMX* amx, cell* params)
+{
+	enum args_e { arg_count };
+
+	float realtime = static_cast<float>(g_RehldsFuncs->GetRealTime());
+	return *(cell *)&realtime;
+}
+
+/*
 * Returns client's netchan playing time in seconds.
 *
-* @param index     Client index
+* @param index      Client index
 *
-* @return          Netchan connection time in seconds or 0 if client index is invalid or client is not connected
+* @return           Netchan connection time in seconds or 0 if client index is invalid or client is not connected
 *
 * native rh_get_client_connect_time(const index);
 */
@@ -3659,25 +3677,62 @@ cell AMX_NATIVE_CALL rh_get_client_connect_time(AMX *amx, cell *params)
 	CHECK_ISPLAYER(arg_index);
 
 	client_t *pClient = clientOfIndex(params[arg_index]);
-	if (unlikely(pClient == nullptr || !(pClient->active | pClient->spawned | pClient->connected)))
-	{
-		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
-		return FALSE;
-	}
+	CHECK_CLIENT_CONNECTED(pClient, arg_index);
 
 	return (cell)(g_RehldsFuncs->GetRealTime() - pClient->netchan.connect_time);
 }
 
+/*
+* Checks if a specific entity is fully packed in a given frame for a host client.
+*
+* @param index      Client index for whom we are checking the entity.
+* @param entity     Entity index to find in the table of entities for the given frame.
+* @param frame      Frame index where to look. Default is -1, which checks the previous frame.
+* @note             To check in the current frame, this native should be called at the end of the server frame.
+*
+* @return           Returns true if the entity is fully packed and ready to be sent to all clients in the given frame, otherwise false.
+*
+* native bool:rh_is_entity_fullpacked(const host, const entity, const frame = -1);
+*/
+cell AMX_NATIVE_CALL rh_is_entity_fullpacked(AMX *amx, cell *params)
+{
+	enum args_e { arg_count, arg_index, arg_entity, arg_frame };
+
+	const int SV_UPDATE_BACKUP = (gpGlobals->maxClients == 1) ? SINGLEPLAYER_BACKUP : MULTIPLAYER_BACKUP;
+	const int SV_UPDATE_MASK   = (SV_UPDATE_BACKUP - 1);
+
+	CHECK_ISPLAYER(arg_index);
+
+	client_t *pClient = clientOfIndex(params[arg_index]);
+	CHECK_CLIENT_CONNECTED(pClient, arg_index);
+
+	int iEntity = params[arg_entity];
+	int iFrame = params[arg_frame];
+
+	client_frame_t *frame = &pClient->frames[(pClient->netchan.outgoing_sequence + iFrame) & SV_UPDATE_MASK];
+	packet_entities_t *fullpack = &frame->entities;
+
+	for (int i = 0; i < fullpack->num_entities; i++)
+	{
+		const entity_state_t *es = &fullpack->entities[i];
+		if (es->number == iEntity)
+			return TRUE; // GOTCHA! The given entity was found in the fullpack of entities
+	}
+
+	return FALSE;
+}
+
 AMX_NATIVE_INFO Misc_Natives_RH[] =
 {
-	{ "rh_set_mapname",      rh_set_mapname      },
-	{ "rh_get_mapname",      rh_get_mapname      },
-	{ "rh_reset_mapname",    rh_reset_mapname    },
-	{ "rh_emit_sound2",      rh_emit_sound2      },
-	{ "rh_update_user_info", rh_update_user_info },
-	{ "rh_drop_client",      rh_drop_client      },
-	{ "rh_get_net_from",     rh_get_net_from     },
-
+	{ "rh_set_mapname",             rh_set_mapname             },
+	{ "rh_get_mapname",             rh_get_mapname             },
+	{ "rh_reset_mapname",           rh_reset_mapname           },
+	{ "rh_emit_sound2",             rh_emit_sound2             },
+	{ "rh_update_user_info",        rh_update_user_info        },
+	{ "rh_drop_client",             rh_drop_client             },
+	{ "rh_get_net_from",            rh_get_net_from            },
+	{ "rh_get_realtime",            rh_get_realtime            },
+	{ "rh_is_entity_fullpacked",    rh_is_entity_fullpacked    },
 	{ "rh_get_client_connect_time", rh_get_client_connect_time },
 
 	{ nullptr, nullptr }

@@ -1191,96 +1191,96 @@ enum UCmd
 	/*
 	* Description:      -
 	* Member type:      short
-	* Get params:       get_ucmd(const ucmd, UserCmd:var);
-	* Set params:       set_ucmd(const ucmd, UserCmd:var, value);
+	* Get params:       get_ucmd(const ucmd, UCmd:var);
+	* Set params:       set_ucmd(const ucmd, UCmd:var, value);
 	*/
 	ucmd_lerp_msec = BEGIN_MEMBER_REGION(usercmd),
 
 	/*
 	* Description:      -
 	* Member type:      byte
-	* Get params:       get_ucmd(const ucmd, UserCmd:var);
-	* Set params:       set_ucmd(const ucmd, UserCmd:var, value);
+	* Get params:       get_ucmd(const ucmd, UCmd:var);
+	* Set params:       set_ucmd(const ucmd, UCmd:var, value);
 	*/
 	ucmd_msec,
 
 	/*
 	* Description:      -
 	* Member type:      vec3_t
-	* Get params:       get_ucmd(const ucmd, UserCmd:var, Float:output[3]);
-	* Set params:       set_ucmd(const ucmd, UserCmd:var, Float:dest[3]);
+	* Get params:       get_ucmd(const ucmd, UCmd:var, Float:output[3]);
+	* Set params:       set_ucmd(const ucmd, UCmd:var, Float:dest[3]);
 	*/
 	ucmd_viewangles,
 
 	/*
 	* Description:      -
 	* Member type:      float
-	* Get params:       Float:get_ucmd(const ucmd, UserCmd:var);
-	* Set params:       set_ucmd(const ucmd, UserCmd:var, Float:value);
+	* Get params:       Float:get_ucmd(const ucmd, UCmd:var);
+	* Set params:       set_ucmd(const ucmd, UCmd:var, Float:value);
 	*/
 	ucmd_forwardmove,
 
 	/*
 	* Description:      -
 	* Member type:      float
-	* Get params:       Float:get_ucmd(const ucmd, UserCmd:var);
-	* Set params:       set_ucmd(const ucmd, UserCmd:var, Float:value);
+	* Get params:       Float:get_ucmd(const ucmd, UCmd:var);
+	* Set params:       set_ucmd(const ucmd, UCmd:var, Float:value);
 	*/
 	ucmd_sidemove,
 
 	/*
 	* Description:      -
 	* Member type:      float
-	* Get params:       Float:get_ucmd(const ucmd, UserCmd:var);
-	* Set params:       set_ucmd(const ucmd, UserCmd:var, Float:value);
+	* Get params:       Float:get_ucmd(const ucmd, UCmd:var);
+	* Set params:       set_ucmd(const ucmd, UCmd:var, Float:value);
 	*/
 	ucmd_upmove,
 
 	/*
 	* Description:      -
 	* Member type:      byte
-	* Get params:       get_ucmd(const ucmd, UserCmd:var);
-	* Set params:       set_ucmd(const ucmd, UserCmd:var, value);
+	* Get params:       get_ucmd(const ucmd, UCmd:var);
+	* Set params:       set_ucmd(const ucmd, UCmd:var, value);
 	*/
 	ucmd_lightlevel,
 
 	/*
 	* Description:      -
 	* Member type:      unsigned short
-	* Get params:       get_ucmd(const ucmd, UserCmd:var);
-	* Set params:       set_ucmd(const ucmd, UserCmd:var, value);
+	* Get params:       get_ucmd(const ucmd, UCmd:var);
+	* Set params:       set_ucmd(const ucmd, UCmd:var, value);
 	*/
 	ucmd_buttons,
 
 	/*
 	* Description:      -
 	* Member type:      byte
-	* Get params:       get_ucmd(const ucmd, UserCmd:var);
-	* Set params:       set_ucmd(const ucmd, UserCmd:var, value);
+	* Get params:       get_ucmd(const ucmd, UCmd:var);
+	* Set params:       set_ucmd(const ucmd, UCmd:var, value);
 	*/
 	ucmd_impulse,
 
 	/*
 	* Description:      -
 	* Member type:      byte
-	* Get params:       get_ucmd(const ucmd, UserCmd:var);
-	* Set params:       set_ucmd(const ucmd, UserCmd:var, value);
+	* Get params:       get_ucmd(const ucmd, UCmd:var);
+	* Set params:       set_ucmd(const ucmd, UCmd:var, value);
 	*/
 	ucmd_weaponselect,
 
 	/*
 	* Description:      -
 	* Member type:      int
-	* Get params:       get_ucmd(const ucmd, UserCmd:var);
-	* Set params:       set_ucmd(const ucmd, UserCmd:var, value);
+	* Get params:       get_ucmd(const ucmd, UCmd:var);
+	* Set params:       set_ucmd(const ucmd, UCmd:var, value);
 	*/
 	ucmd_impact_index,
 
 	/*
 	* Description:      -
 	* Member type:      vec3_t
-	* Get params:       get_ucmd(const ucmd, UserCmd:var, Float:output[3]);
-	* Set params:       set_ucmd(const ucmd, UserCmd:var, Float:dest[3]);
+	* Get params:       get_ucmd(const ucmd, UCmd:var, Float:output[3]);
+	* Set params:       set_ucmd(const ucmd, UCmd:var, Float:dest[3]);
 	*/
 	ucmd_impact_position
 };
@@ -1320,6 +1320,134 @@ enum NetAdrVars
 	* Set params:       set_netadr(const NetAdr:adr, const NetAdrVars:var, const value);
 	*/
 	netadr_port
+};
+
+/**
+* enum NetSrc
+*/
+enum NetSrc
+{
+	NS_CLIENT,
+	NS_SERVER,
+	NS_MULTICAST	// xxxMO
+};
+
+/**
+* enum NetChan
+*/
+enum NetChan
+{
+	/*
+	* Description:      NS_SERVER or NS_CLIENT, depending on channel
+	* Member type:      int
+	* Get params:       NetSrc:get_netchan(const index, NetChan:var);
+	* Set params:       set_netchan(const index, NetChan:var, NetSrc:value);
+	*/
+	net_sock = BEGIN_MEMBER_REGION(netchan),
+
+	/*
+	* Description:      Address this channel is talking to
+	* Member type:      NetAdr
+	* Get params:       NetAdr:get_netchan(const index, NetChan:var);
+	* Set params:       set_netchan(const index, NetChan:var, NetAdr:value);
+	*/
+	net_remote_address,
+
+	/*
+	* Description:      -
+	* Member type:      int
+	* Get params:       get_netchan(const index, NetChan:var);
+	* Set params:       set_netchan(const index, NetChan:var, value);
+	*/
+	net_player_slot,
+
+	/*
+	* Description:      For timeouts. Time last message was received
+	* Member type:      float
+	* Get params:       Float:get_netchan(const index, NetChan:var);
+	* Set params:       set_netchan(const index, NetChan:var, Float:value);
+	*/
+	net_last_received,
+
+	/*
+	* Description:      Time when channel was connected
+	* Member type:      float
+	* Get params:       Float:get_netchan(const index, NetChan:var);
+	* Set params:       set_netchan(const index, NetChan:var, Float:value);
+	*/
+	net_connect_time,
+
+	/*
+	* Description:      Bandwidth choke. (Bytes per second)
+	* Member type:      float
+	* Get params:       Float:get_netchan(const index, NetChan:var);
+	* Set params:       set_netchan(const index, NetChan:var, Float:value);
+	*/
+	net_rate,
+
+	/*
+	* Description:      If rh_get_realtime() > cleartime, free to send next packet.
+	* Member type:      float
+	* Get params:       Float:get_netchan(const index, NetChan:var);
+	* Set params:       set_netchan(const index, NetChan:var, Float:value);
+	*/
+	net_cleartime,
+
+	/*
+	* Description:      A sequence number that increases with each incoming bunch of packets.
+	* Member type:      int
+	* Get params:       get_netchan(const index, NetChan:var);
+	* Set params:       set_netchan(const index, NetChan:var, value);
+	*/
+	net_incoming_sequence,
+
+	/*
+	* Description:      The number of last outgoing message that has been ack'd.
+	* Member type:      int
+	* Get params:       get_netchan(const index, NetChan:var);
+	* Set params:       set_netchan(const index, NetChan:var, value);
+	*/
+	net_incoming_acknowledged,
+
+	/*
+	* Description:      Single bit indicating the state of acknowledgment for the last reliable message.
+	* Member type:      int
+	* Get params:       get_netchan(const index, NetChan:var);
+	* Set params:       set_netchan(const index, NetChan:var, value);
+	*/
+	net_incoming_reliable_acknowledged,
+
+	/*
+	* Description:      Single bit, maintained local that toggles between 0 and 1 to track the sequence of reliable messages received
+	* Member type:      int
+	* Get params:       get_netchan(const index, NetChan:var);
+	* Set params:       set_netchan(const index, NetChan:var, value);
+	*/
+	net_incoming_reliable_sequence,
+
+	/*
+	* Description:      Message we are sending to remote
+	* Member type:      int
+	* Get params:       get_netchan(const index, NetChan:var);
+	* Set params:       set_netchan(const index, NetChan:var, value);
+	*/
+	net_outgoing_sequence,
+
+	/*
+	* Description:      Whether the message contains reliable payload, single bit
+	* Member type:      int
+	* Get params:       get_netchan(const index, NetChan:var);
+	* Set params:       set_netchan(const index, NetChan:var, value);
+	*/
+	net_reliable_sequence,
+
+	/*
+	* Description:      Outgoing sequence number of last send that had reliable data
+	* Member type:      int
+	* Get params:       get_netchan(const index, NetChan:var);
+	* Set params:       set_netchan(const index, NetChan:var, value);
+	*/
+	net_last_reliable_sequence
 };
 
 /**

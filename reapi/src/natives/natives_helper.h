@@ -2,12 +2,14 @@
 
 #define PARAMS_COUNT            (params[0] / sizeof(cell))
 
-#define CHECK_ISPLAYER(x)       if (unlikely(params[x] <= 0 || params[x] > gpGlobals->maxClients)) { AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid player index %i [%s]", __FUNCTION__, params[x], #x); return FALSE; }
-#define CHECK_ISENTITY(x)       if (unlikely(params[x] < 0 || params[x] > gpGlobals->maxEntities)) { AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid entity index %i [%s]", __FUNCTION__, params[x], #x); return FALSE; }
-#define CHECK_GAMERULES()       if (unlikely(!g_pGameRules)) { AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: gamerules not initialized", __FUNCTION__); return FALSE; }
-#define CHECK_CONNECTED(x, y)   if (unlikely(x == nullptr || x->has_disconnected)) { AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[y]); return FALSE; }
-#define CHECK_INSTANCE_OF(x, y) if (unlikely(dynamic_cast<x *>((x::BaseClass *)y) == nullptr)) { AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid entity %d ('%s'), is not an instance of the base class '%s'", __FUNCTION__, indexOfEdict(y->pev), STRING(y->pev->classname), #x); return FALSE; }
-#define CHECK_REQUIREMENTS(x)   if (unlikely(!api_cfg.has##x())) { AMXX_LogError(amx, AMX_ERR_NATIVE, "Native '%s' is not available, %s required.", __FUNCTION__, #x); return FALSE; } if (!g_RehldsMessageManager) { AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: %s message manager not initialized.", __FUNCTION__, #x); return FALSE; }
+#define CHECK_ISPLAYER(x)               if (unlikely(params[x] <= 0 || params[x] > gpGlobals->maxClients)) { AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid player index %i [%s]", __FUNCTION__, params[x], #x); return FALSE; }
+#define CHECK_ISENTITY(x)               if (unlikely(params[x] < 0 || params[x] > gpGlobals->maxEntities)) { AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid entity index %i [%s]", __FUNCTION__, params[x], #x); return FALSE; }
+#define CHECK_GAMERULES()               if (unlikely(!g_pGameRules)) { AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: gamerules not initialized", __FUNCTION__); return FALSE; }
+#define CHECK_CONNECTED(x, y)           if (unlikely(x == nullptr || x->has_disconnected)) { AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[y]); return FALSE; }
+#define CHECK_CLIENT_CONNECTED(x, y)    if (unlikely(x == nullptr || !(x->active || x->spawned || x->connected))) { AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[y]); return FALSE; }
+#define CHECK_APICLIENT_CONNECTED(x, y) if (unlikely(x == nullptr || !(x->IsActive() || x->IsSpawned() || x->IsConnected()))) { AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[y]); return FALSE; }
+#define CHECK_INSTANCE_OF(x, y)         if (unlikely(dynamic_cast<x *>((x::BaseClass *)y) == nullptr)) { AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid entity %d ('%s'), is not an instance of the base class '%s'", __FUNCTION__, indexOfEdict(y->pev), STRING(y->pev->classname), #x); return FALSE; }
+#define CHECK_REQUIREMENTS(x)           if (unlikely(!api_cfg.has##x())) { AMXX_LogError(amx, AMX_ERR_NATIVE, "Native '%s' is not available, %s required.", __FUNCTION__, #x); return FALSE; } if (!g_RehldsMessageManager) { AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: %s message manager not initialized.", __FUNCTION__, #x); return FALSE; }
 
 class CAmxArg
 {
