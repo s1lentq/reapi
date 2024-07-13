@@ -3668,6 +3668,37 @@ cell AMX_NATIVE_CALL rh_get_client_connect_time(AMX *amx, cell *params)
 	return (cell)(g_RehldsFuncs->GetRealTime() - pClient->netchan.connect_time);
 }
 
+
+/*
+* Returns client's netchan incoming sequence.
+*
+* @param index     Client index
+*
+* @return          Netchan incoming sequence or -1 if client index is invalid or client is not connected
+*/
+
+cell AMX_NATIVE_CALL rh_get_client_incoming_sequence(AMX* amx, cell* params)
+{
+	enum args_e { arg_count, arg_index };
+
+	CHECK_ISPLAYER(arg_index);
+
+	if (unlikely(params[arg_index] <= 0 || params[arg_index] > gpGlobals->maxClients)) 
+	{ 
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: invalid player index %i", __FUNCTION__, params[arg_index]); 
+		return -1; 
+	}
+
+	client_t* pClient = clientOfIndex(params[arg_index]);
+	if (unlikely(pClient == nullptr || !(pClient->active | pClient->spawned | pClient->connected)))
+	{
+		AMXX_LogError(amx, AMX_ERR_NATIVE, "%s: player %i is not connected", __FUNCTION__, params[arg_index]);
+		return -1;
+	}
+
+	return pClient->netchan.incoming_sequence;
+}
+
 AMX_NATIVE_INFO Misc_Natives_RH[] =
 {
 	{ "rh_set_mapname",      rh_set_mapname      },
@@ -3679,6 +3710,7 @@ AMX_NATIVE_INFO Misc_Natives_RH[] =
 	{ "rh_get_net_from",     rh_get_net_from     },
 
 	{ "rh_get_client_connect_time", rh_get_client_connect_time },
+	{ "rh_get_client_incoming_sequence", rh_get_client_incoming_sequence },
 
 	{ nullptr, nullptr }
 };

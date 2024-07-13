@@ -427,3 +427,12 @@ native bool:IsMessageDataModified(MsgDataType:type = MsgAny, const number = -1);
 * @return           Returns true if the modified data type was reset, otherwise false.
 */
 native bool:ResetModifiedMessageData(MsgDataType:type = MsgAny, const number = -1);
+
+/*
+* Returns client's netchan incoming sequence.
+*
+* @param index     Client index
+*
+* @return          Netchan incoming sequence or -1 if client index is invalid or client is not connected
+*/
+native rh_get_client_incoming_sequence(const index);
