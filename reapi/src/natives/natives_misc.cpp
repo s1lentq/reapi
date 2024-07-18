@@ -3743,11 +3743,16 @@ cell AMX_NATIVE_CALL rh_is_paused(AMX *amx, cell *params)
 *
 * native rh_set_paused(const bool:st);
 */
-cell AMX_NATIVE_CALL rh_set_paused(AMX *amx, cell *params)
+cell AMX_NATIVE_CALL rh_set_pause(AMX *amx, cell *params)
 {
-	enum { arg_count, arg_st };
-	g_RehldsData->SetPaused(params[arg_st] != 0);
+	enum { arg_count, arg_st, arg_host };
+	bool isPause = params[arg_st] != 0;
 
+	g_RehldsData->SetPaused(isPause);
+	if (params[arg_host] != 0)
+	{
+		g_RehldsFuncs->Host_Pause(isPause);
+	}
 	return TRUE;
 }
 
@@ -3764,7 +3769,7 @@ AMX_NATIVE_INFO Misc_Natives_RH[] =
 	{ "rh_is_entity_fullpacked",    rh_is_entity_fullpacked    },
 	{ "rh_get_client_connect_time", rh_get_client_connect_time },
 	{ "rh_is_paused",               rh_is_paused },
-	{ "rh_set_paused",              rh_set_paused },
+	{ "rh_set_paused",              rh_set_pause },
 
 	{ nullptr, nullptr }
 };

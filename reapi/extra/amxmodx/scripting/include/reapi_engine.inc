@@ -293,7 +293,7 @@ native bool:rh_is_paused();
 *
 * @noreturn
 */
-native rh_set_paused(const bool:st);
+native rh_set_paused(const bool:st, const bool:host);
 
 /*
 * Checks if a specific entity is fully packed in a given frame for a host client.
