@@ -3769,7 +3769,7 @@ AMX_NATIVE_INFO Misc_Natives_RH[] =
 	{ "rh_is_entity_fullpacked",    rh_is_entity_fullpacked    },
 	{ "rh_get_client_connect_time", rh_get_client_connect_time },
 	{ "rh_is_paused",               rh_is_paused },
-	{ "rh_set_paused",              rh_set_pause },
+	{ "rh_set_pause",               rh_set_pause },
 
 	{ nullptr, nullptr }
 };
