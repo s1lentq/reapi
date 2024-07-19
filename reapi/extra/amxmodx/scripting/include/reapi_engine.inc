@@ -294,6 +294,7 @@ native bool:rh_is_paused();
 *
 * @note             rh_set_paused(true, true)  just like set pausable to 1 and execute client command 'pause'
 * @note             rh_set_paused(true, false) only set g_psv.paused
+* @note             It's best not to use rh_set_paused(false, false), bad things will happen
 *
 * @noreturn
 */
