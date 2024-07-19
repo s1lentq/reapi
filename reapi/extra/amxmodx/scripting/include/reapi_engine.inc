@@ -289,11 +289,15 @@ native bool:rh_is_paused();
 /*
 * Set server pause state
 *
-* @param st         Pause state, true: server will be paused
+* @param st         Pause state, true: server will be paused, false: unpause(if paused)
+* @param host       If it is 1, the native will call 'Host_Pause()'
+*
+* @note             rh_set_paused(true, true)  just like set pausable to 1 and execute client command 'pause'
+* @note             rh_set_paused(true, false) only set g_psv.paused
 *
 * @noreturn
 */
-native rh_set_paused(const bool:st, const bool:host);
+native rh_set_pause(const bool:st, const bool:host = true);
 
 /*
 * Checks if a specific entity is fully packed in a given frame for a host client.
