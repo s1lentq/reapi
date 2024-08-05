@@ -939,6 +939,7 @@ cell set_member(AMX *amx, void* pdata, const member_t *member, cell* value, size
 	switch (member->type) {
 	case MEMBER_CLASSPTR:
 		{
+			ENTITY_VALIDATE(*value);
 			// native set_member(_index, any:_member, _value, _elem);
 			CBaseEntity *pEntity = getPrivate<CBaseEntity>(*value);
 			set_member<CBaseEntity *>(pdata, member->offset, pEntity, element);
@@ -946,6 +947,7 @@ cell set_member(AMX *amx, void* pdata, const member_t *member, cell* value, size
 		}
 	case MEMBER_EHANDLE:
 		{
+			ENTITY_VALIDATE(*value);
 			// native set_member(_index, any:_member, _value, _elem);
 			EHANDLE& ehandle = get_member<EHANDLE>(pdata, member->offset, element);
 			edict_t *pEdictValue = edictByIndexAmx(*value);
@@ -954,6 +956,7 @@ cell set_member(AMX *amx, void* pdata, const member_t *member, cell* value, size
 		}
 	case MEMBER_EDICT:
 		{
+			ENTITY_VALIDATE(*value);
 			// native set_member(_index, any:_member, _value, _elem);
 			edict_t *pEdictValue = edictByIndexAmx(*value);
 			set_member<edict_t *>(pdata, member->offset, pEdictValue, element);
@@ -961,6 +964,7 @@ cell set_member(AMX *amx, void* pdata, const member_t *member, cell* value, size
 		}
 	case MEMBER_EVARS:
 		{
+			ENTITY_VALIDATE(*value);
 			// native set_member(_index, any:_member, _value, _elem);
 			entvars_t *pev = PEV(*value);
 			set_member<entvars_t *>(pdata, member->offset, pev, element);
