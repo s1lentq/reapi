@@ -280,6 +280,27 @@ native rh_get_net_from(output[], len);
 native rh_get_client_connect_time(const index);
 
 /*
+* Checks if server paused
+*
+* @return           Returns true if paused, otherwise false.
+*/
+native bool:rh_is_paused();
+
+/*
+* Set server pause state
+*
+* @param st         Pause state, true: server will be paused, false: unpause(if paused)
+* @param host       If it is 1, the native will call 'Host_Pause()'
+*
+* @note             rh_set_paused(true, true)  just like set pausable to 1 and execute client command 'pause'
+* @note             rh_set_paused(true, false) only set g_psv.paused
+* @note             It's best not to use rh_set_paused(false, false), bad things will happen
+*
+* @noreturn
+*/
+native rh_set_pause(const bool:st, const bool:host = true);
+
+/*
 * Checks if a specific entity is fully packed in a given frame for a host client.
 *
 * @param index      Client index for whom we are checking the entity.
