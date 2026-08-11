@@ -3417,6 +3417,34 @@ cell AMX_NATIVE_CALL rg_player_takedamage_impulse(AMX *amx, cell *params)
 }
 
 /*
+* Emits a player radio message
+*
+* @param player                Player index.
+* @param msg_id                The sentence of the sound
+* @param msg_verbose           Message verbose
+* @param pitch                 Sound pitch
+* @param show_icon             Weather or not to show icon over the head for teammates
+*
+* @noreturn
+*/
+cell AMX_NATIVE_CALL rg_radio(AMX* amx, cell* params)
+{
+	enum args_e { arg_count, arg_index, arg_msg_id, arg_msg_verbose, arg_pitch, arg_icon };
+
+	CHECK_ISPLAYER(arg_index)
+
+	CBasePlayer *pPlayer = UTIL_PlayerByIndex(params[arg_index]);
+	CHECK_CONNECTED(pPlayer, arg_index);
+	
+	char sample[256], message[190];
+	const char *msg_id       = getAmxString(amx, params[arg_msg_id], sample);
+	const char *msg_verbose  = getAmxString(amx, params[arg_msg_verbose], message);
+	
+	pPlayer->CSPlayer()->Radio(msg_id, msg_verbose, params[arg_pitch], params[arg_icon] != 0);
+	return TRUE;
+}
+
+/*
 * Fires a trace line between two origins, retrieving the end point and entity hit.
 *
 * @param vecStart              Start position
@@ -3586,6 +3614,7 @@ AMX_NATIVE_INFO Misc_Natives_RG[] =
 
 	{ "rg_send_death_message",        rg_send_death_message        },
 	{ "rg_player_takedamage_impulse", rg_player_takedamage_impulse },
+	{ "rg_radio",                     rg_radio                     },
 	{ "rg_trace_line",                rg_trace_line                },
 	{ "rg_trace_hull",                rg_trace_hull                },
 
