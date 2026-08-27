@@ -114,7 +114,7 @@
 #define DEAD_NO                         0 // Alive
 #define DEAD_DYING                      1 // Playing death animation or still falling off of a ledge waiting to hit ground
 #define DEAD_DEAD                       2 // Dead, lying still
-#define DEAD_RESPAWNABLE                3
+#define DEAD_RESPAWNABLE                3 // do respawn the entity
 #define DEAD_DISCARDBODY                4
 
 /**
@@ -204,6 +204,54 @@
 #define PLAYER_PREVENT_DUCK             (1<<4)
 #define PLAYER_PREVENT_CLIMB            (1<<5) // The player can't climb ladder
 #define PLAYER_PREVENT_JUMP             (1<<6)
+#define PLAYER_PREVENT_DDUCK            (1<<7) // ReGameDLL: player data iuser3 (unduck logic)
+
+/**
+* Player's throw direction on killed for use with m_iThrowDirection
+*/
+enum ThrowDirection
+{
+	THROW_NONE,
+	THROW_FORWARD,
+	THROW_BACKWARD,
+	THROW_HITVEL,
+	THROW_BOMB,
+	THROW_GRENADE,
+	THROW_HITVEL_MINUS_AIRVEL
+};
+
+/**
+* Player's status bar constants
+*/
+#define SBAR_TARGETTYPE_TEAMMATE        1
+#define SBAR_TARGETTYPE_ENEMY           2
+#define SBAR_TARGETTYPE_HOSTAGE         3
+
+enum sbar_data
+{
+	SBAR_ID_TARGETTYPE = 1,
+	SBAR_ID_TARGETNAME,
+	SBAR_ID_TARGETHEALTH,
+	SBAR_END
+};
+
+/**
+* Player id cvar extensions (ReGameDLL, #ifdef REGAMEDLL_ADD)
+*/
+enum PlayerIdShowHealth
+{
+	PLAYERID_HIDE      = 0, // Don't show health
+	PLAYERID_TEAMMATES = 1, // Show health for teammates only (default CS)
+	PLAYERID_ALL       = 2  // Show health for all players
+};
+
+enum PlayerIdField
+{
+	PLAYERID_FIELD_NONE   = 0, // No extra info
+	PLAYERID_FIELD_TEAM   = 1, // Show team name
+	PLAYERID_FIELD_HEALTH = 2, // Show health percentage
+	PLAYERID_FIELD_BOTH   = 3  // Show both team name and health
+};
 
 /**
 * Instant damage values for use with the 3rd parameter of the "Damage" client
@@ -234,6 +282,7 @@
 #define DMG_SLOWFREEZE                  (1<<22)     // In a subzero freezer
 #define DMG_MORTAR                      (1<<23)     // Hit by air raid (done to distinguish grenade from mortar)
 #define DMG_GRENADE                     (1<<24)     // Counter-Strike only - Hit by HE grenade
+#define DMG_EXPLOSION                   (1<<24)     // ReGameDLL name of the same bit as DMG_GRENADE (kept as alias)
 #define DMG_TIMEBASED                   (~(0x3fff)) // Mask for time-based damage
 
 // These are the damage types that are allowed to gib corpses
@@ -258,7 +307,7 @@
 #define PFLAG_ONSWING                   (1<<0)
 #define PFLAG_ONTRAIN                   (1<<1)
 #define PFLAG_ONBARNACLE                (1<<2)
-#define PFLAG_DUCKING                   (1<<3) // In the process of ducking, but totally squatted yet
+#define PFLAG_DUCKING                   (1<<3) // In the process of ducking, but not totally squatted yet
 #define PFLAG_USING                     (1<<4) // Using a continuous entity
 #define PFLAG_OBSERVER                  (1<<5) // Player is locked in stationary cam mode. Spectators can move, observers can't.
 
@@ -284,6 +333,8 @@
 #define ITEM_FLAG_LIMITINWORLD          (1<<3)
 #define ITEM_FLAG_EXHAUSTIBLE           (1<<4)
 #define ITEM_FLAG_NOFIREUNDERWATER      (1<<5)
+#define ITEM_FLAG_EXHAUST_SECONDARYAMMO (1<<6)
+#define ITEM_FLAG_CUSTOM                (ITEM_FLAG_NOFIREUNDERWATER|ITEM_FLAG_EXHAUST_SECONDARYAMMO)
 
 /**
 * @section get_entvar(entity, var_spawnflags) values
@@ -640,7 +691,7 @@
 #define SF_PUSH_BREAKABLE               128
 
 /**
-* light_spawn
+* light
 */
 #define SF_LIGHT_START_OFF              1
 
@@ -682,8 +733,8 @@
 * PlaybackEvent flags
 */
 #define FEV_NOTHOST                     (1<<0) // Skip local host for event send.
-#define FEV_RELIABLE                    (1<<1) // Send the event reliably. You must specify the origin and angles
-                                               // for this to work correctly on the server for anything
+#define FEV_RELIABLE                    (1<<1) // Send the event reliably. You must specify the origin and angles and use
+                                               // PLAYBACK_EVENT_FULL for this to work correctly on the server for anything
                                                // that depends on the event origin/angles. I.e., the origin/angles are not
                                                // taken from the invoking edict for reliable events.
 
@@ -715,9 +766,37 @@
 #define FCAP_FORCE_TRANSITION           0x00000080 // ALWAYS goes across transitions
 
 /**
+* CBasePlayer::m_flDisplayHistory hint flags (ReGameDLL hintmessage.h)
+*/
+#define DHF_ROUND_STARTED               BIT(1)
+#define DHF_HOSTAGE_SEEN_FAR            BIT(2)
+#define DHF_HOSTAGE_SEEN_NEAR           BIT(3)
+#define DHF_HOSTAGE_USED                BIT(4)
+#define DHF_HOSTAGE_INJURED             BIT(5)
+#define DHF_HOSTAGE_KILLED              BIT(6)
+#define DHF_FRIEND_SEEN                 BIT(7)
+#define DHF_ENEMY_SEEN                  BIT(8)
+#define DHF_FRIEND_INJURED              BIT(9)
+#define DHF_FRIEND_KILLED               BIT(10)
+#define DHF_ENEMY_KILLED                BIT(11)
+#define DHF_BOMB_RETRIEVED              BIT(12)
+#define DHF_AMMO_EXHAUSTED              BIT(15)
+#define DHF_IN_TARGET_ZONE              BIT(16)
+#define DHF_IN_RESCUE_ZONE              BIT(17)
+#define DHF_IN_ESCAPE_ZONE              BIT(18)
+#define DHF_IN_VIPSAFETY_ZONE           BIT(19)
+#define DHF_NIGHTVISION                 BIT(20)
+#define DHF_HOSTAGE_CTMOVE              BIT(21)
+#define DHF_SPEC_DUCK                   BIT(22)
+
+#define DHM_ROUND_CLEAR                 (DHF_ROUND_STARTED|DHF_HOSTAGE_KILLED|DHF_FRIEND_KILLED|DHF_BOMB_RETRIEVED)
+#define DHM_CONNECT_CLEAR               (DHF_HOSTAGE_SEEN_FAR|DHF_HOSTAGE_SEEN_NEAR|DHF_HOSTAGE_USED|DHF_HOSTAGE_INJURED|DHF_FRIEND_SEEN|DHF_ENEMY_SEEN|DHF_FRIEND_INJURED|DHF_ENEMY_KILLED|DHF_AMMO_EXHAUSTED|DHF_IN_TARGET_ZONE|DHF_IN_RESCUE_ZONE|DHF_IN_ESCAPE_ZONE|DHF_IN_VIPSAFETY_ZONE|DHF_HOSTAGE_CTMOVE|DHF_SPEC_DUCK)
+
+/**
 * All monsters need this data
 */
 #define DONT_BLEED                      -1
+#define BLOOD_COLOR_DARKRED             223
 #define BLOOD_COLOR_RED                 247
 #define BLOOD_COLOR_YELLOW              195
 #define BLOOD_COLOR_GREEN               BLOOD_COLOR_YELLOW
@@ -725,11 +804,22 @@
 /**
 * CBasePlayer::m_iIgnoreGlobalChat
 */
-enum
+enum IgnoreChatMsg
 {
 	IGNOREMSG_NONE,  // Nothing to do
 	IGNOREMSG_ENEMY, // To ignore any chat messages from the enemy
 	IGNOREMSG_TEAM   // Same as IGNOREMSG_ENEMY but ignore teammates
+}
+
+/**
+* CBasePlayer::m_musicState
+* @see regamedll/dlls/player.h (enum MusicState { SILENT, CALM, INTENSE })
+*/
+enum MusicState
+{
+	MUSIC_SILENT = 0,
+	MUSIC_CALM,
+	MUSIC_INTENSE
 }
 
 /**
@@ -815,6 +905,53 @@ enum RewardType
 	RT_INTO_GAME,
 	RT_VIP_KILLED,
 	RT_VIP_RESCUED_MYSELF
+};
+
+/**
+* Reward account amounts for RG_CBasePlayer_AddAccount / rg_add_account (ReGameDLL)
+*/
+enum RewardAccount
+{
+	REWARD_TARGET_BOMB                      = 3500,
+	REWARD_VIP_ESCAPED                      = 3500,
+	REWARD_VIP_ASSASSINATED                 = 3250,
+	REWARD_TERRORISTS_ESCAPED               = 3150,
+	REWARD_CTS_PREVENT_ESCAPE               = 3500,
+	REWARD_ESCAPING_TERRORISTS_NEUTRALIZED  = 3250,
+	REWARD_BOMB_DEFUSED                     = 3250,
+	REWARD_BOMB_PLANTED                     = 800,
+	REWARD_BOMB_EXPLODED                    = 3250,
+	REWARD_CTS_WIN                          = 3000,
+	REWARD_TERRORISTS_WIN                   = 3000,
+	REWARD_ALL_HOSTAGES_RESCUED             = 2500,
+
+	// the end round was by the expiration time
+	REWARD_TARGET_BOMB_SAVED                = 3250,
+	REWARD_HOSTAGE_NOT_RESCUED              = 3250,
+	REWARD_VIP_NOT_ESCAPED                  = 3250,
+
+	// loser bonus
+	REWARD_LOSER_BONUS_DEFAULT              = 1400,
+	REWARD_LOSER_BONUS_MIN                  = 1500,
+	REWARD_LOSER_BONUS_MAX                  = 3000,
+	REWARD_LOSER_BONUS_ADD                  = 500,
+
+	REWARD_RESCUED_HOSTAGE                  = 750,
+	REWARD_KILLED_ENEMY                     = 300,
+	REWARD_KILLED_VIP                       = 2500,
+	REWARD_VIP_HAVE_SELF_RESCUED            = 2500,
+
+	REWARD_TAKEN_HOSTAGE                    = 1000,
+	REWARD_TOOK_HOSTAGE_ACC                 = 100,
+	REWARD_TOOK_HOSTAGE                     = 150
+};
+
+/**
+* Penalty for team killing (ReGameDLL)
+*/
+enum PaybackForBadThing
+{
+	PAYBACK_FOR_KILLED_TEAMMATES = -3300
 };
 
 /**
@@ -910,19 +1047,51 @@ enum WeaponIdType
 };
 
 /**
+* Weapon infinite ammo modes for m_iWeaponInfiniteAmmo (ReGameDLL, #ifdef REGAMEDLL_ADD)
+*/
+enum WeaponInfiniteAmmoMode
+{
+	WPNMODE_INFINITE_CLIP = 1,
+	WPNMODE_INFINITE_BPAMMO
+};
+
+/**
+* Ammo types (ReGameDLL weapontype.h; note: numbering differs from AMXX CsAmmoType)
+*/
+enum AmmoType
+{
+	AMMO_NONE,
+	AMMO_338MAGNUM,
+	AMMO_762NATO,
+	AMMO_556NATOBOX,
+	AMMO_556NATO,
+	AMMO_BUCKSHOT,
+	AMMO_45ACP,
+	AMMO_57MM,
+	AMMO_50AE,
+	AMMO_357SIG,
+	AMMO_9MM,
+	AMMO_FLASHBANG,
+	AMMO_HEGRENADE,
+	AMMO_SMOKEGRENADE,
+	AMMO_C4,
+
+	AMMO_MAX_TYPES
+};
+
+/**
 * For CBaseMonster::m_rgbTimeBasedDamage
-* prefix should be ITBD_
 */
 enum TimeBasedDamage
 {
-	ITDB_PARALYZE,
-	ITDB_NERVEGAS,
-	ITDB_POISON,
-	ITDB_RADIATION,
-	ITDB_DROWNRECOVER,
-	ITDB_ACID,
-	ITDB_SLOWBURN,
-	ITDB_SLOWFREEZE
+	ITBD_PARALYZE,
+	ITBD_NERVE_GAS,
+	ITBD_POISON,
+	ITBD_RADIATION,
+	ITBD_DROWN_RECOVER,
+	ITBD_ACID,
+	ITBD_SLOW_BURN,
+	ITBD_SLOW_FREEZE
 };
 
 /**
@@ -1164,9 +1333,9 @@ enum InventorySlotType
 */
 enum shieldgren_e
 {
-	SHIELDREN_IDLE = 4,
-	SHIELDREN_UP,
-	SHIELDREN_DOWN
+	SHIELDGREN_IDLE = 4,
+	SHIELDGREN_UP,
+	SHIELDGREN_DOWN
 };
 
 enum shieldgun_e
@@ -1195,7 +1364,7 @@ enum SignalState
 };
 
 /**
-* Weapon states of the following weapons: usp, elite, glock18, famas and m4a1.
+* Weapon states of the following weapons: usp, elite, glock18, famas, m4a1 and shield.
 */
 enum WeaponState
 {
