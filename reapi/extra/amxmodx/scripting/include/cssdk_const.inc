@@ -1376,15 +1376,6 @@ enum MaxAmmoType
 };
 
 /**
-* Grenade satchel codes for weapon_grenade Use()
-*/
-enum SATCHELCODE
-{
-	SATCHEL_DETONATE,
-	SATCHEL_RELEASE,
-};
-
-/**
 * For CBaseMonster::m_rgbTimeBasedDamage
 */
 enum TimeBasedDamage
@@ -1894,6 +1885,8 @@ enum InfoMapBuyParam
 #define NORMAL_EXPLOSION_VOLUME         1024
 #define SMALL_EXPLOSION_VOLUME          512
 #define WEAPON_ACTIVITY_VOLUME          64
+#define KNIFE_BODYHIT_VOLUME            128.0 // CBasePlayer::m_iWeaponVolume after a knife body hit (wpn_knife.cpp)
+#define KNIFE_WALLHIT_VOLUME            512.0 // m_iWeaponVolume multiplier after a knife wall hit: int(flVol * KNIFE_WALLHIT_VOLUME)
 
 /**
 * For CBasePlayer:m_iWeaponFlash
@@ -1901,8 +1894,6 @@ enum InfoMapBuyParam
 #define BRIGHT_GUN_FLASH                512
 #define NORMAL_GUN_FLASH                256
 #define DIM_GUN_FLASH                   128
-#define KNIFE_BODYHIT_VOLUME            128.0
-#define KNIFE_WALLHIT_VOLUME            512.0
 
 /**
 * Player zoom constants
