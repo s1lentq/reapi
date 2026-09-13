@@ -303,6 +303,12 @@ enum PlayerIdField
 #define GIB_ALWAYS                      2 // Always gib ( Houndeye Shock, Barnacle Bite )
 
 /**
+* Group operation codes (util.h)
+*/
+#define GROUP_OP_AND                    0
+#define GROUP_OP_NAND                   1
+
+/**
 * Dot products for view cone checking (util.h; for m_flFieldOfView)
 */
 #define VIEW_FIELD_FULL                 -1.0 // +-180 degrees
